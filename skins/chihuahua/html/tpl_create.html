@@ -1,0 +1,25 @@
+<div class="goleft">
+    <label for="paste_user">{{your_alias}}</label>
+    <input id="paste_user" name="paste_user" type="text" value="[[post_user]]"
+           size="20" maxlength="50" class="[[error_box]]" />
+    <div class="alias_error [[error_visibility]]">{{author_numeric}}</div>
+</div>
+<div class="goright">
+    <label for="paste_lang">{{language}}</label>
+    <select id="paste_lang" name="paste_lang">
+    [[post_lang_list]]
+    </select>
+</div>
+
+<br /><br />
+
+<textarea id="paste_data" name="paste_data" rows="" cols="" onkeydown="insertTab(this, event);">[[post_data]]</textarea>
+
+<label for="paste_password">{{password}}</label>
+<input id="paste_password" name="paste_password" type="password" size="20" maxlength="50" />
+
+<div class="goright">
+    <input id="paste_private" name="paste_private" type="checkbox" [[post_checked]] />
+    {{private_paste}} &nbsp;
+    <input class="button" type="submit" name="paste_submit" value="{{paste}}" />
+</div>

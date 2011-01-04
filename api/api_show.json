@@ -1,0 +1,10 @@
+{
+    "result":
+    {
+        "id": "[[paste_id]]",
+        "author": "[[paste_user]]",
+        "timestamp": "[[paste_timestamp]]",
+        "language": "[[paste_lang]]",
+        "data": "[[paste_data]]"
+    }
+}
