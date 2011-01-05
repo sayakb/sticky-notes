@@ -197,7 +197,7 @@ Skeleton*/
 }
 #header, #banner, #main, #footer
 {
-    width: 100%;
+    width: auto;
     /*[disabled]padding:10px 40px;*/
 }
 /*Toolbar*/
@@ -629,6 +629,7 @@ CAPTION
 /*Forms*/
 FIELDSET
 {
+    margin-bottom: 15px;
     padding: 0px 17px 10px 17px;
     border: 1px solid #ACD;
     background-color: #FFF;
@@ -853,6 +854,7 @@ INPUT[type="button"]:hover, INPUT[type="submit"]:hover, INPUT[type="reset"]:hove
     margin-top: 5px;
     margin-bottom: 5px;
     text-align: left !important;
+    word-wrap: break-word;
 }
 .error
 {

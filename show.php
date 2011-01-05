@@ -41,11 +41,7 @@ if ($mode && $mode != 'raw' && $mode != 'xml' && $mode != 'json')
 }
 
 // Initialize the skin file
-if ($mode == 'raw')
-{
-    $skin->init('tpl_raw');
-}
-else
+if ($mode != 'raw')
 {
     $skin->init('tpl_show');
 }
@@ -70,6 +66,10 @@ if ($row == null)
         echo $skin->output("api_error.{$mode}");
         die;
     }
+    else if ($mode == 'raw')
+    {
+	die($lang->get('error_404'));
+    }
     else
     {
         $skin->assign(array(
@@ -92,6 +92,10 @@ if ($row['private'] == "1")
             echo $skin->output("api_error.{$mode}");
             die;
         }
+        else if ($mode == 'raw')
+	{
+	    die($lang->get('error_hash'));
+	}
         else
         {
             $skin->assign(array(
@@ -133,6 +137,10 @@ if (!empty($row['password']) && empty($password) && !$exempt)
         echo $skin->output("api_error.{$mode}");
         die;
     }
+    else if ($mode == 'raw')
+    {
+	die($lang->get('err_passreqd'));
+    }
     else
     {
         $skin->init('tpl_show_password');
@@ -156,6 +164,10 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
             echo $skin->output("api_error.{$mode}");
             die;
         }
+	else if ($mode == 'raw')
+	{
+	    die($lang->get('invalid_password'));
+	}
         else
         {
             $skin->assign(array(
@@ -177,20 +189,12 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
     }
 }
 
-/****
-    // We need minimum 15 lines to be shown
-    $lines = substr_count($row['data'], "\n");
-
-    if ($lines < 15 && !$mode)
-    {
-        $diff = 15 - $lines - 1;
-
-        for ($idx = 1; $idx <= $diff; $idx++)
-        {
-            $row['data'] .= "\n";
-        }
-    }
-****/
+// Is it raw? just dump the code then
+if ($mode == 'raw')
+{
+    echo $row['data'];
+    exit;
+}
 
 // Prepare GeSHi
 $geshi = new GeSHi($row['data'], $row['language']);
@@ -199,6 +203,7 @@ $geshi->set_header_type(GESHI_HEADER_DIV);
 $geshi->enable_classes();
 $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding: 1px;',
                        'background: #fbfbfb; text-shadow: 0px 1px #fff; padding: 1px;');
+$geshi->set_overall_style('word-wrap:break-word;');
 
 // Generate the data
 $user = empty($row['author']) ? 'Anonymous' : $row['author'];

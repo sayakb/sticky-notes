@@ -76,6 +76,16 @@ $sql = "SELECT * FROM {$db_prefix}main WHERE " .
 $rows = $db->query($sql);
 $rowcount = count($rows);
 
+// Initialize GeSHi
+$geshi = new GeSHi();
+$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, 2);
+$geshi->set_header_type(GESHI_HEADER_DIV);
+$geshi->enable_classes();
+$geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding: 1px;',
+		       'background: #fbfbfb; text-shadow: 0px 1px #fff; padding: 1px;');
+$geshi->set_overall_style('word-wrap:break-word;');
+
+
 // Populate list items
 foreach ($rows as $row)
 {
@@ -97,13 +107,9 @@ foreach ($rows as $row)
         $row['data'] = substr($row['data'], 0, strlen($row['data']) - 2);
     }
 
-    // Prepare GeSHi
-    $geshi = new GeSHi($row['data'], 'text');
-    $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, 2);
-    $geshi->set_header_type(GESHI_HEADER_DIV);
-    $geshi->enable_classes();
-    $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding: 1px;',
-                           'background: #fbfbfb; text-shadow: 0px 1px #fff; padding: 1px;');
+    // Configure GeSHi
+    $geshi->set_source($row['data']);
+    $geshi->set_language($row['language']);
 
     // Generate the data
     $user = empty($row['author']) ? 'Anonymous' : $row['author'];
