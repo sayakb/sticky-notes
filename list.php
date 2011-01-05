@@ -109,7 +109,6 @@ foreach ($rows as $row)
 
     // Configure GeSHi
     $geshi->set_source($row['data']);
-    $geshi->set_language($row['language']);
 
     // Generate the data
     $user = empty($row['author']) ? 'Anonymous' : $row['author'];

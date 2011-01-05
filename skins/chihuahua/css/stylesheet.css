@@ -37,6 +37,7 @@ BODY, DIV, SPAN, OBJECT, IFRAME, H1, H2, H3, H4, H5, H6, P, BLOCKQUOTE, PRE, A, 
     font-size: 100%;
     font-family: inherit;
     vertical-align: baseline;
+    word-wrap: break-word;
 }
 ARTICLE, ASIDE, DIALOG, FIGURE, FOOTER, HEADER, HGROUP, NAV, SECTION
 {
