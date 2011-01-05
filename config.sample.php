@@ -36,7 +36,7 @@ $site_title = "Sticky Notes pastebin";
 // You may add additional text to this copyright
 // DO NOT REMOVE ORIGINAL COPYRIGHT
 // (Protected by BSD License)
-$site_copyright = "Powered by <a href=\"http://gitorious.org/sticky-notes\" rel=\"nofollow\">" .
+$site_copyright = "Powered by <a href=\"http://projects.kde.org/paste-kde-org\" rel=\"nofollow\">" .
 				  "Sticky Notes</a>. Copyright &copy; 2011 <a href=\"" .
 				  "http://sayakbanerjee.com\">Sayak Banerjee</a>.";
 
