@@ -109,7 +109,7 @@ HTML
 }
 BODY
 {
-    background: #78A6D8 url('../images/pattern.jpg') repeat scroll bottom right;
+    background: #78A6D8 url('../images/pattern.jpg') no-repeat scroll top left;
 }
 #wrapper
 {
