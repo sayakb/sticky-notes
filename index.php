@@ -15,6 +15,7 @@ include_once('./init.php');
 $author = $core->variable('paste_user', '');
 $language = $core->variable('paste_lang', 'text');
 $data = $core->variable('paste_data', '');
+$expire = $core->variable('paste_expire', 0);
 $password = $core->variable('paste_password', '');
 $private = $core->variable('paste_private', '');
 $project = $core->variable('project', '');
@@ -24,6 +25,11 @@ if (empty($project))
 {
     $project = $core->variable('paste_project', '');
     $_GET['project'] = $project;
+}
+
+if (!$expire)
+{
+    $expire = 86400;
 }
 
 $paste_submit = isset($_POST['paste_submit']) ? true : false;
@@ -97,10 +103,10 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 
     // Insert into the DB
     $sql = "INSERT INTO {$db_prefix}main " .
-           "(author, project, timestamp, data, language, " .
+           "(author, project, timestamp, expire, data, language, " .
            "password, salt, private, hash) VALUES " .
-           "('{$author}', '{$project}', " . time() . ", '{$data}', " .
-           "'{$language}', '{$md5}', '{$salt}', " .
+           "('{$author}', '{$project}', " . time() . ", " . (time() + $expire) .
+           ", '{$data}', " . "'{$language}', '{$md5}', '{$salt}', " .
            ($private == "on" || $private == "yes" || $password ? "1" : "0") .
            ", {$hash})";
     $db->query($sql);

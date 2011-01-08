@@ -668,6 +668,7 @@ SELECT
     background-color: #FFF;
     border-width: 1px;
     border-style: solid;
+    padding: 1px;
 }
 INPUT[type=text], INPUT[type=password], INPUT.text, INPUT.title, TEXTAREA, SELECT
 {
@@ -748,6 +749,10 @@ INPUT[type="button"]:hover, INPUT[type="submit"]:hover, INPUT[type="reset"]:hove
 {
     width: 99.5%;
     height: 300px;
+}
+#paste_button
+{
+    margin-top: 5px !important;
 }
 .tiny
 {

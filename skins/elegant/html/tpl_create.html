@@ -25,13 +25,21 @@
                 <label for="paste_password" class="ietop">{{password}}</label>
                 <input id="paste_password" class="ieadjust" name="paste_password" type="password" size="20" maxlength="50" />
 
+                <input id="paste_private" name="paste_private" type="checkbox" [[post_checked]] />
+                <label id="paste_private_label" for="paste_private">{{private_paste}}</label>
+
                 <div class="goright iepush">
                     <button id="paste_submit" name="paste_submit" type="submit">{{paste}}</button>
                 </div>
 
-                <div id="paste_private_wrapper" class="goright iepush">
-                    <input id="paste_private" name="paste_private" type="checkbox" [[post_checked]] />
-                    <label id="paste_private_label" for="paste_private">{{private_paste}}</label>
+		<div id="paste_expire_wrapper" class="goright iepush">
+                    <select id="paste_expire" name="paste_expire">
+			<option value="1800">{{del_30min}}</option>
+			<option value="21600">{{del_6hrs}}</option>
+			<option value="86400" selected="selected">{{del_1day}}</option>
+			<option value="604800">{{del_1week}}</option>
+			<option value="2592000">{{del_1month}}</option>
+                    </select>
                 </div>
             </div>
 

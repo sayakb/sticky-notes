@@ -58,4 +58,17 @@ $db->connect($db_host, $db_port, $db_name, $db_username, $db_password);
 // Set a root path template var
 $skin->assign('root_path', $core->path());
 
+// Cleanup expired pastes every 1 minute
+$sql = "SELECT timestamp, locked FROM {$db_prefix}cron LIMIT 1";
+$row = $db->query($sql, true);
+$timestamp = $row['timestamp'];
+$locked = $row['locked'];
+
+if (((time() - $timestamp) > 60) && !$locked)
+{
+    $db->query("UPDATE {$db_prefix}cron SET locked = 1");
+    $db->query("DELETE FROM {$db_prefix}main WHERE expire < " . time());
+    $db->query("UPDATE {$db_prefix}cron SET timestamp = " . time() . ", locked = 0");
+}
+
 ?>

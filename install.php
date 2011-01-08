@@ -18,6 +18,7 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}main (" .
            "author VARCHAR(50) DEFAULT '', " .
            "project VARCHAR(50) DEFAULT '', " .
            "timestamp INT(11) UNSIGNED NOT NULL, " .
+	   "expire INT(11) UNSIGNED NOT NULL, " .
            "data MEDIUMTEXT NOT NULL, " .
            "language VARCHAR(50) NOT NULL DEFAULT 'php', " .
            "password VARCHAR(40) NOT NULL, " .
@@ -31,6 +32,10 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}session (" .
            "timestamp INT(11) UNSIGNED NOT NULL, " .
            "PRIMARY KEY(sid))");
 
+$db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}cron (" .
+           "timestamp INT(11) UNSIGNED NOT NULL DEFAULT 0,"
+	   "locked TINYINT(1) NOT NULL DEFAULT 0)");
+
 $db->query("ALTER TABLE {$db_prefix}main DEFAULT CHARACTER SET utf8");
 $db->query("ALTER TABLE {$db_prefix}main CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
 $db->query("ALTER TABLE {$db_prefix}main AUTO_INCREMENT = 1000");
@@ -39,6 +44,8 @@ $db->query("CREATE INDEX {$db_prefix}idx_author ON {$db_prefix}main(id, author)"
 $db->query("CREATE INDEX {$db_prefix}idx_project ON {$db_prefix}main(id, project)");
 $db->query("CREATE INDEX {$db_prefix}idx_data ON {$db_prefix}main(id, data)");
 $db->query("CREATE INDEX {$db_prefix}idx_sid ON {$db_prefix}session(sid)");
+
+$db->query("INSERT INTO {$db_prefix}cron VALUES (0, 0)");
 
 die("Successfully installed");
 
