@@ -828,6 +828,7 @@ INPUT[type="button"]:hover, INPUT[type="submit"]:hover, INPUT[type="reset"]:hove
     border: 1px solid #6e88ab !important;
     background: #3674ae !important;
     color: #fff !important;
+    text-shadow: none !important;
 }
 .page_bottom
 {
