@@ -66,9 +66,13 @@ $locked = $row['locked'];
 
 if (((time() - $timestamp) > 60) && !$locked)
 {
-    $db->query("UPDATE {$db_prefix}cron SET locked = 1");
-    $db->query("DELETE FROM {$db_prefix}main WHERE expire < " . time());
-    $db->query("UPDATE {$db_prefix}cron SET timestamp = " . time() . ", locked = 0");
+    $db->query("UPDATE {$db_prefix}cron SET locked = 1 WHERE locked = 0");
+
+    if ($db->affected_rows() > 0)
+    {
+	$db->query("DELETE FROM {$db_prefix}main WHERE expire < " . time());
+	$db->query("UPDATE {$db_prefix}cron SET timestamp = " . time() . ", locked = 0");
+    }
 }
 
 ?>

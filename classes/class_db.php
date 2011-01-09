@@ -95,6 +95,12 @@ class db
         return mysql_insert_id($this->link);
     }
 
+    // Function to check affected rows
+    function affected_rows()
+    {
+        return mysql_affected_rows($this->link);
+    }
+
     // Function to escape a special chars string
     function escape(&$data)
     {
