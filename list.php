@@ -70,7 +70,7 @@ $pagination = $skin->pagination($total, $page);
 
 // Get the list
 $sql = "SELECT * FROM {$db_prefix}main WHERE " .
-       "project = '{$project}' AND " .
+       (!empty($project) ? "project='{$project}' AND " : '') .
        'private = 0 ORDER BY timestamp ' .
       "DESC LIMIT {$lim_start}, 10";
 $rows = $db->query($sql);
