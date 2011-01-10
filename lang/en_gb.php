@@ -25,6 +25,7 @@ $lang_data = array(
     'del_1day'		=> 'Delete after 1 day',
     'del_1week'		=> 'Delete after 1 week',
     'del_1month'	=> 'Delete after 1 month',
+    'keep_forever'	=> 'Keep paste forever',
 
 
     /* Page: show.php */
@@ -94,6 +95,8 @@ $lang_data = array(
 			       'have a paste ID',
     'paste_count'	=> 'Number of paste elements enclosed within <i>pastes</i>',
     'paste_pages'	=> 'Total number of pages',
+    'paste_exptime'	=> 'Time in seconds after which paste will be deleted from server. ' .
+			   'Set this value to 0 to disable this feature.',
 
     'return_success'	=> 'Return values on success',
     'return_error'	=> 'Return values on error',

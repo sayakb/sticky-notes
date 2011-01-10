@@ -20,6 +20,7 @@ $password = $core->variable('paste_password', '');
 $private = $core->variable('paste_private', '');
 $project = $core->variable('project', '');
 $mode = $core->variable('mode', '');
+$time = time();
 
 if (empty($project))
 {
@@ -27,9 +28,9 @@ if (empty($project))
     $_GET['project'] = $project;
 }
 
-if (!$expire)
+if ($expire > 0)
 {
-    $expire = 86400;
+    $expire += $time;
 }
 
 $paste_submit = isset($_POST['paste_submit']) ? true : false;
@@ -105,7 +106,7 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
     $sql = "INSERT INTO {$db_prefix}main " .
            "(author, project, timestamp, expire, data, language, " .
            "password, salt, private, hash) VALUES " .
-           "('{$author}', '{$project}', " . time() . ", " . (time() + $expire) .
+           "('{$author}', '{$project}', {$time}, {$expire}" .
            ", '{$data}', " . "'{$language}', '{$md5}', '{$salt}', " .
            ($private == "on" || $private == "yes" || $password ? "1" : "0") .
            ", {$hash})";
