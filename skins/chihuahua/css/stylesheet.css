@@ -954,3 +954,7 @@ body
 {
     min-height: 170px;
 }
+label
+{
+    cursor: pointer;
+}

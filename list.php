@@ -72,7 +72,7 @@ $pagination = $skin->pagination($total, $page);
 $sql = "SELECT * FROM {$db_prefix}main WHERE " .
        (!empty($project) ? "project='{$project}' AND " : '') .
        'private = 0 ORDER BY timestamp ' .
-      "DESC LIMIT {$lim_start}, 10";
+       "DESC LIMIT {$lim_start}, 10";
 $rows = $db->query($sql);
 $rowcount = count($rows);
 
