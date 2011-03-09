@@ -8,6 +8,10 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
+/// This is the Sticky Notes configuration file
+/// Rename this file to config.php when installing
+/// Refer to README file for more details
+
 // Database host
 $db_host = "";
 

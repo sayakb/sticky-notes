@@ -10,7 +10,7 @@
 
 /* COMMENT OUT WHEN INSTALLING */
 /* UNCOMMENT ONCE INSTALLING IS COMPLETED */
-die('Nothing to do');
+die('Open install.php and comment out line 13 when installing.');
 
 include_once('./init.php');
 

@@ -10,6 +10,7 @@
 
 // Invoke required files
 include_once('./init.php');
+include_once('./cron.php');
 
 // Collect some data
 $author = $core->variable('paste_user', '');
