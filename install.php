@@ -8,7 +8,8 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
-/* REMOVE WHEN INSTALLING */
+/* COMMENT OUT WHEN INSTALLING */
+/* UNCOMMENT ONCE INSTALLING IS COMPLETED */
 die('Nothing to do');
 
 include_once('./init.php');
@@ -28,12 +29,12 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}main (" .
            "PRIMARY KEY(id))");
 
 $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}session (" .
-           "sid VARCHAR(40) NOT NULL," .
+           "sid VARCHAR(40) NOT NULL, " .
            "timestamp INT(11) UNSIGNED NOT NULL, " .
            "PRIMARY KEY(sid))");
 
 $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}cron (" .
-           "timestamp INT(11) UNSIGNED NOT NULL DEFAULT 0,"
+           "timestamp INT(11) UNSIGNED NOT NULL DEFAULT 0, " .
 	   "locked TINYINT(1) NOT NULL DEFAULT 0)");
 
 $db->query("ALTER TABLE {$db_prefix}main DEFAULT CHARACTER SET utf8");
