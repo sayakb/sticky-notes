@@ -58,4 +58,10 @@ $db->connect($db_host, $db_port, $db_name, $db_username, $db_password);
 // Set a root path template var
 $skin->assign('root_path', $core->path());
 
+// Perform cron tasks
+if (!defined('IN_INSTALL'))
+{
+    include_once('./cron.php');
+}
+
 ?>

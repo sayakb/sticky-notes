@@ -10,10 +10,15 @@
 
 /* COMMENT OUT WHEN INSTALLING */
 /* UNCOMMENT ONCE INSTALLING IS COMPLETED */
-die('Open install.php and comment out line 13 when installing.');
+die('Install file locked. Check out the README file for installation instructions.');
 
+// Define constants
+define('IN_INSTALL', true);
+
+// Include necessary files
 include_once('./init.php');
 
+// Create the table structure
 $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}main (" .
            "id INT(12) UNSIGNED NOT NULL AUTO_INCREMENT, " .
            "author VARCHAR(50) DEFAULT '', " .
@@ -37,6 +42,7 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}cron (" .
            "timestamp INT(11) UNSIGNED NOT NULL DEFAULT 0, " .
 	   "locked TINYINT(1) NOT NULL DEFAULT 0)");
 
+// Add index and charset data
 $db->query("ALTER TABLE {$db_prefix}main DEFAULT CHARACTER SET utf8");
 $db->query("ALTER TABLE {$db_prefix}main CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
 $db->query("ALTER TABLE {$db_prefix}main AUTO_INCREMENT = 1000");
@@ -46,8 +52,10 @@ $db->query("CREATE INDEX {$db_prefix}idx_project ON {$db_prefix}main(id, project
 $db->query("CREATE INDEX {$db_prefix}idx_data ON {$db_prefix}main(id, data)");
 $db->query("CREATE INDEX {$db_prefix}idx_sid ON {$db_prefix}session(sid)");
 
+// Fill in empty values to cron table
 $db->query("INSERT INTO {$db_prefix}cron VALUES (0, 0)");
 
+// Done!
 die("Successfully installed");
 
 ?>
