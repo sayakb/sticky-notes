@@ -25,7 +25,7 @@ class db
 
             $this->link = mysql_connect($host, $user, $pass);
 
-            if (!isset($this->link))
+            if (!$this->link)
             {
                 return mysql_error();
             }
