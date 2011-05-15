@@ -31,6 +31,13 @@ class lang
         {
             include('lang/' . $this->lang_name . '.php');
         }
+        else
+	{
+	    $message  = 'Sticky Notes language parse error<br /><br />';
+	    $message .= 'Error: Language file not found<br />';
+	    $message .= 'Verify that the language selected is present in the lang/ folder';
+	    die($message);	    
+	}
 
         $data = $this->set_defaults($data);
 

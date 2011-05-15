@@ -86,6 +86,13 @@ if ($api_submit && !$mode)
     die;
 }
 
+// Save user and language data in cookies
+if ($paste_submit || $api_submit)
+{
+    $core->setcookie('author', $author);
+    $core->setcookie('language', $language);
+}
+
 if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 {
     // Escape text to avoid injection

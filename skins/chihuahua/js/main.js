@@ -67,6 +67,13 @@ $(document).ready(function() {
             captured = false;
         }
     }, 100);
+    
+    // Fetch author and language values from cookies
+    var author = getCookie('stickynotes_author');
+    var language = getCookie('stickynotes_language');
+    
+    $('#paste_user').val(author);
+    $('#paste_lang').val(language);
 });
 
 // Function to insert tab in text area
@@ -103,4 +110,21 @@ function insertTab(o, e)
     }
 
     return true;
+}
+
+function getCookie(c_name)
+{
+    var i, x, y, cookies_ary = document.cookie.split(";");
+
+    for (i = 0; i < cookies_ary.length; i++)
+    {
+	x = cookies_ary[i].substr(0, cookies_ary[i].indexOf("="));
+	y = cookies_ary[i].substr(cookies_ary[i].indexOf("=") + 1);
+	x = x.replace(/^\s+|\s+$/g, "");
+	
+	if (x == c_name)
+	{
+	    return unescape(y);
+	}
+    }
 }

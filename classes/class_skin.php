@@ -99,6 +99,14 @@ class skin
         }
 
         // Parse template variables
+        if (!file_exists($file_name))
+	{
+	    $message  = 'Sticky Notes skin read error<br /><br />';
+	    $message .= 'Error: Skin file not found<br />';
+	    $message .= 'Verify that the skin selected is present in the skins/ folder';
+	    die($message);	    
+	}
+        
         $data = ($has_scripts ? $data : '') . file_get_contents($file_name);
         $data = $this->set_defaults($data);
 
