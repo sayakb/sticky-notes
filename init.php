@@ -17,6 +17,7 @@ include_once('./classes/class_db.php');
 include_once('./classes/class_lang.php');
 include_once('./classes/class_skin.php');
 include_once('./classes/class_api.php');
+include_once('./classes/class_spamguard.php');
 include_once('./addons/geshi/geshi.php');
 
 // Include other files
@@ -28,6 +29,7 @@ $db = new db();
 $lang = new lang();
 $skin = new skin();
 $api = new api();
+$sg = new spamguard();
 
 // Define macros
 define('GESHI_LANG_PATH', $core->base_uri() . '/addons/geshi/geshi/');
@@ -45,6 +47,9 @@ else
 {
     unset($url);
 }
+
+// Project Honey Pot query
+$sg->validate_php();
 
 // Change project name to lower case
 if (isset($_GET['project'])) $_GET['project'] = strtolower($_GET['project']);

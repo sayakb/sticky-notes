@@ -49,6 +49,11 @@ $lang_data = array(
 
     /* RSS */
     'feed'		=> 'Recent pastes',
+    
+    
+    /* Antispam */
+    'php_malicious'	=> 'Your IP address is listed as a malicious IP. Please ' .
+			   'contact the site administrators for clarification.',
 
 
     /* Global */
