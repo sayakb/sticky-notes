@@ -9,8 +9,7 @@
 */
 
 // Turn off error reporting
-error_reporting(E_ALL);
- ini_set('display_errors', '1');
+error_reporting(0);
 
 // Include classes
 include_once('./classes/class_core.php');
