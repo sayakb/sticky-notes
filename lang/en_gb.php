@@ -20,7 +20,6 @@ $lang_data = array(
     'password'		=> 'Password',
     'paste_saved'	=> 'Your paste has been saved: __url__', // Do not change __url__
     'paste_error'	=> 'An error occurred while saving your paste',
-    'stealth_error'	=> 'Your paste triggered our spam filter and has been dropped',
     'del_30min'		=> 'Delete after 30 minutes',
     'del_6hrs'		=> 'Delete after 6 hours',
     'del_1day'		=> 'Delete after 1 day',
@@ -53,8 +52,8 @@ $lang_data = array(
     
     
     /* Antispam */
-    'php_malicious'	=> 'Your IP address is listed as a malicious IP. Please ' .
-			   'contact the site administrators for clarification.',
+    'sg_error_stealth'  => 'Your paste triggered our spam filter and has been dropped',
+    'sg_error_php'      => 'Your IP address is listed as a malicious IP',
 
 
     /* Global */

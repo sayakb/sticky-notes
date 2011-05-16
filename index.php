@@ -87,7 +87,10 @@ if ($api_submit && !$mode)
 }
 
 // Let's do some spam check!
-$sg->validate_stealth();
+if ($paste_submit)
+{
+    $sg->validate();
+}
 
 // Save user and language data in cookies
 if ($paste_submit || $api_submit)

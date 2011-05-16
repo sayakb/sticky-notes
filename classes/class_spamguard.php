@@ -10,21 +10,73 @@
 
 class spamguard
 {
-    // Sticky Notes' inbuilt Stealth Spam Guard
-    function validate_stealth()
+    // Class wide variables;
+    var $registered_services;
+    
+    // Class constructor
+    function __construct()
     {
-        global $language, $data, $skin, $lang, $paste_submit;
+        $this->registered_services = array();
         
-        $html_exists = strpos(strtolower($data), '<a href') >= 0 ? true : false;
+        // Register services
+        $this->register('stealth');
+        $this->register('php');
+    }
+    
+    // Function to register services
+    function register($service)
+    {
+        array_push($this->registered_services, $service);
+    }
+    
+    // Function to check if a service is registered
+    function is_registered($service)
+    {
+        return in_array($service, $this->registered_services);
+    }
+    
+    // The parent validation function
+    function validate()    
+    {
+        global $skin, $lang, $sg_services;
+        
+        $validation_failed = false;
+        $error_message = '';
+        $services = explode(',', $sg_services);
+        
+        // Perform all validations
+        foreach($services as $service_key)
+        {
+            $service_key = strtolower(trim($service_key));
+            $service_name = 'validate_' . $service_key;
             
-        if ($html_exists && $paste_submit && $language != 'html4strict')
-        {   
+            if ($this->is_registered($service_key))
+            {
+                // Assume validation was successful
+                $validation_output = true;
+                
+                // Perform validation
+                eval('$validation_output = $this->' . $service_name . '();');
+                
+                // Check if validation succeeded
+                if (!$validation_output)
+                {
+                    $error_message = $lang->get('sg_error_' . $service_key);
+                    $validation_failed = true;
+                    break;
+                }
+            }
+        }
+        
+        // Validation failed. Show an error message and exit
+        if ($validation_failed) 
+        {
             // Show a bounce message
             $skin->assign(array(
-                'msg_visibility'	=> 'visible',
-                'error_visibility'	=> 'hidden',
-                'message_text'		=> $lang->get('stealth_error'),
-                'msg_color'     	=> 'red',
+                'msg_visibility'        => 'visible',
+                'error_visibility'      => 'hidden',
+                'message_text'          => $error_message,
+                'msg_color'             => 'red',
             ));
             
             // Assign template data
@@ -38,9 +90,25 @@ class spamguard
             $skin->output();
             exit;
         }
+    }
+    
+    // Sticky Notes' inbuilt Stealth Spam Guard
+    function validate_stealth()
+    {
+        // Set global variables
+        global $lang, $language, $data;
+        
+        // Check if data has HTML
+        $html_exists = strpos(strtolower($data), '<a href') !== false ? true : false;
+            
+        // Validate
+        if ($html_exists && $language != 'html4strict')
+        {   
+            return false;
+        }
         else
         {
-            // Hooray!! Not spam :D
+            return true;
         }
     }
     
@@ -48,56 +116,60 @@ class spamguard
     // Info: http://www.projecthoneypot.org/
     function validate_php()
     {
-	try
-	{
-	    // Set global variables
-	    global $core, $lang, $sg_php_key, $sg_php_days, $sg_php_score, $sg_php_type;
-	    
-	    // Skip validation is no key is specified in config.php
-	    if (!isset($sg_php_key) || empty($sg_php_key))
-	    {
-		return;
-	    }
-	    
-	    // Check config values
-	    $sg_php_days = isset($sg_php_days) ? $sg_php_days : 90;
-	    $sg_php_score = isset($sg_php_score) ? $sg_php_score : 50;
-	    $sg_php_type = isset($sg_php_type) ? $sg_php_type : 2;
-	    
-	    // We cannot process an IPv6 address
-	    if(!filter_var($core->remote_ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) 
-	    {
-		return;
-	    }
-	    
-	    // Convert IP address to reversed octet format
-	    $ip_ary = explode('.', $core->remote_ip());
-	    $rev_ip = $ip_ary[3] . '.' . $ip_ary[2] . '.' . $ip_ary[1] . '.' . $ip_ary[0];
-	    
-	    // Query Project Honey Pot
-	    $response = dns_get_record($sg_php_key . '.' . $rev_ip . '.dnsbl.httpbl.org');
-	    
-	    // Exit if NXDOMAIN is returned
-	    if (!isset($response[0]['ip']) || empty($response[0]['ip']))
-	    {
-		return;
-	    }
-		
-	    // Extract the info
-	    $result = explode('.', $response[0]['ip']);
-	    $days = $result[1];
-	    $score = $result[2];
-	    $type = $result[3];
-	    
-	    // Perform PHP validation
-	    if ($days <= $sg_php_days && ($type >= $sg_php_type || $score >= $sg_php_score))
-	    {
-		die($lang->get('php_malicious'));
-	    }
-	}
-	catch (Exception $e)
+        try
         {
-            return;
+            // Set global variables
+            global $core, $lang, $sg_php_key, $sg_php_days, $sg_php_score, $sg_php_type;
+            
+            // Skip validation is no key is specified in config.php
+            if (!isset($sg_php_key) || empty($sg_php_key))
+            {
+                return true;
+            }
+            
+            // Check config values
+            $sg_php_days = isset($sg_php_days) ? $sg_php_days : 90;
+            $sg_php_score = isset($sg_php_score) ? $sg_php_score : 50;
+            $sg_php_type = isset($sg_php_type) ? $sg_php_type : 2;
+            
+            // We cannot process an IPv6 address
+            if(!filter_var($core->remote_ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) 
+            {
+                return true;
+            }
+            
+            // Convert IP address to reversed octet format
+            $ip_ary = explode('.', $core->remote_ip());
+            $rev_ip = $ip_ary[3] . '.' . $ip_ary[2] . '.' . $ip_ary[1] . '.' . $ip_ary[0];
+            
+            // Query Project Honey Pot
+            $response = dns_get_record($sg_php_key . '.' . $rev_ip . '.dnsbl.httpbl.org');
+            
+            // Exit if NXDOMAIN is returned
+            if (!isset($response[0]['ip']) || empty($response[0]['ip']))
+            {
+                return true;
+            }
+                
+            // Extract the info
+            $result = explode('.', $response[0]['ip']);
+            $days = $result[1];
+            $score = $result[2];
+            $type = $result[3];
+            
+            // Perform PHP validation
+            if ($days <= $sg_php_days && ($type >= $sg_php_type || $score >= $sg_php_score))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        catch (Exception $e)
+        {
+            return true;
         }
     }
 }

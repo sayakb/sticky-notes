@@ -9,7 +9,8 @@
 */
 
 // Turn off error reporting
-error_reporting(0);
+error_reporting(E_ALL);
+ ini_set('display_errors', '1');
 
 // Include classes
 include_once('./classes/class_core.php');
@@ -47,9 +48,6 @@ else
 {
     unset($url);
 }
-
-// Project Honey Pot query
-$sg->validate_php();
 
 // Change project name to lower case
 if (isset($_GET['project'])) $_GET['project'] = strtolower($_GET['project']);
