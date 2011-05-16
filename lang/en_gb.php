@@ -20,6 +20,7 @@ $lang_data = array(
     'password'		=> 'Password',
     'paste_saved'	=> 'Your paste has been saved: __url__', // Do not change __url__
     'paste_error'	=> 'An error occurred while saving your paste',
+    'stealth_error'	=> 'Your paste triggered our spam filter and has been dropped',
     'del_30min'		=> 'Delete after 30 minutes',
     'del_6hrs'		=> 'Delete after 6 hours',
     'del_1day'		=> 'Delete after 1 day',

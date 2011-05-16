@@ -86,6 +86,9 @@ if ($api_submit && !$mode)
     die;
 }
 
+// Let's do some spam check!
+$sg->validate_stealth();
+
 // Save user and language data in cookies
 if ($paste_submit || $api_submit)
 {
@@ -199,7 +202,7 @@ $skin->assign(array(
     'error_visibility'        => ($show_error === true ? 'visible' : 'hidden'),
 ));
 
-// Yes, that's pretty much everything we need for index ;)
+// Yes, that's pretty much everything we need for index page ;)
 $skin->title($lang->get('create_new') . ' &bull; ' . $lang->get('site_title'));
 $skin->output();
 ?>

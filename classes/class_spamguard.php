@@ -10,6 +10,39 @@
 
 class spamguard
 {
+    // Sticky Notes' inbuilt Stealth Spam Guard
+    function validate_stealth()
+    {
+        global $language, $data, $skin, $lang, $paste_submit;
+        
+        $html_exists = strpos(strtolower($data), '<a href') >= 0 ? true : false;
+            
+        if ($html_exists && $paste_submit && $language != 'html4strict')
+        {   
+            // Show a bounce message
+            $skin->assign(array(
+                'msg_visibility'	=> 'visible',
+                'error_visibility'	=> 'hidden',
+                'message_text'		=> $lang->get('stealth_error'),
+                'msg_color'     	=> 'red',
+            ));
+            
+            // Assign template data
+            $skin->assign(array(
+                'post_lang_list'        => $skin->output('tpl_languages'),
+                'error_visibility'      => 'hidden',
+            ));
+
+            // Output the page
+            $skin->title($lang->get('create_new') . ' &bull; ' . $lang->get('site_title'));
+            $skin->output();
+        }
+        else
+        {
+            // Hooray!! Not spam :D
+        }
+    }
+    
     // Function to query Project Honey Pot
     // Info: http://www.projecthoneypot.org/
     function validate_php()
