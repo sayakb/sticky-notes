@@ -36,6 +36,7 @@ class spamguard
             // Output the page
             $skin->title($lang->get('create_new') . ' &bull; ' . $lang->get('site_title'));
             $skin->output();
+            exit;
         }
         else
         {
