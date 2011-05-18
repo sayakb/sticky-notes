@@ -53,6 +53,11 @@ $lang_name = "en_gb";
 
 ///NOTICE Antispam measures
 
+/// General settings
+
+// Enabled services (in CSV format)
+$sg_services = "stealth,php";
+
 /// Project Honey Pot (PHP) configuration
 /// Details about Project Honey Pot: http://www.projecthoneypot.org/
 /// For info on the configuration values below, check: http://www.projecthoneypot.org/httpbl_api.php
