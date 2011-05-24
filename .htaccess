@@ -1,3 +1,7 @@
+# PHP.ini config stuff
+php_flag magic_quotes_gpc off
+
+# Rewrite rules
 RewriteEngine on
 
 RewriteRule ^install/?$ install.php [NC]
