@@ -193,7 +193,7 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
 if ($mode == 'raw')
 {
     header('Content-type: text/plain');
-    header('Content-Disposition: inline; filename=\"pastedata\"');
+    header('Content-Disposition: inline; filename="pastedata"');
     echo $row['data'];
     exit;
 }
@@ -215,11 +215,16 @@ $info = $lang->get('posted_info');
 $info = preg_replace('/\_\_user\_\_/', $user, $info);
 $info = preg_replace('/\_\_time\_\_/', $time, $info);
 
+// Before we display, we need to escape the data from the skin/lang parsers
+$code_data = (empty($mode) ? $geshi->parse_code() : htmlentities($row['data']));
+
+$lang->escape($code_data);
+$skin->escape($code_data);
+
 // Assign template variables
 $skin->assign(array(
     'paste_id'            => $row['id'],
-    'paste_data'        => (empty($mode) ? $geshi->parse_code()
-                                         : htmlentities($row['data'])),
+    'paste_data'        => $code_data,
     'paste_lang'        => $row['language'],
     'paste_info'        => $info,
     'paste_user'        => $user,

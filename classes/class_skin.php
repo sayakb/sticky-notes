@@ -117,7 +117,7 @@ class skin
 
         // Remove unknown placeholders
         $data = preg_replace('/\[\[(.*?)\]\]/', '', $data);
-
+        
         // Apply localization data
         $data = $lang->parse($data);
 
@@ -156,7 +156,7 @@ class skin
                                                        $core->variable('project', '') . '/' : '') . 'all/', $data);
         $data = str_replace("[[nav_rss]]", $core->path() . (!empty($project) ? "~" .
                                                   $core->variable('project', '') . '/' : '') . 'rss/', $data);
-          $data = str_replace("[[nav_api]]", $core->path() . 'doc/api/', $data);
+        $data = str_replace("[[nav_api]]", $core->path() . 'doc/api/', $data);
         $data = str_replace("[[nav_help]]", $core->path() . 'doc/help/', $data);
         $data = str_replace("[[nav_about]]", $core->path() . 'doc/about/', $data);
 
@@ -318,6 +318,12 @@ class skin
         $this->title($lang->get('error'));
         $this->output();
         exit;
+    }
+    
+    // Function to exclude a string from being treated as a key
+    function escape(&$data)
+    {
+        $data = preg_replace('/\[\[(.*?)\]\]/', '[' . chr(0) . '[$1]' . chr(0) . ']', $data);
     }
 }
 

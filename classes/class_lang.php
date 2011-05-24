@@ -47,6 +47,7 @@ class lang
             $data = str_replace("{{{$key}}}", $value, $data);
         }
 
+        // Show unlocalized data as is
         $data = preg_replace('/\{\{(.*?)\}\}/', '$1', $data);
 
         // Done!
@@ -98,6 +99,12 @@ class lang
         $data = str_replace("{{site_copyright}}", $site_copyright, $data);
 
         return $data;
+    }
+    
+    // Function to exclude a string from being treated as a key
+    function escape(&$data)
+    {
+        $data = preg_replace('/\{\{(.*?)\}\}/', '{' . chr(0) . '{$1}' . chr(0) . '}', $data);
     }
 }
 

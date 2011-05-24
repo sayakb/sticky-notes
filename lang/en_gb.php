@@ -158,7 +158,8 @@ $lang_data = array(
 
     'doc_api_para7'
 	    =>
-    'The list API listens to both GET and POST requests. A list of parameters is given below:',
+    'For getting a list of paste IDs, send a GET request to <i>[[host]]api/&lt;format&gt;/all</i> or ' .
+    '<i>[[host]]api/&lt;format&gt;/all/&lt;page&gt;</i>.',
 
 
     /* Documentation: Language list */

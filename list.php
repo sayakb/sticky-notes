@@ -95,7 +95,7 @@ foreach ($rows as $row)
         }
 
         $row['data'] = substr($row['data'], 0, strlen($row['data']) - 2);
-    }
+    }    
 
     // Configure GeSHi
     $geshi = new GeSHi($row['data'], 'text');
@@ -119,15 +119,20 @@ foreach ($rows as $row)
     if ($count == 1)
     {
         $published = $time;
-    }
+    }    
+
+    // Before we display, we need to escape the data from the skin/lang parsers
+    $code_data = (!$rss ? $geshi->parse_code() : nl2br(htmlentities($row['data'])));
+
+    $lang->escape($code_data);
+    $skin->escape($code_data);
 
     // Assign template variables
     $skin->assign(array(
         'paste_id'            => $row['id'],
         'paste_url'            => (!$rss ? $core->path() . ($project ? '~' . $project . '/' : '') . $row['id']
                                       : $core->rss_uri() . $row['id']),
-        'paste_data'        => (!$rss ? $geshi->parse_code()
-                                      : nl2br(htmlentities($row['data']))),
+        'paste_data'        => $code_data,
         'paste_lang'        => $row['language'],
         'paste_info'        => $info,
         'paste_time'        => $time,
