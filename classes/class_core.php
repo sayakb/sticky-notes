@@ -114,6 +114,8 @@ class core
     {
         $data = str_replace('[', '(', $data);
         $data = str_replace(']', ')', $data);
+        $data = str_replace('{', '(', $data);
+        $data = str_replace('}', ')', $data);
         $data = str_replace(chr(0), '', $data);
     }
 }

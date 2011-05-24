@@ -123,13 +123,15 @@ foreach ($rows as $row)
 
     // Before we display, we need to escape the data from the skin/lang parsers
     $code_data = (!$rss ? $geshi->parse_code() : nl2br(htmlentities($row['data'])));
-
-    $lang->escape($code_data);
-    $skin->escape($code_data);
     
     if ($rss)
-    {
+    {        
         $core->rss_encode($code_data);
+    }
+    else
+    {
+        $lang->escape($code_data);
+        $skin->escape($code_data);
     }
 
     // Assign template variables
