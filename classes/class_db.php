@@ -105,6 +105,7 @@ class db
     function escape(&$data)
     {
         $data = mysql_real_escape_string($data);
+        $data = get_magic_quotes_gpc() ? stripslashes($data) : $data;
     }
 
     // Function to unescape the characters in a string
