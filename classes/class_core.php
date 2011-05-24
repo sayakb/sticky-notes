@@ -108,6 +108,14 @@ class core
 
         return preg_replace("/rss\/?/", '', $uri);
     }
+    
+    // Method to replace square brackets with normal braces
+    function rss_encode(&$data)
+    {
+        $data = str_replace('[', '(', $data);
+        $data = str_replace(']', ')', $data);
+        $data = str_replace(chr(0), '', $data);
+    }
 }
 
 ?>

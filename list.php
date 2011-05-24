@@ -126,6 +126,11 @@ foreach ($rows as $row)
 
     $lang->escape($code_data);
     $skin->escape($code_data);
+    
+    if ($rss)
+    {
+        $core->rss_encode($code_data);
+    }
 
     // Assign template variables
     $skin->assign(array(
