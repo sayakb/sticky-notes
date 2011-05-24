@@ -4,7 +4,7 @@
  * --------
  * Author: Markus Jarderot (mizardx at gmail dot com)
  * Copyright: (c) 2010 Markus Jarderot
- * Release Version: 1.0.8.9
+ * Release Version: 1.0.8.10
  * Date Started: 2010/05/20
  *
  * Go language file for GeSHi.
@@ -54,6 +54,14 @@ $language_data = array(
         3 => "#\\\\x[0-9a-fA-F]{2}#",
         4 => "#\\\\u[0-9a-fA-F]{4}#",
         5 => "#\\\\U[0-9a-fA-F]{8}#"
+        ),
+    'NUMBERS' => array(
+        # integer literals (possibly imaginary)
+        0 => '\b([1-9][0-9]*i?|0[0-7]*|0[xX][0-9a-f]+|0[0-9]*i)\b',
+        # real floating point literals
+        1 => '\b((?:\d+\.\d*(?:[Ee][+-]?\d+\b)?|\.\d+(?:[Ee][+-]?\d+)?|\d+[Ee][+-]?\d+)?)\b',
+        # imaginary floating point literals
+        2 => '\b((?:\d+\.\d*(?:[Ee][+-]?\d+)?|\.\d+(?:[Ee][+-]?\d+)?|\d+[Ee][+-]?\d+)?i)\b'
         ),
     'KEYWORDS' => array(
         # statements
@@ -334,11 +342,11 @@ $language_data = array(
         'REGEXPS' => array(
             # If CSS classes are enabled, these would be highlighted as numbers (nu0)
             # integer literals (possibly imaginary)
-            0 => 'color: #cc66cc;',
+            //0 => 'color: #cc66cc;',
             # real floating point literals
-            1 => 'color: #cc66cc;',
+            //1 => 'color: #cc66cc;',
             # imaginary floating point literals
-            2 => 'color: #cc66cc;'
+            //2 => 'color: #cc66cc;'
             ),
         'SCRIPT' => array(
             )
@@ -351,36 +359,8 @@ $language_data = array(
         5 => 'http://golang.org/search?q={FNAME}'
         ),
     'REGEXPS' => array(
-        # integer literals (possibly imaginary)
-        0 => array(
-            GESHI_SEARCH => '\b([1-9][0-9]+i?|0[0-7]*|0[xX][0-9a-f]+|0[0-9]*i)\b',
-            GESHI_REPLACE => '\0',
-            GESHI_MODIFIERS => '',
-            GESHI_BEFORE => '',
-            GESHI_AFTER => '',
-            GESHI_CLASS => 'nu0'
-            ),
-        # real floating point literals
-        1 => array(
-            GESHI_SEARCH => '((?:\b\d+\.\d*(?:[Ee][+-]?\d+\b)?|\.\d+(?:[Ee][+-]?\d+)?\b|\b\d+[Ee][+-]?\d+\b)?)',
-            GESHI_REPLACE => '\0',
-            GESHI_MODIFIERS => '',
-            GESHI_BEFORE => '',
-            GESHI_AFTER => '',
-            GESHI_CLASS => 'nu0'
-            ),
-        # imaginary floating point literals
-        2 => array(
-            GESHI_SEARCH => '((?:\b\d+\.\d*(?:[Ee][+-]?\d+)?|\.\d+(?:[Ee][+-]?\d+)?|\b\d+[Ee][+-]?\d+)?i\b)',
-            GESHI_REPLACE => '\0',
-            GESHI_MODIFIERS => '',
-            GESHI_BEFORE => '',
-            GESHI_AFTER => '',
-            GESHI_CLASS => 'nu0'
-            )
-        # NB. "08" is an invalid number (octal), but "08i" is valid (complex).
         ),
-'OOLANG' => true,
+    'OOLANG' => true,
     'OBJECT_SPLITTERS' => array(1 => '.'),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
@@ -388,7 +368,6 @@ $language_data = array(
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
             'BRACKETS' => GESHI_NEVER, # handled by symbols
-            'NUMBERS' => GESHI_NEVER,  # handled by regexp
             )
         )
 );

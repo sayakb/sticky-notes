@@ -4,13 +4,15 @@
  * --------
  * Author: Randy Hollines (objeck@gmail.com)
  * Copyright: (c) 2010 Randy Hollines (http://code.google.com/p/objeck-lang/)
- * Release Version: 1.0.8.9
+ * Release Version: 1.0.8.10
  * Date Started: 2010/07/01
  *
  * Objeck Programming Language language file for GeSHi.
  *
  * CHANGES
  * -------
+ * 2010/07/26 (1.0.8.10)
+ *  -  Added new and missing keywords and symbols: 'String', 'each', '+=', '-=', '*=' and '/='.
  * 2010/07/01 (1.0.8.9)
  *  -  First Release
  *
@@ -45,10 +47,10 @@ $language_data = array(
         1 => array(
             'virtual', 'if', 'else', 'do', 'while', 'use', 'bundle', 'native',
             'static', 'public', 'private', 'class', 'function', 'method',
-            'select', 'other', 'enum', 'for', 'label', 'return', 'from'
+            'select', 'other', 'enum', 'for', 'each', 'label', 'return', 'from'
             ),
         2 => array(
-            'Byte', 'Int', 'Nil', 'Float', 'Char', 'Bool'
+            'Byte', 'Int', 'Nil', 'Float', 'Char', 'Bool', 'String'
             ),
         3 => array(
             'true', 'false'
@@ -56,7 +58,7 @@ $language_data = array(
         ),
     'SYMBOLS' => array(
         1 => array(
-            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '&', '|', ':', ';', ','
+            '(', ')', '{', '}', '[', ']', '+', '-', '*', '/', '%', '=', '<', '>', '&', '|', ':', ';', ',', '+=', '-=', '*=', '/=',
             )
         ),
     'CASE_SENSITIVE' => array(
