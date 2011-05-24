@@ -63,7 +63,6 @@ class db
                 {
                     while ($row = mysql_fetch_assoc($result))
                     {
-                        $this->unescape($row);
                         $recordset[] = $row;
                     }
 
@@ -73,8 +72,6 @@ class db
                 else
                 {
                     $row = mysql_fetch_assoc($result);
-
-                    $this->unescape($row);
                     mysql_free_result($result);
 
                     return $row;
@@ -106,25 +103,6 @@ class db
     {
         $data = mysql_real_escape_string($data);
         $data = get_magic_quotes_gpc() ? stripslashes($data) : $data;
-    }
-
-    // Function to unescape the characters in a string
-    function unescape(&$data)
-    {
-        $search = array("\'", '\"');
-        $replace = array("'", '"');
-
-        if (is_array($data))
-        {
-            foreach ($data as $key => $val)
-            {
-                $data[$key] = str_replace($search, $replace, $val);
-            }
-        }
-        else
-        {
-            $data = str_replace($search, $replace, $data);
-        }
     }
 
     // Object descturtor
