@@ -108,8 +108,8 @@ $lang_data = array(
     'id_of_paste'	=> 'ID of the paste',
     'hash_of_paste'	=> 'Hash/key for the paste (only for private pastes)',
     'password_of_paste' => 'Password to unlock the paste (only for protected pastes)',
-    'url_format_exp'	=> 'URLs can be framed as <i>[[host]]&lt;id&gt;</i> for public pastes ' .
-			   'and <i>[[host]]&lt;id&gt;/&lt;hash&gt;</i> for private pastes.',
+    'url_format_exp'	=> 'URLs can be framed as <a>[[host]]&lt;id&gt;</a> for public pastes ' .
+			   'and <a>[[host]]&lt;id&gt;/&lt;hash&gt;</a> for private pastes.',
     'result_format_exp'	=> 'The format (xml or json) in which you want the result',
     'error_ret_exp'	=> 'A parameter <i>error</i> with one of these error codes ' .
 			   'is returned:',
@@ -139,7 +139,7 @@ $lang_data = array(
     'doc_api_para3'
 	    =>
     'To create a new paste, you need to send a GET or POST request with certain ' .
-    'parameters to <i>[[host]]</i>',
+    'parameters to <a>[[host]]</a>',
 
     'doc_api_para4'
 	    =>
@@ -149,17 +149,18 @@ $lang_data = array(
 
     'doc_api_para5'
 	    =>
-    'You can send the http GET request in the following format: [[host]]api/&lt;format&gt;/&lt;id&gt;/' .
-    '&lt;hash&gt;/&lt;password&gt;.',
+    'You can send the http GET request in the following format: <a>[[host]]api/&lt;format&gt;/&lt;id&gt;/' .
+    '&lt;hash&gt;/&lt;password&gt;</a>.',
 
     'doc_api_para6'
 	    =>
-    'You may send a POST request to [[host]]show.php',
+    'You may send a POST request to <a>[[host]]show.php</a>',
 
     'doc_api_para7'
 	    =>
-    'For getting a list of paste IDs, send a GET request to <i>[[host]]api/&lt;format&gt;/all</i> or ' .
-    '<i>[[host]]api/&lt;format&gt;/all/&lt;page&gt;</i>.',
+    'For getting a list of paste IDs, send a GET request to <a>[[host]]api/&lt;format&gt;/all</a> or ' .
+    '<a>[[host]]api/&lt;format&gt;/all/&lt;page&gt;</a>.<br />For project specific data, use <a>[[host]]~' .
+    '&lt;project&gt;/api/&lt;format&gt;/all/&lt;page&gt;</a> (page is optional).',
 
 
     /* Documentation: Language list */
@@ -194,7 +195,7 @@ $lang_data = array(
 
     'doc_help_para1'
 	    =>
-    'Creating a paste is a one-click job. Simply visit <i>[[host]]</i> and paste your text inside ' .
+    'Creating a paste is a one-click job. Simply visit <a>[[host]]</a> and paste your text inside ' .
     'the resizable text area. Select the paste language from a wide range of available options ' .
     'and optionally add you username in the alias box. Click on the <i>Paste</i> button to create ' .
     'your paste.',
@@ -214,15 +215,15 @@ $lang_data = array(
 
     'doc_help_para4'
 	    =>
-    'To view a paste, simply visit <i>[[host]]&lt;id&gt;</i>, where <i>id</i> is the paste ID. For private pastes, ' .
-    'you also need to provide the paste hash code in the URL: <i>[[host]]&lt;id&gt;/&lt;hash&gt;</i>. Password ' .
+    'To view a paste, simply visit <a>[[host]]&lt;id&gt;</a>, where <i>id</i> is the paste ID. For private pastes, ' .
+    'you also need to provide the paste hash code in the URL: <a>[[host]]&lt;id&gt;/&lt;hash&gt;</a>. Password ' .
     'protected pastes will take you to the password entry form, where you can enter the password and click on ' .
     '<i>Submit</i> to view the paste.',
 
     'doc_help_para5'
 	    =>
     'You can copy the code from the view page directly. You can also request for a raw version of the code (without ' .
-    'styling) by clicking on the <i>Raw code</i> link or visiting <i>[[host]]&lt;id&gt;/raw</i> directly.',
+    'styling) by clicking on the <i>Raw code</i> link or visiting <a>[[host]]&lt;id&gt;/raw</a> directly.',
 
     'doc_help_para6'
 	    =>
@@ -234,14 +235,14 @@ $lang_data = array(
 	    =>
     'You can get a list of recent pastes via RSS to your favourite feed reader. Feeds can be also added to IRC bots ' .
     'in order to announce new pastes in project channels. To view the RSS feed, click on the <i>Feed</i> icon or ' .
-    'open <i>[[host]]rss</i> in your browser.',
+    'open <a>[[host]]rss</a> in your browser.',
 
     'doc_help_para8'
 	    =>
-    'You can create your very own project pastebin by simply visiting <i>[[host]]~myproject</i> (where <i>myproject</i> ' .
+    'You can create your very own project pastebin by simply visiting <a>[[host]]~myproject</a> (where <i>myproject</i> ' .
     'is the project name). Project names can contain letters (a-z) and period (.) and are case insensitive. Once a project ' .
-    'is created, all URLs point to the dedicated pastebin pages (For example, the feed link changes to <i>[[host]]~myproject/rss' .
-    '</i> for your project specific pastebin and shows only pastes belonging to your project). Pastes made within a project ' .
+    'is created, all URLs point to the dedicated pastebin pages (For example, the feed link changes to <a>[[host]]~myproject/rss' .
+    '</a> for your project specific pastebin and shows only pastes belonging to your project). Pastes made within a project ' .
     'are not listed in other projects\' archives.',
 );
 
