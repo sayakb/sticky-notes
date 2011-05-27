@@ -16,7 +16,7 @@ class core
     // Constructor
     function __construct()
     {
-        $this->build = '0.1.17122010.2';
+        $this->build = '0.1.24052011.8';
     }
 
     // Function to return root path
