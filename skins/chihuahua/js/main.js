@@ -74,40 +74,21 @@ $(document).ready(function() {
     
     $('#paste_user').val(author);
     $('#paste_lang').val(language);
-});
+    
+    // Insert tab in the code box
+    $('#paste_data').keydown(function (e) {      
+        if (e.keyCode == 9) {
+            var myValue = "\t";
+            var startPos = this.selectionStart;
+            var endPos = this.selectionEnd;
+            var scrollTop = this.scrollTop;
+            this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
+            this.focus();
+            this.selectionStart = startPos + myValue.length;
+            this.selectionEnd = startPos + myValue.length;
+            this.scrollTop = scrollTop;
 
-// Function to insert tab in text area
-function insertTab(o, e)
-{
-    var kC = e.keyCode ? e.keyCode : e.charCode ? e.charCode : e.which;
-
-    if (kC == 9 && !e.shiftKey && !e.ctrlKey && !e.altKey)
-    {
-        var oS = o.scrollTop;
-
-        if (o.setSelectionRange)
-        {
-            var sS = o.selectionStart;
-            var sE = o.selectionEnd;
-            o.value = o.value.substring(0, sS) + "\t" + o.value.substr(sE);
-            o.setSelectionRange(sS + 1, sS + 1);
-            o.focus();
-        }
-        else if (o.createTextRange)
-        {
-            document.selection.createRange().text = "\t";
-            e.returnValue = false;
-        }
-
-        o.scrollTop = oS;
-
-        if (e.preventDefault)
-        {
             e.preventDefault();
         }
-
-        return false;
-    }
-
-    return true;
-}
+    });
+});
