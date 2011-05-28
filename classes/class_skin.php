@@ -296,9 +296,9 @@ class skin
                                    'all/' . ($idx == 1 ? '' : $idx) . '">';
                 }
 
-                $pagination .= '<div class="page_no';
+                $pagination .= '<span class="page_no';
                 $pagination .= ($idx == $current_page ? ' page_current' : '');
-                $pagination .= '">' . $idx . '</div>';
+                $pagination .= '">' . $idx . '</span>';
 
                 if ($idx != $current_page)
                 {
