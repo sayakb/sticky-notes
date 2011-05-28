@@ -202,7 +202,6 @@ if ($mode == 'raw')
 $geshi = new GeSHi($row['data'], $row['language']);
 $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, 2);
 $geshi->set_header_type(GESHI_HEADER_DIV);
-$geshi->enable_classes();
 $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding: 1px;',
                        'background: #fbfbfb; text-shadow: 0px 1px #fff; padding: 1px;');
 $geshi->set_overall_style('word-wrap:break-word;');
