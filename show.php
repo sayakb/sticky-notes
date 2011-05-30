@@ -9,7 +9,7 @@
 */
 
 // Invoke required files
-include_once('./init.php');
+include_once('init.php');
 
 // Collect some data
 $paste_id = $core->variable('id', 0);
@@ -49,7 +49,7 @@ if ($mode != 'raw')
 // We want paste id
 if ($paste_id == 0)
 {
-    header("Location: {$core->path()}all/");
+    $core->redirect($core->path() . 'all/');
     exit;
 }
 
@@ -183,7 +183,7 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
         // Create a session
         $sid = sha1(time() . $core->remote_ip());
 
-        $core->setcookie('session_id_' . $paste_id, $sid, time() + 1200);
+        $core->set_cookie('session_id_' . $paste_id, $sid, time() + 1200);
         $db->query("INSERT INTO {$db_prefix}session " .
                    "(sid, timestamp) VALUES ('{$sid}', " . time() . ")");
     }

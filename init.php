@@ -9,19 +9,20 @@
 */
 
 // Turn off error reporting
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Include classes
-include_once('./classes/class_core.php');
-include_once('./classes/class_db.php');
-include_once('./classes/class_lang.php');
-include_once('./classes/class_skin.php');
-include_once('./classes/class_api.php');
-include_once('./classes/class_spamguard.php');
-include_once('./addons/geshi/geshi.php');
+include_once('classes/class_core.php');
+include_once('classes/class_db.php');
+include_once('classes/class_lang.php');
+include_once('classes/class_skin.php');
+include_once('classes/class_api.php');
+include_once('classes/class_spamguard.php');
+include_once('addons/geshi/geshi.php');
 
 // Include other files
-include('./config.php');
+include('config.php');
 
 // Instantiate class objects
 $core = new core();
@@ -30,6 +31,13 @@ $lang = new lang();
 $skin = new skin();
 $api = new api();
 $sg = new spamguard();
+
+// Instantiate admin classes
+if (defined('IN_ADMIN'))
+{
+    include_once('admin/classes/class_module.php');
+    $module = new module();
+}
 
 // Define macros
 define('GESHI_LANG_PATH', $core->base_uri() . '/addons/geshi/geshi/');
@@ -40,7 +48,7 @@ $direct = strpos($url, '?');
 
 if (strrpos($url, '/') != (strlen($url) - 1) && !$direct)
 {
-    header("Location: {$url}/");
+    $core->redirect($url . '/');
     exit;
 }
 else
@@ -61,9 +69,9 @@ $db->connect($db_host, $db_port, $db_name, $db_username, $db_password);
 $skin->assign('root_path', $core->path());
 
 // Perform cron tasks
-if (!defined('IN_INSTALL'))
+if (!defined('IN_INSTALL') && !defined('IN_ADMIN'))
 {
-    include_once('./cron.php');
+    include_once('cron.php');
 }
 
 ?>

@@ -11,21 +11,25 @@
 class skin
 {
     // Class wide variables
+    var $admin_skin_name;
+    var $admin_skin_path;
     var $skin_name;
     var $skin_name_fancy;
+    var $skin_path;
     var $skin_author;
     var $skin_author_url;
     var $skin_vars;
     var $skin_title;
-    var $skin_path;
     var $skin_script;
     var $skin_file;
 
     // Class constructor
     function __construct()
     {
-        global $skin_name, $skin_author, $skin_author_url, $core;
+        global $admin_skin_name, $skin_name, $skin_author, $skin_author_url, $core;
 
+        $this->admin_skin_name = strtolower($admin_skin_name);
+        $this->admin_skin_path = $core->path() . 'skins/' . strtolower($admin_skin_name);
         $this->skin_name = strtolower($skin_name);
         $this->skin_name_fancy = $skin_name;
         $this->skin_author = $skin_author;
@@ -141,6 +145,7 @@ class skin
 
         $data = str_replace("[[page_title]]", $this->skin_title, $data);
 
+        $data = str_replace("[[admin_skin_path]]", $this->admin_skin_path, $data);
         $data = str_replace("[[skin_path]]", $this->skin_path, $data);
         $data = str_replace("[[skin_name]]", $this->skin_name_fancy, $data);
         $data = str_replace("[[skin_author]]",
@@ -199,8 +204,10 @@ class skin
     }
 
     // Function to get full path of file
-    function locate($file)
+    function locate($file, $admin_skin = false)
     {
+        global $core;
+        
         if (strpos($file, '.html') === false &&
             strpos($file, '.xml') === false &&
             strpos($file, '.json') === false)
@@ -216,6 +223,10 @@ class skin
         {
             return realpath('rss/' . $file);
         }
+        else if ($admin_skin)
+        {
+            return realpath('skins/' . $this->admin_skin_name . '/html/' . $file);
+        }        
         else
         {
             return realpath('skins/' . $this->skin_name . '/html/' . $file);
@@ -223,17 +234,36 @@ class skin
     }
 
     // Function to output the page
-    function output($file = false, $body_only = false)
+    function output($file = false, $body_only = false, $admin_skin = false)
     {
         global $core;
 
         if ($file)
         {
-            $file = $this->locate($file);
+            $file = $this->locate($file, $admin_skin);
 
             // Return the parsed template
             return $this->parse($file);
         }
+        else if ($admin_skin)
+        {
+            $file_header = $this->locate('tpl_header', true);
+            $file_footer = $this->locate('tpl_footer', true);
+
+            if (!$this->skin_file)
+            {
+                $message  = 'Sticky Notes skin parse error<br /><br />';
+                $message .= 'Error: Skin file not initialized<br />';
+                $message .= 'Use $skin->init(\'filename\') to load a skin file';
+                die($message);
+            }
+
+            $file_body = $this->locate($this->skin_file, true);
+
+            echo $this->parse($file_header);
+            echo $this->parse($file_body);
+            echo $this->parse($file_footer);
+        }        
         else
         {
             $file_header = $this->locate('tpl_header');

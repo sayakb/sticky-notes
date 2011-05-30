@@ -32,7 +32,7 @@ $db_prefix = "paste_";
 // Name of the website
 $site_name = "Sticky Notes";
 
-// Title (tagline) of the site
+// Tagline of the site (appears on the page title)
 $site_title = "Sticky Notes Pastebin";
 
 // Copyright notice for the site
@@ -46,6 +46,10 @@ $site_copyright = "Powered by <a href=\"http://www.sayakbanerjee.com/sticky-note
 // Name of the skin to be used
 // This need not be in lowercase
 $skin_name = "Elegant";
+
+// Name of skin to be used for the admin panel
+// This need not be in lowercase
+$admin_skin_name = "Greyscale";
 
 // Language selection
 $lang_name = "en_gb";

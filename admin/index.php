@@ -1,0 +1,72 @@
+<?php
+/**
+* Sticky Notes pastebin
+* @ver 0.1
+* @license BSD License - www.opensource.org/licenses/bsd-license.php
+*
+* Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
+* All rights reserved. Do not remove this copyright notice.
+*/
+
+// Define constants
+define('IN_ADMIN', true);
+
+// Invoke required files
+include_once('../init.php');
+
+// Collect some data
+$mode = $core->variable('mode', 'dashboard');
+$sid = $core->variable('session_id_admin', '', true);
+$username = $core->variable('username_admin', '', true);
+
+// Check if session cookie is set
+if (empty($sid) || empty($username))
+{
+    $core->redirect($core->path() . 'login/');
+}
+else
+{
+    // Set expiry to 30 minutes from now
+    $expire = time() + (60 * 30);
+    $core->set_cookie('session_id_admin', $sid, $expire);
+    $core->set_cookie('username_admin', $username, $expire);
+}
+
+// Initialize the skin
+$skin->init('tpl_index');
+
+// Validate the mode
+$module->validate($mode);
+
+// Invoke the active module
+$module->load($mode);
+
+// Build page data
+$toplink = preg_replace('/\_\_sitename\_\_/', $site_title, $lang->get('back_to_home'));
+$welcome_text = preg_replace('/\_\_user\_\_/', $username, $lang->get('welcome_user'));
+
+$skin->assign(array(
+    'top_link'          => $toplink,
+    'welcome_text'      => $welcome_text,
+    'module_title'      => $title,
+    
+    'home_url'          => $core->root_path(),
+    'dashboard_url'     => $core->path(),
+    'pastes_url'        => $core->path() . 'pastes/',
+    'users_url'         => $core->path() . 'users/',
+    'ipbans_url'        => $core->path() . 'ipbans/',
+    'config_url'        => $core->path() . 'config/',
+    'logout_url'        => $core->path() . 'logout/',
+    
+    'dashboard_class'   => ($mode == "dashboard" ? 'nav_selected' : 'nav_unselected'),
+    'pastes_class'      => ($mode == "pastes" ? 'nav_selected' : 'nav_unselected'),
+    'users_class'       => ($mode == "users" ? 'nav_selected' : 'nav_unselected'),
+    'ipbans_class'      => ($mode == "ipbans" ? 'nav_selected' : 'nav_unselected'),
+    'config_class'      => ($mode == "config" ? 'nav_selected' : 'nav_unselected'),
+)); 
+
+// Output the page
+$skin->title($title . ' &bull; ' . $lang->get('site_title'));   
+echo $skin->output(false, false, true);
+
+?>

@@ -9,7 +9,7 @@
 */
 
 // Invoke required files
-include_once('./init.php');
+include_once('init.php');
 
 // Collect some data
 $project = $core->variable('project', '');

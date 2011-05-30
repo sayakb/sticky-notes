@@ -9,7 +9,7 @@
 */
 
 // Invoke required files
-include_once('./init.php');
+include_once('init.php');
 
 // Collect some data
 $author = $core->variable('paste_user', '');
@@ -95,8 +95,8 @@ if ($paste_submit)
 // Save user and language data in cookies
 if ($paste_submit || $api_submit)
 {
-    $core->setcookie('author', $author);
-    $core->setcookie('language', $language);
+    $core->set_cookie('author', $author);
+    $core->set_cookie('language', $language);
 }
 
 if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
@@ -160,7 +160,7 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 
             if (!$password)
             {
-                header("Location: {$url}");
+                $core->redirect($url);
                 exit;
             }
 

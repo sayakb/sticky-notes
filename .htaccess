@@ -4,6 +4,9 @@ php_flag magic_quotes_gpc off
 # Rewrite rules
 RewriteEngine on
 
+RewriteRule ^admin/login/?$ admin/login.php [NC]
+RewriteRule ^admin/([a-z]+)/?$ admin/index.php?mode=$1 [NC]
+
 RewriteRule ^install/?$ install.php [NC]
 
 RewriteRule ^doc/([a-z]+)/?$ doc.php?cat=$1 [NC]

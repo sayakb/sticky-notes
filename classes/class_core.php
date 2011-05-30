@@ -28,6 +28,21 @@ class core
 
         return $path;
     }
+    
+    // Function to return root path
+    function root_path()
+    {
+        $path = $this->path();
+        
+        if (strpos($path, 'admin') !== false)
+        {
+            return substr($path, 0, strpos($path, 'admin'));
+        }
+        else
+        {
+            return $path;
+        }
+    }
 
     // Function to return remote IP
     function remote_ip()
@@ -36,9 +51,15 @@ class core
     }
 
     // Function to set a cookie
-    function setcookie($name, $value, $expire = 0)
+    function set_cookie($name, $value, $expire = 0)
     {
-        setcookie('stickynotes_' . $name, $value, $expire);
+        setcookie('stickynotes_' . $name, $value, $expire, $this->root_path());
+    }
+    
+    // Function to expire a cookie
+    function unset_cookie($name)
+    {
+        setcookie('stickynotes_' . $name, null, time() - 3600, $this->root_path());
     }
 
     // Function to fetch query strings / post data
@@ -117,6 +138,12 @@ class core
         $data = str_replace('{', '(', $data);
         $data = str_replace('}', ')', $data);
         $data = str_replace(chr(0), '', $data);
+    }
+    
+    // Method to redirect to a specified URL
+    function redirect($url)
+    {
+        header("Location: {$url}");
     }
 }
 
