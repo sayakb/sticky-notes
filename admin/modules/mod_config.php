@@ -8,11 +8,8 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
-// Get global vars
-global $title, $lang;
-
 // Set the page title
-$title = $lang->get('site_config');
+$module_title = $lang->get('site_config');
 
 ?>
  

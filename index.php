@@ -104,7 +104,7 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
     // Escape text to avoid injection
     $db->escape($author);
     $db->escape($data);
-
+    
     $author = trim($author);
 
     // Generate a hash value
@@ -114,15 +114,18 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
     // Generate the password hash
     $salt = substr(sha1(time()), rand(0, 34), 5);
     $md5 = $password ? sha1(sha1($password) . $salt) : '';
+    
+    // Capture the IP address
+    $remote_ip = $core->remote_ip();
 
     // Insert into the DB
     $sql = "INSERT INTO {$db_prefix}main " .
            "(author, project, timestamp, expire, data, language, " .
-           "password, salt, private, hash) VALUES " .
+           "password, salt, private, hash, ip) VALUES " .
            "('{$author}', '{$project}', {$time}, {$expire}" .
            ", '{$data}', " . "'{$language}', '{$md5}', '{$salt}', " .
            ($private == "on" || $private == "yes" || $password ? "1" : "0") .
-           ", {$hash})";
+           ", {$hash}, '{$remote_ip}')";
     $db->query($sql);
 
     $new_id = $db->get_id();

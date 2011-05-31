@@ -28,7 +28,7 @@ $skin->init('tpl_login');
 // Process form data
 if ($submit && !empty($username) && !empty($password))
 {
-    $sql = "SELECT * FROM paste_users " .
+    $sql = "SELECT * FROM {$db_prefix}users " .
            "WHERE username='{$username}'";
     $row = $db->query($sql, true);
     
@@ -40,6 +40,17 @@ if ($submit && !empty($username) && !empty($password))
         {
             $sid = sha1(time() . $core->remote_ip());
             $expire = time() + (60 * 30);
+            $stale = time() - (60 * 60);
+            
+            // Update the DB data
+            $sql = "UPDATE {$db_prefix}users SET sid='', lastlogin=0 " .
+                   "WHERE lastlogin<{$stale} AND lastlogin > 0";
+            $db->query($sql);
+            
+            $sql = "UPDATE {$db_prefix}users " .
+                   "SET sid='{$sid}' WHERE username='{$username}'";
+            $db->query($sql);
+            
             $core->set_cookie('session_id_admin', $sid, $expire);
             $core->set_cookie('username_admin', $username, $expire);
             $core->redirect('../');

@@ -11,11 +11,16 @@
 class module
 {
     // Method to load a module
-    function load($module)
+    function load($module_name)
     {
-        if (file_exists(realpath("modules/mod_{$module}.php")))
+        if (file_exists(realpath("modules/mod_{$module_name}.php")))
         {
-            include("modules/mod_{$module}.php");
+            // Set globals
+            global $core, $lang, $skin, $db, $module, $username, $sid, $mode, $db_prefix, 
+                   $module_data, $module_title;
+            
+            // Include the module
+            include("modules/mod_{$module_name}.php");
         }
         else
         {
@@ -38,6 +43,15 @@ class module
         {
             $core->redirect($core->path());
         }
+    }
+    
+    // Method to show a message
+    function notify($message)
+    {
+        global $skin;
+        
+        $skin->assign('script_notification', '<script type="text/javascript">' .
+                      'window.onload=function(){alert("' . $message . '");};</script>');
     }
 }
 

@@ -1,9 +1,53 @@
 <div class="greybox">
-    <label for="pastes_search">{{search_paste_id}}</label>
-    <input type="text" id="paste_search_id" name="paste_search_id" class="textbox" />
-    <input type="submit" id="paste_search_submit" name="paste_search_submit" value="{{search}}" class="button" />
+    <label for="paste_id">{{search_paste_id}}</label>
+    <input type="text" id="paste_id" name="paste_id" class="textbox" value="[[paste_id]]" />
+    <input type="submit" name="paste_search" value="{{search}}" class="button" />
 </div>
 
-<div class="greybox hugefonts">
+<div class="greybox hugefonts [[spacer_visibility]]">
     {{search_exp}}
+</div>
+
+<div class="greybox [[detail_visibility]]">
+<h3>{{paste_details}}</h3>
+
+<table class="gridview" width="100%">
+<tr>
+    <td width="100px">{{author}}</td>
+    <td>[[paste_author]]</td>
+</tr>
+<tr>
+    <td>{{posted_on}}</td>
+    <td>[[paste_time]]</td>
+</tr>
+<tr>
+    <td>{{expires_on}}</td>
+    <td>[[paste_expire]]</td>
+</tr>
+<tr>
+    <td>{{data}}</td>
+    <td>[[paste_data]]</td>
+</tr>
+<tr>
+    <td>{{is_private}}</td>
+    <td>[[paste_private]]</td>
+</tr>
+<tr>
+    <td>{{has_password}}</td>
+    <td>[[paste_haspass]]</td>
+</tr>
+<tr>
+    <td>{{poster_ip}}</td>
+    <td>[[paste_ip]]</td>
+</tr>
+</table>
+
+<input type="submit" name="paste_rempass" value="{{remove_password}}" class="button [[rempass_visibility]]"
+       onclick="return confirm('{{action_confirm}}')" />
+<input type="submit" name="paste_makepub" value="{{make_public}}" class="button [[makepub_visibility]]"
+       onclick="return confirm('{{action_confirm}}')" />
+<input type="submit" name="paste_delete" value="{{delete_paste}}" class="button"
+       onclick="return confirm('{{action_confirm}}')" />
+<input type="hidden" name="paste_id_searched" value="[[paste_id]]" />
+
 </div>

@@ -36,7 +36,7 @@ class core
         
         if (strpos($path, 'admin') !== false)
         {
-            return substr($path, 0, strpos($path, 'admin'));
+            return substr($path, 0, strrpos($path, 'admin'));
         }
         else
         {

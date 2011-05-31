@@ -39,9 +39,41 @@ a
     color: #333;
 }
 
+h1, h2, h3, h4, h5
+{
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
 a:hover
 {
     color: #000;
+}
+
+table
+{
+    border-spacing: 0px;
+}
+
+.gridview
+{
+    border: 1px solid #cfcfcf;
+    margin-bottom: 10px;
+}
+
+.gridview tr:nth-child(odd) 
+{
+  background-color: #fefefe;
+}
+
+.gridview tr:nth-child(even) 
+{
+  background-color: #fbfbfb;
+}
+
+.gridview td
+{
+    padding: 5px;
 }
 
 .copyright
@@ -261,10 +293,9 @@ a:hover
 
 .button:active
 {
-    background: -moz-linear-gradient(bottom, #dadada, #efefef);
-    background: -webkit-gradient(linear, left bottom, left top, from(#a0a0a0), to(#cacaca));
+    background: -moz-linear-gradient(bottom, #c9c9c9, #d9d9d9);
+    background: -webkit-gradient(linear, left bottom, left top, from(#c9c9c9), to(#d9d9d9));
     border: 1px solid #c9c9c9;
-    color: #fff;
 }
 
 .button::-moz-focus-inner
@@ -346,4 +377,9 @@ a:hover
 .hidden
 {
     visibility: hidden;
+}
+
+.collapsed
+{
+    display: none;
 }

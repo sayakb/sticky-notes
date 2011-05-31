@@ -207,7 +207,7 @@ $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding:
 $geshi->set_overall_style('word-wrap:break-word;');
 
 // Generate the data
-$user = empty($row['author']) ? 'Anonymous' : $row['author'];
+$user = empty($row['author']) ? $lang->get('anonymous') : $row['author'];
 $time = date('d M Y, h:i:s e', $row['timestamp']);
 $info = $lang->get('posted_info');
 

@@ -38,6 +38,7 @@ $lang_data = array(
     'submit'		=> 'Submit',
     'invalid_password'	=> 'You have entered an incorrect password',
     'share'		=> 'Share',
+    'anonymous'         => 'Anonymous',
 
 
     /* Page: list.php */

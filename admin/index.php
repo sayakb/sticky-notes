@@ -26,10 +26,25 @@ if (empty($sid) || empty($username))
 }
 else
 {
-    // Set expiry to 30 minutes from now
-    $expire = time() + (60 * 30);
-    $core->set_cookie('session_id_admin', $sid, $expire);
-    $core->set_cookie('username_admin', $username, $expire);
+    // Validate sid
+    $sql = "SELECT sid FROM {$db_prefix}users " .
+           "WHERE username='{$username}'";
+    $row = $db->query($sql, true);
+    
+    if ($sid == $row['sid'])
+    {
+        // Set expiry to 30 minutes from now
+        $expire = time() + (60 * 30);
+        $core->set_cookie('session_id_admin', $sid, $expire);
+        $core->set_cookie('username_admin', $username, $expire);
+    }
+    else
+    {
+        // Unset the cookie and serve the login screen
+        $core->unset_cookie('session_id_admin');
+        $core->unset_cookie('username_admin');
+        $core->redirect($core->path() . 'login/');
+    }
 }
 
 // Initialize the skin
@@ -48,7 +63,8 @@ $welcome_text = preg_replace('/\_\_user\_\_/', $username, $lang->get('welcome_us
 $skin->assign(array(
     'top_link'          => $toplink,
     'welcome_text'      => $welcome_text,
-    'module_title'      => $title,
+    'module_title'      => $module_title,
+    'module_data'       => $module_data,
     
     'home_url'          => $core->root_path(),
     'dashboard_url'     => $core->path(),
@@ -66,7 +82,7 @@ $skin->assign(array(
 )); 
 
 // Output the page
-$skin->title($title . ' &bull; ' . $lang->get('site_title'));   
+$skin->title($module_title . ' &bull; ' . $lang->get('site_title'));   
 echo $skin->output(false, false, true);
 
 ?>
