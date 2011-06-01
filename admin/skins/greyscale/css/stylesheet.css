@@ -66,7 +66,7 @@ hr
 
 .hoveractive tbody tr:hover
 {
-    background: #f4f4f4 !important;
+    background: lightYellow !important;
 }
 
 .gridview
