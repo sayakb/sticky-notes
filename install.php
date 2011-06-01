@@ -48,6 +48,7 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}users (" .
            "username VARCHAR(50) NOT NULL, " .
            "password VARCHAR(40) NOT NULL, " .
            "salt VARCHAR(5) NOT NULL, " .
+           "email VARCHAR(100) NOT NULL, " .
            "dispname VARCHAR(100) DEFAULT '', " .
            "sid VARCHAR(40) DEFAULT '', " .
            "lastlogin INT(11) UNSIGNED DEFAULT 0, " .

@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.1 
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -11,28 +11,19 @@
 class db
 {
     // Class wide variables
-    var $link;
+    var $mysqli;
 
     // Function to initialize a db connection
     function connect($host, $port, $name, $user, $pass)
     {
         try
         {
-            if ($port)
-            {
-                $host .= (":" . $port);
-            }
+            $port = intval($port);
+            $this->mysqli = new mysqli($host, $user, $pass, $name, $port);
 
-            $this->link = mysql_connect($host, $user, $pass);
-
-            if (!$this->link)
+            if ($this->mysqli->connect_error)
             {
-                return mysql_error();
-            }
-            else
-            {
-                mysql_select_db($name, $this->link);
-                mysql_set_charset('utf8', $this->link);
+                return $this->mysqli->connect_error;
             }
         }
         catch (Exception $e)
@@ -47,32 +38,32 @@ class db
         try
         {
             $recordset = array();
-            $result = mysql_query($sql, $this->link);
+            $result = $this->mysqli->query($sql);
             $sql = strtolower($sql);
 
             if (strpos($sql, 'select') !== false && strpos($sql, 'select') == 0)
             {
                 if (!$result)
                 {
-                    $message  = 'Sticky Notes DB error<br /><br />Error: ' . mysql_error() . "<br />";
+                    $message  = 'Sticky Notes DB error<br /><br />Error: ' . $this->mysqli->error . "<br />";
                     $message .= 'Whole query: ' . $sql;
                     die($message);
                 }
 
                 if (!$single)
                 {
-                    while ($row = mysql_fetch_assoc($result))
+                    while ($row = $result->fetch_assoc())
                     {
                         $recordset[] = $row;
                     }
 
-                    mysql_free_result($result);
+                    $result->close();
                     return $recordset;
                 }
                 else
                 {
-                    $row = mysql_fetch_assoc($result);
-                    mysql_free_result($result);
+                    $row = $result->fetch_assoc();
+                    $result->close();
 
                     return $row;
                 }
@@ -89,29 +80,25 @@ class db
     // Function to get the last inserted query ID
     function get_id()
     {
-        return mysql_insert_id($this->link);
+        return $this->mysqli->insert_id;
     }
 
     // Function to check affected rows
     function affected_rows()
     {
-        return mysql_affected_rows($this->link);
+        return $this->mysqli->affected_rows;
     }
 
     // Function to escape a special chars string
     function escape(&$data)
     {
-        $data = mysql_real_escape_string($data);
+        $data = $this->mysqli->real_escape_string($data);
     }
 
     // Object descturtor
     function __destruct()
     {
-        if (isset($this->link))
-        {
-            mysql_close($this->link);
-            unset($this->link);
-        }
+        $this->mysqli->close();
     }
 }
 

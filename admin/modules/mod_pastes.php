@@ -59,6 +59,7 @@ if ($paste_rempass)
 // Search form submitted
 if ($paste_search || $paste_rempass || $paste_makepub)
 {
+    $paste_id = trim($paste_id);
     $sql = "SELECT * FROM {$db_prefix}main " .
            "WHERE id={$paste_id}";
     $row = $db->query($sql, true);

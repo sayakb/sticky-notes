@@ -104,6 +104,8 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
     // Escape text to avoid injection
     $db->escape($author);
     $db->escape($data);
+    $db->escape($language);
+    $db->escape($private);
     
     $author = trim($author);
 

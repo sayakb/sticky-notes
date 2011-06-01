@@ -5,7 +5,15 @@ php_flag magic_quotes_gpc off
 RewriteEngine on
 
 RewriteRule ^admin/login/?$ admin/login.php [NC]
-RewriteRule ^admin/([a-z]+)/?$ admin/index.php?mode=$1 [NC]
+RewriteRule ^admin/?$ admin/index.php [NC]
+RewriteRule ^admin/pastes/?$ admin/index.php?mode=pastes [NC]
+RewriteRule ^admin/users/?$ admin/index.php?mode=users [NC]
+RewriteRule ^admin/users/([0-9a-zA-Z.]+)/edit/?$ admin/index.php?mode=users&action=editor&user=$1 [NC]
+RewriteRule ^admin/users/([0-9a-zA-Z.]+)/delete/?$ admin/index.php?mode=users&action=delete&user=$1 [NC]
+RewriteRule ^admin/users/new/?$ admin/index.php?mode=users&action=editor [NC]
+RewriteRule ^admin/ipbans/?$ admin/index.php?mode=ipbans [NC]
+RewriteRule ^admin/config/?$ admin/index.php?mode=config [NC]
+RewriteRule ^admin/logout/?$ admin/index.php?mode=logout [NC]
 
 RewriteRule ^install/?$ install.php [NC]
 

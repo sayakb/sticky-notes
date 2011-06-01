@@ -1,0 +1,23 @@
+<div class="greybox">
+    <b>{{user_note}}</b>
+    <input type="submit" name="user_new" value="{{create_user}}" class="button rightside nomargin" />
+    
+    <div class="spacer">&nbsp;</div>
+    <div class="spacer">&nbsp;</div>
+    
+    <table class="gridview hoveractive" width="100%">
+    <thead>
+    <tr>
+        <td width="45"></td>
+        <td width="20%">{{username}}</td>
+        <td width="30%">{{name}}</td>
+        <td width="30%">{{email}}</td>
+        <td>{{actions}}</td>
+    </tr>
+    </thead>
+    
+    <tbody>
+        [[user_list]]
+    </tbody>
+    </table>
+</div>

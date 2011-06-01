@@ -55,25 +55,76 @@ table
     border-spacing: 0px;
 }
 
-.gridview
+hr
 {
-    border: 1px solid #cfcfcf;
+    height: 1px;
+    background: #dadada;
+    border-bottom: 1px solid #fff;
+    border: 0px;
     margin-bottom: 10px;
 }
 
-.gridview tr:nth-child(odd) 
+.hoveractive tbody tr:hover
+{
+    background: #f4f4f4 !important;
+}
+
+.gridview
+{
+    border: 1px solid #dadada;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.gridview thead tr td:first-child
+{
+    border-radius: 5px 0px 0px 0px;
+}
+
+.gridview thead tr td:last-child
+{
+    border-radius: 0px 5px 0px 0px;
+}
+
+.gridview thead tr
+{
+    background: -moz-linear-gradient(bottom, #dadada, #fafafa);
+    background: -webkit-gradient(linear, left bottom, left top, from(#dadada), to(#f2f2f2));
+}
+
+.gridview tbody tr:nth-child(odd) 
 {
   background-color: #fefefe;
 }
 
-.gridview tr:nth-child(even) 
+.gridview tbody tr:nth-child(even) 
 {
   background-color: #fbfbfb;
 }
 
-.gridview td
+.gridview thead tr td, .gridview tbody tr td
 {
     padding: 5px;
+}
+
+.gridview tbody tr td:first-child
+{
+    border-radius: 0px 0px 0px 5px;
+}
+
+.gridview tbody tr td:last-child
+{
+    border-radius: 0px 0px 5px 0px;
+}
+
+.faded
+{
+    color: #777;
+}
+
+.spacer
+{
+    height: 10px;
 }
 
 .copyright
@@ -256,7 +307,7 @@ table
 {
     background: #f7f7f7;
     border: 1px solid #dadada;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
 }
@@ -282,6 +333,7 @@ table
     border-radius: 3px;
     height: 23px;
     color: #333;
+    margin: 0px 5px 0px 0px;
 }
 
 .button:hover
@@ -334,6 +386,12 @@ table
     font-style: italic;
 }
 
+.boxed
+{
+    border: 1px solid #dadada;
+    background: #dadada;
+}
+
 .error
 {
     background-color: #ffebe8;
@@ -382,4 +440,14 @@ table
 .collapsed
 {
     display: none;
+}
+
+.rightside
+{
+    float: right;
+}
+
+.nomargin
+{
+    margin: 0px !important;
 }

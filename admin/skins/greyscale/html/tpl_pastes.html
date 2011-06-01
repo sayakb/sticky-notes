@@ -12,6 +12,14 @@
 <h3>{{paste_details}}</h3>
 
 <table class="gridview" width="100%">
+<thead>
+<tr>
+    <td>{{field}}</td>
+    <td>{{value}}</td>
+</tr>
+</thead>
+
+<tbody>
 <tr>
     <td width="100px">{{author}}</td>
     <td>[[paste_author]]</td>
@@ -40,6 +48,7 @@
     <td>{{poster_ip}}</td>
     <td>[[paste_ip]]</td>
 </tr>
+<tbody>
 </table>
 
 <input type="submit" name="paste_rempass" value="{{remove_password}}" class="button [[rempass_visibility]]"

@@ -1,0 +1,45 @@
+<div class="greybox">
+    <h3>[[editor_title]]</h3>
+    
+    <table>
+    <tr>
+        <td width="170">{{username}} <i class="faded">({{required}})</i></td>
+        <td><input type="text" name="user_username" class="textbox" size="30" value="[[user_username]]" /></td>
+    </tr>
+    
+    <tr>
+        <td>{{email}} <i class="faded">({{required}})</i></td>
+        <td><input type="text" name="user_email" class="textbox" size="30" value="[[user_email]]" /></td>        
+    </tr>
+    
+    <tr>
+        <td>{{first_name}}</td>
+        <td><input type="text" name="user_fname" class="textbox" size="30" value="[[user_fname]]" /></td>        
+    </tr>
+
+    <tr>
+        <td>{{last_name}}</td>
+        <td><input type="text" name="user_lname" class="textbox" size="30" value="[[user_lname]]" /></td>        
+    </tr>
+    
+    <tr>
+        <td colspan="2" height="10"></td>
+    </tr>
+
+    <tr>
+        <td>{{password}} <i class="faded [[preq_visibility]]">({{twice}}, {{required}})</i></td>
+        <td><input type="password" name="user_pass1" class="textbox" size="30" value="[[user_pass1]]" /></td>        
+    </tr>
+    
+    <tr>
+        <td></td>
+        <td><input type="password" name="user_pass2" class="textbox" size="30" value="[[user_pass2]]" /></td>        
+    </tr>
+    </table>
+    
+    <div class="spacer">&nbsp;</div>
+    
+    <input type="hidden" name="user_id" value="[[user_id]]" />
+    <input type="submit" name="user_save" value="{{save}}" class="button" />
+    <input type="submit" name="user_cancel" value="{{cancel}}" class="button" />
+</div>

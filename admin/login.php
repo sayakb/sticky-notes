@@ -28,6 +28,10 @@ $skin->init('tpl_login');
 // Process form data
 if ($submit && !empty($username) && !empty($password))
 {
+    // Process the username
+    $db->escape($username);   
+    $username = trim($username);
+    
     $sql = "SELECT * FROM {$db_prefix}users " .
            "WHERE username='{$username}'";
     $row = $db->query($sql, true);
