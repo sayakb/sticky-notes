@@ -55,6 +55,13 @@ $lang_data = array(
     'save'              => 'Save',
     'cancel'            => 'Cancel',
     'user_note'         => 'Note: New users will be created with full admin privileges',
+    'ip_address'        => 'IP Address',
+    'banned_ips'        => 'Banned IP addresses',
+    'no_ips'            => 'No banned IP addresses',
+    'ban'               => 'Ban',
+    'already_banned'    => 'Specified IP address has already been banned',
+    'banned_success'    => 'IP address banned successfully',
+    'invalid_ip'        => 'Invalid IP address entered',
     
     'username_required'         => 'Please enter the username',
     'email_required'            => 'Please enter e-mail address',

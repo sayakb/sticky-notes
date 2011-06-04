@@ -81,7 +81,7 @@ if ($paste_search || $paste_rempass || $paste_makepub)
             'makepub_visibility'    => ($row['private'] == 1 ? 'visible' : 'collapsed'),
         ));
     }
-    else
+    else if ($paste_id > 0)
     {
         $module->notify($lang->get('paste_id_404'));
     }    

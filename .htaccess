@@ -12,6 +12,7 @@ RewriteRule ^admin/users/([0-9a-zA-Z.]+)/edit/?$ admin/index.php?mode=users&acti
 RewriteRule ^admin/users/([0-9a-zA-Z.]+)/delete/?$ admin/index.php?mode=users&action=delete&user=$1 [NC]
 RewriteRule ^admin/users/new/?$ admin/index.php?mode=users&action=editor [NC]
 RewriteRule ^admin/ipbans/?$ admin/index.php?mode=ipbans [NC]
+RewriteRule ^admin/ipbans/delete/((?:(?!/).)*)/?$ admin/index.php?mode=ipbans&delete=$1 [NC]
 RewriteRule ^admin/config/?$ admin/index.php?mode=config [NC]
 RewriteRule ^admin/logout/?$ admin/index.php?mode=logout [NC]
 

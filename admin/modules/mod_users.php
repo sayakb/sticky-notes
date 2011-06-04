@@ -212,7 +212,7 @@ if (empty($action))
                                    $lang->get('delete') . '</b></a>' : ''),
         ));
         
-        $user_list .= $skin->output('tpl_users_entry', false, true);
+        $user_list .= $skin->output('tpl_users_entry', true, true);
     }
     
     $skin->assign('user_list', $user_list);

@@ -1,0 +1,20 @@
+<div class="greybox">
+    <h3>{{banned_ips}}</h3>
+    <table class="gridview nomargin" width="300px">
+    <thead>
+        <td width="70%">{{ip_address}}</td>
+        <td>{{actions}}</td>
+    </thead>
+    
+    <tbody>
+        [[ipbans_data]]
+    </tbody>
+    </table>
+</div>
+
+<div class="greybox">
+    <label for="ipban_ip">{{ip_address}}</label>
+    <input type="text" size="30" id="ipban_ip" name="ipban_ip" value="[[ipban_ip]]" class="textbox" />
+    
+    <input type="submit" name="ipban_submit" value="{{ban}}" class="button" />
+</div>

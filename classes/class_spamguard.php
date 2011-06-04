@@ -19,6 +19,7 @@ class spamguard
         $this->registered_services = array();
         
         // Register services
+        $this->register('ipban');
         $this->register('stealth');
         $this->register('php');
     }
@@ -43,6 +44,12 @@ class spamguard
         $validation_failed = false;
         $error_message = '';
         $services = explode(',', $sg_services);
+        
+        // Add the IP Ban validation if not added
+        if (!in_array('ipban', $services))
+        {
+            array_push($services, 'ipban');
+        }
         
         // Perform all validations
         foreach($services as $service_key)
@@ -90,6 +97,31 @@ class spamguard
             $skin->output();
             exit;
         }
+    }
+    
+    // IP Ban check
+    function validate_ipban()
+    {
+        // Set global variables
+        global $core, $db, $db_prefix;
+        
+        // Get the banned IP list
+        $sql = "SELECT ip FROM {$db_prefix}ipbans";
+        $rows = $db->query($sql);
+        
+        // Check if user's IP is banned
+        if (!empty($rows))
+        {
+            foreach($rows as $row)
+            {
+                if ($core->remote_ip() == $row['ip'])
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return true;    
     }
     
     // Sticky Notes' inbuilt Stealth Spam Guard

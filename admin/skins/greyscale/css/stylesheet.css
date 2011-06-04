@@ -76,14 +76,9 @@ hr
     border-radius: 5px;
 }
 
-.gridview thead tr td:first-child
+.gridview thead tr td:first-child, .gridview thead tr td:last-child
 {
-    border-radius: 5px 0px 0px 0px;
-}
-
-.gridview thead tr td:last-child
-{
-    border-radius: 0px 5px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
 }
 
 .gridview thead tr
@@ -94,12 +89,12 @@ hr
 
 .gridview tbody tr:nth-child(odd) 
 {
-  background-color: #fefefe;
+    background-color: #fefefe;
 }
 
 .gridview tbody tr:nth-child(even) 
 {
-  background-color: #fbfbfb;
+    background-color: #fbfbfb;
 }
 
 .gridview thead tr td, .gridview tbody tr td
@@ -107,14 +102,9 @@ hr
     padding: 5px;
 }
 
-.gridview tbody tr td:first-child
+.gridview tbody tr td:first-child, .gridview tbody tr td:last-child
 {
-    border-radius: 0px 0px 0px 5px;
-}
-
-.gridview tbody tr td:last-child
-{
-    border-radius: 0px 0px 5px 0px;
+    border-radius: 0px 0px 5px 5px;
 }
 
 .faded

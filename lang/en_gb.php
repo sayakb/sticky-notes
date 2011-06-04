@@ -55,6 +55,7 @@ $lang_data = array(
     /* Antispam */
     'sg_error_stealth'  => 'Your paste triggered our spam filter and has been dropped',
     'sg_error_php'      => 'Your IP address is listed as a malicious IP',
+    'sg_error_ipban'    => 'Your IP address has been banned',
 
 
     /* Global */

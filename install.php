@@ -53,6 +53,10 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}users (" .
            "sid VARCHAR(40) DEFAULT '', " .
            "lastlogin INT(11) UNSIGNED DEFAULT 0, " .
            "PRIMARY KEY(id))");           
+           
+$db->query("CREATE TABLE IF NOT EXISTS {$db_prefix}ipbans (" .
+           "ip VARCHAR(50) NOT NULL, " .
+           "PRIMARY KEY(ip))");
 
 // Add index and charset data
 $db->query("ALTER TABLE {$db_prefix}main DEFAULT CHARACTER SET utf8");
