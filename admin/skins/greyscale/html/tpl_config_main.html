@@ -1,0 +1,112 @@
+<div class="greybox">
+    <h3>{{site_config}}</h3>
+    <table cellpadding="5">
+    <tr>
+        <td width="120">{{sitename}}</td>
+        <td><input type="text" name="site_name" value="[[site_name]]" size="30" class="textbox" /></td>
+    </tr>
+    
+    <tr>
+        <td>{{sitetitle}}</td>
+        <td>
+            <input type="text" name="site_title" value="[[site_title]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{appears_title}}</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="topaligned">{{sitecopyright}}</td>
+        <td>
+            <textarea name="site_copyright" rows="3" cols="30" class="textbox">[[site_copyright]]</textarea>
+            <div class="fieldinfo faded">
+                {{copyright_warn}}<br />
+                ({{bsd_protected}})
+            </div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>{{siteskin}}</td>
+        <td>
+            <select class="droplist" name="site_skin">
+                [[skin_list]]
+            </select>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>{{admin_skin}}</td>
+        <td>
+            <select class="droplist" name="admin_skin">
+                [[admin_skin]]
+            </select>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>{{sitelang}}</td>
+        <td><input type="text" name="site_lang" value="[[site_lang]]" size="30" class="textbox" /></td>
+    </tr>
+    </table>
+    
+    <div class="spacer">&nbsp;</div>
+
+    <h3>{{antispam_config}}</h3>
+    
+    <table cellpadding="5">
+    <tr>
+        <td width="120" class="topaligned">{{enabled_sg_svcs}}</td>
+        <td>
+            <select class="droplist" name="sg_svcs" size="5">
+                [[sg_svcs]]
+            </select>        
+        </td>
+    </tr>
+    </table>
+    
+    <div class="spacer">&nbsp;</div>
+    
+    <h3>{{php_config}}</h3>
+    <div class="faded">{{php_conf_exp}}</div>
+    
+    <table cellpadding="5">
+    <tr>
+        <td width="120">{{access_key}}</td>
+        <td>
+            <input type="text" name="php_access_key" value="[[php_access_key]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{access_key_exp}}</div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>{{age_threshold}}</td>
+        <td>
+            <input type="text" name="php_age_threshold" value="[[php_age_threshold]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{age_exp}}</div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>{{threat_score}}</td>
+        <td>
+            <input type="text" name="php_threat_score" value="[[php_threat_score]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{threat_score_exp}}</div>
+        </td>
+    </tr>
+    
+    <tr>
+        <td>{{type_filter}}</td>
+        <td>
+            <input type="text" name="php_type_filter" value="[[php_type_filter]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{type_exp}}</div>
+        </td>
+    </tr>    
+    </table>
+    
+    <div class="spacer">&nbsp;</div>
+    
+    <hr />
+    
+    <input type="submit" name="config_submit" value="{{save}}" class="button" />
+    <input type="submit" name="config_cancel" value="{{cancel}}" class="button" />
+</div>

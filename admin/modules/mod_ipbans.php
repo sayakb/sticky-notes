@@ -102,7 +102,7 @@ $skin->assign('ipbans_data', $ipbans_data);
 
 // Set the module data
 $module_title = $lang->get('manage_ip_bans');
-$module_data =  $skin->output('tpl_ipbans_main', false, true);
+$module_data =  $skin->output('tpl_ipbans_main', true, true);
 
 ?>
  

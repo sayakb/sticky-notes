@@ -10,6 +10,7 @@
 
 // Set the page title
 $module_title = $lang->get('site_config');
+$module_data =  $skin->output('tpl_config_main', true, true);
 
 ?>
  

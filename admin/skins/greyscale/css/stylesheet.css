@@ -64,9 +64,19 @@ hr
     margin-bottom: 10px;
 }
 
-.hoveractive tbody tr:hover
+label
 {
-    background: lightYellow !important;
+    margin-right: 10px;
+}
+
+.hoveractive tbody tr:nth-child(odd):hover
+{
+    background: #fcffcc !important;
+}
+
+.hoveractive tbody tr:nth-child(even):hover
+{
+    background: #f9fcc1 !important;
 }
 
 .gridview
@@ -76,9 +86,14 @@ hr
     border-radius: 5px;
 }
 
-.gridview thead tr td:first-child, .gridview thead tr td:last-child
+.gridview thead tr td:first-child
 {
-    border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 0px 0px 0px;
+}
+
+.gridview thead tr td:last-child
+{
+    border-radius: 0px 5px 0px 0px;
 }
 
 .gridview thead tr
@@ -102,9 +117,14 @@ hr
     padding: 5px;
 }
 
-.gridview tbody tr td:first-child, .gridview tbody tr td:last-child
+.gridview tbody tr td:first-child 
 {
-    border-radius: 0px 0px 5px 5px;
+    border-radius: 0px 0px 0px 5px;
+}
+
+.gridview tbody tr td:last-child
+{
+    border-radius: 0px 0px 5px 0px;
 }
 
 .faded
@@ -302,17 +322,26 @@ hr
     margin-bottom: 10px;
 }
 
-.textbox
+.textbox, .droplist
 {
     border: 1px solid #c2c2c2;
     padding: 3px;
     color: #555;
     border-radius: 3px;
+    width: 250px;
+    max-width: 250px;
 }
 
-.textbox:hover, .textbox:active
+.textbox:hover, .textbox:active, .droplist:hover, .droplist:active
 {
     border: 1px solid #777;
+}
+
+.droplist
+{
+    background: white;
+    width: 258px !important;
+    max-width: 258px !important;
 }
 
 .button
@@ -408,6 +437,18 @@ hr
     margin-bottom: 50px;
     position: relative;
     top: 35px;
+}
+
+.fieldinfo
+{
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+.topaligned
+{
+    vertical-align: top;
+    padding-top: 10px !important;
 }
 
 .centered
