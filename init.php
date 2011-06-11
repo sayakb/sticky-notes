@@ -9,8 +9,7 @@
 */
 
 // Turn off error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
 
 // Define constants
 define('UPDATE_SERVER', 'https://gitorious.org/sticky-notes/sticky-notes/blobs/raw/master/VERSION');
