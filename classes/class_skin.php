@@ -16,8 +16,6 @@ class skin
     var $skin_name;
     var $skin_name_fancy;
     var $skin_path;
-    var $skin_author;
-    var $skin_author_url;
     var $skin_vars;
     var $skin_title;
     var $skin_script;
@@ -26,18 +24,16 @@ class skin
     // Class constructor
     function __construct()
     {
-        global $admin_skin_name, $skin_name, $skin_author, $skin_author_url, $core;
-
-        $this->admin_skin_name = strtolower($admin_skin_name);
-        $this->admin_skin_path = $core->path() . 'skins/' . strtolower($admin_skin_name);
-        $this->skin_name = strtolower($skin_name);
-        $this->skin_name_fancy = $skin_name;
-        $this->skin_author = $skin_author;
-        $this->skin_author_url = $skin_author_url;
+        global $core, $config;
+        
+        $this->admin_skin_name = strtolower($config->admin_skin_name);
+        $this->admin_skin_path = $core->path() . 'skins/' . strtolower($config->admin_skin_name);
+        $this->skin_name = strtolower($config->skin_name);
+        $this->skin_name_fancy = $config->skin_name;
         $this->skin_vars = array();
         $this->skin_script = array();
         $this->skin_file = '';
-        $this->skin_path = $core->path() . 'skins/' . strtolower($skin_name);
+        $this->skin_path = $core->path() . 'skins/' . strtolower($config->skin_name);
     }
 
     // Returns the name of the active skin
@@ -142,18 +138,11 @@ class skin
         $data = str_replace("[[site_logo_rss]]",
                              $core->base_uri() . 'skins/' . $this->skin_name .
                              '/images/' . $lang->lang_name . '/logo_rss.png', $data);
-
         $data = str_replace("[[page_title]]", $this->skin_title, $data);
-
         $data = str_replace("[[admin_skin_path]]", $this->admin_skin_path, $data);
         $data = str_replace("[[skin_path]]", $this->skin_path, $data);
+        $data = str_replace("[[addon_path]]", $core->root_path() . 'addons', $data);
         $data = str_replace("[[skin_name]]", $this->skin_name_fancy, $data);
-        $data = str_replace("[[skin_author]]",
-                            (!empty($this->skin_author_url) ? '<a href="' .
-                                                              $this->skin_author_url . '" rel="nofollow">' .
-                                                              $this->skin_author . '</a>'
-                                                            : $this->skin_author), $data);
-
         $data = str_replace("[[nav_home_rss]]", $core->rss_uri(), $data);
         $data = str_replace("[[nav_home]]", $core->path() . (!empty($project) ? "~" .
                                                    $core->variable('project', '') . '/' : ''), $data);

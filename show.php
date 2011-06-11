@@ -54,7 +54,7 @@ if ($paste_id == 0)
 }
 
 // Get the paste data
-$sql = "SELECT * FROM {$db_prefix}main WHERE id={$paste_id} LIMIT 1";
+$sql = "SELECT * FROM {$db->prefix}main WHERE id={$paste_id} LIMIT 1";
 $row = $db->query($sql, true);
 
 // Check if something was returned
@@ -115,11 +115,11 @@ if (!empty($row['password']) && !empty($sid))
     if (time() % 30 == 0)
     {
         $age = time() - 1200;
-        $db->query("DELETE FROM {$db_prefix}session " .
+        $db->query("DELETE FROM {$db->prefix}session " .
                    "WHERE timestamp < {$age}");
     }
 
-    $pass_data = $db->query("SELECT sid FROM {$db_prefix}session " .
+    $pass_data = $db->query("SELECT sid FROM {$db->prefix}session " .
                            "WHERE sid = '{$sid}'", true);
 
     if (!empty($pass_data['sid']))
@@ -184,7 +184,7 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
         $sid = sha1(time() . $core->remote_ip());
 
         $core->set_cookie('session_id_' . $paste_id, $sid, time() + 1200);
-        $db->query("INSERT INTO {$db_prefix}session " .
+        $db->query("INSERT INTO {$db->prefix}session " .
                    "(sid, timestamp) VALUES ('{$sid}', " . time() . ")");
     }
 }

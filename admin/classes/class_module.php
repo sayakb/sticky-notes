@@ -16,8 +16,8 @@ class module
         if (file_exists(realpath("modules/mod_{$module_name}.php")))
         {
             // Set globals
-            global $core, $lang, $skin, $db, $module, $username, $sid, $mode, $db_prefix, 
-                   $module_data, $module_title;
+            global $core, $lang, $skin, $db, $config, $module, $username, $sid, $mode,
+                   $module_data, $module_title, $sg;
             
             // Include the module
             include("modules/mod_{$module_name}.php");

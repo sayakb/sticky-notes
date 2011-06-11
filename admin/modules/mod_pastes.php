@@ -30,7 +30,7 @@ if (!$paste_search)
 // Make public
 if ($paste_makepub)
 {  
-    $sql = "UPDATE {$db_prefix}main SET private=0, password='' " .
+    $sql = "UPDATE {$db->prefix}main SET private=0, password='' " .
            "WHERE id={$paste_id}";
     $db->query($sql);
     
@@ -45,7 +45,7 @@ if ($paste_makepub)
 // Remove password
 if ($paste_rempass)
 {   
-    $sql = "UPDATE {$db_prefix}main SET password='' " .
+    $sql = "UPDATE {$db->prefix}main SET password='' " .
            "WHERE id={$paste_id}";
     $db->query($sql);
     
@@ -60,7 +60,7 @@ if ($paste_rempass)
 if ($paste_search || $paste_rempass || $paste_makepub)
 {
     $paste_id = trim($paste_id);
-    $sql = "SELECT * FROM {$db_prefix}main " .
+    $sql = "SELECT * FROM {$db->prefix}main " .
            "WHERE id={$paste_id}";
     $row = $db->query($sql, true);
     
@@ -90,7 +90,7 @@ if ($paste_search || $paste_rempass || $paste_makepub)
 // Delete paste
 if ($paste_delete)
 {
-    $sql = "DELETE FROM {$db_prefix}main " .
+    $sql = "DELETE FROM {$db->prefix}main " .
            "WHERE id={$paste_id}";
     $db->query($sql);
             

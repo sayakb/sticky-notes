@@ -34,7 +34,14 @@ class config
     {
         global $core;
         
-        include($core->root_path() . 'config.php');
+        if (strpos($_SERVER['PHP_SELF'], '/admin/') !== false)
+        {
+            include('../config.php');
+        }
+        else
+        {
+            include('config.php');
+        }
         
         // Set the data
         $this->db_host          = $db_host;
@@ -46,7 +53,7 @@ class config
         
         $this->site_name        = $site_name;
         $this->site_title       = $site_title;
-        $this->site_copyright   = $site_copyright;
+        $this->site_copyright   = html_entity_decode($site_copyright);
         $this->skin_name        = $skin_name;
         $this->admin_skin_name  = $admin_skin_name;
         $this->lang_name        = $lang_name;

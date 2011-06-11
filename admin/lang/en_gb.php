@@ -62,6 +62,8 @@ $lang_data = array(
     'already_banned'    => 'Specified IP address has already been banned',
     'banned_success'    => 'IP address banned successfully',
     'invalid_ip'        => 'Invalid IP address entered',
+    'deselect_all'      => 'Deselect all',
+    'select_all'        => 'Select all',
     'site_config'       => 'Site configuration',
     'sitename'          => 'Site name',
     'sitetitle'         => 'Site title',
@@ -75,6 +77,7 @@ $lang_data = array(
     'sitelang'          => 'Language',
     'antispam_config'   => 'Anti-spam configuration',
     'enabled_sg_svcs'   => 'Enabled anti-spam services',
+    'svcs_exp'          => 'Hold down the Ctrl key to select multiple services',
     'access_key'        => 'Access key',
     'access_key_exp'    => 'Leave this blank if you want to disable Project Honey Pot integration',
     'age_threshold'     => 'Age threshold',
@@ -87,6 +90,10 @@ $lang_data = array(
     'php_conf_exp'      => 'For info on the configuration values below, check: ' .
                            '<a href="http://www.projecthoneypot.org/httpbl_api.php" rel="nofollow">' .
                            'http://www.projecthoneypot.org/httpbl_api.php</a>',
+    'js_alert'          => 'Warning! You do not have JavaScript enabled. Actions will take place without ' .
+                           'confirmation.',
+    'config_reqd'       => 'All fields under Site Configuration are mandatory',
+    'config_cantwrite'  => 'The config file isn\'t writable. Please check file permissions',
     
     'username_required'         => 'Please enter the username',
     'email_required'            => 'Please enter e-mail address',

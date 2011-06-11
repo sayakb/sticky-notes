@@ -27,7 +27,7 @@ if (empty($sid) || empty($username))
 else
 {
     // Validate sid
-    $sql = "SELECT sid FROM {$db_prefix}users " .
+    $sql = "SELECT sid FROM {$db->prefix}users " .
            "WHERE username='{$username}'";
     $row = $db->query($sql, true);
     
@@ -57,7 +57,7 @@ $module->validate($mode);
 $module->load($mode);
 
 // Build page data
-$toplink = preg_replace('/\_\_sitename\_\_/', $site_title, $lang->get('back_to_home'));
+$toplink = preg_replace('/\_\_sitename\_\_/', $config->site_title, $lang->get('back_to_home'));
 $welcome_text = preg_replace('/\_\_user\_\_/', $username, $lang->get('welcome_user'));
 
 $skin->assign(array(

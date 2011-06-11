@@ -32,7 +32,7 @@ if ($submit && !empty($username) && !empty($password))
     $db->escape($username);   
     $username = trim($username);
     
-    $sql = "SELECT * FROM {$db_prefix}users " .
+    $sql = "SELECT * FROM {$db->prefix}users " .
            "WHERE username='{$username}'";
     $row = $db->query($sql, true);
     
@@ -47,11 +47,11 @@ if ($submit && !empty($username) && !empty($password))
             $stale = time() - (60 * 60);
             
             // Update the DB data
-            $sql = "UPDATE {$db_prefix}users SET sid='', lastlogin=0 " .
+            $sql = "UPDATE {$db->prefix}users SET sid='', lastlogin=0 " .
                    "WHERE lastlogin<{$stale} AND lastlogin > 0";
             $db->query($sql);
             
-            $sql = "UPDATE {$db_prefix}users " .
+            $sql = "UPDATE {$db->prefix}users " .
                    "SET sid='{$sid}' WHERE username='{$username}'";
             $db->query($sql);
             
@@ -84,7 +84,7 @@ if (!empty($logout))
 }
 
 // Build page data
-$toplink = preg_replace('/\_\_sitename\_\_/', $site_title, $lang->get('back_to_home'));
+$toplink = preg_replace('/\_\_sitename\_\_/', $config->site_title, $lang->get('back_to_home'));
 
 $skin->assign(array(
     'top_link'          => $toplink,

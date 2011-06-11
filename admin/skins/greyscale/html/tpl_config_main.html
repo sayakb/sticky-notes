@@ -3,13 +3,13 @@
     <table cellpadding="5">
     <tr>
         <td width="120">{{sitename}}</td>
-        <td><input type="text" name="site_name" value="[[site_name]]" size="30" class="textbox" /></td>
+        <td><input type="text" name="config_name" value="[[config_name]]" size="30" class="textbox" /></td>
     </tr>
     
     <tr>
         <td>{{sitetitle}}</td>
         <td>
-            <input type="text" name="site_title" value="[[site_title]]" size="30" class="textbox" />
+            <input type="text" name="config_title" value="[[config_title]]" size="30" class="textbox" />
             <div class="fieldinfo faded">{{appears_title}}</div>
         </td>
     </tr>
@@ -17,7 +17,7 @@
     <tr>
         <td class="topaligned">{{sitecopyright}}</td>
         <td>
-            <textarea name="site_copyright" rows="3" cols="30" class="textbox">[[site_copyright]]</textarea>
+            <textarea name="config_copyright" rows="5" cols="30" class="textbox">[[config_copyright]]</textarea>
             <div class="fieldinfo faded">
                 {{copyright_warn}}<br />
                 ({{bsd_protected}})
@@ -28,7 +28,7 @@
     <tr>
         <td>{{siteskin}}</td>
         <td>
-            <select class="droplist" name="site_skin">
+            <select class="droplist" name="config_skin">
                 [[skin_list]]
             </select>
         </td>
@@ -37,15 +37,15 @@
     <tr>
         <td>{{admin_skin}}</td>
         <td>
-            <select class="droplist" name="admin_skin">
-                [[admin_skin]]
+            <select class="droplist" name="config_admin_skin">
+                [[admin_skin_list]]
             </select>
         </td>
     </tr>
     
     <tr>
         <td>{{sitelang}}</td>
-        <td><input type="text" name="site_lang" value="[[site_lang]]" size="30" class="textbox" /></td>
+        <td><input type="text" name="config_lang" value="[[config_lang]]" size="30" class="textbox" /></td>
     </tr>
     </table>
     
@@ -55,11 +55,17 @@
     
     <table cellpadding="5">
     <tr>
-        <td width="120" class="topaligned">{{enabled_sg_svcs}}</td>
+        <td width="120" class="topaligned">
+            {{enabled_sg_svcs}}                      
+        </td>
         <td>
-            <select class="droplist" name="sg_svcs" size="5">
+            <select id="mult" class="droplist" name="config_sg_svcs[]" size="5" multiple="multiple">
                 [[sg_svcs]]
-            </select>        
+            </select>
+            <br />
+            <a class="select_toggle" id="mult_select">{{select_all}}</a> &bull;
+            <a class="select_toggle" href="#" id="mult_deselect">{{deselect_all}}</a>
+            <div class="fieldinfo faded">{{svcs_exp}}</div>
         </td>
     </tr>
     </table>
@@ -73,7 +79,7 @@
     <tr>
         <td width="120">{{access_key}}</td>
         <td>
-            <input type="text" name="php_access_key" value="[[php_access_key]]" size="30" class="textbox" />
+            <input type="text" name="config_php_key" value="[[config_php_key]]" size="30" class="textbox" />
             <div class="fieldinfo faded">{{access_key_exp}}</div>
         </td>
     </tr>
@@ -81,7 +87,7 @@
     <tr>
         <td>{{age_threshold}}</td>
         <td>
-            <input type="text" name="php_age_threshold" value="[[php_age_threshold]]" size="30" class="textbox" />
+            <input type="text" name="config_php_days" value="[[config_php_days]]" size="30" class="textbox" />
             <div class="fieldinfo faded">{{age_exp}}</div>
         </td>
     </tr>
@@ -89,7 +95,7 @@
     <tr>
         <td>{{threat_score}}</td>
         <td>
-            <input type="text" name="php_threat_score" value="[[php_threat_score]]" size="30" class="textbox" />
+            <input type="text" name="config_php_score" value="[[config_php_score]]" size="30" class="textbox" />
             <div class="fieldinfo faded">{{threat_score_exp}}</div>
         </td>
     </tr>
@@ -97,7 +103,7 @@
     <tr>
         <td>{{type_filter}}</td>
         <td>
-            <input type="text" name="php_type_filter" value="[[php_type_filter]]" size="30" class="textbox" />
+            <input type="text" name="config_php_type" value="[[config_php_type]]" size="30" class="textbox" />
             <div class="fieldinfo faded">{{type_exp}}</div>
         </td>
     </tr>    
@@ -107,6 +113,5 @@
     
     <hr />
     
-    <input type="submit" name="config_submit" value="{{save}}" class="button" />
-    <input type="submit" name="config_cancel" value="{{cancel}}" class="button" />
+    <input type="submit" name="config_save" value="{{save}}" class="button" />
 </div>

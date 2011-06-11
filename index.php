@@ -121,7 +121,7 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
     $remote_ip = $core->remote_ip();
 
     // Insert into the DB
-    $sql = "INSERT INTO {$db_prefix}main " .
+    $sql = "INSERT INTO {$db->prefix}main " .
            "(author, project, timestamp, expire, data, language, " .
            "password, salt, private, hash, ip) VALUES " .
            "('{$author}', '{$project}', {$time}, {$expire}" .

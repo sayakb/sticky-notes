@@ -19,14 +19,14 @@ if (!empty($ban_del))
 {
     $ban_del = urldecode($ban_del);
     
-    $sql = "DELETE FROM {$db_prefix}ipbans WHERE ip='{$ban_del}'";
+    $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip='{$ban_del}'";
     $db->query($sql);
     
     $core->redirect($core->path() . 'ipbans/');
 }
 
 // Get a list of IP bans
-$sql = "SELECT ip FROM {$db_prefix}ipbans";
+$sql = "SELECT ip FROM {$db->prefix}ipbans";
 $rows = $db->query($sql);
 
 // IP ban submitted
@@ -57,14 +57,14 @@ if ($ban_submit && !empty($ban_ip))
         // Process the ban
         if (!$already_banned)
         {
-            $sql = "INSERT INTO {$db_prefix}ipbans (ip) " .
+            $sql = "INSERT INTO {$db->prefix}ipbans (ip) " .
                 "VALUES ('{$ban_ip}')";
             $db->query($sql);
             
             $module->notify($lang->get('banned_success'));
             
             // Get updated list of IP bans
-            $sql = "SELECT ip FROM {$db_prefix}ipbans";
+            $sql = "SELECT ip FROM {$db->prefix}ipbans";
             $rows = $db->query($sql);
         }
         else

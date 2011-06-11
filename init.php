@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include classes
+include_once('classes/class_config.php');
 include_once('classes/class_core.php');
 include_once('classes/class_db.php');
 include_once('classes/class_lang.php');
@@ -21,10 +22,8 @@ include_once('classes/class_api.php');
 include_once('classes/class_spamguard.php');
 include_once('addons/geshi/geshi.php');
 
-// Include other files
-include('config.php');
-
 // Instantiate class objects
+$config = new config();
 $core = new core();
 $db = new db();
 $lang = new lang();
@@ -63,7 +62,7 @@ if (isset($_GET['paste_project'])) $_GET['paste_project'] = strtolower($_GET['pa
 if (isset($_POST['paste_project'])) $_POST['paste_project'] = strtolower($_POST['paste_project']);
 
 // Set up the db connection
-$db->connect($db_host, $db_port, $db_name, $db_username, $db_password);
+$db->connect();
 
 // Set a root path template var
 $skin->assign('root_path', $core->path());

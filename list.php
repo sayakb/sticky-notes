@@ -59,7 +59,7 @@ else
 }
 
 // Get total number of posts
-$sql = "SELECT COUNT(id) AS total FROM {$db_prefix}main WHERE " .
+$sql = "SELECT COUNT(id) AS total FROM {$db->prefix}main WHERE " .
        (!empty($project) ? "project='{$project}' AND " : '') .
        'private = 0';
 $row = $db->query($sql);
@@ -69,7 +69,7 @@ $total = $row[0]['total'];
 $pagination = $skin->pagination($total, $page);
 
 // Get the list
-$sql = "SELECT * FROM {$db_prefix}main WHERE " .
+$sql = "SELECT * FROM {$db->prefix}main WHERE " .
        (!empty($project) ? "project='{$project}' AND " : '') .
        'private = 0 ORDER BY timestamp ' .
        "DESC LIMIT {$lim_start}, 10";

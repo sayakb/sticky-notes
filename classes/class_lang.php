@@ -16,9 +16,9 @@ class lang
     // Constructor
     function __construct()
     {
-        global $lang_name;
+        global $config;
 
-        $this->lang_name = $lang_name;
+        $this->lang_name = $config->lang_name;
     }
 
     // Function to parse localization data
@@ -57,7 +57,7 @@ class lang
     // Function to return a localized phrase
     function get($key)
     {
-        global $site_name, $site_title, $site_copyright;
+        global $config;
 
         // Return default data
         switch($key)
@@ -65,11 +65,11 @@ class lang
             case 'lang_name':
                 return $this->lang_name;
             case 'site_name':
-                return $site_name;
+                return $config->site_name;
             case 'site_title':
-                return $site_title;
+                return $config->site_title;
             case 'site_copyright':
-                return $site_copyright;
+                return $config->site_copyright;
         }
 
         // Get language data from lang file
@@ -91,12 +91,12 @@ class lang
     // Function to assign default variables
     function set_defaults($data)
     {
-        global $site_name, $site_title, $site_copyright;
+        global $config;
 
         $data = str_replace("{{lang_name}}", $this->lang_name, $data);
-        $data = str_replace("{{site_name}}", $site_name, $data);
-        $data = str_replace("{{site_title}}", $site_title, $data);
-        $data = str_replace("{{site_copyright}}", $site_copyright, $data);
+        $data = str_replace("{{site_name}}", $config->site_name, $data);
+        $data = str_replace("{{site_title}}", $config->site_title, $data);
+        $data = str_replace("{{site_copyright}}", $config->site_copyright, $data);
 
         return $data;
     }

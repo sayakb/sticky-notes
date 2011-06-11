@@ -379,6 +379,7 @@ label
     border: 1px solid #e5e5e5;
     padding: 3px;
     width: 97%;
+    max-width: 100%;
     margin-top: 2px;
     margin-bottom: 16px;
     font-size: 24px;
@@ -396,6 +397,22 @@ label
 {
     width: 80px;
     height: 40px;
+}
+
+.select_toggle
+{
+    font-size: 0.9em;
+    cursor: pointer;
+    color: #777;
+}
+
+.jsalert
+{
+    color: darkRed;
+    font-weight: bold;
+    font-size: 1.4em;
+    float: left;
+    line-height: 35px;
 }
 
 .hugefonts

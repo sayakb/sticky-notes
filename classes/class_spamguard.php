@@ -36,14 +36,20 @@ class spamguard
         return in_array($service, $this->registered_services);
     }
     
+    // Function to get a list of registered services
+    function get_registered()
+    {
+        return $this->registered_services;
+    }
+    
     // The parent validation function
     function validate()    
     {
-        global $skin, $lang, $sg_services;
+        global $skin, $lang, $config;
         
         $validation_failed = false;
         $error_message = '';
-        $services = explode(',', $sg_services);
+        $services = explode(',', $config->sg_services);
         
         // Add the IP Ban validation if not added
         if (!in_array('ipban', $services))
@@ -103,10 +109,10 @@ class spamguard
     function validate_ipban()
     {
         // Set global variables
-        global $core, $db, $db_prefix;
+        global $core, $db;
         
         // Get the banned IP list
-        $sql = "SELECT ip FROM {$db_prefix}ipbans";
+        $sql = "SELECT ip FROM {$db->prefix}ipbans";
         $rows = $db->query($sql);
         
         // Check if user's IP is banned
@@ -151,18 +157,18 @@ class spamguard
         try
         {
             // Set global variables
-            global $core, $lang, $sg_php_key, $sg_php_days, $sg_php_score, $sg_php_type;
+            global $core, $lang, $config;
             
             // Skip validation is no key is specified in config.php
-            if (!isset($sg_php_key) || empty($sg_php_key))
+            if (!isset($config->sg_php_key) || empty($config->sg_php_key))
             {
                 return true;
             }
             
             // Check config values
-            $sg_php_days = isset($sg_php_days) ? $sg_php_days : 90;
-            $sg_php_score = isset($sg_php_score) ? $sg_php_score : 50;
-            $sg_php_type = isset($sg_php_type) ? $sg_php_type : 2;
+            $config->sg_php_days = isset($config->sg_php_days) ? $config->sg_php_days : 90;
+            $config->sg_php_score = isset($config->sg_php_score) ? $config->sg_php_score : 50;
+            $config->sg_php_type = isset($config->sg_php_type) ? $config->sg_php_type : 2;
             
             // We cannot process an IPv6 address
             if(!filter_var($core->remote_ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) 
@@ -175,7 +181,7 @@ class spamguard
             $rev_ip = $ip_ary[3] . '.' . $ip_ary[2] . '.' . $ip_ary[1] . '.' . $ip_ary[0];
             
             // Query Project Honey Pot
-            $response = dns_get_record($sg_php_key . '.' . $rev_ip . '.dnsbl.httpbl.org');
+            $response = dns_get_record($config->sg_php_key . '.' . $rev_ip . '.dnsbl.httpbl.org');
             
             // Exit if NXDOMAIN is returned
             if (!isset($response[0]['ip']) || empty($response[0]['ip']))
@@ -190,7 +196,7 @@ class spamguard
             $type = $result[3];
             
             // Perform PHP validation
-            if ($days <= $sg_php_days && ($type >= $sg_php_type || $score >= $sg_php_score))
+            if ($days <= $config->sg_php_days && ($type >= $config->sg_php_type || $score >= $config->sg_php_score))
             {
                 return false;
             }

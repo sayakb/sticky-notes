@@ -19,9 +19,9 @@ $user_lname = $core->variable('user_lname', '');
 $user_pass1 = $core->variable('user_pass1', '');
 $user_pass2 = $core->variable('user_pass2', '');
 
-$create_submit = isset($_POST['user_new']) ? true : false;
-$save_submit = isset($_POST['user_save']) ? true : false;
-$cancel_submit = isset($_POST['user_cancel']) ? true : false;
+$user_new = isset($_POST['user_new']) ? true : false;
+$user_save = isset($_POST['user_save']) ? true : false;
+$user_cancel = isset($_POST['user_cancel']) ? true : false;
 
 // Validate action
 $actions_ary = array('editor', 'delete');
@@ -32,19 +32,19 @@ if (!empty($action) && !in_array($action, $actions_ary))
 }
 
 // Create button was pressed
-if ($create_submit)
+if ($user_new)
 {
     $core->redirect($core->path() . 'users/new/');
 }
 
 // Cancel button was pressed
-if ($cancel_submit)
+if ($user_cancel)
 {
     $core->redirect($core->path() . 'users/');
 }
 
 // Save button was pressed
-if ($save_submit)
+if ($user_save)
 {
     // Set globals
     $module_name = 'tpl_users_editor';
@@ -118,7 +118,7 @@ if ($save_submit)
     
     $disp_name = $user_fname . ' ' . $user_lname;
 
-    $sql = "SELECT username, email FROM {$db_prefix}users " .
+    $sql = "SELECT username, email FROM {$db->prefix}users " .
            "WHERE (username='{$user_username}' OR email='{$user_email}')" .
            ($user_id > 0 ? " AND id<>{$user_id}" : "");
     $row = $db->query($sql, true);
@@ -147,7 +147,7 @@ if ($save_submit)
             if (!empty($user_pass1))
             {
                 // Get the salt
-                $sql = "SELECT salt FROM {$db_prefix}users " .
+                $sql = "SELECT salt FROM {$db->prefix}users " .
                        "WHERE id={$user_id}";
                 $row = $db->query($sql, true);
                 
@@ -155,7 +155,7 @@ if ($save_submit)
                 $hash = sha1($user_pass1 . $row['salt']);
             }
             
-            $sql = "UPDATE {$db_prefix}users " .
+            $sql = "UPDATE {$db->prefix}users " .
                    "SET username='{$user_username}', " .
                    "    email='{$user_email}', " .
                    "    dispname='{$disp_name}' " .
@@ -170,7 +170,7 @@ if ($save_submit)
             $salt = substr(sha1(time()), rand(0, 34), 5);
             $hash = sha1($user_pass1 . $salt);
             
-            $sql = "INSERT INTO {$db_prefix}users " .
+            $sql = "INSERT INTO {$db->prefix}users " .
                    "(username, password, salt, email, dispname) " .
                    "VALUES ('{$user_username}', '{$hash}', '{$salt}', " .
                    "        '{$user_email}', '{$disp_name}')";
@@ -194,7 +194,7 @@ if (empty($action))
     $module_name = 'tpl_users_list';
     $user_list = '';
     
-    $sql = "SELECT * FROM {$db_prefix}users ORDER BY username ASC";
+    $sql = "SELECT * FROM {$db->prefix}users ORDER BY username ASC";
     $rows = $db->query($sql);
     
     foreach ($rows as $row)
@@ -219,7 +219,7 @@ if (empty($action))
 }
 
 // Edit/new action specified
-if ($action == 'editor' && !$save_submit)
+if ($action == 'editor' && !$user_save)
 {
     // Set globals
     $module_name = 'tpl_users_editor';
@@ -227,7 +227,7 @@ if ($action == 'editor' && !$save_submit)
     // In edit mode, load data
     if (!empty($user))
     {
-        $sql = "SELECT * FROM {$db_prefix}users " .
+        $sql = "SELECT * FROM {$db->prefix}users " .
                "WHERE username='{$user}'";
         $row = $db->query($sql, true);
         
@@ -259,7 +259,7 @@ if ($action == 'delete')
 {
     if ($user != $username)
     {
-        $sql = "DELETE FROM {$db_prefix}users WHERE username='{$user}'";
+        $sql = "DELETE FROM {$db->prefix}users WHERE username='{$user}'";
         $db->query($sql);
         $core->redirect($core->path() . 'users/');
     }

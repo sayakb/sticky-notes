@@ -12,18 +12,26 @@ class db
 {
     // Class wide variables
     var $mysqli;
+    var $prefix;
 
     // Function to initialize a db connection
-    function connect($host, $port, $name, $user, $pass)
+    function connect()
     {
         try
-        {
-            $port = intval($port);
-            $this->mysqli = new mysqli($host, $user, $pass, $name, $port);
+        {           
+            global $config;
+            
+            $db_port_int = intval($config->db_port);
+            $this->mysqli = new mysqli($config->db_host, $config->db_username, 
+                                       $config->db_password, $config->db_name, $db_port_int);
 
             if ($this->mysqli->connect_error)
             {
                 return $this->mysqli->connect_error;
+            }
+            else
+            {
+                $this->prefix = $config->db_prefix;
             }
         }
         catch (Exception $e)
