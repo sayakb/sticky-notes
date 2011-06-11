@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -73,7 +73,7 @@ class skin
     // Function to parse template variables
     function parse($file_name, $has_scripts = false)
     {
-        global $lang;
+        global $lang, $gsod;
 
         // First, see if scripts are added
         if ($has_scripts)
@@ -101,10 +101,10 @@ class skin
         // Parse template variables
         if (!file_exists($file_name))
 	{
-	    $message  = 'Sticky Notes skin read error<br /><br />';
+	    $message  = '<b>Sticky Notes skin read error</b><br /><br />';
 	    $message .= 'Error: Skin file not found<br />';
 	    $message .= 'Verify that the skin selected is present in the skins/ folder';
-	    die($message);	    
+	    $gsod->trigger($message);    
 	}
         
         $data = ($has_scripts ? $data : '') . file_get_contents($file_name);
@@ -153,7 +153,7 @@ class skin
         $data = str_replace("[[nav_api]]", $core->path() . 'doc/api/', $data);
         $data = str_replace("[[nav_help]]", $core->path() . 'doc/help/', $data);
         $data = str_replace("[[nav_about]]", $core->path() . 'doc/about/', $data);
-
+        $data = str_replace("[[nav_admin]]", $core->path() . 'admin/', $data);
 
         // Set the tagline
         $header_tagline = '~/paste';
@@ -225,7 +225,7 @@ class skin
     // Function to output the page
     function output($file = false, $body_only = false, $admin_skin = false)
     {
-        global $core;
+        global $core, $gsod;
 
         if ($file)
         {
@@ -241,10 +241,10 @@ class skin
 
             if (!$this->skin_file)
             {
-                $message  = 'Sticky Notes skin parse error<br /><br />';
+                $message  = '<b>Sticky Notes skin parse error</b><br /><br />';
                 $message .= 'Error: Skin file not initialized<br />';
                 $message .= 'Use $skin->init(\'filename\') to load a skin file';
-                die($message);
+                $gsod->trigger($message);
             }
 
             $file_body = $this->locate($this->skin_file, true);
@@ -260,10 +260,10 @@ class skin
 
             if (!$this->skin_file)
             {
-                $message  = 'Sticky Notes skin parse error<br /><br />';
+                $message  = '<b>Sticky Notes skin parse error</b><br /><br />';
                 $message .= 'Error: Skin file not initialized<br />';
                 $message .= 'Use $skin->init(\'filename\') to load a skin file';
-                die($message);
+                $gsod->trigger($message);
             }
 
             $file_body = $this->locate($this->skin_file);

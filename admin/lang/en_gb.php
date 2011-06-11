@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -92,8 +92,16 @@ $lang_data = array(
                            'http://www.projecthoneypot.org/httpbl_api.php</a>',
     'js_alert'          => 'Warning! You do not have JavaScript enabled. Actions will take place without ' .
                            'confirmation.',
-    'config_reqd'       => 'All fields under Site Configuration are mandatory',
-    'config_cantwrite'  => 'The config file isn\'t writable. Please check file permissions',
+    'site_info'         => 'Site information',
+    'php_version'       => 'PHP version',
+    'mysql_version'     => 'MySQL version',
+    'server_load'       => 'Server load',
+    'db_size'           => 'Database size',
+    'paste_count'       => 'Total no. of pastes',
+    'stickynotes_ver'   => 'Sticky Notes version',
+    'n_a'               => 'N/A',
+    'new_ver_available' => 'Newer version available',
+    'download_latest'   => 'Download latest version',
     
     'username_required'         => 'Please enter the username',
     'email_required'            => 'Please enter e-mail address',
@@ -105,6 +113,8 @@ $lang_data = array(
     'password_required'         => 'Please fill in the password fields',
     'username_taken'            => 'Username already registered. Please choose a different username',
     'email_taken'               => 'E-mail address already registered. Please choose a different e-mail',
+    'config_reqd'               => 'All fields under Site Configuration are mandatory',
+    'config_cantwrite'          => 'The config file isn\'t writable. Please check file permissions',
 
     /* Page: login.php */
     'admin_login'       => 'Administration Login',

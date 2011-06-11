@@ -8,10 +8,17 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
-// Purge the session and show the login page
-$core->unset_cookie('session_id_admin');
-$core->unset_cookie('username_admin');
-$core->set_cookie('logout_do', 'true', time() + 30);
-$core->redirect($core->path() . 'login/');
+// Fill in the database details
+$db_host = "";
+
+$db_port = ""; // Leave blank if not known
+
+$db_name = "";
+
+$db_username = "";
+
+$db_password = "";
+
+$db_prefix = "paste_";
 
 ?>

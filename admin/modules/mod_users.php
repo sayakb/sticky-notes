@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -162,6 +162,10 @@ if ($user_save)
                    (!empty($user_pass1) ? ", password='{$hash}' " : "") .
                    "WHERE id={$user_id}";
             $db->query($sql);
+            
+            // Update the username cookie
+            $expire = time() + (60 * 30);
+            $core->set_cookie('username_admin', $user_username, $expire);
         }
         
         // It is an insert operation

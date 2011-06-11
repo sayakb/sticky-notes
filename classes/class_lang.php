@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -24,7 +24,7 @@ class lang
     // Function to parse localization data
     function parse($data)
     {
-        global $core;
+        global $core, $gsod;
 
         // Get language data from lang file
         if (file_exists(realpath('lang/' . $this->lang_name . '.php')))
@@ -33,10 +33,10 @@ class lang
         }
         else
 	{
-	    $message  = 'Sticky Notes language parse error<br /><br />';
+	    $message  = '<b>Sticky Notes language parse error</b><br /><br />';
 	    $message .= 'Error: Language file not found<br />';
 	    $message .= 'Verify that the language selected is present in the lang/ folder';
-	    die($message);	    
+	    $gsod->trigger($message);	    
 	}
 
         $data = $this->set_defaults($data);

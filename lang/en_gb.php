@@ -68,6 +68,7 @@ $lang_data = array(
     'api'		=> 'API',
     'about'		=> 'About',
     'help'		=> 'Help',
+    'admin'             => 'Admin',
 
 
     /* Documentation: api */

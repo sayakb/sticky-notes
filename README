@@ -1,4 +1,4 @@
-Sticky Notes pastebin v0.1
+Sticky Notes pastebin v0.2
 ===========================
 
 Sticky notes is a free and open source pastebin application.
@@ -19,20 +19,18 @@ Step 1 - Setting up the config file
 ------------------------------------
 
 Rename config.sample.php to config.php
-Fill in the database details and site config data. 
-Do not remove the default copyright information (protected by BSD license).
-You may add additional text to the copyright though.
+Fill in the database details. 
 
 Step 2 - Running the installation script
 -----------------------------------------
 
-Open install.php and comment out line 13 (the line with the die() function).
+Open install.php and comment out line 19 (the line with the die() function).
 Visit http://www.yoursite.com/install in your internet browser (assuming that
 Sticky Notes resides in the root folder of that site. Adjust the URL 
 accordingly).
 Once the install script finishes executing, it should display "Successfully
 installed" on the browser window.
-Now uncomment line 13 again. This is strongly recommended for security reasons.
+Now uncomment line 19 again. This is strongly recommended for security reasons.
 You may as well completely remove install.php from your hosts root folder.
 
 Step 3 - Adding themes
@@ -41,18 +39,18 @@ Step 3 - Adding themes
 Copy the theme folder within the "skins" folder.
 Make sure the name of the folder is in lower case. 
 For example, if the skin is BlueNinja, the folder's name should be blueninja.
-Now change the value of $skin_name inside config.php to the skin's name. 
-The value of the $skin_name variable is case insensitive.
+Now go to admin panel -> site configuration, and select the theme from the
+list. Save your configuration by clicking the 'Save' button at the bottom.
 
 Step 4 - Adding localization files
 -----------------------------------
 
 Copy the localization script (for example en_us.php) to the "lang" folder.
 Make sure the file name is in lowercase.
-Now, change the value of $lang_name inside config.php to the lang name.
-For example, if the script file is en_us.php, set $lang_name to "en_us".
+Now login to the admin panel -> site configuration and change the language
+code. Save your configuration by clicking the 'Save' button at the bottom.
 
-
+================================================================================
 
 BSD License
 ============

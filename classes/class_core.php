@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -12,11 +12,13 @@ class core
 {
     // Global vars
     var $build;
+    var $build_num;
 
     // Constructor
     function __construct()
     {
-        $this->build = '0.1.29052011.4';
+        $this->build = '0.2.12062011.1';
+        $this->build_num = 432;
     }
 
     // Function to return root path
@@ -145,6 +147,56 @@ class core
     {
         header("Location: {$url}");
     }
+ 
+    // Method to return the server load
+    function server_load() 
+    {
+        $os = strtolower(PHP_OS);
+        
+        if (strpos($os, "win") === false) 
+        {
+            if(file_exists("/proc/loadavg")) 
+            {
+                $load = file_get_contents("/proc/loadavg");
+                $load = explode(' ', $load);
+                return $load[0];
+            }
+            else if (function_exists("shell_exec")) 
+            {
+                $load = explode(' ', 'uptime');
+                return $load[count($load) - 1];
+            }
+            else 
+            {
+                return false;
+            }
+        }
+        else if ($windows) 
+        {
+            if (class_exists("COM")) 
+            {
+                $wmi = new COM("WinMgmts:\\\\.");
+                $cpus = $wmi->InstancesOf("Win32_Processor");
+         
+                $cpuload = 0;
+                $i = 0;
+         
+                while ($cpu = $cpus->Next()) 
+                {
+                    $cpuload += $cpu->LoadPercentage;
+                    $i++;
+                }
+         
+                $cpuload = round($cpuload / $i, 2);
+         
+                return "$cpuload%";
+            }
+            else 
+            {
+                return false;
+            }
+        }
+    }    
 }
 
 ?>

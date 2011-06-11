@@ -169,6 +169,10 @@ BODY
 {
     background-color: #7357E0;
 }
+#main_menu LI:nth-child(6):before
+{
+    background-color: #da70de;
+}
 /****END of SETTINGS SECTION***
 --------------------------------------------
 Skeleton*/

@@ -415,6 +415,12 @@ label
     line-height: 35px;
 }
 
+.waitimg
+{
+    margin-left: 7px;
+    margin-bottom: -1px;
+}
+
 .hugefonts
 {
     font-size: 6em;
@@ -473,6 +479,11 @@ label
     text-align: center;
     width: 97%;
     margin-top: 10px;
+}
+
+.darkgreen
+{
+    color: darkGreen;
 }
 
 .visible

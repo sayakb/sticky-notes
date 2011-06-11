@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -17,7 +17,7 @@ class module
         {
             // Set globals
             global $core, $lang, $skin, $db, $config, $module, $username, $sid, $mode,
-                   $module_data, $module_title, $sg;
+                   $module_data, $module_title, $sg, $gsod;
             
             // Include the module
             include("modules/mod_{$module_name}.php");

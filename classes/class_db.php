@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1 
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -45,17 +45,21 @@ class db
     {
         try
         {
+            global $gsod;
+            
             $recordset = array();
             $result = $this->mysqli->query($sql);
             $sql = strtolower($sql);
 
-            if (strpos($sql, 'select') !== false && strpos($sql, 'select') == 0)
+            if ((strpos($sql, 'select') !== false && strpos($sql, 'select') == 0) ||
+                (strpos($sql, 'show') !== false && strpos($sql, 'show') == 0))
             {
                 if (!$result)
                 {
-                    $message  = 'Sticky Notes DB error<br /><br />Error: ' . $this->mysqli->error . "<br />";
+                    $message  = '<b>Sticky Notes DB error</b><br /><br />';
+                    $message .= 'Error: ' . $this->mysqli->error . "<br />";
                     $message .= 'Whole query: ' . $sql;
-                    die($message);
+                    $gsod->trigger($message);
                 }
 
                 if (!$single)

@@ -1,22 +1,50 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
 * All rights reserved. Do not remove this copyright notice.
 */
 
-/* COMMENT OUT WHEN INSTALLING */
-/* UNCOMMENT ONCE INSTALLING IS COMPLETED */
-die('Install file locked. Check out the README file for installation instructions.');
-
 // Define constants
 define('IN_INSTALL', true);
 
 // Include necessary files
 include_once('init.php');
+
+/* COMMENT OUT WHEN INSTALLING */
+/* UNCOMMENT ONCE INSTALLING IS COMPLETED */
+//$gsod->trigger('Install file locked. Check out the README file for installation instructions.');
+
+// Check is config file is present
+if (!file_exists(realpath('config.php')))
+{
+    $gsod->trigger('Config file not found. Please rename config.sample.php to ' .
+                   'config.php and make it writable.');
+}
+
+// Check if the config file is writable
+if (!is_writable(realpath('config.php')))
+{
+    $gsod->trigger('Config file is not writable. Please adjust the permissions ' .
+                   'to start installation.');
+}
+
+// Check if the tables already exist
+$sql = "SHOW TABLES LIKE '{$db->prefix}%'";
+$rows = $db->query($sql);
+
+if (!empty($rows) && count($rows) > 0)
+{
+    $gsod->trigger('One or more tables already exist in the specified database. '.
+                   'Please drop them to start installation.');
+}
+
+// Create the config file
+$config->create($config->db_host, $config->db_port, $config->db_name, 
+                $config->db_username, $config->db_password, $config->db_prefix);
 
 // Create the table structure
 $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}main (" .
@@ -73,7 +101,24 @@ $db->query("CREATE INDEX {$db->prefix}idx_adminsid ON {$db->prefix}users(sid)");
 // Fill in empty values to cron table
 $db->query("INSERT INTO {$db->prefix}cron VALUES (0, 0)");
 
+// Generate a salt and password
+$salt = substr(sha1(time()), rand(0, 34), 5);
+$password = substr(sha1(sha1(time())), rand(0, 31), 8);
+$hash = sha1($password . $salt);
+
+// Add the default admin user
+$sql = "INSERT INTO {$db->prefix}users " .
+        "(username, password, salt, email) " .
+        "VALUES ('admin', '{$hash}', '{$salt}', 'admin@sticky.notes')";
+$db->query($sql);
+
 // Done!
-die("Successfully installed");
+$gsod->trigger(
+    "Successfully installed! You can log in to the admin panel with the following credentials:" .
+    "<ul><li>Username: <b>admin</b></li>" .
+    "<li>Password: <b>{$password}</b></li></ul>" .
+    "Please make a note of this password. You can change it from the User Management section of " .
+    "the <a href=\"../admin/\">admin panel</a>."
+);
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.1
+* @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
@@ -12,7 +12,11 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Define constants
+define('UPDATE_SERVER', 'https://gitorious.org/sticky-notes/sticky-notes/blobs/raw/master/VERSION');
+
 // Include classes
+include_once('classes/class_gsod.php');
 include_once('classes/class_config.php');
 include_once('classes/class_core.php');
 include_once('classes/class_db.php');
@@ -22,7 +26,10 @@ include_once('classes/class_api.php');
 include_once('classes/class_spamguard.php');
 include_once('addons/geshi/geshi.php');
 
-// Instantiate class objects
+// We need to instantiate the GSoD class first, just in case!
+$gsod = new gsod();
+
+// Instantiate general classes
 $config = new config();
 $core = new core();
 $db = new db();
