@@ -25,15 +25,11 @@ $(document).ready(function() {
     });
     
     if ($('#stickynotes_update').html().length > 0) {
-        var url = $('#stickynotes_update_svr').val();
+        var url = '?ver=1';
         var current = parseInt($('#stickynotes_build_num').val());
         
-        var jqxhr = $.get(url, function(data) {    
-            var start = parseInt(strpos(data, '<StickyNotesVersion>')) + 20;
-            var end = parseInt(strpos(data, '</StickyNotesVersion>'));
-            var version = parseInt(data.substr(start, (end - start)));
-                
-            if (version > current)
+        var jqxhr = $.get(url, function(data) {
+            if (parseInt(data) > current)
             {
                 $('#stickynotes_ver')
                     .css('color', 'darkRed')

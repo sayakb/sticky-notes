@@ -8,6 +8,13 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
+// Check if we just want the version number
+if (isset($_GET['ver']))
+{
+    $version = file_get_contents(UPDATE_SERVER, false);
+    die($version);
+}
+
 // Get MySQL version
 $sql = "SELECT VERSION() AS ver";
 $row = $db->query($sql, true);
@@ -52,7 +59,6 @@ $update_url =  '&bull; ' . $lang->get('new_ver_available') . ' (' .
 $skin->assign(array(
     'stickynotes_ver'   => $core->build,
     'update_url'        => $update_url,
-    'update_svr'        => UPDATE_SERVER,
     'build_num'         => $core->build_num,
     'php_version'       => phpversion(),
     'mysql_version'     => $mysql_ver,
