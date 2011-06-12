@@ -163,9 +163,14 @@ if ($user_save)
                    "WHERE id={$user_id}";
             $db->query($sql);
             
-            // Update the username cookie
-            $expire = time() + (60 * 30);
-            $core->set_cookie('username_admin', $user_username, $expire);
+            // Update the username cookie if user updates own details
+            $current_user = $core->variable('username_admin', '', true);
+            
+            if ($current_user == $user_username)
+            {
+                $expire = time() + (60 * 30);
+                $core->set_cookie('username_admin', $user_username, $expire);
+            }
         }
         
         // It is an insert operation
