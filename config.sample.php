@@ -9,16 +9,16 @@
 */
 
 // Fill in the database details
-$db_host = "";
+$db_host = ""; // Required field
 
-$db_port = ""; // Leave blank if not known
+$db_port = ""; // Optional field. Leave blank if not known
 
-$db_name = "";
+$db_name = ""; // Required field
 
-$db_username = "";
+$db_username = ""; // Required field
 
-$db_password = "";
+$db_password = ""; // Required field
 
-$db_prefix = "paste_";
+$db_prefix = "paste_"; // Required field
 
 ?>

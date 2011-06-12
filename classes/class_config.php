@@ -164,9 +164,9 @@ class config
 
             fwrite($fp, '$sg_services = "stealth,php";' . "\n");
             fwrite($fp, '$sg_php_key = "";' . "\n");
-            fwrite($fp, '$sg_php_days = 0;' . "\n");
-            fwrite($fp, '$sg_php_score = 0;' . "\n");
-            fwrite($fp, '$sg_php_type = 0;' . "\n");
+            fwrite($fp, '$sg_php_days = 90;' . "\n");
+            fwrite($fp, '$sg_php_score = 50;' . "\n");
+            fwrite($fp, '$sg_php_type = 2;' . "\n");
 
             fwrite($fp, "?>");
             fclose($fp);
