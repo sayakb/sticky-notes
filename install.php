@@ -71,7 +71,7 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}main (" .
            "salt VARCHAR(5) NOT NULL, " .
            "private TINYINT(1) NOT NULL DEFAULT 0, " .
            "hash INT(12) UNSIGNED NOT NULL, " .
-           "ip VARCHAR(40) NOT NULL, " .
+           "ip VARCHAR(50) NOT NULL, " .
            "PRIMARY KEY(id))");
 
 $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}session (" .
