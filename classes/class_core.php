@@ -17,8 +17,27 @@ class core
     // Constructor
     function __construct()
     {
-        $this->build = '0.2.12062011.1';
-        $this->build_num = 432;
+        // Define globals
+        global $gsod;
+        
+        // Get the version number       
+        if (file_exists('VERSION'))
+        {
+            $data = file_get_contents('VERSION');
+        }
+        else if (file_exists('../VERSION'))
+        {
+            $data = file_get_contents('../VERSION');
+        }
+        else
+        {
+            $gsod->trigger('<b>Sticky Notes fatal error</b><br /><br />' .
+                           'Version file not found');
+        }
+        
+        $data = explode("\n", $data);
+        $this->build = $data[0];
+        $this->build_num = $data[1];
     }
 
     // Function to return root path

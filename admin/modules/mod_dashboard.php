@@ -12,7 +12,9 @@
 if (isset($_GET['ver']))
 {
     $version = file_get_contents(UPDATE_SERVER, false);
-    die($version);
+    $version = explode("\n", $version);
+    
+    die(intval($version[1]));
 }
 
 // Get MySQL version
