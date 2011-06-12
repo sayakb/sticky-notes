@@ -205,7 +205,7 @@ if (empty($action))
     {       
         $skin->assign(array(
             'user_username'     => $row['username'],
-            'user_name'         => $row['dispname'],
+            'user_name'         => htmlentities($row['dispname']),
             'user_email'        => $row['email'],
             'user_email_hash'   => md5(strtolower($row['email'])),
             'user_edit_link'    => '<a href="' . ($core->path() . 'users/' . $row['username'] . '/edit/') .
