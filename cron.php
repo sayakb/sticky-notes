@@ -22,9 +22,9 @@ if (((time() - $timestamp) > 60) && !$locked)
 
     if ($db->affected_rows() > 0)
     {
-	// Perform cron tasks
-	$db->query("DELETE FROM {$db->prefix}main WHERE expire > 0 AND expire < " . time());
-	$db->query("UPDATE {$db->prefix}cron SET timestamp = " . time() . ", locked = 0");
+		// Perform cron tasks
+		$db->query("DELETE FROM {$db->prefix}main WHERE expire > 0 AND expire < " . time());
+		$db->query("UPDATE {$db->prefix}cron SET timestamp = " . time() . ", locked = 0");
     }
 }
 

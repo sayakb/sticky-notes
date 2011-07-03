@@ -26,6 +26,10 @@ if (empty($sid) || empty($username))
 }
 else
 {
+    // Process the username
+    $db->escape($username);   
+    $username = trim($username);
+    
     // Validate sid
     $sql = "SELECT sid FROM {$db->prefix}users " .
            "WHERE username='{$username}'";

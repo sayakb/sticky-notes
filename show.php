@@ -68,7 +68,7 @@ if ($row == null)
     }
     else if ($mode == 'raw')
     {
-	die($lang->get('error_404'));
+        die($lang->get('error_404'));
     }
     else
     {
@@ -93,9 +93,9 @@ if ($row['private'] == "1")
             die;
         }
         else if ($mode == 'raw')
-	{
-	    die($lang->get('error_hash'));
-	}
+        {
+            die($lang->get('error_hash'));
+        }
         else
         {
             $skin->assign(array(
@@ -139,7 +139,7 @@ if (!empty($row['password']) && empty($password) && !$exempt)
     }
     else if ($mode == 'raw')
     {
-	die($lang->get('err_passreqd'));
+        die($lang->get('err_passreqd'));
     }
     else
     {
@@ -164,10 +164,10 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
             echo $skin->output("api_error.{$mode}");
             die;
         }
-	else if ($mode == 'raw')
-	{
-	    die($lang->get('invalid_password'));
-	}
+        else if ($mode == 'raw')
+        {
+            die($lang->get('invalid_password'));
+        }
         else
         {
             $skin->assign(array(

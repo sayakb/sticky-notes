@@ -68,6 +68,9 @@ $total = $row[0]['total'];
 // Get page numbers
 $pagination = $skin->pagination($total, $page);
 
+// Escape the project
+$project = $db->escape($project);
+
 // Get the list
 $sql = "SELECT * FROM {$db->prefix}main WHERE " .
        (!empty($project) ? "project='{$project}' AND " : '') .

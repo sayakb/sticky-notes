@@ -236,6 +236,9 @@ if ($action == 'editor' && !$user_save)
     // In edit mode, load data
     if (!empty($user))
     {
+        // Escape the username
+        $db->escape($user);
+        
         $sql = "SELECT * FROM {$db->prefix}users " .
                "WHERE username='{$user}'";
         $row = $db->query($sql, true);
@@ -268,6 +271,9 @@ if ($action == 'delete')
 {
     if ($user != $username)
     {
+        // Escape the username
+        $db->escape($user);
+        
         $sql = "DELETE FROM {$db->prefix}users WHERE username='{$user}'";
         $db->query($sql);
         $core->redirect($core->path() . 'users/');

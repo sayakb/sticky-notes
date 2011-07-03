@@ -18,6 +18,7 @@ $ban_submit = isset($_POST['ipban_submit']) ? true : false;
 if (!empty($ban_del))
 {
     $ban_del = urldecode($ban_del);
+    $db->escape($ban_del);
     
     $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip='{$ban_del}'";
     $db->query($sql);
@@ -57,6 +58,8 @@ if ($ban_submit && !empty($ban_ip))
         // Process the ban
         if (!$already_banned)
         {
+            $db_escape($ban_ip);
+
             $sql = "INSERT INTO {$db->prefix}ipbans (ip) " .
                 "VALUES ('{$ban_ip}')";
             $db->query($sql);

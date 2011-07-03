@@ -14,6 +14,14 @@ include_once('init.php');
 // Collect some data
 $cat = $core->variable('cat', '');
 
+// Validate category
+$docs = array('about', 'api', 'help', 'lang');
+
+if (!in_array($cat, $docs))
+{
+    exit;
+}
+
 // Set the file
 $skin->init('tpl_doc_' . $cat);
 
