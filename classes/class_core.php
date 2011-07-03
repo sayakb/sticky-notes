@@ -165,6 +165,7 @@ class core
     function redirect($url)
     {
         header("Location: {$url}");
+        exit;
     }
  
     // Method to return the server load
