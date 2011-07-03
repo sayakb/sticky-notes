@@ -50,7 +50,6 @@ if ($mode != 'raw')
 if ($paste_id == 0)
 {
     $core->redirect($core->path() . 'all/');
-    exit;
 }
 
 // Get the paste data

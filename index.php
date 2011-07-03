@@ -167,7 +167,6 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
             if (!$password)
             {
                 $core->redirect($url);
-                exit;
             }
 
             $message = $lang->get('paste_saved');

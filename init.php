@@ -54,7 +54,6 @@ $direct = strpos($url, '?');
 if (strrpos($url, '/') != (strlen($url) - 1) && !$direct)
 {
     $core->redirect($url . '/');
-    exit;
 }
 else
 {
