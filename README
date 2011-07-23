@@ -24,7 +24,7 @@ Fill in the database details.
 Step 2 - Running the installation script
 -----------------------------------------
 
-Open install.php and comment out line 19 (the line with the die() function).
+Open install.php and comment out line 19 (the line with the $gsod->trigger(...) function).
 Visit http://www.yoursite.com/install in your internet browser (assuming that
 Sticky Notes resides in the root folder of that site. Adjust the URL 
 accordingly).

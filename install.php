@@ -16,7 +16,7 @@ include_once('init.php');
 
 /* COMMENT OUT WHEN INSTALLING */
 /* UNCOMMENT ONCE INSTALLING IS COMPLETED */
-//$gsod->trigger('Install file locked. Check out the README file for installation instructions.');
+$gsod->trigger('Install file locked. Check out the README file for installation instructions.');
 
 // Check is config file is present
 if (!file_exists(realpath('config.php')))
