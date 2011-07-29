@@ -674,10 +674,17 @@ SELECT
     border-style: solid;
     padding: 1px;
 }
-INPUT[type=text], INPUT[type=password], INPUT.text, INPUT.title, TEXTAREA, SELECT
+SELECT.langlist
+{
+    font-family: monospace;
+}
+INPUT[type=text], INPUT[type=password], INPUT.text, INPUT.title, TEXTAREA
 {
     font-family: inherit;
     font-size: 1em;
+}
+INPUT[type=text], INPUT[type=password], INPUT.text, INPUT.title, TEXTAREA, SELECT
+{
     margin: 0.5em 0;
     background-color: #FFFFFF;
     border: 1px solid #ACD;

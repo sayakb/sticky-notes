@@ -71,9 +71,14 @@ $(document).ready(function() {
     // Fetch author and language values from cookies
     var author = $.cookie('stickynotes_author');
     var language = $.cookie('stickynotes_language');
-    
-    $('#paste_user').val(author);
-    $('#paste_lang').val(language);
+
+    if (author != null) {
+        $('#paste_user').val(author);
+    }
+
+    if (language != null) {
+        $('#paste_lang').val(language);
+    }
     
     // Insert tab in the code box
     $('#paste_data').keydown(function (e) {      
