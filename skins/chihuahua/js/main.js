@@ -87,7 +87,7 @@ $(document).ready(function() {
 
     if (language != null && index < 0) {
         $('#paste_lang').val(language);
-    } else {
+    } else if (language != null) {
         $('#paste_lang').get(0).selectedIndex = index;
     }
     
