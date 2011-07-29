@@ -674,10 +674,6 @@ SELECT
     border-style: solid;
     padding: 1px;
 }
-SELECT.langlist
-{
-    font-family: monospace;
-}
 INPUT[type=text], INPUT[type=password], INPUT.text, INPUT.title, TEXTAREA
 {
     font-family: inherit;
@@ -764,6 +760,10 @@ INPUT[type="button"]:hover, INPUT[type="submit"]:hover, INPUT[type="reset"]:hove
 #paste_button
 {
     margin-top: 5px !important;
+}
+#paste_lang
+{
+    font-family: monospace;
 }
 .tiny
 {

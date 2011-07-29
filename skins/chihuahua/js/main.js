@@ -78,7 +78,7 @@ $(document).ready(function() {
     }
 
     for (i = 1; i <= 10; i++) {
-        var $option = $('.langlist option:nth-child(' + i.toString() + ')');
+        var $option = $('#paste_lang option:nth-child(' + i.toString() + ')');
         
         if ($option.attr('value') == language) {
             index = i - 1;

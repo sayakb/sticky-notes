@@ -103,16 +103,25 @@ $(document).ready(function() {
     // Fetch author and language values from cookies
     var author = $.cookie('stickynotes_author');
     var language = $.cookie('stickynotes_language');
-    
-    $('#paste_user').val(author);
-    $('#paste_lang').val(language);    
+    var index = -1;
 
-        // Fetch author and language values from cookies
-    var author = $.cookie('stickynotes_author');
-    var language = $.cookie('stickynotes_language');
-    
-    $('#paste_user').val(author);
-    $('#paste_lang').val(language);
+    if (author != null) {
+        $('#paste_user').val(author);
+    }
+
+    for (i = 1; i <= 10; i++) {
+        var $option = $('#paste_lang option:nth-child(' + i.toString() + ')');
+
+        if ($option.attr('value') == language) {
+            index = i - 1;
+        }
+    }
+
+    if (language != null && index < 0) {
+        $('#paste_lang').val(language);
+    } else if (language != null) {
+        $('#paste_lang').get(0).selectedIndex = index;
+    }
     
     // Insert tab in the code box
     $('#paste_data').keydown(function (e) {      
