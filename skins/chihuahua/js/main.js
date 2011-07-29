@@ -71,13 +71,24 @@ $(document).ready(function() {
     // Fetch author and language values from cookies
     var author = $.cookie('stickynotes_author');
     var language = $.cookie('stickynotes_language');
+    var index = -1;
 
     if (author != null) {
         $('#paste_user').val(author);
     }
 
-    if (language != null) {
+    for (i = 1; i <= 10; i++) {
+        var $option = $('.langlist option:nth-child(' + i.toString() + ')');
+        
+        if ($option.attr('value') == language) {
+            index = i - 1;
+        }
+    }
+
+    if (language != null && index < 0) {
         $('#paste_lang').val(language);
+    } else {
+        $('#paste_lang').get(0).selectedIndex = index;
     }
     
     // Insert tab in the code box
