@@ -64,7 +64,7 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}main (" .
            "author VARCHAR(50) DEFAULT '', " .
            "project VARCHAR(50) DEFAULT '', " .
            "timestamp INT(11) UNSIGNED NOT NULL, " .
-	   "expire INT(11) UNSIGNED NOT NULL, " .
+           "expire INT(11) UNSIGNED NOT NULL, " .
            "data MEDIUMTEXT NOT NULL, " .
            "language VARCHAR(50) NOT NULL DEFAULT 'php', " .
            "password VARCHAR(40) NOT NULL, " .
@@ -81,8 +81,8 @@ $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}session (" .
 
 $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}cron (" .
            "timestamp INT(11) UNSIGNED NOT NULL DEFAULT 0, " .
-	   "locked TINYINT(1) NOT NULL DEFAULT 0)");
-	   
+           "locked TINYINT(1) NOT NULL DEFAULT 0)");
+    
 $db->query("CREATE TABLE IF NOT EXISTS {$db->prefix}users (" .
            "id INT(12) UNSIGNED NOT NULL AUTO_INCREMENT, " .
            "username VARCHAR(50) NOT NULL, " .

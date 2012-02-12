@@ -176,18 +176,18 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 
             $skin->assign(array(
                 'msg_visibility'    => 'visible',
-                'error_visibility'    => 'hidden',
-                'message_text'        => $message,
-                'msg_color'            => 'green',
+                'error_visibility'  => 'hidden',
+                'message_text'      => $message,
+                'msg_color'         => 'green',
             ));
         }
         else
         {
             $skin->assign(array(
                 'msg_visibility'    => 'visible',
-                'error_visibility'    => 'hidden',
-                'message_text'        => $lang->get('paste_error'),
-                'msg_color'            => 'red',
+                'error_visibility'  => 'hidden',
+                'message_text'      => $lang->get('paste_error'),
+                'msg_color'         => 'red',
             ));
         }
     }
@@ -196,21 +196,22 @@ else
 {
     // Assign template data
     $skin->assign(array(
-        'post_user'                => $author,
-        'post_data'                => $data,
+        'post_user'             => $author,
+        'post_data'             => $data,
         'post_' . $language     => 'selected="selected"',
-        'post_checked'            => ($private == "on" ? "checked" : ""),
+        'post_checked'          => ($private == "on" ? "checked" : ""),
         'msg_visibility'        => 'hidden',
     ));
 }
 
 // Assign template data
 $skin->assign(array(
-    'post_lang_list'        => $skin->output('tpl_languages'),
-    'error_visibility'        => ($show_error === true ? 'visible' : 'hidden'),
+    'post_lang_list'            => $skin->output('tpl_languages'),
+    'error_visibility'          => ($show_error === true ? 'visible' : 'hidden'),
 ));
 
 // Yes, that's pretty much everything we need for index page ;)
 $skin->title($lang->get('create_new') . ' &bull; ' . $lang->get('site_title'));
 $skin->output();
+
 ?>

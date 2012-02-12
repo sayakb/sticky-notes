@@ -144,12 +144,12 @@ class skin
         $data = str_replace("[[addon_path]]", $core->root_path() . 'addons', $data);
         $data = str_replace("[[skin_name]]", $this->skin_name_fancy, $data);
         $data = str_replace("[[nav_home_rss]]", $core->rss_uri(), $data);
-        $data = str_replace("[[nav_home]]", $core->path() . (!empty($project) ? "~" .
-                                                   $core->variable('project', '') . '/' : ''), $data);
+        $data = str_replace("[[nav_newpaste]]", $core->path() . (!empty($project) ? "~" .
+                                                $core->variable('project', '') . '/' : ''), $data);
         $data = str_replace("[[nav_archives]]", $core->path() . (!empty($project) ? "~" .
-                                                       $core->variable('project', '') . '/' : '') . 'all/', $data);
+                                                $core->variable('project', '') . '/' : '') . 'all/', $data);
         $data = str_replace("[[nav_rss]]", $core->path() . (!empty($project) ? "~" .
-                                                  $core->variable('project', '') . '/' : '') . 'rss/', $data);
+                                           $core->variable('project', '') . '/' : '') . 'rss/', $data);
         $data = str_replace("[[nav_api]]", $core->path() . 'doc/api/', $data);
         $data = str_replace("[[nav_help]]", $core->path() . 'doc/help/', $data);
         $data = str_replace("[[nav_about]]", $core->path() . 'doc/about/', $data);

@@ -116,7 +116,6 @@ class core
         {
             return $default;
         }
-
     }
 
     // Function to return the script name

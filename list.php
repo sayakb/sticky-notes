@@ -105,7 +105,7 @@ foreach ($rows as $row)
     $geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS, 2);
     $geshi->set_header_type(GESHI_HEADER_DIV);
     $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding: 1px;',
-			   'background: #fbfbfb; text-shadow: 0px 1px #fff; padding: 1px;');
+                           'background: #fbfbfb; text-shadow: 0px 1px #fff; padding: 1px;');
     $geshi->set_overall_style('word-wrap:break-word;');
 
     // Generate the data
@@ -138,16 +138,16 @@ foreach ($rows as $row)
 
     // Assign template variables
     $skin->assign(array(
-        'paste_id'            => $row['id'],
-        'paste_url'            => (!$rss ? $core->path() . ($project ? '~' . $project . '/' : '') . $row['id']
+        'paste_id'          => $row['id'],
+        'paste_url'         => (!$rss ? $core->path() . ($project ? '~' . $project . '/' : '') . $row['id']
                                       : $core->rss_uri() . $row['id']),
         'paste_data'        => $code_data,
         'paste_lang'        => $row['language'],
         'paste_info'        => $info,
         'paste_time'        => $time,
-        'paste_timestamp'    => $timestamp,
-        'error_visibility'    => 'hidden',
-        'geshi_stylesheet'    => $geshi->get_stylesheet(),
+        'paste_timestamp'   => $timestamp,
+        'error_visibility'  => 'hidden',
+        'geshi_stylesheet'  => $geshi->get_stylesheet(),
     ));
 
     if ($rss)
@@ -169,7 +169,7 @@ foreach ($rows as $row)
 if ($rowcount)
 {
     $skin->assign(array(
-        'error_visibility'        => 'hidden',
+        'error_visibility'       => 'hidden',
         'data_visibility'        => 'visible',
     ));
 }
@@ -184,19 +184,19 @@ else
     else
     {
         $skin->assign(array(
-            'error_visibility'        => 'visible',
+            'error_visibility'       => 'visible',
             'data_visibility'        => 'hidden',
         ));
     }
 }
 
 $skin->assign(array(
-    'paste_count'        => $rowcount,
-    'paste_pages'        => ceil($total / 10),
+    'paste_count'       => $rowcount,
+    'paste_pages'       => ceil($total / 10),
     'error_text'        => $lang->get('no_pastes'),
-    'list_data'            => $output_data,
-    'list_pagination'    => $pagination,
-    'feed_time'            => $published,
+    'list_data'         => $output_data,
+    'list_pagination'   => $pagination,
+    'feed_time'         => $published,
 ));
 
 // Output the page
@@ -209,5 +209,6 @@ else
     $skin->title($lang->get('paste_archive') . ' &bull; ' . $lang->get('site_title'));
     $skin->output();
 }
+
 ?>
 

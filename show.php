@@ -221,16 +221,16 @@ $skin->escape($code_data);
 
 // Assign template variables
 $skin->assign(array(
-    'paste_id'            => $row['id'],
+    'paste_id'          => $row['id'],
     'paste_data'        => $code_data,
     'paste_lang'        => $row['language'],
     'paste_info'        => $info,
     'paste_user'        => $user,
-    'paste_timestamp'    => $row['timestamp'],
-    'share_url'            => urlencode($core->rss_uri()),
-    'share_title'        => urlencode($lang->get('paste') . ' #' . $row['id']),
-    'error_visibility'    => 'hidden',
-    'geshi_stylesheet'    => $geshi->get_stylesheet(),
+    'paste_timestamp'   => $row['timestamp'],
+    'share_url'         => urlencode($core->rss_uri()),
+    'share_title'       => urlencode($lang->get('paste') . ' #' . $row['id']),
+    'error_visibility'  => 'hidden',
+    'geshi_stylesheet'  => $geshi->get_stylesheet(),
 ));
 
 // Let's output the page now
@@ -248,5 +248,5 @@ else
 {
     $skin->output();
 }
-?>
 
+?>

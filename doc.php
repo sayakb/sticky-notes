@@ -28,5 +28,6 @@ $skin->init('tpl_doc_' . $cat);
 // Yes, this is a tiny file. I like tiny files.
 $skin->title($lang->get('doc_' . $cat . '_title') . ' &bull; ' . $lang->get('site_title'));
 $skin->output();
+
 ?>
 
