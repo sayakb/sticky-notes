@@ -109,7 +109,7 @@ foreach ($rows as $row)
     $geshi->set_overall_style('word-wrap:break-word;');
 
     // Generate the data
-    $user = empty($row['author']) ? 'Anonymous' : $row['author'];
+    $user = empty($row['author']) ? $lang->get('anonymous') : $row['author'];
     $timestamp = $row['timestamp'];
     $time = date('d M Y, h:i:s e', $timestamp);
     $info = $lang->get('posted_info');

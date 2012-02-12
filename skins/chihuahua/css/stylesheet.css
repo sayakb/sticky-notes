@@ -674,6 +674,10 @@ SELECT
     border-style: solid;
     padding: 1px;
 }
+SELECT:focus
+{
+    border-color: #666;
+}
 INPUT[type=text], INPUT[type=password], INPUT.text, INPUT.title, TEXTAREA
 {
     font-family: inherit;

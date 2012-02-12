@@ -28,6 +28,11 @@ if (empty($project))
     $_GET['project'] = $project;
 }
 
+if (empty($author))
+{
+    $author = $lang->get('anonymous');
+}
+
 if ($expire > 0)
 {
     $expire += $time;

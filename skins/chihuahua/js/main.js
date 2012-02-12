@@ -107,4 +107,18 @@ $(document).ready(function() {
             e.preventDefault();
         }
     });
+
+    // Alias textbox functions
+    $('#paste_user')
+        .click(function() {
+            $(this).focus();
+            $(this).select();
+        })
+        .focusout(function() {
+            var defaultUser = $('#paste_user_default').html();
+            
+            if ($(this).val().length == 0) {
+                $(this).val(defaultUser);
+            }
+        });
 });
