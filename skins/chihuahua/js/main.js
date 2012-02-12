@@ -109,14 +109,15 @@ $(document).ready(function() {
     });
 
     // Alias textbox functions
+    var defaultUser = $('#paste_user_default').html();
+    
     $('#paste_user')
         .click(function() {
-            $(this).focus();
-            $(this).select();
+            if ($(this).val() == defaultUser) {
+                $(this).val('');
+            }
         })
-        .focusout(function() {
-            var defaultUser = $('#paste_user_default').html();
-            
+        .focusout(function() {            
             if ($(this).val().length == 0) {
                 $(this).val(defaultUser);
             }
