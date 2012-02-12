@@ -139,4 +139,19 @@ $(document).ready(function() {
             e.preventDefault();
         }
     });
+    
+    // Alias textbox functions
+    var defaultUser = $('#paste_user_default').html();
+    
+    $('#paste_user')
+        .click(function() {
+            if ($(this).val() == defaultUser) {
+                $(this).val('');
+            }
+        })
+        .focusout(function() {
+            if ($(this).val().length == 0) {
+                $(this).val(defaultUser);
+            }
+        });
 });

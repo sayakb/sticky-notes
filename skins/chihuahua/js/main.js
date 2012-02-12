@@ -117,7 +117,7 @@ $(document).ready(function() {
                 $(this).val('');
             }
         })
-        .focusout(function() {            
+        .focusout(function() {
             if ($(this).val().length == 0) {
                 $(this).val(defaultUser);
             }
