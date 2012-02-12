@@ -57,7 +57,7 @@ if ($submit && !empty($username) && !empty($password))
             
             $core->set_cookie('session_id_admin', $sid, $expire);
             $core->set_cookie('username_admin', $username, $expire);
-            $core->redirect('../');
+            $core->redirect('index.php');
         }
         else
         {

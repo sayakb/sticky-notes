@@ -49,9 +49,7 @@ class module
     function notify($message)
     {
         global $skin;
-        
-        $skin->assign('script_notification', '<script type="text/javascript">' .
-                      'window.onload=function(){alert("' . $message . '");};</script>');
+        $skin->assign('notification_message', $message);
     }
 }
 

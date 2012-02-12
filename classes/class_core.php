@@ -134,20 +134,9 @@ class core
     function base_uri()
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-        $uri = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-        $lindex = strrpos($uri, '/');
-        $uri = substr($uri, 0, $lindex + 1);
-
+        $uri = $protocol . '://' . $_SERVER['HTTP_HOST'] . $this->path();
+        
         return $uri;
-    }
-
-    // Get the full address
-    function rss_uri()
-    {
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-        $uri = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-
-        return preg_replace("/rss\/?/", '', $uri);
     }
     
     // Method to replace square brackets with normal braces

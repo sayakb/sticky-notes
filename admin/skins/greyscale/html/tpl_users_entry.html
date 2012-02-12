@@ -5,7 +5,10 @@
     <td>[[user_name]]</td>
     <td>[[user_email]]</td>
     <td>
-        [[user_edit_link]]
-        [[user_delete_link]]
+        <a href="[[user_edit_link]]"><b>{{edit}}</b></a>
+        <span class="[[delete_visibility]]">
+            &bull;        
+            <a href="[[user_delete_link]]" onclick="return confirm('{{action_confirm}}')"><b>{{delete}}</b></a>
+        </span>
     </td>
 </tr>

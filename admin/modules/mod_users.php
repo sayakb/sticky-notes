@@ -28,19 +28,19 @@ $actions_ary = array('editor', 'delete');
 
 if (!empty($action) && !in_array($action, $actions_ary))
 {
-    $core->redirect($core->path() . 'users/');
+    $core->redirect($core->path() . '?mode=users');
 }
 
 // Create button was pressed
 if ($user_new)
 {
-    $core->redirect($core->path() . 'users/new/');
+    $core->redirect($core->path() . '?mode=users&action=editor');
 }
 
 // Cancel button was pressed
 if ($user_cancel)
 {
-    $core->redirect($core->path() . 'users/');
+    $core->redirect($core->path() . '?mode=users');
 }
 
 // Save button was pressed
@@ -186,7 +186,7 @@ if ($user_save)
             $db->query($sql);
         }
 
-        $core->redirect($core->path() . 'users/');
+        $core->redirect($core->path() . '?mode=users');
     }
         
     // Set editor title
@@ -209,16 +209,13 @@ if (empty($action))
     foreach ($rows as $row)
     {       
         $skin->assign(array(
-            'user_username'     => $row['username'],
-            'user_name'         => htmlentities($row['dispname']),
-            'user_email'        => $row['email'],
-            'user_email_hash'   => md5(strtolower($row['email'])),
-            'user_edit_link'    => '<a href="' . ($core->path() . 'users/' . $row['username'] . '/edit/') .
-                                   '"><b>' . $lang->get('edit') . '</b></a>',
-            'user_delete_link'  => ($row['username'] != $username ? ' &bull; <a href="' .
-                                   ($core->path() . 'users/' . $row['username'] . '/delete/') . 
-                                   '" onclick="return confirm(\'' . $lang->get('action_confirm') . '\')"><b>' .
-                                   $lang->get('delete') . '</b></a>' : ''),
+            'user_username'         => $row['username'],
+            'user_name'             => htmlentities($row['dispname']),
+            'user_email'            => $row['email'],
+            'user_email_hash'       => md5(strtolower($row['email'])),
+            'user_edit_link'        => $core->path() . '?mode=users&action=editor&user=' . $row['username'],
+            'user_delete_link'      => $core->path() . '?mode=users&action=delete&user=' . $row['username'],
+            'delete_visibility'     => $row['username'] == $username ? 'hidden' : '',
         ));
         
         $user_list .= $skin->output('tpl_users_entry', true, true);
@@ -276,7 +273,7 @@ if ($action == 'delete')
         
         $sql = "DELETE FROM {$db->prefix}users WHERE username='{$user}'";
         $db->query($sql);
-        $core->redirect($core->path() . 'users/');
+        $core->redirect($core->path() . '?mode=users');
     }
 }
 

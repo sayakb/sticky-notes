@@ -12,6 +12,6 @@
 $core->unset_cookie('session_id_admin');
 $core->unset_cookie('username_admin');
 $core->set_cookie('logout_do', 'true', time() + 30);
-$core->redirect($core->path() . 'login/');
+$core->redirect($core->path() . 'login.php');
 
 ?>

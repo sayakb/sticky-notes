@@ -90,7 +90,7 @@ $lang_data = array(
     'paste_lang_exp'    => 'Language of the paste data',
     'language_list_exp' => 'For a list of supported language codes ' .
                            'for the <i>paste_lang</i> parameter, see <a href="' .
-                           '[[host]]doc/lang">[[host]]doc/lang</a>.',
+                           'http://qbnz.com/highlighter/">http://qbnz.com/highlighter/</a>.',
     'paste_author'      => 'An alphanumeric username of the paste author',
     'paste_author_exp'  => 'Author of the paste',
     'paste_timestamp'   => 'UNIX timestamp representing paste creation time',
@@ -140,25 +140,32 @@ $lang_data = array(
 
     'doc_api_para3'
         =>
+    'Some URLs in this document will not work if the pastebin server does not have ' .
+    '<a href="http://en.wikipedia.org/wiki/Rewrite_engine">URL rewriting</a> enabled. ' .
+    'Please check out the .htaccess file <a href="https://gitorious.org/sticky-notes/' .
+    'sticky-notes/blobs/master/.htaccess">here</a> to view all mappings.',
+
+    'doc_api_para4'
+        =>
     'To create a new paste, you need to send a GET or POST request with certain ' .
     'parameters to <a>[[host]]</a>',
 
-    'doc_api_para4'
+    'doc_api_para5'
         =>
     'The paste show API listens to both GET and POST requests and returns XML/JSON data. '.
     'Even though you can use both methods to retrieve all information, we strongly recommend ' .
     'that you use POST when sending password over to the pastebin server.',
 
-    'doc_api_para5'
+    'doc_api_para6'
         =>
     'You can send the http GET request in the following format: <a>[[host]]api/&lt;format&gt;/&lt;id&gt;/' .
     '&lt;hash&gt;/&lt;password&gt;</a>.',
 
-    'doc_api_para6'
+    'doc_api_para7'
         =>
     'You may send a POST request to <a>[[host]]show.php</a>',
 
-    'doc_api_para7'
+    'doc_api_para8'
         =>
     'For getting a list of paste IDs, send a GET request to <a>[[host]]api/&lt;format&gt;/all</a> or ' .
     '<a>[[host]]api/&lt;format&gt;/all/&lt;page&gt;</a>.<br />For project specific data, use <a>[[host]]~' .

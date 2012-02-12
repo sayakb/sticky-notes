@@ -139,8 +139,7 @@ foreach ($rows as $row)
     // Assign template variables
     $skin->assign(array(
         'paste_id'          => $row['id'],
-        'paste_url'         => (!$rss ? $core->path() . ($project ? '~' . $project . '/' : '') . $row['id']
-                                      : $core->rss_uri() . $row['id']),
+        'paste_url'         => $nav->get_paste($row['id'], $project, $rss),
         'paste_data'        => $code_data,
         'paste_lang'        => $row['language'],
         'paste_info'        => $info,

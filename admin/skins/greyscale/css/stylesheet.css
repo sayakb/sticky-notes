@@ -462,6 +462,26 @@ label
     top: 35px;
 }
 
+#notification
+{
+    background-color: lightYellow;
+    border: 1px solid #e6db55;
+    border-radius: 0px 0px 3px 3px;
+    padding: 12px;
+    min-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    top: 0px;
+    z-index: 10001;
+}
+
+#notification a:hover
+{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .fieldinfo
 {
     font-size: 0.9em;
@@ -499,6 +519,11 @@ label
 .collapsed
 {
     display: none;
+}
+
+.leftside
+{
+    float: left;
 }
 
 .rightside

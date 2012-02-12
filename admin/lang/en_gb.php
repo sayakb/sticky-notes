@@ -126,6 +126,7 @@ $lang_data = array(
 
     /* Global */
     'back_to_home'      => '&larr; Back to __sitename__', // Do not remove __sitename__
+    'dismiss'           => 'Dismiss',
 );
 
 ?>

@@ -22,7 +22,7 @@ $username = $core->variable('username_admin', '', true);
 // Check if session cookie is set
 if (empty($sid) || empty($username))
 {
-    $core->redirect($core->path() . 'login/');
+    $core->redirect($core->path() . 'login.php');
 }
 else
 {
@@ -72,11 +72,11 @@ $skin->assign(array(
     
     'home_url'          => $core->root_path(),
     'dashboard_url'     => $core->path(),
-    'pastes_url'        => $core->path() . 'pastes/',
-    'users_url'         => $core->path() . 'users/',
-    'ipbans_url'        => $core->path() . 'ipbans/',
-    'config_url'        => $core->path() . 'config/',
-    'logout_url'        => $core->path() . 'logout/',
+    'pastes_url'        => $core->path() . '?mode=pastes',
+    'users_url'         => $core->path() . '?mode=users',
+    'ipbans_url'        => $core->path() . '?mode=ipbans',
+    'config_url'        => $core->path() . '?mode=config',
+    'logout_url'        => $core->path() . '?mode=logout',
     
     'dashboard_class'   => ($mode == "dashboard" ? 'nav_selected' : 'nav_unselected'),
     'pastes_class'      => ($mode == "pastes" ? 'nav_selected' : 'nav_unselected'),

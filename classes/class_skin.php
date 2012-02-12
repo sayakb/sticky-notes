@@ -128,7 +128,7 @@ class skin
     // Function to assign default variables
     function set_defaults($data)
     {
-        global $core, $lang;
+        global $core, $lang, $nav;
 
         $project = $core->variable('project', '');
 
@@ -143,17 +143,14 @@ class skin
         $data = str_replace("[[skin_path]]", $this->skin_path, $data);
         $data = str_replace("[[addon_path]]", $core->root_path() . 'addons', $data);
         $data = str_replace("[[skin_name]]", $this->skin_name_fancy, $data);
-        $data = str_replace("[[nav_home_rss]]", $core->rss_uri(), $data);
-        $data = str_replace("[[nav_newpaste]]", $core->path() . (!empty($project) ? "~" .
-                                                $core->variable('project', '') . '/' : ''), $data);
-        $data = str_replace("[[nav_archives]]", $core->path() . (!empty($project) ? "~" .
-                                                $core->variable('project', '') . '/' : '') . 'all/', $data);
-        $data = str_replace("[[nav_rss]]", $core->path() . (!empty($project) ? "~" .
-                                           $core->variable('project', '') . '/' : '') . 'rss/', $data);
-        $data = str_replace("[[nav_api]]", $core->path() . 'doc/api/', $data);
-        $data = str_replace("[[nav_help]]", $core->path() . 'doc/help/', $data);
-        $data = str_replace("[[nav_about]]", $core->path() . 'doc/about/', $data);
-        $data = str_replace("[[nav_admin]]", $core->path() . 'admin/', $data);
+        $data = str_replace("[[nav_home_rss]]", $core->base_uri(), $data);
+        $data = str_replace("[[nav_newpaste]]", $nav->get('nav_newpaste', $project), $data);
+        $data = str_replace("[[nav_archives]]", $nav->get('nav_archives', $project), $data);
+        $data = str_replace("[[nav_rss]]", $nav->get('nav_rss', $project), $data);
+        $data = str_replace("[[nav_api]]", $nav->get('nav_api'), $data);
+        $data = str_replace("[[nav_help]]", $nav->get('nav_help'), $data);
+        $data = str_replace("[[nav_about]]", $nav->get('nav_about'), $data);
+        $data = str_replace("[[nav_admin]]", $nav->get('nav_admin'), $data);
 
         // Set the tagline
         $header_tagline = '~/paste';
@@ -284,7 +281,7 @@ class skin
     // Function to generate pagination
     function pagination($total_pastes, $current_page)
     {
-        global $lang, $core;
+        global $lang, $core, $nav;
 
         $pages = ceil($total_pastes / 10);
         $pagination = '<span class="pasteinfo">' . $lang->get('pages') . ': </span>';
@@ -311,8 +308,7 @@ class skin
             {
                 if ($idx != $current_page)
                 {
-                    $pagination .= '<a href="' . $core->path() . ($project ? $project . '/' : '') .
-                                   'all/' . ($idx == 1 ? '' : $idx) . '">';
+                    $pagination .= '<a href="' . $nav->get('nav_archives', $project, $idx) . '">';
                 }
 
                 $pagination .= '<span class="page_no';

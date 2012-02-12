@@ -23,8 +23,32 @@ $(document).ready(function() {
         
         return false;
     });
+
+    if ($('#notification_message').html().trim().length > 0) {
+        $('#notification')
+            .show()
+            .css({
+                opacity: 0,
+                top: -1 * $('#notification').outerHeight(),
+                left: ($('body').outerWidth() / 2) - ($('#notification').outerWidth() / 2)
+            })
+            .animate({
+                opacity: 1,
+                top: 0
+            });
+
+        $('#notification_close').click(function() {
+            $('#notification').animate({
+                opacity: 0,
+                top: -1 * $('#notification').outerHeight()
+            }, function() {
+                $('#notification').hide();
+            });
+        });
+    }
     
-    if ($('#stickynotes_update').html().length > 0) {
+    if ($('#stickynotes_update').length &&
+        $('#stickynotes_update').html().length > 0) {
         var url = '?ver=1';
         var current = parseInt($('#stickynotes_build_num').val());
         

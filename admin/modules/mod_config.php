@@ -69,7 +69,7 @@ if ($config_save)
         $config->save();
         
         // Redirect to refresh
-        $core->redirect($core->path() . 'config/');
+        $core->redirect($core->path() . '?mode=config');
     }
 }
 

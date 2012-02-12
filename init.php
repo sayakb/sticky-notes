@@ -22,6 +22,7 @@ include_once('classes/class_db.php');
 include_once('classes/class_lang.php');
 include_once('classes/class_skin.php');
 include_once('classes/class_api.php');
+include_once('classes/class_nav.php');
 include_once('classes/class_spamguard.php');
 include_once('addons/geshi/geshi.php');
 
@@ -36,6 +37,7 @@ $lang = new lang();
 $skin = new skin();
 $api = new api();
 $sg = new spamguard();
+$nav = new nav();
 
 // Instantiate admin classes
 if (defined('IN_ADMIN'))
@@ -48,10 +50,11 @@ if (defined('IN_ADMIN'))
 define('GESHI_LANG_PATH', $core->base_uri() . '/addons/geshi/geshi/');
 
 // Before we do anything, let's add a trailing slash
+// We skip this for admin links
 $url = $core->request_uri();
-$direct = strpos($url, '?');
 
-if (strrpos($url, '/') != (strlen($url) - 1) && !$direct)
+if (strrpos($url, '/') != (strlen($url) - 1) && $nav->rewrite_on &&
+    strpos($url, 'admin') === false && strpos($url, '.php') === false)
 {
     $core->redirect($url . '/');
 }

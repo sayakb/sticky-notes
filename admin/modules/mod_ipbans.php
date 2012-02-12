@@ -23,7 +23,7 @@ if (!empty($ban_del))
     $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip='{$ban_del}'";
     $db->query($sql);
     
-    $core->redirect($core->path() . 'ipbans/');
+    $core->redirect($core->path() . '?mode=ipbans');
 }
 
 // Get a list of IP bans
@@ -58,7 +58,7 @@ if ($ban_submit && !empty($ban_ip))
         // Process the ban
         if (!$already_banned)
         {
-            $db_escape($ban_ip);
+            $db->escape($ban_ip);
 
             $sql = "INSERT INTO {$db->prefix}ipbans (ip) " .
                 "VALUES ('{$ban_ip}')";
