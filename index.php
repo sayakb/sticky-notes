@@ -15,7 +15,7 @@ include_once('init.php');
 $author = $core->variable('paste_user', '');
 $language = $core->variable('paste_lang', 'text');
 $data = $core->variable('paste_data', '');
-$expire = $core->variable('paste_expire', 0);
+$expire = $core->variable('paste_expire', 604800);
 $password = $core->variable('paste_password', '');
 $private = $core->variable('paste_private', '');
 $project = $core->variable('project', '');
