@@ -40,32 +40,33 @@ class nav
         {
             global $core;
 
-            // Define base URLs
-            $rewrite_base = $core->path() . (!empty($project) ? '~' . $project . '/' : '');
-            $general_base = $core->path() . (!empty($project) ? '?project=' . $project : '');
-            $general_list = $core->path() . 'list.php' . (!empty($project) ? '?project=' . $project . '&page=' . $page
-                                                                           : '?page=' . $page);
+            // Set URL bases
+            $base = $core->path();
+            $project_arg = !empty($project) ? '?project=' . $project : '?';
+            $page_arg = $page > 1 ? "&page={$page}" : ""; 
+            $rewrite_base = $core->path() . (!empty($project) ? "~{$project}/" : "");
+            $rewrite_page = $page > 1 ? "{$page}/" : "";
 
             // URLs when rewrite is enabled
             $rewrite_ary = array(
                 'nav_newpaste'      => $rewrite_base,
-                'nav_archives'      => $rewrite_base . 'all/',
-                'nav_rss'           => $rewrite_base . 'rss/',
-                'nav_api'           => $core->path() . 'doc/api/',
-                'nav_help'          => $core->path() . 'doc/help/',
-                'nav_about'         => $core->path() . 'doc/about/',
-                'nav_admin'         => $core->path() . 'admin/',
+                'nav_archives'      => "{$rewrite_base}all/{$rewrite_page}",
+                'nav_rss'           => "{$rewrite_base}rss/",
+                'nav_api'           => "{$rewrite_base}doc/api/",
+                'nav_help'          => "{$rewrite_base}doc/help/",
+                'nav_about'         => "{$rewrite_base}doc/about/",
+                'nav_admin'         => "{$base}admin/",
             );
 
             // URLs when rewrite is disabled
             $general_ary = array(
-                'nav_newpaste'      => $general_base,
-                'nav_archives'      => $general_list,
-                'nav_rss'           => $general_list . '&rss=1',
-                'nav_api'           => $core->path() . 'doc.php?cat=api',
-                'nav_help'          => $core->path() . 'doc.php?cat=help',
-                'nav_about'         => $core->path() . 'doc.php?cat=about',
-                'nav_admin'         => $core->path() . 'admin/',
+                'nav_newpaste'      => "{$base}{$project_arg}",
+                'nav_archives'      => "{$base}list.php{$project_arg}{$page_arg}",
+                'nav_rss'           => "{$base}list.php{$project_arg}&rss=1",
+                'nav_api'           => "{$base}doc.php{$project_arg}&cat=api",
+                'nav_help'          => "{$base}doc.php{$project_arg}&cat=help",
+                'nav_about'         => "{$base}doc.php{$project_arg}&cat=about",
+                'nav_admin'         => "{$base}admin/",
             );
 
             // Generate the navigation URL
@@ -87,23 +88,27 @@ class nav
     }
 
     // Get the URL for a paste
-    function get_paste($paste_id, $project, $rss, $format = '')
+    function get_paste($paste_id, $hash, $project, $rss, $format = '')
     {
         global $core;
         
         try
-        {          
+        {
+            $base_path = $rss ? $core->base_uri() : $core->path();
+            
             if ($this->rewrite_on)
             {
-                $url = !$rss ? $core->path() . ($project ? '~' . $project . '/' : '') . $paste_id .
-                                               ($format ? $format . '/' : '')
-                             : $core->base_uri() . $paste_id;
+                $url = $base_path . (!empty($project) ? "~{$project}/" : "") .
+                                    "{$paste_id}/" .
+                                    (!empty($hash) ? "{$hash}/" : "") .
+                                    (!empty($format) ? "{$format}/" : "");
             }
             else
             {
-                $url = !$rss ? $core->path() . 'show.php?id=' . $paste_id . ($project ? '&project = ' . $project : '') .
-                                                                            ($format ? '&mode=' . $format : '')
-                             : $core->base_uri() . 'show.php?id=' . $paste_id;
+                $url = $base_path . "show.php?id={$paste_id}" .
+                                    (!empty($hash) ? "&hash={$hash}" : "") .
+                                    (!empty($project) ? "&project={$project}" : "") .
+                                    (!empty($format) ? "&mode={$format}" : "");
             }
 
             return $url;

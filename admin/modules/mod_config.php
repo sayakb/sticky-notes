@@ -90,7 +90,7 @@ while ($entry = readdir($skin_dir))
 sort($skin_entries);
 
 foreach($skin_entries as $entry)
-{
+{  
     if (strtolower($entry) == $skin->skin_name)
     {
         $selected = true;

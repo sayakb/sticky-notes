@@ -69,7 +69,7 @@ $total = $row[0]['total'];
 $pagination = $skin->pagination($total, $page);
 
 // Escape the project
-$project = $db->escape($project);
+$db->escape($project);
 
 // Get the list
 $sql = "SELECT * FROM {$db->prefix}main WHERE " .
@@ -139,7 +139,7 @@ foreach ($rows as $row)
     // Assign template variables
     $skin->assign(array(
         'paste_id'          => $row['id'],
-        'paste_url'         => $nav->get_paste($row['id'], $project, $rss),
+        'paste_url'         => $nav->get_paste($row['id'], null, $project, $rss),
         'paste_data'        => $code_data,
         'paste_lang'        => $row['language'],
         'paste_info'        => $info,

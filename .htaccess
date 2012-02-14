@@ -14,6 +14,7 @@ php_flag magic_quotes_gpc off
 
     # Documentation links
     RewriteRule ^doc/([a-z]+)/?$ doc.php?cat=$1 [NC]
+    RewriteRule ^~([a-z.]+)/doc/([a-z]+)/?$ doc.php?project=$1&cat=$2 [NC]
 
     # Home page links
     RewriteRule ^~([a-z.]+)/?$ index.php?project=$1 [NC]

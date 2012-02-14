@@ -166,8 +166,8 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
     {
         if ($new_id)
         {
-            $url = $core->base_uri() .
-                   $new_id . ($private || $password ? "/{$hash}/" : "/");
+            $hash_arg = ($private || $password) ? $hash : '';
+            $url = $nav->get_paste($new_id, $hash_arg, $project, false);
 
             if (!$password)
             {

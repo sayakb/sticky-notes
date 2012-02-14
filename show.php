@@ -15,6 +15,7 @@ include_once('init.php');
 $paste_id = $core->variable('id', 0);
 $hash = $core->variable('hash', 0);
 $mode = $core->variable('mode', '');
+$project = $core->variable('project', '');
 $password = $core->variable('password', '');
 $sid = $core->variable('session_id_' . $paste_id, '', true);
 $mode = strtolower($mode);
@@ -227,7 +228,7 @@ $skin->assign(array(
     'paste_info'        => $info,
     'paste_user'        => $user,
     'paste_timestamp'   => $row['timestamp'],
-    'raw_url'           => $nav->get_paste($row['id'], null, false, 'raw'),
+    'raw_url'           => $nav->get_paste($row['id'], $project, false, 'raw'),
     'share_url'         => urlencode($core->base_uri()),
     'share_title'       => urlencode($lang->get('paste') . ' #' . $row['id']),
     'error_visibility'  => 'hidden',

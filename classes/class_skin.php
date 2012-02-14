@@ -147,9 +147,9 @@ class skin
         $data = str_replace("[[nav_newpaste]]", $nav->get('nav_newpaste', $project), $data);
         $data = str_replace("[[nav_archives]]", $nav->get('nav_archives', $project), $data);
         $data = str_replace("[[nav_rss]]", $nav->get('nav_rss', $project), $data);
-        $data = str_replace("[[nav_api]]", $nav->get('nav_api'), $data);
-        $data = str_replace("[[nav_help]]", $nav->get('nav_help'), $data);
-        $data = str_replace("[[nav_about]]", $nav->get('nav_about'), $data);
+        $data = str_replace("[[nav_api]]", $nav->get('nav_api', $project), $data);
+        $data = str_replace("[[nav_help]]", $nav->get('nav_help', $project), $data);
+        $data = str_replace("[[nav_about]]", $nav->get('nav_about', $project), $data);
         $data = str_replace("[[nav_admin]]", $nav->get('nav_admin'), $data);
 
         // Set the tagline
