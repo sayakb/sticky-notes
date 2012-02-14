@@ -228,7 +228,7 @@ $skin->assign(array(
     'paste_info'        => $info,
     'paste_user'        => $user,
     'paste_timestamp'   => $row['timestamp'],
-    'raw_url'           => $nav->get_paste($row['id'], $project, false, 'raw'),
+    'raw_url'           => $nav->get_paste($row['id'], $hash, $project, false, 'raw'),
     'share_url'         => urlencode($core->base_uri()),
     'share_title'       => urlencode($lang->get('paste') . ' #' . $row['id']),
     'error_visibility'  => 'hidden',
