@@ -166,7 +166,7 @@ if ($user_save)
             // Update the username cookie if user updates own details
             $current_user = $core->variable('username_admin', '', true);
             
-            if ($current_user == $user_username)
+            if ($current_user == $user)
             {
                 $expire = time() + (60 * 30);
                 $core->set_cookie('username_admin', $user_username, $expire);
