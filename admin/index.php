@@ -47,7 +47,7 @@ else
         // Unset the cookie and serve the login screen
         $core->unset_cookie('session_id_admin');
         $core->unset_cookie('username_admin');
-        $core->redirect($core->path() . 'login/');
+        $core->redirect($core->path() . 'login.php');
     }
 }
 
