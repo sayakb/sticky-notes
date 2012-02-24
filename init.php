@@ -72,8 +72,11 @@ if (isset($_POST['paste_project'])) $_POST['paste_project'] = strtolower($_POST[
 // Set up the db connection
 $db->connect();
 
-// Set a root path template var
-$skin->assign('root_path', $core->path());
+// Assign defaut variables
+$skin->assign(array(
+    'root_path'         => $core->path(),
+    'msg_visibility'    => 'hidden',
+));
 
 // Perform cron tasks
 if (!defined('IN_INSTALL') && !defined('IN_ADMIN'))

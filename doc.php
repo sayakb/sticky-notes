@@ -15,7 +15,7 @@ include_once('init.php');
 $cat = $core->variable('cat', '');
 
 // Validate category
-$docs = array('about', 'api', 'help', 'lang');
+$docs = array('about', 'api', 'help');
 
 if (!in_array($cat, $docs))
 {

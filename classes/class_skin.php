@@ -100,12 +100,12 @@ class skin
 
         // Parse template variables
         if (!file_exists($file_name))
-	{
-	    $message  = '<b>Sticky Notes skin read error</b><br /><br />';
-	    $message .= 'Error: Skin file not found<br />';
-	    $message .= 'Verify that the skin selected is present in the skins/ folder';
-	    $gsod->trigger($message);    
-	}
+        {
+            $message  = '<b>Sticky Notes skin read error</b><br /><br />';
+            $message .= 'Error: Skin file not found<br />';
+            $message .= 'Verify that the skin selected is present in the skins/ folder';
+            $gsod->trigger($message);
+        }
         
         $data = ($has_scripts ? $data : '') . file_get_contents($file_name);
         $data = $this->set_defaults($data);
@@ -284,7 +284,6 @@ class skin
         global $lang, $core, $nav;
 
         $pages = ceil($total_pastes / 10);
-        $pagination = '<span class="pasteinfo">' . $lang->get('pages') . ': </span>';
         $project = $core->variable('project', '');
 
         for ($idx = 1; $idx <= $pages; $idx++)
