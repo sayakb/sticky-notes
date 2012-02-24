@@ -158,7 +158,7 @@ class config
                         'http://www.sayakbanerjee.com/sticky-notes/" rel="nofollow">' .
                         'Sticky Notes</a>. Copyright &copy; 2011 <a href="' .
                         'http://sayakbanerjee.com">Sayak Banerjee</a>.') . '";' . "\n");
-            fwrite($fp, '$skin_name = "Elegant";' . "\n");
+            fwrite($fp, '$skin_name = "Bootstrap";' . "\n");
             fwrite($fp, '$admin_skin_name = "Greyscale";' . "\n");
             fwrite($fp, '$lang_name = "en_gb";' . "\n\n");
 
