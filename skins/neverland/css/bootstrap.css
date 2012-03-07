@@ -395,6 +395,7 @@ ul {
 }
 ol {
   list-style: decimal;
+  font-size: 95%;
 }
 li {
   line-height: 1.6em;
