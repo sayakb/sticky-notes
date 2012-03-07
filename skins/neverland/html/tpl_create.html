@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="span6 [[error_box]]">
+        <label for="paste_user">{{your_alias}}</label>
+        <input id="paste_user" name="paste_user" type="text" value="[[post_user]]"
+               size="20" maxlength="50" />
+        <div class="help-inline [[error_visibility]]">{{author_numeric}}</div>
+        <div id="paste_user_default" class="hidden">{{anonymous}}</div>
+    </div>
+    
+    <div class="span6 align-right pull-right">
+        <label for="paste_lang">{{language}}</label>
+        <select id="paste_lang" name="paste_lang" class="monospace">
+        [[post_lang_list]]
+        </select>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="span12">
+        <textarea id="paste_data" class="span12 codebox" name="paste_data" rows="" cols="">[[post_data]]</textarea>
+    </div>
+</div>
+<br />
+
+<div class="row">
+    <div class="span6">
+        <label for="paste_password">{{password}}</label>
+        <input id="paste_password" name="paste_password" type="password" size="20" maxlength="50" />
+        <label for="paste_private" class="checkbox">
+            <input id="paste_private" name="paste_private" type="checkbox" [[post_checked]] />
+            {{private_paste}}
+        </label>
+    </div>
+    
+    <div class="pull-right">
+        <input id="paste_button" class="btn btn-large" type="submit" name="paste_submit" value="{{paste}}" />
+    </div>
+
+    <div id="paste_expire_wrapper" class="pull-right">
+        <select id="paste_expire" name="paste_expire">
+        <option value="1800">{{del_30min}}</option>
+        <option value="21600">{{del_6hrs}}</option>
+        <option value="86400" selected="selected">{{del_1day}}</option>
+        <option value="604800">{{del_1week}}</option>
+        <option value="2592000">{{del_1month}}</option>
+        <option value="0">{{keep_forever}}</option>
+        </select>
+        &nbsp;
+    </div>
+</div>
