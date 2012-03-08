@@ -3569,3 +3569,10 @@ a.thumbnail:hover {
 .list-cozy li {
   line-height: 22px;
 }
+.pre-cache {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}

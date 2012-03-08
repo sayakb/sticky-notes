@@ -3623,3 +3623,10 @@ footer.Neverland {
 .nobumpdown {
     margin-bottom: 0px;
 }
+.pre-cache {
+    position: absolute;
+    top: -1000px;
+    left: -1000px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
