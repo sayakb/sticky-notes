@@ -12,8 +12,6 @@ var privateChecked = false, captured = false;
 
 // Startup function
 $(document).ready(function() {
-    var skinPath = $('#skin_path').html();
-
     // Disable auto complete
     $('#paste_form').attr('autocomplete', 'off');
 
