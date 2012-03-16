@@ -151,11 +151,6 @@ foreach ($available_svcs as $svc)
         $selected = false;
     }
     
-    if ($svc == 'ipban')
-    {
-        continue;
-    }
-    
     $sg_svcs .= '<option' . ($selected ? ' selected="selected"' : '') . '>' .
                $svc . '</option>';
 }

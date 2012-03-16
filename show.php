@@ -192,8 +192,9 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
 // Is it raw? just dump the code then
 if ($mode == 'raw')
 {
-    header('Content-type: text/plain');
+    header('Content-type: text/plain; charset=UTF-8');
     header('Content-Disposition: inline; filename="pastedata"');
+    
     echo $row['data'];
     exit;
 }

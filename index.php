@@ -91,15 +91,19 @@ if ($api_submit && !$mode)
     die;
 }
 
-// Let's do some spam check!
-if ($paste_submit)
-{
-    $sg->validate();
-}
-
-// Save user and language data in cookies
 if ($paste_submit || $api_submit)
 {
+    // Let's do some spam check!
+    $error = $sg->validate($api_submit);
+
+    if ($api_submit && !empty($error))
+    {
+        $skin->assign('error_message', $error);
+        echo $skin->output("api_error.{$mode}");
+        die;
+    }
+
+    // Save user and language data in cookies
     $core->set_cookie('author', $author);
     $core->set_cookie('language', $language);
 }

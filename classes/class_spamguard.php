@@ -21,6 +21,7 @@ class spamguard
         // Register services
         $this->register('ipban');
         $this->register('stealth');
+        $this->register('noflood');
         $this->register('php');
     }
     
@@ -43,7 +44,7 @@ class spamguard
     }
     
     // The parent validation function
-    function validate()    
+    function validate($api_submit = false)
     {
         global $skin, $lang, $config;
         
@@ -82,26 +83,33 @@ class spamguard
         }
         
         // Validation failed. Show an error message and exit
-        if ($validation_failed) 
+        if ($validation_failed)
         {
-            // Show a bounce message
-            $skin->assign(array(
-                'msg_visibility'        => 'visible',
-                'error_visibility'      => 'hidden',
-                'message_text'          => $error_message,
-                'msg_color'             => 'red',
-            ));
-            
-            // Assign template data
-            $skin->assign(array(
-                'post_lang_list'        => $skin->output('tpl_languages'),
-                'error_visibility'      => 'hidden',
-            ));
+            if (!$api_submit)
+            {
+                // Show a bounce message
+                $skin->assign(array(
+                    'msg_visibility'        => 'visible',
+                    'error_visibility'      => 'hidden',
+                    'message_text'          => $error_message,
+                    'msg_color'             => 'red',
+                ));
 
-            // Output the page
-            $skin->title($lang->get('create_new') . ' &bull; ' . $lang->get('site_title'));
-            $skin->output();
-            exit;
+                // Assign template data
+                $skin->assign(array(
+                    'post_lang_list'        => $skin->output('tpl_languages'),
+                    'error_visibility'      => 'hidden',
+                ));
+
+                // Output the page
+                $skin->title($lang->get('create_new') . ' &bull; ' . $lang->get('site_title'));
+                $skin->output();
+                exit;
+            }
+            else
+            {
+                return 'err_spamguard_' . $service_key;
+            }
         }
     }
     
@@ -140,8 +148,35 @@ class spamguard
         $html_exists = strpos(strtolower($data), '<a href') !== false ? true : false;
             
         // Validate
-        if ($html_exists && $language != 'html4strict')
+        if ($html_exists && $language == 'text')
         {   
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    // Flood control: Lets user post every 5 seconds or more
+    function validate_noflood()
+    {
+        // Set global variables
+        global $core, $db;
+
+        // Get time and IP address
+        $cutoff_time = time() - 5;
+        $ip_address = $core->remote_ip();
+
+        // Get all posts made within the last 5 seconds
+        // from the same IP address
+        $sql = "SELECT COUNT(*) AS hits FROM {$db->prefix}main " .
+               "WHERE timestamp >= $cutoff_time AND ip = '{$ip_address}'";
+        $result = $db->query($sql, true);
+
+        // Invalidate if pastes were found
+        if (intval($result['hits']) > 0)
+        {
             return false;
         }
         else

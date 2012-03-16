@@ -55,6 +55,7 @@ $lang_data = array(
     'sg_error_stealth'  => 'Your paste triggered our spam filter and has been dropped',
     'sg_error_php'      => 'Your IP address is listed as a malicious IP',
     'sg_error_ipban'    => 'Your IP address has been banned',
+    'sg_error_noflood'  => 'Please keep an interval of 5 seconds between your pastes',
 
 
     /* Global */
@@ -117,14 +118,18 @@ $lang_data = array(
                            'is returned:',
     'set_this_value'    => 'Set this parameter to true',
     'mode_xml_json'     => 'Pass <i>xml</i> or <i>json</i> to this parameter',
-    'err_ntd'           => 'When no POST request was received by the create API',
+    'err_ntd'           => 'No POST request was received by the create API',
     'err_anum'          => 'The paste author\'s alias should be alphanumeric',
-    'err_save'          => 'Indicates that an error occurred while saving the paste',
+    'err_save'          => 'An error occurred while saving the paste',
     'err_404'           => 'Paste not found',
     'err_invhash'       => 'Invalid hash code',
     'err_passreqd'      => 'Password required to view the paste',
     'err_passwrng'      => 'Incorrect password entered',
     'err_nopastes'      => 'No pastes found',
+    'err_sg_ipban'      => 'Poster\'s IP address is banned',
+    'err_sg_stealth'    => 'The paste triggered the spam filter',
+    'err_sg_noflood'    => 'Poster is trying the flood',
+    'err_sg_php'        => 'Poster\'s IP address is listed as malicious',
 
     'doc_api_para1'
         =>

@@ -285,6 +285,7 @@ class skin
 
         $pages = ceil($total_pastes / 10);
         $project = $core->variable('project', '');
+        $pagination = '';
 
         for ($idx = 1; $idx <= $pages; $idx++)
         {
