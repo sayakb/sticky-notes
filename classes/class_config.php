@@ -162,7 +162,7 @@ class config
             fwrite($fp, '$admin_skin_name = "Greyscale";' . "\n");
             fwrite($fp, '$lang_name = "en_gb";' . "\n\n");
 
-            fwrite($fp, '$sg_services = "stealth,php";' . "\n");
+            fwrite($fp, '$sg_services = "ipban,noflood,stealth,php";' . "\n");
             fwrite($fp, '$sg_php_key = "";' . "\n");
             fwrite($fp, '$sg_php_days = 90;' . "\n");
             fwrite($fp, '$sg_php_score = 50;' . "\n");

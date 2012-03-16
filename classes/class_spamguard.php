@@ -52,12 +52,6 @@ class spamguard
         $error_message = '';
         $services = explode(',', $config->sg_services);
         
-        // Add the IP Ban validation if not added
-        if (!in_array('ipban', $services))
-        {
-            array_push($services, 'ipban');
-        }
-        
         // Perform all validations
         foreach($services as $service_key)
         {
