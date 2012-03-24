@@ -4,7 +4,7 @@
 * @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -95,7 +95,7 @@ class config
             
             fwrite($fp, "<?php\n");
             fwrite($fp, "// Sticky Notes Pastebin configuration file\n");
-            fwrite($fp, "// (C) 2011 Sayak Banerjee. All rights reserved\n\n");
+            fwrite($fp, "// (C) 2012 Sayak Banerjee. All rights reserved\n\n");
             fwrite($fp, "/// This is an auto generated file\n");
             fwrite($fp, "/// Please DO NOT modify manually\n");
             fwrite($fp, "/// Unless you are absolutely sure what you're doing ;-)\n\n");
@@ -140,7 +140,7 @@ class config
             
             fwrite($fp, "<?php\n");
             fwrite($fp, "// Sticky Notes Pastebin configuration file\n");
-            fwrite($fp, "// (C) 2011 Sayak Banerjee. All rights reserved\n\n");
+            fwrite($fp, "// (C) 2012 Sayak Banerjee. All rights reserved\n\n");
             fwrite($fp, "/// This is an auto generated file\n");
             fwrite($fp, "/// Please DO NOT modify manually\n");
             fwrite($fp, "/// Unless you are absolutely sure what you're doing ;-)\n\n");

@@ -3,7 +3,7 @@
 * @ver 0.2
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
 * All rights reserved. Do not remove this copyright notice.
 */
 
