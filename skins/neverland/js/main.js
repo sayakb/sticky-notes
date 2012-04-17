@@ -7,7 +7,7 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
-var IsIe = (navigator.appName.indexOf("Microsoft") >= 0) ? true : false;
+var IsIe = (navigator.appName.indexOf("Microsoft") >= 0);
 var privateChecked = false, captured = false;
 
 // Startup function
