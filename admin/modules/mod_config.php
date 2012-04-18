@@ -20,6 +20,7 @@ $config_php_key = $core->variable('config_php_key', '');
 $config_php_days = $core->variable('config_php_days', 0);
 $config_php_score = $core->variable('config_php_score', 0);
 $config_php_type = $core->variable('config_php_type', 0);
+$config_censor = $core->variable('config_censor', '');
 
 $config_save = isset($_POST['config_save']) ? true : false;
 
@@ -34,6 +35,7 @@ if ($config_save)
     $config_lang = htmlentities($config_lang);
     $config_sg_svcs = htmlentities(implode(',', $config_sg_svcs));
     $config_php_key = htmlentities($config_php_key);
+    $config_censor = htmlentities($config_censor);
     
     // Validate required fields
     if (empty($config_name) || empty($config_title) || empty($config_copyright) ||
@@ -64,6 +66,7 @@ if ($config_save)
         $config->sg_php_days      = $config_php_days;
         $config->sg_php_score     = $config_php_score;
         $config->sg_php_type      = $config_php_type;
+        $config->sg_censor        = $config_censor;
         
         // Save configuration data
         $config->save();
@@ -152,7 +155,7 @@ foreach ($available_svcs as $svc)
     }
     
     $sg_svcs .= '<option' . ($selected ? ' selected="selected"' : '') . '>' .
-               $svc . '</option>';
+                $svc . '</option>';
 }
 
 // Assign skin data
@@ -161,13 +164,14 @@ $skin->assign(array(
     'config_title'        => $config->site_title,
     'config_copyright'    => $config->site_copyright,
     'config_lang'         => $config->lang_name,
-    'config_php_key'           => $config->sg_php_key,
-    'config_php_days'          => $config->sg_php_days,
-    'config_php_score'         => $config->sg_php_score,
-    'config_php_type'          => $config->sg_php_type,
-    'skin_list'         => $skin_list,
-    'admin_skin_list'   => $admin_skin_list, 
-    'sg_svcs'           => $sg_svcs,
+    'config_php_key'      => $config->sg_php_key,
+    'config_php_days'     => $config->sg_php_days,
+    'config_php_score'    => $config->sg_php_score,
+    'config_php_type'     => $config->sg_php_type,
+    'config_censor'       => $config->sg_censor,
+    'skin_list'           => $skin_list,
+    'admin_skin_list'     => $admin_skin_list, 
+    'sg_svcs'             => $sg_svcs,
 ));
 
 // Set the page title

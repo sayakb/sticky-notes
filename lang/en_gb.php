@@ -56,6 +56,7 @@ $lang_data = array(
     'sg_error_php'      => 'Your IP address is listed as a malicious IP',
     'sg_error_ipban'    => 'Your IP address has been banned',
     'sg_error_noflood'  => 'Please keep an interval of 5 seconds between your pastes',
+    'sg_error_censor'   => 'Your paste contains a phrase that has been censored',
 
 
     /* Global */

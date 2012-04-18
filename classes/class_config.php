@@ -28,6 +28,7 @@ class config
     var $sg_php_days;
     var $sg_php_score;
     var $sg_php_type;
+    var $sg_censor;
     
     // Constructor
     function __construct()
@@ -70,18 +71,19 @@ class config
             $this->db_password      = isset($db_password) ? $db_password : '';
             $this->db_prefix        = isset($db_prefix) ? $db_prefix : '';
             
-            $this->site_name        = isset($site_name) ? $site_name : '';
-            $this->site_title       = isset($site_title) ? $site_title : '';
+            $this->site_name        = isset($site_name) ? html_entity_decode($site_name) : '';
+            $this->site_title       = isset($site_title) ? html_entity_decode($site_title) : '';
             $this->site_copyright   = isset($site_copyright) ? html_entity_decode($site_copyright) : '';
-            $this->skin_name        = isset($skin_name) ? $skin_name : '';
-            $this->admin_skin_name  = isset($admin_skin_name) ? $admin_skin_name : '';
-            $this->lang_name        = isset($lang_name) ? $lang_name : '';
+            $this->skin_name        = isset($skin_name) ? html_entity_decode($skin_name) : '';
+            $this->admin_skin_name  = isset($admin_skin_name) ? html_entity_decode($admin_skin_name) : '';
+            $this->lang_name        = isset($lang_name) ? html_entity_decode($lang_name) : '';
             
-            $this->sg_services      = isset($sg_services) ? $sg_services : '';
-            $this->sg_php_key       = isset($sg_php_key) ? $sg_php_key : '';
+            $this->sg_services      = isset($sg_services) ? html_entity_decode($sg_services) : '';
+            $this->sg_php_key       = isset($sg_php_key) ? html_entity_decode($sg_php_key) : '';
             $this->sg_php_days      = isset($sg_php_days) ? $sg_php_days : '';
             $this->sg_php_score     = isset($sg_php_score) ? $sg_php_score : '';
             $this->sg_php_type      = isset($sg_php_type) ? $sg_php_type : '';
+            $this->sg_censor        = isset($sg_censor) ? html_entity_decode($sg_censor) : '';
         }
     }    
     
@@ -119,6 +121,7 @@ class config
             fwrite($fp, '$sg_php_days = ' . $this->sg_php_days . ';' . "\n");
             fwrite($fp, '$sg_php_score = ' . $this->sg_php_score . ';' . "\n");
             fwrite($fp, '$sg_php_type = ' . $this->sg_php_type . ';' . "\n");
+            fwrite($fp, '$sg_censor = "' . $this->sg_censor . '";' . "\n");
 
             fwrite($fp, "?>");
             fclose($fp);
@@ -167,6 +170,7 @@ class config
             fwrite($fp, '$sg_php_days = 90;' . "\n");
             fwrite($fp, '$sg_php_score = 50;' . "\n");
             fwrite($fp, '$sg_php_type = 2;' . "\n");
+            fwrite($fp, '$sg_censor = "";' . "\n");
 
             fwrite($fp, "?>");
             fclose($fp);

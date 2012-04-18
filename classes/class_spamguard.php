@@ -23,6 +23,7 @@ class spamguard
         $this->register('stealth');
         $this->register('noflood');
         $this->register('php');
+        $this->register('censor');
     }
     
     // Function to register services
@@ -139,7 +140,7 @@ class spamguard
         global $lang, $language, $data;
         
         // Check if data has HTML
-        $html_exists = strpos(strtolower($data), '<a href') !== false ? true : false;
+        $html_exists = strpos(strtolower($data), '<a href') !== false;
             
         // Validate
         if ($html_exists && $language == 'text')
@@ -172,6 +173,48 @@ class spamguard
         if (intval($result['hits']) > 0)
         {
             return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    // Phrase censor: drops pastes containing blocked phrases
+    function validate_censor()
+    {
+        // Set global variables
+        global $config, $data;
+
+        if (!empty($config->sg_censor))
+        {
+            // Get array of blocked words
+            $blocked_ary = explode("\n", $config->sg_censor);
+
+            // Traverse through all blocked words
+            foreach ($blocked_ary as $blocked)
+            {
+                $blocked = trim(html_entity_decode($blocked));
+                
+                if (!empty($blocked))
+                {
+                    // Check if blocked phrase exists
+                    $censored = strpos(strtolower($data), strtolower($blocked)) !== false;
+                }
+                else
+                {
+                    continue;
+                }
+
+                // Invalidate if censored
+                if ($censored)
+                {
+                    return false;
+                }
+            }
+
+            // Nothing was censored
+            return true;
         }
         else
         {
