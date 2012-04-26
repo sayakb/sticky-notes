@@ -163,7 +163,7 @@ class config
                         'http://sayakbanerjee.com">Sayak Banerjee</a>.') . '";' . "\n");
             fwrite($fp, '$skin_name = "Bootstrap";' . "\n");
             fwrite($fp, '$admin_skin_name = "Greyscale";' . "\n");
-            fwrite($fp, '$lang_name = "en_gb";' . "\n\n");
+            fwrite($fp, '$lang_name = "en-gb";' . "\n\n");
 
             fwrite($fp, '$sg_services = "ipban,noflood,stealth,php";' . "\n");
             fwrite($fp, '$sg_php_key = "";' . "\n");
