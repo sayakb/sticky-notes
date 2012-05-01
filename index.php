@@ -104,8 +104,8 @@ if ($paste_submit || $api_submit)
     }
 
     // Save user and language data in cookies
-    $core->set_cookie('author', $author);
-    $core->set_cookie('language', $language);
+    $core->set_cookie('author', $author, 365);
+    $core->set_cookie('language', $language, 365);
 }
 
 if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
