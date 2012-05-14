@@ -70,6 +70,7 @@ $lang_data = array(
     'about'             => 'About',
     'help'              => 'Help',
     'admin'             => 'Admin',
+    'kde_links'         => 'KDE Links',
     'anonymous'         => 'Anonymous',
 
 

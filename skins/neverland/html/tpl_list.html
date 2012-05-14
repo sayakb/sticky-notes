@@ -1,20 +1,30 @@
-<h1>
-    <img src="[[skin_path]]/images/list.png" alt="" />
-    {{archives}}
-</h1>
-
-<div class="[[data_visibility]] pages pages-top">
-    [[list_pagination]]
+<div class="row-fluid">
+    <div class="span3">
+        <h1>
+            <img src="[[skin_path]]/images/list.png" alt="" />
+            {{archives}}
+        </h1>
+    </div>
+    <div class="span9 pages pages-top [[data_visibility]]">
+        [[list_pagination]]
+    </div>
 </div>
 
-<div class="[[data_visibility]]">
-    [[list_data]]
+<div class="row-fluid">
+    <div class="span12">
+        <div class="[[data_visibility]]">
+            [[list_data]]
+        </div>
+
+        <div class="hero-unit align-center [[error_visibility]]">
+            <h1>[[error_text]]</h1>
+        </div>
+    </div>
 </div>
 
-<div class="[[error_visibility]] hero-unit align-center">
-    <h1>[[error_text]]</h1>
+<div class="row-fluid">
+    <div class="span12 pages pages-bottom [[data_visibility]]">    
+        [[list_pagination]]
+    </div>
 </div>
-
-<div class="[[data_visibility]] pages pages-bottom">
-    [[list_pagination]]
-</div>
+    
