@@ -53,6 +53,9 @@ if ($paste_id == 0)
     $core->redirect($core->path() . 'all/');
 }
 
+// Escape the paste id
+$db->escape($paste_id);
+
 // Get the paste data
 $sql = "SELECT * FROM {$db->prefix}main WHERE id = {$paste_id} LIMIT 1";
 $row = $db->query($sql, true);
@@ -111,6 +114,9 @@ if ($row['private'] == "1")
 // Check if password cookie is there
 if (!empty($row['password']) && !empty($sid))
 {
+    // Escape the session id
+    $db->escape($sid);
+    
     // Clean up the session data every 30 seconds
     if (time() % 30 == 0)
     {
@@ -208,7 +214,7 @@ $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding:
 $geshi->set_overall_style('word-wrap:break-word;');
 
 // Generate the data
-$user = empty($row['author']) ? $lang->get('anonymous') : $row['author'];
+$user = empty($row['author']) ? $lang->get('anonymous') : htmlentities($row['author']);
 $time = date('d M Y, h:i:s e', $row['timestamp']);
 $info = $lang->get('posted_info');
 
@@ -225,7 +231,7 @@ $skin->escape($code_data);
 $skin->assign(array(
     'paste_id'          => $row['id'],
     'paste_data'        => $code_data,
-    'paste_lang'        => $row['language'],
+    'paste_lang'        => htmlentities($row['language']),
     'paste_info'        => $info,
     'paste_user'        => $user,
     'paste_timestamp'   => $row['timestamp'],

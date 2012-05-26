@@ -27,6 +27,9 @@ if (!$paste_search)
     $paste_id = $paste_id_searched;
 }
 
+// Escape the paste id
+$db->escape($paste_id);
+
 // Make public
 if ($paste_makepub)
 {  

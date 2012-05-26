@@ -58,6 +58,9 @@ else
     $lim_start = ($page * 10) - 10;
 }
 
+// Escape the project
+$db->escape($project);
+
 // Get total number of posts
 $sql = "SELECT COUNT(id) AS total FROM {$db->prefix}main WHERE " .
        (!empty($project) ? "project = '{$project}' AND " : '') .
@@ -67,9 +70,6 @@ $total = $row[0]['total'];
 
 // Get page numbers
 $pagination = $skin->pagination($total, $page);
-
-// Escape the project
-$db->escape($project);
 
 // Get the list
 $sql = "SELECT * FROM {$db->prefix}main WHERE " .
@@ -109,7 +109,7 @@ foreach ($rows as $row)
     $geshi->set_overall_style('word-wrap:break-word;');
 
     // Generate the data
-    $user = empty($row['author']) ? $lang->get('anonymous') : $row['author'];
+    $user = empty($row['author']) ? $lang->get('anonymous') : htmlentities($row['author']);
     $timestamp = $row['timestamp'];
     $time = date('d M Y, h:i:s e', $timestamp);
     $info = $lang->get('posted_info');
@@ -141,7 +141,7 @@ foreach ($rows as $row)
         'paste_id'          => $row['id'],
         'paste_url'         => $nav->get_paste($row['id'], null, $project, $rss),
         'paste_data'        => $code_data,
-        'paste_lang'        => $row['language'],
+        'paste_lang'        => htmlentities($row['language']),
         'paste_info'        => $info,
         'paste_time'        => $time,
         'paste_timestamp'   => $timestamp,

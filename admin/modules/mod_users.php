@@ -111,6 +111,7 @@ if ($user_save)
     ));
     
     // Escape data
+    $db->escape($user_id);
     $db->escape($user_username);
     $db->escape($user_email);
     $db->escape($user_fname);
