@@ -184,7 +184,7 @@ class core
             }
             else if (function_exists("shell_exec")) 
             {
-                $load = explode(' ', 'uptime');
+                $load = explode(' ', `uptime`);
                 return $load[count($load) - 1];
             }
             else 
