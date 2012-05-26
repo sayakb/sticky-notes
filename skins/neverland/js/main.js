@@ -115,7 +115,7 @@ $(document).ready(function() {
 
     // Toggle code wrapping
     $('#wrap_toggle').click(function() {
-        var isWrapped = $('.gdb').css('word-wrap') != 'normal';
+        var isWrapped = $('.codewrap div').css('word-wrap') != 'normal';
 
         if (isWrapped) {
             $('.codewrap div').css('word-wrap', 'normal');
