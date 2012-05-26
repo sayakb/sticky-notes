@@ -72,19 +72,19 @@ class config
             $this->db_password     = isset($db_password) ? $db_password : '';
             $this->db_prefix       = isset($db_prefix) ? $db_prefix : '';
             
-            $this->site_name       = isset($site_name) ? html_entity_decode($site_name) : '';
-            $this->site_title      = isset($site_title) ? html_entity_decode($site_title) : '';
-            $this->site_copyright  = isset($site_copyright) ? html_entity_decode($site_copyright) : '';
-            $this->skin_name       = isset($skin_name) ? html_entity_decode($skin_name) : '';
-            $this->lang_name       = isset($lang_name) ? html_entity_decode($lang_name) : '';
-            $this->admin_skin_name = isset($admin_skin_name) ? html_entity_decode($admin_skin_name) : '';
-            $this->admin_lang_name = isset($admin_lang_name) ? html_entity_decode($admin_lang_name) : '';
+            $this->site_name       = isset($site_name) ? html_entity_decode($site_name) : 'Sticky Notes';
+            $this->site_title      = isset($site_title) ? html_entity_decode($site_title) : 'Sticky Notes pastebin';
+            $this->site_copyright  = isset($site_copyright) ? html_entity_decode($site_copyright) : '&copy; 2012 Sayak Banerjee';
+            $this->skin_name       = isset($skin_name) ? html_entity_decode($skin_name) : 'Bootstrap';
+            $this->lang_name       = isset($lang_name) ? html_entity_decode($lang_name) : 'en-gb';
+            $this->admin_skin_name = isset($admin_skin_name) ? html_entity_decode($admin_skin_name) : 'Greyscale';
+            $this->admin_lang_name = isset($admin_lang_name) ? html_entity_decode($admin_lang_name) : 'en-gb';
             
-            $this->sg_services     = isset($sg_services) ? html_entity_decode($sg_services) : '';
+            $this->sg_services     = isset($sg_services) ? html_entity_decode($sg_services) : 'ipban,noflood,stealth,php,censor';
             $this->sg_php_key      = isset($sg_php_key) ? html_entity_decode($sg_php_key) : '';
-            $this->sg_php_days     = isset($sg_php_days) ? $sg_php_days : '';
-            $this->sg_php_score    = isset($sg_php_score) ? $sg_php_score : '';
-            $this->sg_php_type     = isset($sg_php_type) ? $sg_php_type : '';
+            $this->sg_php_days     = isset($sg_php_days) ? $sg_php_days : 90;
+            $this->sg_php_score    = isset($sg_php_score) ? $sg_php_score : 50;
+            $this->sg_php_type     = isset($sg_php_type) ? $sg_php_type : 2;
             $this->sg_censor       = isset($sg_censor) ? html_entity_decode($sg_censor) : '';
         }
     }    
@@ -162,14 +162,14 @@ class config
             fwrite($fp, '$site_title = "Sticky Notes pastebin";' . "\n");
             fwrite($fp, '$site_copyright = "' . htmlentities('Powered by <a href="' .
                         'http://www.sayakbanerjee.com/sticky-notes/" rel="nofollow">' .
-                        'Sticky Notes</a>. Copyright &copy; 2011 <a href="' .
+                        'Sticky Notes</a>. Copyright &copy; 2012 <a href="' .
                         'http://sayakbanerjee.com">Sayak Banerjee</a>.') . '";' . "\n");
             fwrite($fp, '$skin_name = "Bootstrap";' . "\n");
             fwrite($fp, '$lang_name = "en-gb";' . "\n");
             fwrite($fp, '$admin_skin_name = "Greyscale";' . "\n");
             fwrite($fp, '$admin_lang_name = "en-gb";' . "\n\n");
 
-            fwrite($fp, '$sg_services = "ipban,noflood,stealth,php";' . "\n");
+            fwrite($fp, '$sg_services = "ipban,noflood,stealth,php,censor";' . "\n");
             fwrite($fp, '$sg_php_key = "";' . "\n");
             fwrite($fp, '$sg_php_days = 90;' . "\n");
             fwrite($fp, '$sg_php_score = 50;' . "\n");
