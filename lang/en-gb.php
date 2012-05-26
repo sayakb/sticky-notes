@@ -34,6 +34,7 @@ $lang_data = array(
     'error_hash'        => 'The contents of this paste have been hidden',
     'error'             => 'Error',
     'view_raw'          => 'Raw code',
+    'wrap'              => 'Wrap',
     'pass_protect'      => 'This paste is password protected',
     'submit'            => 'Submit',
     'invalid_password'  => 'You have entered an incorrect password',

@@ -112,4 +112,15 @@ $(document).ready(function() {
                 $(this).val(defaultUser);
             }
         });
+
+    // Toggle code wrapping
+    $('#wrap_toggle').click(function() {
+        var isWrapped = $('.gdb').css('word-wrap') != 'normal';
+
+        if (isWrapped) {
+            $('.gdb').css('word-wrap', 'normal');
+        } else {
+            $('.gdb').css('word-wrap', 'break-word');
+        }
+    });
 });

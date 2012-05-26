@@ -2786,6 +2786,9 @@ button.btn.small, input[type="submit"].btn.small {
 .pagination {
   text-align: right;
 }
+.pagination:first-child {
+  margin-top: 5px;
+}
 .pagination .page_no {
   background: #fff;
   padding: 4px;
@@ -3565,6 +3568,7 @@ a.thumbnail:hover {
 .codewrap_small, .codewrap {
   margin-left: 30px;
   font-family: "Courier New";
+  overflow: auto;
 }
 .list-cozy li {
   line-height: 22px;
