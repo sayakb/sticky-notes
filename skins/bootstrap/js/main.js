@@ -118,9 +118,11 @@ $(document).ready(function() {
         var isWrapped = $('.gdb').css('word-wrap') != 'normal';
 
         if (isWrapped) {
-            $('.gdb').css('word-wrap', 'normal');
+            $('.codewrap div').css('word-wrap', 'normal');
         } else {
-            $('.gdb').css('word-wrap', 'break-word');
+            $('.codewrap div').css('word-wrap', 'break-word');
         }
+
+        return false;
     });
 });
