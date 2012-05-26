@@ -33,7 +33,7 @@ if ($submit && !empty($username) && !empty($password))
     $username = trim($username);
     
     $sql = "SELECT * FROM {$db->prefix}users " .
-           "WHERE username='{$username}'";
+           "WHERE username = '{$username}'";
     $row = $db->query($sql, true);
     
     if ($row != null)
@@ -43,20 +43,19 @@ if ($submit && !empty($username) && !empty($password))
         if ($row['password'] == $hash)
         {
             $sid = sha1(time() . $core->remote_ip());
-            $expire = time() + (60 * 30);
             $stale = time() - (60 * 60);
             
             // Update the DB data
-            $sql = "UPDATE {$db->prefix}users SET sid='', lastlogin=0 " .
-                   "WHERE lastlogin<{$stale} AND lastlogin > 0";
+            $sql = "UPDATE {$db->prefix}users SET sid = '', lastlogin = 0 " .
+                   "WHERE lastlogin < {$stale} AND lastlogin > 0";
             $db->query($sql);
             
             $sql = "UPDATE {$db->prefix}users " .
-                   "SET sid='{$sid}' WHERE username='{$username}'";
+                   "SET sid = '{$sid}' WHERE username = '{$username}'";
             $db->query($sql);
-            
-            $core->set_cookie('session_id_admin', $sid, $expire);
-            $core->set_cookie('username_admin', $username, $expire);
+
+            $core->set_cookie('session_id_admin', $sid);
+            $core->set_cookie('username_admin', $username);
             $core->redirect('index.php');
         }
         else

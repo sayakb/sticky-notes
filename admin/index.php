@@ -32,15 +32,13 @@ else
     
     // Validate sid
     $sql = "SELECT sid FROM {$db->prefix}users " .
-           "WHERE username='{$username}'";
+           "WHERE username = '{$username}'";
     $row = $db->query($sql, true);
     
     if ($sid == $row['sid'])
     {
-        // Set expiry to 30 minutes from now
-        $expire = time() + (60 * 30);
-        $core->set_cookie('session_id_admin', $sid, $expire);
-        $core->set_cookie('username_admin', $username, $expire);
+        $core->set_cookie('session_id_admin', $sid);
+        $core->set_cookie('username_admin', $username);
     }
     else
     {

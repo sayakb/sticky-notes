@@ -60,7 +60,7 @@ else
 
 // Get total number of posts
 $sql = "SELECT COUNT(id) AS total FROM {$db->prefix}main WHERE " .
-       (!empty($project) ? "project='{$project}' AND " : '') .
+       (!empty($project) ? "project = '{$project}' AND " : '') .
        'private = 0';
 $row = $db->query($sql);
 $total = $row[0]['total'];
@@ -73,7 +73,7 @@ $db->escape($project);
 
 // Get the list
 $sql = "SELECT * FROM {$db->prefix}main WHERE " .
-       (!empty($project) ? "project='{$project}' AND " : '') .
+       (!empty($project) ? "project = '{$project}' AND " : '') .
        'private = 0 ORDER BY timestamp ' .
        "DESC LIMIT {$lim_start}, 10";
 $rows = $db->query($sql);

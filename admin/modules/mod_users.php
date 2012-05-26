@@ -119,8 +119,8 @@ if ($user_save)
     $disp_name = $user_fname . ' ' . $user_lname;
 
     $sql = "SELECT username, email FROM {$db->prefix}users " .
-           "WHERE (username='{$user_username}' OR email='{$user_email}')" .
-           ($user_id > 0 ? " AND id<>{$user_id}" : "");
+           "WHERE (username = '{$user_username}' OR email = '{$user_email}')" .
+           ($user_id > 0 ? " AND id <> {$user_id}" : "");
     $row = $db->query($sql, true);
     
     if ($row != null)
@@ -148,7 +148,7 @@ if ($user_save)
             {
                 // Get the salt
                 $sql = "SELECT salt FROM {$db->prefix}users " .
-                       "WHERE id={$user_id}";
+                       "WHERE id = {$user_id}";
                 $row = $db->query($sql, true);
                 
                 // Generate password hash
@@ -159,8 +159,8 @@ if ($user_save)
                    "SET username='{$user_username}', " .
                    "    email='{$user_email}', " .
                    "    dispname='{$disp_name}' " .
-                   (!empty($user_pass1) ? ", password='{$hash}' " : "") .
-                   "WHERE id={$user_id}";
+                   (!empty($user_pass1) ? ", password = '{$hash}' " : "") .
+                   "WHERE id = {$user_id}";
             $db->query($sql);
             
             // Update the username cookie if user updates own details
@@ -237,7 +237,7 @@ if ($action == 'editor' && !$user_save)
         $db->escape($user);
         
         $sql = "SELECT * FROM {$db->prefix}users " .
-               "WHERE username='{$user}'";
+               "WHERE username = '{$user}'";
         $row = $db->query($sql, true);
         
         if (!empty($row['dispname']))
@@ -271,7 +271,7 @@ if ($action == 'delete')
         // Escape the username
         $db->escape($user);
         
-        $sql = "DELETE FROM {$db->prefix}users WHERE username='{$user}'";
+        $sql = "DELETE FROM {$db->prefix}users WHERE username = '{$user}'";
         $db->query($sql);
         $core->redirect($core->path() . '?mode=users');
     }

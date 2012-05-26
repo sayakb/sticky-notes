@@ -54,7 +54,7 @@ if ($paste_id == 0)
 }
 
 // Get the paste data
-$sql = "SELECT * FROM {$db->prefix}main WHERE id={$paste_id} LIMIT 1";
+$sql = "SELECT * FROM {$db->prefix}main WHERE id = {$paste_id} LIMIT 1";
 $row = $db->query($sql, true);
 
 // Check if something was returned
@@ -100,7 +100,7 @@ if ($row['private'] == "1")
         {
             $skin->assign(array(
                 'error_text'        => $lang->get('error_hash'),
-                'data_visibility'    => 'hidden',
+                'data_visibility'   => 'hidden',
             ));
 
             $skin->kill();
@@ -120,7 +120,7 @@ if (!empty($row['password']) && !empty($sid))
     }
 
     $pass_data = $db->query("SELECT sid FROM {$db->prefix}session " .
-                           "WHERE sid = '{$sid}'", true);
+                            "WHERE sid = '{$sid}'", true);
 
     if (!empty($pass_data['sid']))
     {
@@ -183,7 +183,7 @@ if (!empty($row['password']) && !empty($password) && !$exempt)
         // Create a session
         $sid = sha1(time() . $core->remote_ip());
 
-        $core->set_cookie('session_id_' . $paste_id, $sid, time() + 1200);
+        $core->set_cookie('session_id_' . $paste_id, $sid);
         $db->query("INSERT INTO {$db->prefix}session " .
                    "(sid, timestamp) VALUES ('{$sid}', " . time() . ")");
     }

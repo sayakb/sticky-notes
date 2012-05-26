@@ -20,7 +20,7 @@ if (!empty($ban_del))
     $ban_del = urldecode($ban_del);
     $db->escape($ban_del);
     
-    $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip='{$ban_del}'";
+    $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip = '{$ban_del}'";
     $db->query($sql);
     
     $core->redirect($core->path() . '?mode=ipbans');
@@ -61,7 +61,7 @@ if ($ban_submit && !empty($ban_ip))
             $db->escape($ban_ip);
 
             $sql = "INSERT INTO {$db->prefix}ipbans (ip) " .
-                "VALUES ('{$ban_ip}')";
+                   "VALUES ('{$ban_ip}')";
             $db->query($sql);
             
             $module->notify($lang->get('banned_success'));

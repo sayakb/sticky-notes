@@ -73,12 +73,12 @@ class core
 
     // Function to set a cookie
     function set_cookie($name, $value, $expire = 0)
-    {
+    {      
         if ($expire > 0)
         {
             $expire = time() + ($expire * 24 * 60 * 60);
         }
-        
+
         setcookie('stickynotes_' . $name, $value, $expire, $this->root_path());
     }
     

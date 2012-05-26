@@ -31,7 +31,7 @@ if (!$paste_search)
 if ($paste_makepub)
 {  
     $sql = "UPDATE {$db->prefix}main SET private=0, password='' " .
-           "WHERE id={$paste_id}";
+           "WHERE id = {$paste_id}";
     $db->query($sql);
     
     $module->notify($lang->get('made_public'));
@@ -46,7 +46,7 @@ if ($paste_makepub)
 if ($paste_rempass)
 {   
     $sql = "UPDATE {$db->prefix}main SET password='' " .
-           "WHERE id={$paste_id}";
+           "WHERE id = {$paste_id}";
     $db->query($sql);
     
     $module->notify($lang->get('pass_removed'));
@@ -61,7 +61,7 @@ if ($paste_search || $paste_rempass || $paste_makepub)
 {
     $paste_id = trim($paste_id);
     $sql = "SELECT * FROM {$db->prefix}main " .
-           "WHERE id={$paste_id}";
+           "WHERE id = {$paste_id}";
     $row = $db->query($sql, true);
     
     if ($row != null)
@@ -91,7 +91,7 @@ if ($paste_search || $paste_rempass || $paste_makepub)
 if ($paste_delete)
 {
     $sql = "DELETE FROM {$db->prefix}main " .
-           "WHERE id={$paste_id}";
+           "WHERE id = {$paste_id}";
     $db->query($sql);
             
     $paste_id = 0;
