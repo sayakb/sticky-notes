@@ -13,8 +13,9 @@ $config_name = $core->variable('config_name', '');
 $config_title = $core->variable('config_title', '');
 $config_copyright = $core->variable('config_copyright', '');
 $config_skin = $core->variable('config_skin', '');
-$config_admin_skin = $core->variable('config_admin_skin', '');
 $config_lang = $core->variable('config_lang', '');
+$config_admin_skin = $core->variable('config_admin_skin', '');
+$config_admin_lang = $core->variable('config_admin_lang', '');
 $config_sg_svcs = $core->variable('config_sg_svcs', array(''));
 $config_php_key = $core->variable('config_php_key', '');
 $config_php_days = $core->variable('config_php_days', 0);
@@ -31,8 +32,9 @@ if ($config_save)
     $config_name = htmlentities($config_name);
     $config_title = htmlentities($config_title);
     $config_skin = htmlentities($config_skin);
-    $config_admin_skin = htmlentities($config_admin_skin);
     $config_lang = htmlentities($config_lang);
+    $config_admin_skin = htmlentities($config_admin_skin);
+    $config_admin_lang = htmlentities($config_admin_lang);
     $config_sg_svcs = htmlentities(implode(',', $config_sg_svcs));
     $config_php_key = htmlentities($config_php_key);
     $config_censor = htmlentities($config_censor);
@@ -54,19 +56,20 @@ if ($config_save)
     else
     {
         // Update configuration data
-        $config->site_name        = $config_name;
-        $config->site_title       = $config_title;
-        $config->site_copyright   = $config_copyright;
-        $config->skin_name        = $config_skin;
-        $config->admin_skin_name  = $config_admin_skin;
-        $config->lang_name        = $config_lang;
+        $config->site_name       = $config_name;
+        $config->site_title      = $config_title;
+        $config->site_copyright  = $config_copyright;
+        $config->skin_name       = $config_skin;
+        $config->lang_name       = $config_lang;
+        $config->admin_skin_name = $config_admin_skin;
+        $config->admin_lang_name = $config_admin_lang;
         
-        $config->sg_services      = $config_sg_svcs;
-        $config->sg_php_key       = $config_php_key;
-        $config->sg_php_days      = $config_php_days;
-        $config->sg_php_score     = $config_php_score;
-        $config->sg_php_type      = $config_php_type;
-        $config->sg_censor        = $config_censor;
+        $config->sg_services     = $config_sg_svcs;
+        $config->sg_php_key      = $config_php_key;
+        $config->sg_php_days     = $config_php_days;
+        $config->sg_php_score    = $config_php_score;
+        $config->sg_php_type     = $config_php_type;
+        $config->sg_censor       = $config_censor;
         
         // Save configuration data
         $config->save();
@@ -76,67 +79,11 @@ if ($config_save)
     }
 }
 
-// Generate the skins list
-$skin_dir = opendir(realpath('../skins'));
-$skin_list = '';
-$skin_entries = array();
-
-while ($entry = readdir($skin_dir))
-{
-    if ($entry != '.' && $entry != '..')
-    {
-        $skin_entries[] = strtoupper(substr($entry, 0, 1)) . 
-                          substr($entry, 1, strlen($entry) - 1);
-    }
-}
-
-sort($skin_entries);
-
-foreach($skin_entries as $entry)
-{  
-    if (strtolower($entry) == $skin->skin_name)
-    {
-        $selected = true;
-    }
-    else
-    {
-        $selected = false;
-    }
-    
-    $skin_list .= '<option' . ($selected ? ' selected="selected"' : '') .
-                    '>' . $entry . '</option>';
-}
-
-// Generate the admin skins list
-$admin_skin_dir = opendir(realpath('./skins'));
-$admin_skin_list = '';
-$admin_skin_entries = array();
-
-while ($entry = readdir($admin_skin_dir))
-{
-    if ($entry != '.' && $entry != '..')
-    {
-        $admin_skin_entries[] = strtoupper(substr($entry, 0, 1)) . 
-                                substr($entry, 1, strlen($entry) - 1);
-    }
-}
-
-sort($admin_skin_entries);
-
-foreach($admin_skin_entries as $entry)
-{
-    if (strtolower($entry) == $skin->admin_skin_name)
-    {
-        $selected = true;
-    }
-    else
-    {
-        $selected = false;
-    }
-    
-    $admin_skin_list .= '<option' . ($selected ? ' selected="selected"' : '') .
-                    '>' . $entry . '</option>';
-}
+// Generate the skin and language lists
+$skin_list       = $skin->get_list('../skins', "", $config->skin_name, true);
+$lang_list       = $skin->get_list('../lang', "index.html", $config->lang_name, false, true);
+$admin_skin_list = $skin->get_list('./skins', "", $config->admin_skin_name, true);
+$admin_lang_list = $skin->get_list('./lang', "index.html", $config->admin_lang_name, false, true);
 
 // Generate the anti-spam services list
 $enabled_svcs = explode(',', $config->sg_services);
@@ -145,15 +92,7 @@ $sg_svcs = '';
 
 foreach ($available_svcs as $svc)
 {
-    if (in_array($svc, $enabled_svcs))
-    {
-        $selected = true;
-    }
-    else
-    {
-        $selected = false;
-    }
-    
+    $selected =  (in_array($svc, $enabled_svcs));    
     $sg_svcs .= '<option' . ($selected ? ' selected="selected"' : '') . '>' .
                 $svc . '</option>';
 }
@@ -163,14 +102,15 @@ $skin->assign(array(
     'config_name'         => $config->site_name,
     'config_title'        => $config->site_title,
     'config_copyright'    => $config->site_copyright,
-    'config_lang'         => $config->lang_name,
     'config_php_key'      => $config->sg_php_key,
     'config_php_days'     => $config->sg_php_days,
     'config_php_score'    => $config->sg_php_score,
     'config_php_type'     => $config->sg_php_type,
     'config_censor'       => $config->sg_censor,
     'skin_list'           => $skin_list,
-    'admin_skin_list'     => $admin_skin_list, 
+    'lang_list'           => $lang_list,
+    'admin_skin_list'     => $admin_skin_list,
+    'admin_lang_list'     => $admin_lang_list,
     'sg_svcs'             => $sg_svcs,
 ));
 

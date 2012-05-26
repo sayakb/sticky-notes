@@ -21,8 +21,9 @@ class config
     var $site_title;
     var $site_copyright;
     var $skin_name;
-    var $admin_skin_name;
     var $lang_name;
+    var $admin_skin_name;
+    var $admin_lang_name;
     var $sg_services;
     var $sg_php_key;
     var $sg_php_days;
@@ -64,26 +65,27 @@ class config
         // Set the data
         if ($load_data)
         {
-            $this->db_host          = isset($db_host) ? $db_host : '';
-            $this->db_port          = isset($db_port) ? $db_port : '';
-            $this->db_name          = isset($db_name) ? $db_name : '';
-            $this->db_username      = isset($db_username) ? $db_username : '';
-            $this->db_password      = isset($db_password) ? $db_password : '';
-            $this->db_prefix        = isset($db_prefix) ? $db_prefix : '';
+            $this->db_host         = isset($db_host) ? $db_host : '';
+            $this->db_port         = isset($db_port) ? $db_port : '';
+            $this->db_name         = isset($db_name) ? $db_name : '';
+            $this->db_username     = isset($db_username) ? $db_username : '';
+            $this->db_password     = isset($db_password) ? $db_password : '';
+            $this->db_prefix       = isset($db_prefix) ? $db_prefix : '';
             
-            $this->site_name        = isset($site_name) ? html_entity_decode($site_name) : '';
-            $this->site_title       = isset($site_title) ? html_entity_decode($site_title) : '';
-            $this->site_copyright   = isset($site_copyright) ? html_entity_decode($site_copyright) : '';
-            $this->skin_name        = isset($skin_name) ? html_entity_decode($skin_name) : '';
-            $this->admin_skin_name  = isset($admin_skin_name) ? html_entity_decode($admin_skin_name) : '';
-            $this->lang_name        = isset($lang_name) ? html_entity_decode($lang_name) : '';
+            $this->site_name       = isset($site_name) ? html_entity_decode($site_name) : '';
+            $this->site_title      = isset($site_title) ? html_entity_decode($site_title) : '';
+            $this->site_copyright  = isset($site_copyright) ? html_entity_decode($site_copyright) : '';
+            $this->skin_name       = isset($skin_name) ? html_entity_decode($skin_name) : '';
+            $this->lang_name       = isset($lang_name) ? html_entity_decode($lang_name) : '';
+            $this->admin_skin_name = isset($admin_skin_name) ? html_entity_decode($admin_skin_name) : '';
+            $this->admin_lang_name = isset($admin_lang_name) ? html_entity_decode($admin_lang_name) : '';
             
-            $this->sg_services      = isset($sg_services) ? html_entity_decode($sg_services) : '';
-            $this->sg_php_key       = isset($sg_php_key) ? html_entity_decode($sg_php_key) : '';
-            $this->sg_php_days      = isset($sg_php_days) ? $sg_php_days : '';
-            $this->sg_php_score     = isset($sg_php_score) ? $sg_php_score : '';
-            $this->sg_php_type      = isset($sg_php_type) ? $sg_php_type : '';
-            $this->sg_censor        = isset($sg_censor) ? html_entity_decode($sg_censor) : '';
+            $this->sg_services     = isset($sg_services) ? html_entity_decode($sg_services) : '';
+            $this->sg_php_key      = isset($sg_php_key) ? html_entity_decode($sg_php_key) : '';
+            $this->sg_php_days     = isset($sg_php_days) ? $sg_php_days : '';
+            $this->sg_php_score    = isset($sg_php_score) ? $sg_php_score : '';
+            $this->sg_php_type     = isset($sg_php_type) ? $sg_php_type : '';
+            $this->sg_censor       = isset($sg_censor) ? html_entity_decode($sg_censor) : '';
         }
     }    
     
@@ -113,8 +115,9 @@ class config
             fwrite($fp, '$site_title = "' . $this->site_title . '";' . "\n");
             fwrite($fp, '$site_copyright = "' . htmlentities($this->site_copyright) . '";' . "\n");
             fwrite($fp, '$skin_name = "' . $this->skin_name . '";' . "\n");
+            fwrite($fp, '$lang_name = "' . $this->lang_name . '";' . "\n");
             fwrite($fp, '$admin_skin_name = "' . $this->admin_skin_name . '";' . "\n");
-            fwrite($fp, '$lang_name = "' . $this->lang_name . '";' . "\n\n");
+            fwrite($fp, '$admin_lang_name = "' . $this->admin_lang_name . '";' . "\n\n");
 
             fwrite($fp, '$sg_services = "' . $this->sg_services . '";' . "\n");
             fwrite($fp, '$sg_php_key = "' . $this->sg_php_key . '";' . "\n");
@@ -162,8 +165,9 @@ class config
                         'Sticky Notes</a>. Copyright &copy; 2011 <a href="' .
                         'http://sayakbanerjee.com">Sayak Banerjee</a>.') . '";' . "\n");
             fwrite($fp, '$skin_name = "Bootstrap";' . "\n");
+            fwrite($fp, '$lang_name = "en-gb";' . "\n");
             fwrite($fp, '$admin_skin_name = "Greyscale";' . "\n");
-            fwrite($fp, '$lang_name = "en-gb";' . "\n\n");
+            fwrite($fp, '$admin_lang_name = "en-gb";' . "\n\n");
 
             fwrite($fp, '$sg_services = "ipban,noflood,stealth,php";' . "\n");
             fwrite($fp, '$sg_php_key = "";' . "\n");

@@ -45,7 +45,20 @@
     
     <tr>
         <td>{{sitelang}}</td>
-        <td><input type="text" name="config_lang" value="[[config_lang]]" size="30" class="textbox" /></td>
+        <td>
+            <select class="droplist" name="config_lang">
+                [[lang_list]]
+            </select>
+        </td>
+    </tr>
+
+    <tr>
+        <td>{{adminlang}}</td>
+        <td>
+            <select class="droplist" name="config_admin_lang">
+                [[admin_lang_list]]
+            </select>
+        </td>
     </tr>
     </table>
     

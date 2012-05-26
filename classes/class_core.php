@@ -65,6 +65,14 @@ class core
         }
     }
 
+    // Check if we are in admin path
+    function in_admin()
+    {
+        $path = $this->path();
+
+        return (strpos($path, 'admin') !== false);
+    }
+
     // Function to return remote IP
     function remote_ip()
     {

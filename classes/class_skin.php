@@ -325,6 +325,50 @@ class skin
         return $pagination;
     }
 
+    // Creates a list of options from directory contents
+    function get_list($relative_path, $excluded_files = "", $selected_entry = false, $pascal_case = false, $trim_extension = false)
+    {
+        $dir = opendir(realpath($relative_path));
+        $list = '';
+        $entries = array();
+
+        if (!is_array($excluded_files))
+        {
+            $excluded_files = array($excluded_files);
+        }
+
+        while ($entry = readdir($dir))
+        {
+            if ($entry != '.' && $entry != '..' && !in_array($entry, $excluded_files))
+            {
+                if ($trim_extension)
+                {
+                    $entry = substr($entry, 0, strrpos($entry, '.'));
+                }
+                
+                if ($pascal_case)
+                {
+                    $entries[] = strtoupper(substr($entry, 0, 1)) . substr($entry, 1, strlen($entry) - 1);
+                }
+                else
+                {
+                    $entries[] = $entry;
+                }
+            }
+        }
+
+        sort($entries);
+
+        foreach($entries as $entry)
+        {
+            $selected = ($selected_entry && strtolower($entry) == $selected_entry);
+            $list .= '<option' . ($selected ? ' selected="selected"' : '') . '>' .
+                     $entry . '</option>';
+        }
+
+        return $list;
+    }
+
     // Function to prematurely end a session
     function kill()
     {

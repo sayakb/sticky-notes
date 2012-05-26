@@ -12,13 +12,15 @@ class lang
 {
     // Class wide variables
     var $lang_name;
+    var $admin_lang_name;
 
     // Constructor
     function __construct()
     {
         global $config;
 
-        $this->lang_name = $config->lang_name;
+        $this->lang_name       = $config->lang_name;
+        $this->admin_lang_name = $config->admin_lang_name;
     }
 
     // Function to parse localization data
@@ -27,17 +29,19 @@ class lang
         global $core, $gsod;
 
         // Get language data from lang file
-        if (file_exists(realpath('lang/' . $this->lang_name . '.php')))
+        $lang_file = $core->in_admin() ? $this->admin_lang_name : $this->lang_name; 
+        
+        if (file_exists(realpath("lang/{$lang_file}.php")))
         {
-            include('lang/' . $this->lang_name . '.php');
+            include("lang/{$lang_file}.php");
         }
         else
-	{
-	    $message  = '<b>Sticky Notes language parse error</b><br /><br />';
-	    $message .= 'Error: Language file not found<br />';
-	    $message .= 'Verify that the language selected is present in the lang/ folder';
-	    $gsod->trigger($message);	    
-	}
+        {
+            $message  = '<b>Sticky Notes language parse error</b><br /><br />';
+            $message .= 'Error: Language file not found<br />';
+            $message .= 'Verify that the language selected is present in the lang/ folder';
+            $gsod->trigger($message);
+        }
 
         $data = $this->set_defaults($data);
 

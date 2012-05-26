@@ -75,6 +75,7 @@ $lang_data = array(
     'siteskin'              => 'Skin name',
     'admin_skin'            => 'Admin panel skin',
     'sitelang'              => 'Language',
+    'adminlang'             => 'Admin panel lang',
     'antispam_config'       => 'Anti-spam configuration',
     'enabled_sg_svcs'       => 'Enabled anti-spam services',
     'svcs_exp'              => 'Hold down the Ctrl key to select multiple services',
