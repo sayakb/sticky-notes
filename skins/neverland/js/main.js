@@ -115,12 +115,12 @@ $(document).ready(function() {
 
     // Toggle code wrapping
     $('#wrap_toggle').click(function() {
-        var isWrapped = $('.codewrap div').css('word-wrap') != 'normal';
+        var isWrapped = $('.codewrap div').css('white-space') != 'nowrap';
 
         if (isWrapped) {
-            $('.codewrap div').css('word-wrap', 'normal');
+            $('.codewrap div').css('white-space', 'nowrap');
         } else {
-            $('.codewrap div').css('word-wrap', 'break-word');
+            $('.codewrap div').css('white-space', 'inherit');
         }
 
         return false;
