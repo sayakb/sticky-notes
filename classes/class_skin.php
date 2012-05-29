@@ -361,7 +361,7 @@ class skin
 
         foreach($entries as $entry)
         {
-            $selected = ($selected_entry && strtolower($entry) == $selected_entry);
+            $selected = ($selected_entry !== false && strtolower($entry) == strtolower($selected_entry));
             $list .= '<option' . ($selected ? ' selected="selected"' : '') . '>' .
                      $entry . '</option>';
         }
