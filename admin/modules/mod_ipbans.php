@@ -12,7 +12,7 @@
 $ban_ip = $core->variable('ipban_ip', '');
 $ban_del = $core->variable('delete', '');
 
-$ban_submit = isset($_POST['ipban_submit']) ? true : false;
+$ban_submit = isset($_POST['ipban_submit']);
 
 // Delete IP from banned list
 if (!empty($ban_del))

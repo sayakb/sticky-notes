@@ -14,7 +14,7 @@ include_once('../init.php');
 // Collect some data
 $username = $core->variable('login_user', '');
 $password = $core->variable('login_pass', '');
-$submit = isset($_POST['login_submit']) ? true : false;
+$submit = isset($_POST['login_submit']);
 $logout = $core->variable('logout_do', '', true);
 
 // Global variables

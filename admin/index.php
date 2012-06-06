@@ -73,6 +73,7 @@ $skin->assign(array(
     'pastes_url'        => $core->path() . '?mode=pastes',
     'users_url'         => $core->path() . '?mode=users',
     'ipbans_url'        => $core->path() . '?mode=ipbans',
+    'auth_url'          => $core->path() . '?mode=auth',
     'config_url'        => $core->path() . '?mode=config',
     'logout_url'        => $core->path() . '?mode=logout',
     
@@ -80,6 +81,7 @@ $skin->assign(array(
     'pastes_class'      => ($mode == "pastes" ? 'nav_selected' : 'nav_unselected'),
     'users_class'       => ($mode == "users" ? 'nav_selected' : 'nav_unselected'),
     'ipbans_class'      => ($mode == "ipbans" ? 'nav_selected' : 'nav_unselected'),
+    'auth_class'        => ($mode == "auth" ? 'nav_selected' : 'nav_unselected'),
     'config_class'      => ($mode == "config" ? 'nav_selected' : 'nav_unselected'),
 )); 
 

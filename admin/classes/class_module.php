@@ -13,6 +13,8 @@ class module
     // Method to load a module
     function load($module_name)
     {
+        global $gsod;
+        
         if (file_exists(realpath("modules/mod_{$module_name}.php")))
         {
             // Set globals
@@ -27,7 +29,8 @@ class module
             $message  = 'Sticky Notes module error<br /><br />';
             $message .= 'Error: Cannot find specified module<br />';
             $message .= 'Make sure the module scripts exist inside the admin/modules/ folder';
-            die($message);
+            
+            $gsod->trigger($message);
         }
     }
     
@@ -37,7 +40,7 @@ class module
         global $core;
         
         // Available modes
-        $modes_ary = array('dashboard', 'pastes', 'users', 'ipbans', 'config', 'logout');
+        $modes_ary = array('dashboard', 'pastes', 'users', 'ipbans', 'auth', 'config', 'logout');
         
         if (!in_array($mode, $modes_ary))
         {

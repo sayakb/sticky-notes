@@ -13,6 +13,7 @@ $lang_data = array(
     'manage_pastes'         => 'Manage Pastes',
     'manage_users'          => 'Manage Users',
     'manage_ip_bans'        => 'Manage IP Bans',
+    'authentication'        => 'Authentication',
     'site_config'           => 'Site Configuration',
     'dashboard'             => 'Dashboard',
     'logout'                => 'Log Out',
@@ -107,6 +108,33 @@ $lang_data = array(
     'censored_phrases'      => 'Censored phrases',
     'censored_phrases_exp'  => 'Pastes containing these phrases will be dropped (case <b>insensitive</b>).<br />' .
                                'Enter each phrase in a new line',
+    'admin_auth_settings'   => 'Admin authentication settings',
+    'auth_method'           => 'Auth method',
+    'database'              => 'Database',
+    'ldap'                  => 'LDAP',
+    'ldap_server'           => 'LDAP server name',
+    'ldap_server_exp'       => 'If using LDAP this is the hostname or IP address of the LDAP server. Alternatively ' .
+                               'you can specify an URL like ldap://hostname:port/',
+    'ldap_port'             => 'LDAP server port',
+    'ldap_port_exp'         => 'Optionally you can specify a port which should be used to connect to the LDAP ' .
+                               'server instead of the default port 389.',
+    'ldap_base_dn'          => 'LDAP base <i>dn</i>',
+    'ldap_base_dn_exp'      => 'This is the Distinguished Name, locating the user information, e.g. o=My Company,c=US.',
+    'ldap_uid'              => 'LDAP <i>uid</i>',
+    'ldap_uid_exp'          => 'This is the key under which to search for a given login identity, e.g. uid, sn, etc.',
+    'ldap_filter'           => 'LDAP user filter',
+    'ldap_filter_exp'       => 'Optionally you can further limit the searched objects with additional filters. ' .
+                               'For example objectClass=posixGroup would result in the use of (&amp;(uid=$username)' .
+                               '(objectClass=posixGroup))',
+    'ldap_user_dn'          => 'LDAP user <i>dn</i>',
+    'ldap_user_dn_exp'      => 'Leave blank to use anonymous binding. If filled in, sticky-notes uses the specified ' .
+                               'distinguished name on login attempts to find the correct user, e.g. uid=Username,' .
+                               'ou=MyUnit,o=MyCompany,c=US. Required for Active Directory Servers.',
+    'ldap_password'         => 'LDAP password',
+    'ldap_password_exp'     => 'Leave blank to use anonymous binding, otherwise fill in the password for the above ' .
+                               'user. Required for Active Directory Servers.<br />' .
+                               '<i><b>Warning:</b> This password will be stored as plain text in the config file, ' .
+                               'visible to everybody who can access your configuration file.</i>',
     
     'username_required'         => 'Please enter the username',
     'email_required'            => 'Please enter e-mail address',
@@ -118,8 +146,10 @@ $lang_data = array(
     'password_required'         => 'Please fill in the password fields',
     'username_taken'            => 'Username already registered. Please choose a different username',
     'email_taken'               => 'E-mail address already registered. Please choose a different e-mail',
+    'auth_reqd'                 => 'Please fill in all the mandatory fields',
     'config_reqd'               => 'All fields under Site Configuration are mandatory',
     'config_cantwrite'          => 'The config file isn\'t writable. Please check file permissions',
+    'no_user_ldap'              => 'This module is unavailable when LDAP authentication is in use',
 
     /* Page: login.php */
     'admin_login'       => 'Administration Login',

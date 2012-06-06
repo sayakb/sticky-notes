@@ -12,10 +12,10 @@
 $paste_id = $core->variable('paste_id', 0);
 $paste_id_searched = $core->variable('paste_id_searched', 0);
 
-$paste_search = isset($_POST['paste_search']) ? true : false;
-$paste_rempass = isset($_POST['paste_rempass']) ? true : false;
-$paste_makepub = isset($_POST['paste_makepub']) ? true : false;
-$paste_delete = isset($_POST['paste_delete']) ? true : false;
+$paste_search = isset($_POST['paste_search']);
+$paste_rempass = isset($_POST['paste_rempass']);
+$paste_makepub = isset($_POST['paste_makepub']);
+$paste_delete = isset($_POST['paste_delete']);
 
 // Set globals
 $spacer_visibility = 'visible';

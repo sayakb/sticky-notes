@@ -155,8 +155,7 @@ foreach ($rows as $row)
     }
     else if ($mode)
     {
-        $output_data .= $api->parse($mode, $count, $row['id'],
-                                   ($count == $rowcount ? true : false));
+        $output_data .= $api->parse($mode, $count, $row['id'], ($count == $rowcount));
     }
     else
     {

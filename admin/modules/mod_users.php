@@ -19,9 +19,9 @@ $user_lname = $core->variable('user_lname', '');
 $user_pass1 = $core->variable('user_pass1', '');
 $user_pass2 = $core->variable('user_pass2', '');
 
-$user_new = isset($_POST['user_new']) ? true : false;
-$user_save = isset($_POST['user_save']) ? true : false;
-$user_cancel = isset($_POST['user_cancel']) ? true : false;
+$user_new = isset($_POST['user_new']);
+$user_save = isset($_POST['user_save']);
+$user_cancel = isset($_POST['user_cancel']);
 
 // Validate action
 $actions_ary = array('editor', 'delete');
@@ -200,29 +200,36 @@ if ($user_save)
 // No action specified, so show a user list
 if (empty($action))
 {
-    // Set globals
-    $module_name = 'tpl_users_list';
-    $user_list = '';
-    
-    $sql = "SELECT * FROM {$db->prefix}users ORDER BY username ASC";
-    $rows = $db->query($sql);
-    
-    foreach ($rows as $row)
-    {       
-        $skin->assign(array(
-            'user_username'         => $row['username'],
-            'user_name'             => htmlentities($row['dispname']),
-            'user_email'            => $row['email'],
-            'user_email_hash'       => md5(strtolower($row['email'])),
-            'user_edit_link'        => $core->path() . '?mode=users&action=editor&user=' . $row['username'],
-            'user_delete_link'      => $core->path() . '?mode=users&action=delete&user=' . $row['username'],
-            'delete_visibility'     => $row['username'] == $username ? 'hidden' : '',
-        ));
-        
-        $user_list .= $skin->output('tpl_users_entry', true, true);
+    if ($config->auth_method == 'db')
+    {
+        // Set globals
+        $module_name = 'tpl_users_list';
+        $user_list = '';
+
+        $sql = "SELECT * FROM {$db->prefix}users ORDER BY username ASC";
+        $rows = $db->query($sql);
+
+        foreach ($rows as $row)
+        {
+            $skin->assign(array(
+                'user_username'         => $row['username'],
+                'user_name'             => htmlentities($row['dispname']),
+                'user_email'            => $row['email'],
+                'user_email_hash'       => md5(strtolower($row['email'])),
+                'user_edit_link'        => $core->path() . '?mode=users&action=editor&user=' . $row['username'],
+                'user_delete_link'      => $core->path() . '?mode=users&action=delete&user=' . $row['username'],
+                'delete_visibility'     => $row['username'] == $username ? 'hidden' : '',
+            ));
+
+            $user_list .= $skin->output('tpl_users_entry', true, true);
+        }
+
+        $skin->assign('user_list', $user_list);
     }
-    
-    $skin->assign('user_list', $user_list);
+    else
+    {
+        $module_name = 'tpl_users_ldap';
+    }
 }
 
 // Edit/new action specified

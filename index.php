@@ -38,8 +38,8 @@ if ($expire > 0)
     $expire += $time;
 }
 
-$paste_submit = isset($_POST['paste_submit']) ? true : false;
-$api_submit = isset($_POST['api_submit']) || isset($_GET['api_submit']) ? true : false;
+$paste_submit = isset($_POST['paste_submit']);
+$api_submit = isset($_POST['api_submit']) || isset($_GET['api_submit']);
 
 // Global vars
 $show_error = false;

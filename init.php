@@ -9,7 +9,7 @@
 */
 
 // Turn off error reporting
-error_reporting(0);
+error_reporting(E_ALL);
 
 // Define constants
 define('UPDATE_SERVER', 'https://gitorious.org/sticky-notes/sticky-notes/blobs/raw/master/VERSION');
