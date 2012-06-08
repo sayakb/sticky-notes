@@ -42,7 +42,11 @@ $nav = new nav();
 // Instantiate admin classes
 if (defined('IN_ADMIN'))
 {
+    include_once('admin/classes/class_auth.php');
     include_once('admin/classes/class_module.php');
+
+    // Instantiate admin classes
+    $auth = new auth();
     $module = new module();
 }
 

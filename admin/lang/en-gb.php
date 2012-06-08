@@ -133,8 +133,8 @@ $lang_data = array(
     'ldap_password'         => 'LDAP password',
     'ldap_password_exp'     => 'Leave blank to use anonymous binding, otherwise fill in the password for the above ' .
                                'user. Required for Active Directory Servers.<br />' .
-                               '<i><b>Warning:</b> This password will be stored as plain text in the config file, ' .
-                               'visible to everybody who can access your configuration file.</i>',
+                               '<b>Warning:</b> This password will be stored as plain text in the config file, ' .
+                               'visible to everybody who can access your configuration file.',
     
     'username_required'         => 'Please enter the username',
     'email_required'            => 'Please enter e-mail address',
@@ -150,17 +150,18 @@ $lang_data = array(
     'config_reqd'               => 'All fields under Site Configuration are mandatory',
     'config_cantwrite'          => 'The config file isn\'t writable. Please check file permissions',
     'no_user_ldap'              => 'This module is unavailable when LDAP authentication is in use',
+    'changes_saved'             => 'Your changes were saved successfully',
 
     /* Page: login.php */
     'admin_login'       => 'Administration Login',
     'username'          => 'Username',
     'password'          => 'Password',
     'login'             => 'Login',
-    'invalid_login'     => 'Login failed! Invalid username or password entered.',
+    'invalid_login'     => 'Login failed for user __user__', // Do not change __user__
     'logged_out'        => 'You have logged out successfully.',
 
     /* Global */
-    'back_to_home'      => '&larr; Back to __sitename__', // Do not remove __sitename__
+    'back_to_home'      => '&larr; Back to __sitename__', // Do not change __sitename__
     'dismiss'           => 'Dismiss',
 );
 

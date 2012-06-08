@@ -38,8 +38,8 @@ if ($auth_save)
     
     // Write the conf data
     else
-    {
-        // Update configuration data
+    {   
+        // Update configuration data to new values
         $config->auth_method   = $auth_method;
         $config->ldap_server   = $ldap_server;
         $config->ldap_port     = $ldap_port;
@@ -49,11 +49,8 @@ if ($auth_save)
         $config->ldap_user_dn  = $ldap_user_dn;
         $config->ldap_password = $ldap_password;
         
-        // Save configuration data
         $config->save();
-        
-        // Redirect to refresh
-        $core->redirect($core->path() . '?mode=auth');
+        $module->notify($lang->get('changes_saved'));
     }
 }
 

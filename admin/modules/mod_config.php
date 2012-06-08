@@ -60,11 +60,8 @@ if ($config_save)
         $config->sg_php_type     = $config_php_type;
         $config->sg_censor       = $config_censor;
         
-        // Save configuration data
         $config->save();
-        
-        // Redirect to refresh
-        $core->redirect($core->path() . '?mode=config');
+        $module->notify($lang->get('changes_saved'));
     }
 }
 

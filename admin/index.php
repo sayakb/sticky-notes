@@ -26,16 +26,15 @@ if (empty($sid) || empty($username))
 }
 else
 {
-    // Process the username
-    $db->escape($username);   
-    $username = trim($username);
+    $db->escape($username);
+    $db->escape($sid);
     
     // Validate sid
     $sql = "SELECT sid FROM {$db->prefix}users " .
-           "WHERE username = '{$username}'";
+           "WHERE username = '{$username}' AND sid = '{$sid}'";
     $row = $db->query($sql, true);
     
-    if ($sid == $row['sid'])
+    if ($row != null)
     {
         $core->set_cookie('session_id_admin', $sid);
         $core->set_cookie('username_admin', $username);

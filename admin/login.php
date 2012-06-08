@@ -8,6 +8,9 @@
 * All rights reserved. Do not remove this copyright notice.
 */
 
+// Define constants
+define('IN_ADMIN', true);
+
 // Invoke required files
 include_once('../init.php');
 
@@ -28,48 +31,23 @@ $skin->init('tpl_login');
 // Process form data
 if ($submit && !empty($username) && !empty($password))
 {
-    // Process the username
-    $db->escape($username);   
-    $username = trim($username);
+    // Escape the username
+    $db->escape($username);
     
-    $sql = "SELECT * FROM {$db->prefix}users " .
-           "WHERE username = '{$username}'";
-    $row = $db->query($sql, true);
-    
-    if ($row != null)
-    {
-        $hash = sha1($password . $row['salt']);
-        
-        if ($row['password'] == $hash)
-        {
-            $sid = sha1(time() . $core->remote_ip());
-            $stale = time() - (60 * 60);
-            
-            // Update the DB data
-            $sql = "UPDATE {$db->prefix}users SET sid = '', lastlogin = 0 " .
-                   "WHERE lastlogin < {$stale} AND lastlogin > 0";
-            $db->query($sql);
-            
-            $sql = "UPDATE {$db->prefix}users " .
-                   "SET sid = '{$sid}' WHERE username = '{$username}'";
-            $db->query($sql);
+    // Authenticate the user
+    $login_status = $auth->login($username, $password);
 
-            $core->set_cookie('session_id_admin', $sid);
-            $core->set_cookie('username_admin', $username);
-            $core->redirect('index.php');
-        }
-        else
-        {
-            $banner_type = 'error';
-            $banner_visibility = 'visible';
-            $banner_text = $lang->get('invalid_login');
-        }
+    if ($login_status)
+    {
+        $core->set_cookie('session_id_admin', $auth->sid);
+        $core->set_cookie('username_admin', $username);
+        $core->redirect('index.php');
     }
     else
     {
         $banner_type = 'error';
         $banner_visibility = 'visible';
-        $banner_text = $lang->get('invalid_login');
+        $banner_text = preg_replace('/\_\_user\_\_/', $username, $lang->get('invalid_login'));
     }
 }
 

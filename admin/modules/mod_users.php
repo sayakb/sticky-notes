@@ -120,8 +120,8 @@ if ($user_save)
     $disp_name = $user_fname . ' ' . $user_lname;
 
     $sql = "SELECT username, email FROM {$db->prefix}users " .
-           "WHERE (username = '{$user_username}' OR email = '{$user_email}')" .
-           ($user_id > 0 ? " AND id <> {$user_id}" : "");
+           "WHERE (username = '{$user_username}' OR email = '{$user_email}') " .
+           "AND password <> '' " . ($user_id > 0 ? "AND id <> {$user_id}" : "");
     $row = $db->query($sql, true);
     
     if ($row != null)
@@ -206,7 +206,11 @@ if (empty($action))
         $module_name = 'tpl_users_list';
         $user_list = '';
 
-        $sql = "SELECT * FROM {$db->prefix}users ORDER BY username ASC";
+        // We want those users that were created for DB auth only
+        // LDAP users will not have a password
+        $sql = "SELECT * FROM {$db->prefix}users " .
+               "WHERE password <> '' " .
+               "ORDER BY username ASC";
         $rows = $db->query($sql);
 
         foreach ($rows as $row)
@@ -245,7 +249,8 @@ if ($action == 'editor' && !$user_save)
         $db->escape($user);
         
         $sql = "SELECT * FROM {$db->prefix}users " .
-               "WHERE username = '{$user}'";
+               "WHERE username = '{$user}' " .
+               "AND password <> ''";
         $row = $db->query($sql, true);
         
         if (!empty($row['dispname']))
@@ -279,7 +284,9 @@ if ($action == 'delete')
         // Escape the username
         $db->escape($user);
         
-        $sql = "DELETE FROM {$db->prefix}users WHERE username = '{$user}'";
+        $sql = "DELETE FROM {$db->prefix}users " .
+               "WHERE username = '{$user}' " .
+               "AND password <> ''";
         $db->query($sql);
         $core->redirect($core->path() . '?mode=users');
     }
