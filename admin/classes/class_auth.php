@@ -66,7 +66,8 @@ class auth
 
         // Get the user details
         $sql = "SELECT * FROM {$db->prefix}users " .
-               "WHERE username = '{$username}'";
+               "WHERE username = '{$username}' " .
+               "AND password <> ''";
         $row = $db->query($sql, true);
 
         // Check if the user exists
@@ -78,7 +79,7 @@ class auth
             { 
                 // Update the session ID and details for the user
                 $sql = "UPDATE {$db->prefix}users SET sid = '{$this->sid}' " .
-                       "WHERE username = '{$username}'";
+                       "WHERE username = '{$username}' AND password <> ''";
                 $db->query($sql);
 
                 // Authentication was successful

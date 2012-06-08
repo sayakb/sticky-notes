@@ -29,7 +29,7 @@ else
     $db->escape($username);
     $db->escape($sid);
     
-    // Validate sid
+    // Validate session ID
     $sql = "SELECT sid FROM {$db->prefix}users " .
            "WHERE username = '{$username}' AND sid = '{$sid}'";
     $row = $db->query($sql, true);
