@@ -130,14 +130,14 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 
     // Generate the password hash
     $salt = substr(sha1(time()), rand(0, 34), 5);
-    $hash = $password ? sha1(sha1($password) . $salt) : '';
+    $pwd_hash = $password ? sha1(sha1($password) . $salt) : '';
 
     // Insert into the DB
     $sql = "INSERT INTO {$db->prefix}main " .
            "(author, project, timestamp, expire, data, language, " .
            "password, salt, private, hash, ip) VALUES " .
            "('{$author}', '{$project}', {$time}, {$expire}" .
-           ", '{$data}', " . "'{$language}', '{$hash}', '{$salt}', " .
+           ", '{$data}', " . "'{$language}', '{$pwd_hash}', '{$salt}', " .
            ($private == "on" || $private == "yes" || $password ? "1" : "0") .
            ", {$hash}, '{$remote_ip}')";
     $db->query($sql);
