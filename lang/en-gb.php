@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.2
+* @ver 0.3
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
@@ -63,7 +63,7 @@ $lang_data = array(
     /* Global */
     'sticky_notes'      => 'Sticky Notes',
     'sticky_notes_pb'   => 'Sticky Notes pastebin',
-    'version'           => 'Version 0.2',
+    'version'           => 'Version 0.3',
     'newpaste'          => 'New Paste',
     'archives'          => 'Archives',
     'rss'               => 'Feed',

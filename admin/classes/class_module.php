@@ -1,7 +1,7 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.2
+* @ver 0.3
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
 * Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
