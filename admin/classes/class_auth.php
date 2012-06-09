@@ -32,7 +32,7 @@ class auth
     // Method for authenticating a user
     function login($username, $password)
     {
-        global $config;
+        global $config, $db;
 
         // Get authentication method
         $method = $config->auth_method;
@@ -42,6 +42,9 @@ class auth
         {
             // Create a new session
             $this->create_session();
+
+            // Escape the username
+            $db->escape($username);
 
             // Generate the delegate and execute the method
             $delegate = '$auth_status = $this->authenticate_' . $method .
@@ -108,7 +111,7 @@ class auth
         // Connect to the LDAP server
         if (!empty($config->ldap_port))
         {
-            $ldap = @ldap_connect($config->ldap_server, $config->ldap_port);
+            $ldap = @ldap_connect($config->ldap_server, (int)$config->ldap_port);
         }
         else
         {

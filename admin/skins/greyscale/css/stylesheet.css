@@ -322,6 +322,11 @@ label
     margin-bottom: 10px;
 }
 
+.greybox table tr td:first-child
+{
+    vertical-align: top;
+}
+
 .textbox, .droplist
 {
     border: 1px solid #c2c2c2;

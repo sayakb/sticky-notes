@@ -163,6 +163,9 @@ class spamguard
         $cutoff_time = time() - 5;
         $ip_address = $core->remote_ip();
 
+        // Escape the IP address, just in case
+        $db->escape($ip_address);
+
         // Get all posts made within the last 5 seconds
         // from the same IP address
         $sql = "SELECT COUNT(*) AS hits FROM {$db->prefix}main " .

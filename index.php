@@ -110,12 +110,17 @@ if ($paste_submit || $api_submit)
 
 if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 {
+    // Capture the IP address
+    $remote_ip = $core->remote_ip();
+    
     // Escape text
     $db->escape($author);
+    $db->escape($project);
+    $db->escape($expire);
     $db->escape($data);
     $db->escape($language);
     $db->escape($private);
-    $db->escape($project);
+    $db->escape($remote_ip);
     
     $author = trim($author);
 
@@ -125,17 +130,14 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 
     // Generate the password hash
     $salt = substr(sha1(time()), rand(0, 34), 5);
-    $md5 = $password ? sha1(sha1($password) . $salt) : '';
-    
-    // Capture the IP address
-    $remote_ip = $core->remote_ip();
+    $hash = $password ? sha1(sha1($password) . $salt) : '';
 
     // Insert into the DB
     $sql = "INSERT INTO {$db->prefix}main " .
            "(author, project, timestamp, expire, data, language, " .
            "password, salt, private, hash, ip) VALUES " .
            "('{$author}', '{$project}', {$time}, {$expire}" .
-           ", '{$data}', " . "'{$language}', '{$md5}', '{$salt}', " .
+           ", '{$data}', " . "'{$language}', '{$hash}', '{$salt}', " .
            ($private == "on" || $private == "yes" || $password ? "1" : "0") .
            ", {$hash}, '{$remote_ip}')";
     $db->query($sql);

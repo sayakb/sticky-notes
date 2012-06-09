@@ -30,10 +30,7 @@ $skin->init('tpl_login');
 
 // Process form data
 if ($submit && !empty($username) && !empty($password))
-{
-    // Escape the username
-    $db->escape($username);
-    
+{    
     // Authenticate the user
     $login_status = $auth->login($username, $password);
 
