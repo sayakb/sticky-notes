@@ -17,26 +17,28 @@ class db
     // Function to initialize a db connection
     function connect()
     {
+        global $gsod, $config;
+
         try
-        {           
-            global $config;
-            
+        {
             $db_port_int = intval($config->db_port);
-            $this->mysqli = new mysqli($config->db_host, $config->db_username, 
+            $this->mysqli = new mysqli($config->db_host, $config->db_username,
                                        $config->db_password, $config->db_name, $db_port_int);
 
-            if ($this->mysqli->connect_error)
+            if (!$this->mysqli->connect_error)
             {
-                return $this->mysqli->connect_error;
+                $this->prefix = $config->db_prefix;
             }
             else
             {
-                $this->prefix = $config->db_prefix;
+                throw new Exception('DB Error');
             }
         }
         catch (Exception $e)
         {
-            return null;
+            $message  = '<b>Sticky Notes DB error</b><br /><br />';
+            $message .= 'Database connection failed! Please check your DB settings.';
+            $gsod->trigger($message);
         }
     }
 
