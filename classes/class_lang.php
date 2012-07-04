@@ -108,7 +108,7 @@ class lang
     // Function to exclude a string from being treated as a key
     function escape(&$data)
     {
-        $data = preg_replace('/\{\{(.*?)\}\}/', '{' . chr(0) . '{$1}' . chr(0) . '}', $data);
+        $data = preg_replace('/\{\{(.*?)\}\}/', '&#123;&#123;$1&#125;&#125;', $data);
     }
 }
 

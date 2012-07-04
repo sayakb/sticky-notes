@@ -109,7 +109,7 @@ foreach ($rows as $row)
     $geshi->set_overall_style('word-wrap:break-word;');
 
     // Generate the data
-    $user = empty($row['author']) ? $lang->get('anonymous') : htmlentities($row['author']);
+    $user = empty($row['author']) ? $lang->get('anonymous') : htmlspecialchars($row['author']);
     $timestamp = $row['timestamp'];
     $time = date('d M Y, h:i:s e', $timestamp);
     $info = $lang->get('posted_info');
@@ -124,7 +124,7 @@ foreach ($rows as $row)
     }    
 
     // Before we display, we need to escape the data from the skin/lang parsers
-    $code_data = (!$rss ? $geshi->parse_code() : nl2br(htmlentities($row['data'])));
+    $code_data = (!$rss ? $geshi->parse_code() : nl2br(htmlspecialchars($row['data'])));
     
     if ($rss)
     {        
@@ -141,7 +141,7 @@ foreach ($rows as $row)
         'paste_id'          => $row['id'],
         'paste_url'         => $nav->get_paste($row['id'], null, $project, $rss),
         'paste_data'        => $code_data,
-        'paste_lang'        => htmlentities($row['language']),
+        'paste_lang'        => htmlspecialchars($row['language']),
         'paste_info'        => $info,
         'paste_time'        => $time,
         'paste_timestamp'   => $timestamp,

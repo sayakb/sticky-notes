@@ -363,7 +363,7 @@ class skin
         {
             $selected = ($selected_entry !== false && strtolower($entry) == strtolower($selected_entry));
             $list .= '<option' . ($selected ? ' selected="selected"' : '') . '>' .
-                     $entry . '</option>';
+                     htmlspecialchars($entry) . '</option>';
         }
 
         return $list;
@@ -382,7 +382,7 @@ class skin
     // Function to exclude a string from being treated as a key
     function escape(&$data)
     {
-        $data = preg_replace('/\[\[(.*?)\]\]/', '[' . chr(0) . '[$1]' . chr(0) . ']', $data);
+        $data = preg_replace('/\[\[(.*?)\]\]/', '&#91;&#91;$1&#93;&#93;', $data);
     }
 }
 

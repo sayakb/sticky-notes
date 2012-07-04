@@ -44,7 +44,7 @@ if ($submit && !empty($username) && !empty($password))
     {
         $banner_type = 'error';
         $banner_visibility = 'visible';
-        $banner_text = preg_replace('/\_\_user\_\_/', $username, $lang->get('invalid_login'));
+        $banner_text = preg_replace('/\_\_user\_\_/', htmlspecialchars($username), $lang->get('invalid_login'));
     }
 }
 

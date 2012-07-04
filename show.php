@@ -214,7 +214,7 @@ $geshi->set_line_style('background: #f7f7f7; text-shadow: 0px 1px #fff; padding:
 $geshi->set_overall_style('word-wrap:break-word;');
 
 // Generate the data
-$user = empty($row['author']) ? $lang->get('anonymous') : htmlentities($row['author']);
+$user = empty($row['author']) ? $lang->get('anonymous') : htmlspecialchars($row['author']);
 $time = date('d M Y, h:i:s e', $row['timestamp']);
 $info = $lang->get('posted_info');
 
@@ -222,7 +222,7 @@ $info = preg_replace('/\_\_user\_\_/', $user, $info);
 $info = preg_replace('/\_\_time\_\_/', $time, $info);
 
 // Before we display, we need to escape the data from the skin/lang parsers
-$code_data = (empty($mode) ? $geshi->parse_code() : htmlentities($row['data']));
+$code_data = (empty($mode) ? $geshi->parse_code() : htmlspecialchars($row['data']));
 
 $lang->escape($code_data);
 $skin->escape($code_data);
@@ -231,7 +231,7 @@ $skin->escape($code_data);
 $skin->assign(array(
     'paste_id'          => $row['id'],
     'paste_data'        => $code_data,
-    'paste_lang'        => htmlentities($row['language']),
+    'paste_lang'        => htmlspecialchars($row['language']),
     'paste_info'        => $info,
     'paste_user'        => $user,
     'paste_timestamp'   => $row['timestamp'],
