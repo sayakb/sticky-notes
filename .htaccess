@@ -6,6 +6,9 @@ php_flag magic_quotes_gpc off
     # Tell PHP that rewrite rules are available
     SetEnv HTTP_MOD_REWRITE On
 
+    # Disable MultiViews
+    Options -MultiViews
+
     # Rewrite rules
     RewriteEngine on
 
