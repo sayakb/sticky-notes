@@ -60,24 +60,16 @@ $(document).ready(function() {
     }
 
     // Check if private box is checked
-    if ($('#paste_private').is(':checked'))
-    {
-        privateChecked = true;
-    }
-    else
-    {
-        privateChecked = false;
-    }
+    privateChecked = $('#paste_private').is(':checked');
 
     $('#paste_private').click(function() {
-        if ($(this).is(':checked'))
-        {
-            privateChecked = true;
-        }
-        else
-        {
-            privateChecked = false;
-        }
+        privateChecked = $(this).is(':checked');
+    });
+
+    // Update private checkbox if password is entered
+    $('#paste_password').keyup(function() {
+        var checked = $(this).val().length == 0 ? privateChecked : true;
+        $('#paste_private').attr('checked', checked);
     });
 
     // Update private checkbox if password is entered

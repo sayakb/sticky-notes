@@ -26,37 +26,17 @@ $(document).ready(function() {
     });
 
     // Check if private box is checked
-    if ($('#paste_private').is(':checked'))
-    {
-        privateChecked = true;
-    }
-    else
-    {
-        privateChecked = false;
-    }
+    privateChecked = $('#paste_private').is(':checked');
 
     $('#paste_private').click(function() {
-        if ($(this).is(':checked'))
-        {
-            privateChecked = true;
-        }
-        else
-        {
-            privateChecked = false;
-        }
+        privateChecked = $(this).is(':checked');
     });
 
     // Update private checkbox if password is entered
-    setInterval(function() {
-        if ($('#paste_password').val() != '') {
-            $('#paste_private').attr('checked', true);
-            captured = true;
-        }
-        else if (captured && $('#paste_password').val() == '') {
-            $('#paste_private').attr('checked', privateChecked);
-            captured = false;
-        }
-    }, 100);
+    $('#paste_password').keyup(function() {
+        var checked = $(this).val().length == 0 ? privateChecked : true;
+        $('#paste_private').attr('checked', checked);
+    });
     
     // Fetch author and language values from cookies
     var author = $.cookie('stickynotes_author');
@@ -88,6 +68,7 @@ $(document).ready(function() {
             var startPos = this.selectionStart;
             var endPos = this.selectionEnd;
             var scrollTop = this.scrollTop;
+
             this.value = this.value.substring(0, startPos) + myValue + this.value.substring(endPos,this.value.length);
             this.focus();
             this.selectionStart = startPos + myValue.length;
