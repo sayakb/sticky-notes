@@ -147,7 +147,21 @@ class core
     function base_uri()
     {
         $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-        $uri = $protocol . '://' . $_SERVER['HTTP_HOST'] . $this->path();
+
+        if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
+        {
+            $hostname = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        }
+        elseif (isset($_SERVER['HTTP_HOST']))
+        {
+            $hostname = $_SERVER['HTTP_HOST'];
+        }
+        else
+        {
+            $hostname = "unknown_host";
+        }
+
+        $uri = $protocol . '://' . $hostname . $this->path();
         
         return $uri;
     }
