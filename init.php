@@ -12,7 +12,7 @@
 error_reporting(0);
 
 // Define constants
-define('UPDATE_SERVER', 'https://gitorious.org/sticky-notes/sticky-notes/blobs/raw/master/VERSION');
+define('UPDATE_SERVER', 'https://raw.github.com/sayakb/sticky-notes/master/VERSION');
 
 // Include classes
 include_once('classes/class_gsod.php');

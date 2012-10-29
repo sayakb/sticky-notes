@@ -150,8 +150,8 @@ $lang_data = array(
         =>
     'Some URLs in this document will not work if the pastebin server does not have ' .
     '<a href="http://en.wikipedia.org/wiki/Rewrite_engine">URL rewriting</a> enabled. ' .
-    'Please check out the .htaccess file <a href="https://gitorious.org/sticky-notes/' .
-    'sticky-notes/blobs/master/.htaccess">here</a> to view all mappings.',
+    'Please check out the .htaccess file <a href="https://raw.github.com/sayakb/' .
+    'sticky-notes/master/.htaccess">here</a> to view all mappings.',
 
     'doc_api_para4'
         =>

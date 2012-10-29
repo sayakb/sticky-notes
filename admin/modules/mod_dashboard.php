@@ -54,8 +54,8 @@ $paste_count = $row['count'];
 
 // Make the new version link
 $update_url =  '&bull; ' . $lang->get('new_ver_available') . ' (' .
-               '<a href="https://gitorious.org/sticky-notes/sticky-notes/' .
-               'archive-tarball/master">' . $lang->get('download_latest') . ')';
+               '<a href="https://github.com/sayakb/sticky-notes/zipball/master">' .
+               $lang->get('download_latest') . '</a>)';
 
 // Assign skin data
 $skin->assign(array(
