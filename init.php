@@ -67,11 +67,11 @@ else
     unset($url);
 }
 
-// Change project name to lower case
-if (isset($_GET['project'])) $_GET['project'] = strtolower($_GET['project']);
-if (isset($_POST['project'])) $_POST['project'] = strtolower($_POST['project']);
-if (isset($_GET['paste_project'])) $_GET['paste_project'] = strtolower($_GET['paste_project']);
-if (isset($_POST['paste_project'])) $_POST['paste_project'] = strtolower($_POST['paste_project']);
+// Change project name to lower case and escape it
+if (isset($_GET['project'])) $_GET['project'] = htmlspecialchars(strtolower($_GET['project']));
+if (isset($_POST['project'])) $_POST['project'] = htmlspecialchars(strtolower($_POST['project']));
+if (isset($_GET['paste_project'])) $_GET['paste_project'] = htmlspecialchars(strtolower($_GET['paste_project']));
+if (isset($_POST['paste_project'])) $_POST['paste_project'] = htmlspecialchars(strtolower($_POST['paste_project']));
 
 // Set up the db connection
 $db->connect();

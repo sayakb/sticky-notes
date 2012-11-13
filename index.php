@@ -207,8 +207,8 @@ else
 {
     // Assign template data
     $skin->assign(array(
-        'post_user'             => $author,
-        'post_data'             => $data,
+        'post_user'             => htmlspecialchars($author),
+        'post_data'             => htmlspecialchars($data),
         'post_' . $language     => 'selected="selected"',
         'post_checked'          => ($private == "on" ? "checked" : ""),
         'msg_visibility'        => 'hidden',
