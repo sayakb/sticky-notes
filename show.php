@@ -230,10 +230,10 @@ $skin->escape($code_data);
 // Assign template variables
 $skin->assign(array(
     'paste_id'          => $row['id'],
-    'paste_data'        => htmlspecialchars($code_data),
+    'paste_data'        => $code_data,
     'paste_lang'        => htmlspecialchars($row['language']),
-    'paste_info'        => htmlspecialchars($info),
-    'paste_user'        => htmlspecialchars($user),
+    'paste_info'        => $info,
+    'paste_user'        => $user,
     'paste_timestamp'   => $row['timestamp'],
     'raw_url'           => $nav->get_paste($row['id'], $hash, $project, false, 'raw'),
     'share_url'         => urlencode($core->base_uri()),

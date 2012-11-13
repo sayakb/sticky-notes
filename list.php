@@ -140,9 +140,9 @@ foreach ($rows as $row)
     $skin->assign(array(
         'paste_id'          => $row['id'],
         'paste_url'         => $nav->get_paste($row['id'], null, $project, $rss),
-        'paste_data'        => htmlspecialchars($code_data),
+        'paste_data'        => $code_data,
         'paste_lang'        => htmlspecialchars($row['language']),
-        'paste_info'        => htmlspecialchars($info),
+        'paste_info'        => $info,
         'paste_time'        => $time,
         'paste_timestamp'   => $timestamp,
         'error_visibility'  => 'hidden',
