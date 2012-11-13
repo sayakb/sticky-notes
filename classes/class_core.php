@@ -187,51 +187,37 @@ class core
     function server_load() 
     {
         $os = strtolower(PHP_OS);
-        
-        if (strpos($os, "win") === false) 
+
+        if (strpos($os, 'win') === FALSE)
         {
-            if(file_exists("/proc/loadavg")) 
+            if (file_exists('/proc/loadavg'))
             {
-                $load = file_get_contents("/proc/loadavg");
+                $load = file_get_contents('/proc/loadavg');
                 $load = explode(' ', $load);
                 return $load[0];
             }
-            else if (function_exists("shell_exec")) 
+            else if (function_exists('shell_exec'))
             {
                 $load = explode(' ', `uptime`);
                 return $load[count($load) - 1];
             }
-            else 
-            {
-                return false;
-            }
         }
-        else if ($windows) 
+        else
         {
-            if (class_exists("COM")) 
+            if (function_exists('exec'))
             {
-                $wmi = new COM("WinMgmts:\\\\.");
-                $cpus = $wmi->InstancesOf("Win32_Processor");
-         
-                $cpuload = 0;
-                $i = 0;
-         
-                while ($cpu = $cpus->Next()) 
+                $load = array();
+                exec('wmic cpu get loadpercentage', $load);
+
+                if ( ! empty($load[1]))
                 {
-                    $cpuload += $cpu->LoadPercentage;
-                    $i++;
+                    return "{$load[1]}%";
                 }
-         
-                $cpuload = round($cpuload / $i, 2);
-         
-                return "$cpuload%";
-            }
-            else 
-            {
-                return false;
             }
         }
-    }    
+
+        return 'N/A';
+    }
 }
 
 ?>
