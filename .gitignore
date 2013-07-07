@@ -1,0 +1,4 @@
+.directory
+config.php
+testing/*
+cache/*
