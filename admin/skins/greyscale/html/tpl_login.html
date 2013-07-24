@@ -10,18 +10,24 @@
     <div class="header">
         {{admin_login}}
     </div>
-    
+
     <label for="login_user">{{username}}</label>
     <input name="login_user" id="login_user" type="text" class="textbox" width="180" height="30" />
-    
-    <label for="login_pass">{{password}}</label>
-    <input name="login_pass" id="login_pass" type="password" class="textbox" width="180" height="30" />
-    
+
+    <label for="login_pass" class="field_login [[login_visibility]]">{{password}}</label>
+    <input name="login_pass" id="login_pass" type="password" class="textbox field_login [[login_visibility]]" width="180" height="30" />
+
+    <div class="notice field_reset [[reset_visibility]]">{{reset_exp}}</div>
+
     <div class="centered">
-        <input name="login_submit" id="login_submit" class="button" type="submit" value="{{login}}" />
+        <a id="forgot_password" href="#" class="field_login [[login_visibility]]">{{forgot_password}}</a>
+        <a id="back_login" href="#" class="field_reset [[reset_visibility]]">{{back_login}}</a>
+        <br /><br />
+        <input name="login_submit" id="login_submit" class="button field_login [[login_visibility]]" type="submit" value="{{login}}" />
+        <input name="reset_password" id="reset_password" class="button field_reset [[reset_visibility]]" type="submit" value="{{reset}}" />
     </div>
-    
-    <div class="copyright">
-        {{site_copyright}}
-    </div>
+</div>
+
+<div class="login_copyright">
+    {{site_copyright}}
 </div>

@@ -19,7 +19,11 @@
 
 <div class="row-fluid">
     <div class="span12">
-        <textarea id="paste_data" class="codebox" name="paste_data">[[post_data]]</textarea>
+        <input id="paste_title" name="paste_title" type="text" value="[[post_title]]"
+               maxlength="30" class="span12" placeholder="{{paste_title}}" />
+        <br /><br />
+        <textarea id="paste_data" class="span12 codebox" name="paste_data"
+                  placeholder="{{paste_body}}">[[post_data]]</textarea>
     </div>
 </div>
 <br />

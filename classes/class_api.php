@@ -1,10 +1,10 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 

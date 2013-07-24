@@ -2026,6 +2026,31 @@ button.btn.small, input[type="submit"].btn.small {
   *padding-top: 3px;
   *padding-bottom: 3px;
 }
+.btn-link,
+.btn-link:active,
+.btn-link[disabled] {
+  background-color: transparent;
+  background-image: none;
+  -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+          box-shadow: none;
+}
+.btn-link {
+  color: #0088cc;
+  cursor: pointer;
+  border-color: #ccc;
+}
+.btn-link:hover,
+.btn-link:focus {
+  color: #005580;
+  text-decoration: underline;
+  background-color: transparent;
+}
+.btn-link[disabled]:hover,
+.btn-link[disabled]:focus {
+  color: #333333;
+  text-decoration: none;
+}
 .btn-group {
   position: relative;
   *zoom: 1;
@@ -2308,6 +2333,10 @@ button.btn.small, input[type="submit"].btn.small {
 .nav-pills .active > a, .nav-pills .active > a:hover {
   color: #ffffff;
   background-color: #0088cc;
+}
+.nav-pills > li.nav-text {
+  font-weight: bold;
+  padding: 8px;
 }
 .nav-stacked > li {
   float: none;
@@ -3499,6 +3528,9 @@ a.thumbnail:hover {
 }
 .visible {
   display: block;
+}
+.inline.visible {
+  display: inline-block;
 }
 .invisible {
   visibility: hidden;

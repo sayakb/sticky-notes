@@ -69,6 +69,12 @@ label
     margin-right: 10px;
 }
 
+label.radio > input[type="radio"]
+{
+    margin-right: 1px;
+    margin-left: 0px;
+}
+
 .hoveractive tbody tr:nth-child(odd):hover
 {
     background: #fcffcc !important;
@@ -102,12 +108,12 @@ label
     background: -webkit-gradient(linear, left bottom, left top, from(#dadada), to(#f2f2f2));
 }
 
-.gridview tbody tr:nth-child(odd) 
+.gridview tbody tr:nth-child(odd)
 {
     background-color: #fefefe;
 }
 
-.gridview tbody tr:nth-child(even) 
+.gridview tbody tr:nth-child(even)
 {
     background-color: #fbfbfb;
 }
@@ -117,7 +123,7 @@ label
     padding: 5px;
 }
 
-.gridview tbody tr td:first-child 
+.gridview tbody tr td:first-child
 {
     border-radius: 0px 0px 0px 5px;
 }
@@ -193,23 +199,39 @@ label
     display: block;
 }
 
-.login .copyright
+.login .hidden
 {
-    width: 97%;
-    margin-top: 30px;
+    display: none;
+    visibility: visible !important;
+}
+
+.login .notice
+{
+    height: 40px;
+    width: 326px;
+    margin-left: 0;
+    margin-top: -33px;
+    padding: 10px;
+    line-height: 20px;
+}
+
+.login_copyright
+{
+    width: 100%;
+    margin-top: 20px;
     font-size: 0.85em;
     text-align: center;
     color: #999;
     position: inherit;
 }
 
-.login .copyright a
+.login_copyright a
 {
     color: #666;
     text-decoration: none;
 }
 
-.login .copyright a:hover
+.login_copyright a:hover
 {
     color: #222;
 }
@@ -262,7 +284,7 @@ label
     display: block;
     margin-left: -10px;
     margin-right: -10px;
-    text-decoration: none;   
+    text-decoration: none;
     color: #333;
     border-top: 1px solid #efefef;
     border-bottom: 1px solid #efefef;
@@ -420,12 +442,6 @@ label
     line-height: 35px;
 }
 
-.waitimg
-{
-    margin-left: 7px;
-    margin-bottom: -1px;
-}
-
 .hugefonts
 {
     font-size: 6em;
@@ -509,6 +525,11 @@ label
 .darkgreen
 {
     color: darkGreen;
+}
+
+.darkred
+{
+    color: darkRed;
 }
 
 .visible

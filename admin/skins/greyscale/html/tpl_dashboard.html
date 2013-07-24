@@ -1,6 +1,6 @@
 <div class="greybox">
     <h3>{{site_info}}</h3>
-    
+
     <table class="gridview nomargin" width="100%">
     <thead>
     <tr>
@@ -8,43 +8,60 @@
         <td>&nbsp;</td>
     </tr>
     </thead>
-    
+
     <tbody>
     <tr>
         <td width="140">{{stickynotes_ver}}</td>
         <td>
             <b id="stickynotes_ver" class="darkgreen">[[stickynotes_ver]]</b>
-            <img class="waitimg" src="[[admin_skin_path]]/images/wait.gif" alt="" />
+            <img id="wait_version" src="[[admin_skin_path]]/images/wait.gif" alt="" />
             <span id="stickynotes_update" class="collapsed">[[update_url]]</span>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{php_version}}</td>
-        <td>[[php_version]]</td>    
+        <td>[[php_version]]</td>
     </tr>
-    
+
     <tr>
-        <td>{{mysql_version}}</td>
-        <td>[[mysql_version]]</td>    
+        <td>{{db_type}}</td>
+        <td>[[db_type]]</td>
     </tr>
-    
+
+    <tr>
+        <td>{{db_version}}</td>
+        <td>[[db_version]]</td>
+    </tr>
+
     <tr>
         <td>{{db_size}}</td>
-        <td>[[db_size]]</td>    
-    </tr>    
-    
+        <td>[[db_size]]</td>
+    </tr>
+
     <tr>
         <td>{{paste_count}}</td>
-        <td>[[paste_count]]</td>    
+        <td>[[paste_count]]</td>
     </tr>
-    
+
+    <tr>
+        <td>{{cache_size}}</td>
+        <td>
+            [[cache_size]]
+            &bull;
+            <a href="?action=clearcache" onclick="return confirm('{{clear_cache_confirm}}')" class="darkred">{{clear_cache}}</a>
+        </td>
+    </tr>
+
     <tr>
         <td>{{server_load}}</td>
-        <td>[[server_load]]</td>    
+        <td>
+            <span id="stickynotes_sysload"></span>
+            <img id="wait_sysload" src="[[admin_skin_path]]/images/wait.gif" alt="" />
+        </td>
     </tr>
     </tbody>
     </table>
-    
+
     <input id="stickynotes_build_num" type="hidden" value="[[build_num]]" />
 </div>

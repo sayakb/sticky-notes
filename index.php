@@ -1,10 +1,10 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -14,12 +14,16 @@ include_once('init.php');
 // Collect some data
 $author = $core->variable('paste_user', '');
 $language = $core->variable('paste_lang', 'text');
+$title = $core->variable('paste_title', '');
 $data = $core->variable('paste_data', '');
 $expire = $core->variable('paste_expire', 604800);
 $password = $core->variable('paste_password', '');
 $private = $core->variable('paste_private', '');
 $project = $core->variable('project', '');
 $mode = $core->variable('mode', '');
+$skip_insert = false;
+$new_id = 0;
+$url_key = '';
 $time = time();
 
 if (empty($project))
@@ -110,51 +114,76 @@ if ($paste_submit || $api_submit)
 
 if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
 {
-    // Capture the IP address
-    $remote_ip = $core->remote_ip();
-    
-    // Escape text
-    $db->escape($author);
-    $db->escape($project);
-    $db->escape($expire);
-    $db->escape($data);
-    $db->escape($language);
-    $db->escape($private);
-    $db->escape($remote_ip);
-    
     $author = trim($author);
-
-    // Generate a hash value
     $timestr = time();
     $hash = substr($timestr . $timestr, rand(0, 5), 8);
 
     // Generate the password hash
-    $salt = substr(sha1(time()), rand(0, 34), 5);
-    $pwd_hash = $password ? sha1(sha1($password) . $salt) : '';
+    $salt = $auth->create_uid(5);
+    $pwd_hash = $password ? $auth->create_password($password, $salt) : '';
 
-    // Insert into the DB
-    $sql = "INSERT INTO {$db->prefix}main " .
-           "(author, project, timestamp, expire, data, language, " .
-           "password, salt, private, hash, ip) VALUES " .
-           "('{$author}', '{$project}', {$time}, {$expire}" .
-           ", '{$data}', " . "'{$language}', '{$pwd_hash}', '{$salt}', " .
-           ($private == "on" || $private == "yes" || $password ? "1" : "0") .
-           ", {$hash}, '{$remote_ip}')";
-    $db->query($sql);
+    // Generate URL key
+    if ($config->url_key_enabled)
+    {
+        $skip_insert = true;
 
-    $new_id = $db->get_id();
+        // Generate a unique key. We cannot simply use a constraint as we have a nullable column
+        // We retry 3 times only
+        for($unique = 1; $unique <= 3; $unique++)
+        {
+            $url_key = $auth->create_uid(8, $unique);
+            $sql = "SELECT id AS count FROM {$db->prefix}main WHERE urlkey = :urlkey";
+
+            $row = $db->query($sql, array(
+                ':urlkey' => $url_key
+            ));
+
+            if ($row == null)
+            {
+                $skip_insert = false;
+                break;
+            }
+        }
+    }
+
+    if (!$skip_insert)
+    {
+        // Insert into the DB
+        $sql = "INSERT INTO {$db->prefix}main " .
+               "(author, project, timestamp, expire, title, data, urlkey, " .
+               "language, password, salt, private, hash, ip) VALUES " .
+               "(:author, :project, :timestamp, :expire, :title, :data, :urlkey, " .
+               ":language, :password, :salt, :private, :hash, :ip)";
+
+        $db->query($sql, array(
+            ':author'       => $author,
+            ':project'      => $project,
+            ':timestamp'    => $time,
+            ':expire'       => $expire,
+            ':title'        => $title,
+            ':data'         => $data,
+            ':urlkey'       => $url_key,
+            ':language'     => $language,
+            ':password'     => $pwd_hash,
+            ':salt'         => $salt,
+            ':private'      => $private == 'on' || $private == 'yes' || $password ? 1 : 0,
+            ':hash'         => $hash,
+            ':ip'           => $core->remote_ip()
+        ));
+
+        // Get the last inserted paste ID
+        $new_id = $db->insert_id('id');
+    }
 
     // Address API requests
     if ($mode == 'xml' || $mode == 'json')
     {
         if ($new_id)
         {
-            $skin->assign('paste_id', $new_id);
-
-            if ($private)
-            {
-                $skin->assign('paste_hash', $hash);
-            }
+            $skin->assign(array(
+                'paste_id'    => $config->url_key_enabled ? "p{$url_key}" : $new_id,
+                'paste_hash'  => $private ? $hash : '',
+            ));
 
             // Output the XML/JSON data
             echo $skin->output("api_create.{$mode}");
@@ -173,7 +202,7 @@ if (($paste_submit || $api_submit) && strlen($data) > 0 && !$show_error)
         if ($new_id)
         {
             $hash_arg = ($private || $password) ? $hash : '';
-            $url = $nav->get_paste($new_id, $hash_arg, $project, false);
+            $url = $nav->get_paste($new_id, $url_key, $hash_arg, $project);
 
             if (!$password)
             {
@@ -208,6 +237,7 @@ else
     // Assign template data
     $skin->assign(array(
         'post_user'             => htmlspecialchars($author),
+        'post_title'            => htmlspecialchars($title),
         'post_data'             => htmlspecialchars($data),
         'post_' . $language     => 'selected="selected"',
         'post_checked'          => ($private == "on" ? "checked" : ""),

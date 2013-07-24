@@ -5,7 +5,7 @@
         <td width="120">{{sitename}}</td>
         <td><input type="text" name="config_name" value="[[config_name]]" size="30" class="textbox" /></td>
     </tr>
-    
+
     <tr>
         <td>{{sitetitle}}</td>
         <td>
@@ -24,7 +24,7 @@
             </div>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{siteskin}}</td>
         <td>
@@ -33,7 +33,7 @@
             </select>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{admin_skin}}</td>
         <td>
@@ -42,7 +42,7 @@
             </select>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{sitelang}}</td>
         <td>
@@ -60,16 +60,53 @@
             </select>
         </td>
     </tr>
+
+    <tr>
+        <td>{{url_key}}</td>
+        <td>
+            <label class="radio" for="config_url_key_yes">
+                <input id="config_url_key_yes" type="radio" name="config_url_key" value="1" [[config_url_key_yes]] />
+                {{yes}}
+            </label>
+
+            <label class="radio" for="config_url_key_no">
+                <input id="config_url_key_no" type="radio" name="config_url_key" value="0" [[config_url_key_no]] />
+                {{no}}
+            </label>
+
+            <div class="fieldinfo faded">{{url_key_exp}}</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>{{user_tracking}}</td>
+        <td>
+            <select class="droplist" name="config_tracking">
+                <option value="0" [[config_tracking_native]]>{{tracking_native}}</option>
+                <option value="1" [[config_tracking_forwarded]]>{{tracking_forwarded}}</option>
+            </select>
+
+            <div class="fieldinfo faded">{{user_tracking_exp}}</div>
+        </td>
+    </tr>
+
+    <tr>
+        <td>{{cache_life}}</td>
+        <td>
+            <input type="text" name="config_cache_life" value="[[config_cache_life]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{cache_life_exp}}</div>
+        </td>
+    </tr>
     </table>
-    
+
     <div class="spacer">&nbsp;</div>
 
     <h3>{{antispam_config}}</h3>
-    
+
     <table cellpadding="5">
     <tr>
         <td width="120" class="topaligned">
-            {{enabled_sg_svcs}}                      
+            {{enabled_sg_svcs}}
         </td>
         <td>
             <select id="mult" class="droplist" name="config_sg_svcs[]" size="5" multiple="multiple">
@@ -82,12 +119,12 @@
         </td>
     </tr>
     </table>
-    
+
     <div class="spacer">&nbsp;</div>
-    
+
     <h3>{{php_config}}</h3>
     <div class="faded">{{php_conf_exp}}</div>
-    
+
     <table cellpadding="5">
     <tr>
         <td width="120">{{access_key}}</td>
@@ -96,7 +133,7 @@
             <div class="fieldinfo faded">{{access_key_exp}}</div>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{age_threshold}}</td>
         <td>
@@ -104,7 +141,7 @@
             <div class="fieldinfo faded">{{age_exp}}</div>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{threat_score}}</td>
         <td>
@@ -112,14 +149,14 @@
             <div class="fieldinfo faded">{{threat_score_exp}}</div>
         </td>
     </tr>
-    
+
     <tr>
         <td>{{type_filter}}</td>
         <td>
             <input type="text" name="config_php_type" value="[[config_php_type]]" size="30" class="textbox" />
             <div class="fieldinfo faded">{{type_exp}}</div>
         </td>
-    </tr>    
+    </tr>
     </table>
 
     <div class="spacer">&nbsp;</div>
@@ -135,10 +172,24 @@
         </td>
     </tr>
     </table>
-    
+
     <div class="spacer">&nbsp;</div>
-    
+
+    <h3>{{url_short_config}}</h3>
+
+    <table cellpadding="5">
+    <tr>
+        <td width="120" valign="top">{{google_api_key}}</td>
+        <td>
+            <input type="text" name="config_google_api_key" value="[[config_google_api_key]]" size="30" class="textbox" />
+            <div class="fieldinfo faded">{{google_api_key_exp}}</div>
+        </td>
+    </tr>
+    </table>
+
+    <div class="spacer">&nbsp;</div>
+
     <hr />
-    
+
     <input type="submit" name="config_save" value="{{save}}" class="button" />
 </div>

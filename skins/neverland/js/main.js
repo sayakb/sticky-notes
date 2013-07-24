@@ -1,9 +1,9 @@
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -103,6 +103,43 @@ $(document).ready(function() {
         } else {
             $('.codewrap div').css('white-space', 'inherit');
         }
+
+        return false;
+    });
+    
+    // URL shorener logic
+    $('#shorten_url').click(function() {
+        var shortener = $(this).attr('data-shortener');
+        
+        // Get texts for shortener
+        var lang_get = $.cookie('stickynotes_short_get');        
+        var lang_generating = $.cookie('stickynotes_short_generating');
+        var lang_error = $.cookie('stickynotes_short_error');
+
+        if ($(this).html() == lang_error) {
+            return false;
+        }
+        
+        if ($(this).html().indexOf('goo.gl') != -1) {
+            return true;
+        }
+
+        // Get the short URL    
+        $(this).html(lang_generating);
+
+        $.get(shortener, function(data) {
+            if (data != "ERROR") {
+                $('#shorten_url')
+                    .attr('href', data)
+                    .html(data);
+            } else {
+                $('#shorten_url').html(lang_error);
+                
+                setTimeout(function() {
+                    $('#shorten_url').html(lang_get);
+                }, 5000);
+            }
+        });
 
         return false;
     });

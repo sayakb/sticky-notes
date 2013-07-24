@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="0.92">
+    <channel>
+        <title>{{feed}} - {{site_name}}</title>
+        <link>[[current_uri]]</link>
+        <description>{{site_title}}</description>
+        <language>{{lang_name}}</language>
+        <pubDate>[[feed_time]]</pubDate>
+        <lastBuildDate>[[feed_time]]</lastBuildDate>
+        <image>
+            <url>[[site_logo_rss]]</url>
+            <title>{{site_title}}</title>
+            <link>[[current_uri]]</link>
+        </image>
+        <copyright>Sayak Banerjee (mail@sayakbanerjee.com)</copyright>
+        [[list_data]]
+    </channel>
+</rss>

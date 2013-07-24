@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<result>
+    <id>[[paste_id]]</id>
+    <author>[[paste_user]]</author>
+    <timestamp>[[paste_timestamp]]</timestamp>
+    <language>[[paste_lang]]</language>
+    <title>[[paste_title]]</title>
+    <data><![CDATA[[[paste_data]]]]></data>
+</result>

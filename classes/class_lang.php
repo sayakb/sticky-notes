@@ -1,10 +1,10 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -29,7 +29,7 @@ class lang
         global $core, $gsod;
 
         // Get language data from lang file
-        $lang_file = $core->in_admin() ? $this->admin_lang_name : $this->lang_name; 
+        $lang_file = defined('IN_ADMIN') ? $this->admin_lang_name : $this->lang_name; 
         
         if (file_exists(realpath("lang/{$lang_file}.php")))
         {
@@ -47,7 +47,7 @@ class lang
 
         foreach ($lang_data as $key => $value)
         {
-            $value = str_replace("[[host]]", $core->base_uri(), $value);
+            $value = str_replace("[[host]]", $core->current_uri(), $value);
             $data = str_replace("{{{$key}}}", $value, $data);
         }
 

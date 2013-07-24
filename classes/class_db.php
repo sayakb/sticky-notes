@@ -1,118 +1,134 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
 class db
 {
     // Class wide variables
-    var $mysqli;
+    var $pdo;
     var $prefix;
+    var $affected_rows;
 
     // Function to initialize a db connection
     function connect()
     {
-        global $gsod, $config;
+        global $gsod, $config, $core;
 
         try
         {
-            $db_port_int = intval($config->db_port);
-            $this->mysqli = new mysqli($config->db_host, $config->db_username,
-                                       $config->db_password, $config->db_name, $db_port_int);
-
-            if (!$this->mysqli->connect_error)
+            if ($config->db_port)
             {
-                $this->prefix = $config->db_prefix;
+                $server = "{$config->db_host}:{$config->db_port}";
             }
             else
             {
-                throw new Exception('DB Error');
+                $server = $config->db_host;
+            }
+
+            // Set the DB prefix
+            $this->prefix = $config->db_prefix;
+
+            // Build the connection string
+            switch ($config->db_type)
+            {
+                case 'mysql':
+                case 'pgsql':
+                    $this->pdo = new PDO(
+                        "{$config->db_type}:host={$server}; dbname={$config->db_name}",
+                        $config->db_username,
+                        $config->db_password
+                    );
+                    break;
+
+                case 'mssql':
+                case 'sybase':
+                    $this->pdo = new PDO(
+                        "{$config->db_type}:host={$server}; dbname={$config->db_name}," .
+                        "{$config->db_username}, {$config->db_password}"
+                    );
+                    break;
+
+                case 'sqlite':
+                    $this->pdo = new PDO("{$config->db_type}:{$config->db_name}");
+                    break;
+            }
+
+            if ($this->pdo != null)
+            {
+                $this->pdo->exec("SET NAMES 'utf8'");
+            }
+            else
+            {
+                throw new PDOException("Unable to connect to the database. Please check your DB settings.");
             }
         }
-        catch (Exception $e)
+        catch (PDOException $e)
         {
             $message  = '<b>Sticky Notes DB error</b><br /><br />';
-            $message .= 'Database connection failed! Please check your DB settings.';
+            $message .= 'Error: ' . $e->getMessage();
             $gsod->trigger($message);
         }
     }
 
     // Function to return a recordset
-    function query($sql, $single = false)
+    function query($sql, $params = array(), $single = false)
     {
-        try
+        global $gsod;
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        $sql = strtolower($sql);
+
+        if ($stmt !== false)
         {
-            global $gsod;
-            
-            $recordset = array();
-            $result = $this->mysqli->query($sql);
-            $sql = strtolower($sql);
-
-            if ((strpos($sql, 'select') !== false && strpos($sql, 'select') == 0) ||
-                (strpos($sql, 'show') !== false && strpos($sql, 'show') == 0))
+            if (strpos($sql, 'select') === 0 || strpos($sql, 'show') === 0)
             {
-                if (!$result)
+                if ($single)
                 {
-                    $message  = '<b>Sticky Notes DB error</b><br /><br />';
-                    $message .= 'Error: ' . $this->mysqli->error . "<br />";
-                    $message .= 'Whole query: ' . $sql;
-                    $gsod->trigger($message);
-                }
-
-                if (!$single)
-                {
-                    while ($row = $result->fetch_assoc())
-                    {
-                        $recordset[] = $row;
-                    }
-
-                    $result->close();
-                    return $recordset;
+                    return $stmt->fetch(PDO::FETCH_ASSOC);
                 }
                 else
                 {
-                    $row = $result->fetch_assoc();
-                    $result->close();
-
-                    return $row;
+                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
+            }
+            else
+            {
+                $this->affected_rows = $stmt->rowCount();
             }
 
             return true;
         }
-        catch (Exception $e)
+        else
         {
-            return null;
+            return false;
         }
     }
 
-    // Function to get the last inserted query ID
-    function get_id()
+    // Gets the last inserted ID
+    function insert_id($column)
     {
-        return $this->mysqli->insert_id;
+        return $this->pdo->lastInsertId($column);
     }
 
-    // Function to check affected rows
-    function affected_rows()
+    // Gets the database size
+    function get_size()
     {
-        return $this->mysqli->affected_rows;
-    }
+        $rows = $this->query('SHOW TABLE STATUS');
+        $size = 0;
 
-    // Function to escape a special chars string
-    function escape(&$data)
-    {
-        $data = $this->mysqli->real_escape_string($data);
-    }
+        foreach($rows as $row)
+        {
+            $size += intval($row["Data_length"]) + intval($row["Index_length"]);
+        }
 
-    // Object descturtor
-    function __destruct()
-    {
-        $this->mysqli->close();
+        return $size;
     }
 }
 

@@ -1,10 +1,10 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2011 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -17,13 +17,13 @@ $ban_submit = isset($_POST['ipban_submit']);
 // Delete IP from banned list
 if (!empty($ban_del))
 {
-    $ban_del = urldecode($ban_del);
-    $db->escape($ban_del);
-    
-    $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip = '{$ban_del}'";
-    $db->query($sql);
-    
-    $core->redirect($core->path() . '?mode=ipbans');
+    $sql = "DELETE FROM {$db->prefix}ipbans WHERE ip = :ban_del";
+
+    $db->query($sql, array(
+        ':ban_del' => urlencode($ban_del)
+    ));
+
+    $core->redirect($core->current_uri() . '?mode=ipbans');
 }
 
 // Get a list of IP bans
@@ -35,7 +35,7 @@ if ($ban_submit && !empty($ban_ip))
 {
     // Check if IP is already banned
     $already_banned = false;
-    
+
     if (!empty($rows))
     {
         foreach ($rows as $row)
@@ -46,7 +46,7 @@ if ($ban_submit && !empty($ban_ip))
             }
         }
     }
-    
+
     // Validate the IP address
     if(!filter_var($ban_ip, FILTER_VALIDATE_IP))
     {
@@ -58,14 +58,15 @@ if ($ban_submit && !empty($ban_ip))
         // Process the ban
         if (!$already_banned)
         {
-            $db->escape($ban_ip);
-
             $sql = "INSERT INTO {$db->prefix}ipbans (ip) " .
-                   "VALUES ('{$ban_ip}')";
-            $db->query($sql);
-            
+                   "VALUES (:ban_ip)";
+
+            $db->query($sql, array(
+                ':ban_ip' => $ban_ip
+            ));
+
             $module->notify($lang->get('banned_success'));
-            
+
             // Get updated list of IP bans
             $sql = "SELECT ip FROM {$db->prefix}ipbans";
             $rows = $db->query($sql);
@@ -83,11 +84,11 @@ $ipbans_data = '';
 
 if (!empty($rows))
 {
-    foreach ($rows as $row)   
+    foreach ($rows as $row)
     {
         $skin->assign(array(
             'ipbans_entry'      => $row['ip'],
-            'ipbans_delete'     => '<a href="' . ($core->path() . 'ipbans/delete/' . urlencode($row['ip'])) . 
+            'ipbans_delete'     => '<a href="' . ($core->current_uri() . '?mode=ipbans&delete=' . urlencode($row['ip'])) .
                                    '" onclick="return confirm(\'' . $lang->get('action_confirm') . '\')"><b>' .
                                    $lang->get('delete') . '</b></a>',
         ));
@@ -108,4 +109,4 @@ $module_title = $lang->get('manage_ip_bans');
 $module_data =  $skin->output('tpl_ipbans_main', true, true);
 
 ?>
- 
+

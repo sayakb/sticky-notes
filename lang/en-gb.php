@@ -1,10 +1,10 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -26,6 +26,8 @@ $lang_data = array(
     'del_1week'         => 'Delete after 1 week',
     'del_1month'        => 'Delete after 1 month',
     'keep_forever'      => 'Keep paste forever',
+    'paste_title'       => 'Paste title',
+    'paste_body'        => 'Paste body',
 
 
     /* Page: show.php */
@@ -39,6 +41,9 @@ $lang_data = array(
     'submit'            => 'Submit',
     'invalid_password'  => 'You have entered an incorrect password',
     'share'             => 'Share',
+    'short_get'         => 'Get short URL',
+    'short_generating'  => 'Generating...',
+    'short_error'       => 'Error occurred!',
 
 
     /* Page: list.php */
@@ -46,6 +51,12 @@ $lang_data = array(
     'no_pastes'         => 'No pastes found',
     'view_paste'        => 'View paste &raquo;',
     'pages'             => 'Pages',
+    'right_now'         => 'Right now',
+    'last_week'         => 'Last 7 days',
+    'last_month'        => 'Last 30 days',
+    'last_year'         => 'Last 365 days',
+    'all_time'          => 'All time',
+    'filter'            => 'Filter',
 
 
     /* RSS */
@@ -71,8 +82,12 @@ $lang_data = array(
     'about'             => 'About',
     'help'              => 'Help',
     'admin'             => 'Admin',
-    'kde_links'         => 'KDE Links',
     'anonymous'         => 'Anonymous',
+    'trending'          => 'Trending',
+    'tag_paste'         => 'paste',
+    'tag_trending'      => 'trending',
+    'tag_all'           => 'all',
+    'tag_documentation' => 'documentation',
 
 
     /* Documentation: api */

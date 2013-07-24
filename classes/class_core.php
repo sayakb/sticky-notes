@@ -1,10 +1,10 @@
 <?php
 /**
 * Sticky Notes pastebin
-* @ver 0.3
+* @ver 0.4
 * @license BSD License - www.opensource.org/licenses/bsd-license.php
 *
-* Copyright (c) 2012 Sayak Banerjee <sayakb@kde.org>
+* Copyright (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
 * All rights reserved. Do not remove this copyright notice.
 */
 
@@ -13,14 +13,15 @@ class core
     // Global vars
     var $build;
     var $build_num;
+    var $root_dir;
 
     // Constructor
     function __construct()
     {
         // Define globals
         global $gsod;
-        
-        // Get the version number       
+
+        // Get the version number
         if (file_exists('VERSION'))
         {
             $data = file_get_contents('VERSION');
@@ -34,28 +35,19 @@ class core
             $gsod->trigger('<b>Sticky Notes fatal error</b><br /><br />' .
                            'Version file not found');
         }
-        
+
         $data = explode("\n", $data);
         $this->build = $data[0];
         $this->build_num = $data[1];
+        $this->root_dir = defined('IN_ADMIN') ? '../' : '';
     }
 
-    // Function to return root path
-    function path()
+    // Function to return root URI base
+    function root_uri()
     {
-        $path = $_SERVER['PHP_SELF'];
-        $snip = strrpos($path, '/');
-        $path = substr($path, 0, $snip + 1);
+        $path = $this->current_uri();
 
-        return $path;
-    }
-    
-    // Function to return root path
-    function root_path()
-    {
-        $path = $this->path();
-        
-        if (strpos($path, 'admin') !== false)
+        if (defined('IN_ADMIN') !== false)
         {
             return substr($path, 0, strrpos($path, 'admin'));
         }
@@ -65,35 +57,95 @@ class core
         }
     }
 
-    // Check if we are in admin path
-    function in_admin()
+    // Get the current URI base
+    function current_uri()
     {
-        $path = $this->path();
+        $path = $_SERVER['PHP_SELF'];
+        $snip = strrpos($path, '/');
+        $path = substr($path, 0, $snip + 1);
 
-        return (strpos($path, 'admin') !== false);
+        return $this->hostname() . $path;
+    }
+
+    // Get the full URI, uncluding the script name
+    function full_uri()
+    {
+        return $this->hostname() . $_SERVER['REQUEST_URI'];
+    }
+
+    // Function to return the script name
+    function script_name()
+    {
+        return $_SERVER['SCRIPT_NAME'];
+    }
+
+    // Returns the server's hostname
+    function hostname($add_protocol = true)
+    {
+        if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
+        {
+            $hostname = $_SERVER['HTTP_X_FORWARDED_HOST'];
+        }
+        elseif (isset($_SERVER['HTTP_HOST']))
+        {
+            $hostname = $_SERVER['HTTP_HOST'];
+        }
+        else
+        {
+            $hostname = "unknown_host";
+        }
+
+        if ($add_protocol)
+        {
+            $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+            return $protocol . '://' . $hostname;
+        }
+        else
+        {
+            return $hostname;
+        }
     }
 
     // Function to return remote IP
     function remote_ip()
     {
-        return $_SERVER['REMOTE_ADDR'];
+        global $config;
+
+        // Get the user's IP
+        $remote = getenv($config->tracking_method);
+
+        if ($remote === false)
+        {
+            $remote = getenv('REMOTE_ADDR');
+        }
+
+        // Return the last entry of the comma separated IP list
+        $ip_ary = explode(',', $remote);
+        $ip_addr = trim(end($ip_ary));
+
+        if (filter_var($ip_addr, FILTER_VALIDATE_IP))
+        {
+            return $ip_addr;
+        }
+
+        return '0.0.0.0';
     }
 
     // Function to set a cookie
     function set_cookie($name, $value, $expire = 0)
-    {      
+    {
         if ($expire > 0)
         {
             $expire = time() + ($expire * 24 * 60 * 60);
         }
 
-        setcookie('stickynotes_' . $name, $value, $expire, $this->root_path());
+        setcookie('stickynotes_' . $name, $value, $expire, $this->root_uri());
     }
-    
+
     // Function to expire a cookie
     function unset_cookie($name)
     {
-        setcookie('stickynotes_' . $name, null, time() - 3600, $this->root_path());
+        setcookie('stickynotes_' . $name, null, time() - 3600, $this->root_uri());
     }
 
     // Function to fetch query strings / post data
@@ -131,41 +183,6 @@ class core
         }
     }
 
-    // Function to return the script name
-    function script_name()
-    {
-        return $_SERVER['SCRIPT_NAME'];
-    }
-
-    // Get the request URI
-    function request_uri()
-    {
-        return $_SERVER['REQUEST_URI'];
-    }
-
-    // Get the base URI
-    function base_uri()
-    {
-        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
-
-        if (isset($_SERVER['HTTP_X_FORWARDED_HOST']))
-        {
-            $hostname = $_SERVER['HTTP_X_FORWARDED_HOST'];
-        }
-        elseif (isset($_SERVER['HTTP_HOST']))
-        {
-            $hostname = $_SERVER['HTTP_HOST'];
-        }
-        else
-        {
-            $hostname = "unknown_host";
-        }
-
-        $uri = $protocol . '://' . $hostname . $this->path();
-        
-        return $uri;
-    }
-    
     // Method to replace square brackets with normal braces
     function rss_encode(&$data)
     {
@@ -175,20 +192,23 @@ class core
         $data = str_replace('}', ')', $data);
         $data = str_replace(chr(0), '', $data);
     }
-    
+
     // Method to redirect to a specified URL
     function redirect($url)
     {
         header("Location: {$url}");
         exit;
     }
- 
+
     // Method to return the server load
-    function server_load() 
+    function server_load()
     {
+        global $lang;
+
+        // Get the system's load based on the OS
         $os = strtolower(PHP_OS);
 
-        if (strpos($os, 'win') === FALSE)
+        if (strpos($os, 'win') === false)
         {
             if (file_exists('/proc/loadavg'))
             {
@@ -216,7 +236,7 @@ class core
             }
         }
 
-        return 'N/A';
+        return $lang->get('n_a');
     }
 }
 
