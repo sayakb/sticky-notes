@@ -11,6 +11,9 @@
 // Turn off error reporting
 error_reporting(E_ALL);
 
+// Create a new session
+session_start();
+
 // Define constants
 define('UPDATE_SERVER', 'https://raw.github.com/sayakb/sticky-notes/master/VERSION');
 define('UPDATE_DL_PATH', 'https://github.com/sayakb/sticky-notes/zipball/master');

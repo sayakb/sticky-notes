@@ -23,11 +23,11 @@ Step 2 - Importing the template
 Open AWT in your browser and click on 'Click to browse...'
 Select the template and click 'Import'
 
-Step 3 - Disable the anti-flood filter
+Step 3 - Disable the anti-spam filters
 ---------------------------------------
-Sticky Notes comes with a flood control filter that will stop AWT from executing
-its test cases. Before you start executing the tests, please disable the 'noflood'
-extension from the site configuration page of admin panel in Sticky Notes.
+Sticky Notes comes with anti-spam filters that prevent creation of automated
+pastes. Please disable the 'noflood' and 'token' services from the Site
+Configuration section of Sticky Notes admin panel.
 
 Step 4 - Setting the credentials
 ---------------------------------

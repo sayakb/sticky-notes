@@ -248,6 +248,7 @@ else
 // Assign template data
 $skin->assign(array(
     'post_lang_list'            => $skin->output('tpl_languages'),
+    'post_token'                => $sg->validate_token(true),
     'error_visibility'          => ($show_error === true ? 'visible' : 'hidden'),
 ));
 

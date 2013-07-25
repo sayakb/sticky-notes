@@ -19,11 +19,12 @@ class spamguard
         $this->registered_services = array();
 
         // Register services
+        $this->register('token');
+        $this->register('censor');
         $this->register('ipban');
         $this->register('stealth');
         $this->register('noflood');
         $this->register('php');
-        $this->register('censor');
     }
 
     // Function to register services
@@ -57,15 +58,11 @@ class spamguard
         foreach($services as $service_key)
         {
             $service_key = strtolower(trim($service_key));
-            $service_name = 'validate_' . $service_key;
+            $service_name = array($this, "validate_{$service_key}");
 
-            if ($this->is_registered($service_key))
+            if ($this->is_registered($service_key) && is_callable($service_name))
             {
-                // Assume validation was successful
-                $validation_output = true;
-
-                // Perform validation
-                eval('$validation_output = $this->' . $service_name . '();');
+                $validation_output = call_user_func($service_name);
 
                 // Check if validation succeeded
                 if (!$validation_output)
@@ -93,6 +90,7 @@ class spamguard
                 // Assign template data
                 $skin->assign(array(
                     'post_lang_list'        => $skin->output('tpl_languages'),
+                    'post_token'            => $this->validate_token(true),
                     'error_visibility'      => 'hidden',
                 ));
 
@@ -106,6 +104,35 @@ class spamguard
                 return 'err_spamguard_' . $service_key;
             }
         }
+    }
+    
+    // Validation using session token
+    function validate_token($generate = false)
+    {
+        global $auth, $core;
+
+        if ($generate)
+        {
+            $uid = $auth->create_uid();
+            $_SESSION['paste_token'] = $uid;
+
+            return $uid;
+        }
+        else
+        {
+            if (!isset($_POST['api_submit']) && isset($_SESSION['paste_token']))
+            {
+                $paste_token = $core->variable('paste_token', '');
+                
+                // POSTed token must match the session token
+                if ($_SESSION['paste_token'] != $paste_token)
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
     }
 
     // IP Ban check
@@ -199,19 +226,11 @@ class spamguard
             foreach ($blocked_ary as $blocked)
             {
                 $blocked = trim(html_entity_decode($blocked));
+                $blocked = str_replace('*', '.*?', $blocked);
+                $blocked = "/^{$blocked}$/i";
 
-                if (!empty($blocked))
-                {
-                    // Check if blocked phrase exists
-                    $censored = strpos(strtolower($data), strtolower($blocked)) !== false;
-                }
-                else
-                {
-                    continue;
-                }
-
-                // Invalidate if censored
-                if ($censored)
+                // Check if the string exists in the post
+                if (preg_match($blocked, $data))
                 {
                     return false;
                 }
