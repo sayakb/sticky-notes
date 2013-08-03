@@ -22,15 +22,6 @@ class db
 
         try
         {
-            if ($config->db_port)
-            {
-                $server = "{$config->db_host}:{$config->db_port}";
-            }
-            else
-            {
-                $server = $config->db_host;
-            }
-
             // Set the DB prefix
             $this->prefix = $config->db_prefix;
 
@@ -39,19 +30,11 @@ class db
             {
                 case 'mysql':
                 case 'pgsql':
-                    $this->pdo = new PDO(
-                        "{$config->db_type}:host={$server}; dbname={$config->db_name}",
-                        $config->db_username,
-                        $config->db_password
-                    );
-                    break;
-
                 case 'mssql':
                 case 'sybase':
-                    $this->pdo = new PDO(
-                        "{$config->db_type}:host={$server}; dbname={$config->db_name}," .
-                        "{$config->db_username}, {$config->db_password}"
-                    );
+                    $port_str = $config->db_port ? ";port={$config->db_port}" : "";
+                    $conn_str = "{$config->db_type}:host={$config->db_host}{$port_str};dbname={$config->db_name}";
+                    $this->pdo = new PDO($conn_str, $config->db_username, $config->db_password);
                     break;
 
                 case 'sqlite':
