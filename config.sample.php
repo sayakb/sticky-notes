@@ -9,7 +9,7 @@
 */
 
 // Fill in the database details
-$db_type = ""; // Required field. Supported types: mysql, pgsql, mssql, sybase and sqlite
+$db_type = ""; // Required field. Currently works with mysql only.
 
 $db_host = ""; // Required field
 
