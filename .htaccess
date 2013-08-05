@@ -1,53 +1,52 @@
 # PHP.ini config stuff
 php_flag magic_quotes_gpc off
 
+# Disable MultiViews
+Options -MultiViews
+
 # Rewrite rules
-<IfModule mod_rewrite.c>
-    # Tell PHP that rewrite rules are available
-    SetEnv HTTP_MOD_REWRITE On
+RewriteEngine on
 
-    # Disable MultiViews
-    Options -MultiViews
+# Setup links
+RewriteRule ^install/?$ install.php [NC]
+RewriteRule ^upgrade/?$ upgrade.php [NC]
 
-    # Rewrite rules
-    RewriteEngine on
+# Documentation links
+RewriteRule ^doc/([a-z]+)/?$ doc.php?cat=$1 [NC]
+RewriteRule ^~([a-z.]+)/doc/([a-z]+)/?$ doc.php?project=$1&cat=$2 [NC]
 
-    # Setup link
-    RewriteRule ^install/?$ install.php [NC]
+# Home page links
+RewriteRule ^~([a-z.]+)/?$ index.php?project=$1 [NC]
+RewriteRule ^~([a-z.]+)/api/([a-z]+)/?$ index.php?project=$1&mode=$2 [NC]
 
-    # Documentation links
-    RewriteRule ^doc/([a-z]+)/?$ doc.php?cat=$1 [NC]
-    RewriteRule ^~([a-z.]+)/doc/([a-z]+)/?$ doc.php?project=$1&cat=$2 [NC]
+# Paste list, trending and RSS
+RewriteRule ^all/?$ list.php [NC]
+RewriteRule ^api/([a-z]+)/all/?$ list.php?mode=$1 [NC]
+RewriteRule ^~([a-z.]+)/all/?$ list.php?project=$1 [NC]
+RewriteRule ^~([a-z.]+)/api/([a-z]+)/all/?$ list.php?project=$1&mode=$2 [NC]
+RewriteRule ^all/([0-9]+)/?$ list.php?page=$1 [NC]
+RewriteRule ^api/([a-z]+)/all/([0-9]+)/?$ list.php?mode=$1&page=$2 [NC]
+RewriteRule ^~([a-z.]+)/all/([0-9]+)/?$ list.php?project=$1&page=$2 [NC]
+RewriteRule ^~([a-z.]+)/api/([a-z]+)/all/([0-9]+)/?$ list.php?project=$1&mode=$2&page=$3 [NC]
+RewriteRule ^trending/([a-z]+)/?$ list.php?trending=1&age=$1 [NC]
+RewriteRule ^~([a-z.]+)/trending/([a-z]+)/?$ list.php?project=$1&trending=1&age=$2 [NC]
+RewriteRule ^trending/?$ list.php?trending=1 [NC]
+RewriteRule ^~([a-z.]+)/trending/?$ list.php?project=$1&trending=1 [NC]
+RewriteRule ^rss/?$ list.php?rss=1 [NC]
+RewriteRule ^~([a-z.]+)/rss/?$ list.php?project=$1&rss=1 [NC]
 
-    # Home page links
-    RewriteRule ^~([a-z.]+)/?$ index.php?project=$1 [NC]
-    RewriteRule ^~([a-z.]+)/api/([a-z]+)/?$ index.php?project=$1&mode=$2 [NC]
-
-    # Paste list
-    RewriteRule ^all/?$ list.php [NC]
-    RewriteRule ^api/([a-z]+)/all/?$ list.php?mode=$1 [NC]
-    RewriteRule ^~([a-z.]+)/all/?$ list.php?project=$1 [NC]
-    RewriteRule ^~([a-z.]+)/api/([a-z]+)/all/?$ list.php?project=$1&mode=$2 [NC]
-    RewriteRule ^rss/?$ list.php?rss=1 [NC]
-    RewriteRule ^~([a-z.]+)/rss/?$ list.php?project=$1&rss=1 [NC]
-    RewriteRule ^all/([0-9]+)/?$ list.php?page=$1 [NC]
-    RewriteRule ^api/([a-z]+)/all/([0-9]+)/?$ list.php?mode=$1&page=$2 [NC]
-    RewriteRule ^~([a-z.]+)/all/([0-9]+)/?$ list.php?project=$1&page=$2 [NC]
-    RewriteRule ^~([a-z.]+)/api/([a-z]+)/all/([0-9]+)/?$ list.php?project=$1&mode=$2&page=$3 [NC]
-
-    # General links
-    RewriteRule ^([0-9]+)/?$ show.php?id=$1 [NC]
-    RewriteRule ^~([a-z.]+)/([0-9]+)/?$ show.php?project=$1&id=$2 [NC]
-    RewriteRule ^([0-9]+)/([a-z|A-Z]+)/?$ show.php?id=$1&mode=$2 [NC]
-    RewriteRule ^~([a-z.]+)/([0-9]+)/([a-z|A-Z]+)/?$ show.php?project=$1&id=$2&mode=$3 [NC]
-    RewriteRule ^api/([a-z|A-Z]+)/([0-9]+)/?$ show.php?mode=$1&id=$2 [NC]
-    RewriteRule ^~([a-z.]+)/api/([a-z|A-Z]+)/([0-9]+)/?$ show.php?project=$1&mode=$2&id=$3 [NC]
-    RewriteRule ^([0-9]+)/([0-9]+)/?$ show.php?id=$1&hash=$2 [NC]
-    RewriteRule ^~([a-z.]+)/([0-9]+)/([0-9]+)/?$ show.php?project=$1&id=$2&hash=$3 [NC]
-    RewriteRule ^([0-9]+)/([0-9]+)/([a-z|A-Z]+)/?$ show.php?id=$1&hash=$2&mode=$3 [NC]
-    RewriteRule ^~([a-z.]+)/([0-9]+)/([0-9]+)/([a-z|A-Z]+)/?$ show.php?project=$1&id=$2&hash=$3&mode=$4 [NC]
-    RewriteRule ^api/([a-z|A-Z]+)/([0-9]+)/([0-9]+)/?$ show.php?mode=$1&id=$2&hash=$3 [NC]
-    RewriteRule ^~([a-z.]+)/api/([a-z|A-Z]+)/([0-9]+)/([0-9]+)/?$ show.php?project=$1&mode=$2&id=$3&hash=$4 [NC]
-    RewriteRule ^api/([a-z|A-Z]+)/([0-9]+)/([0-9]+)/(.*)$ show.php?mode=$1&id=$2&hash=$3&password=$4 [NC]
-    RewriteRule ^~([a-z.]+)/api/([a-z|A-Z]+)/([0-9]+)/([0-9]+)/(.*)$ show.php?project=$1&mode=$2&id=$3&hash=$4&password=$5 [NC]    
-</IfModule>
+# General links
+RewriteRule ^([0-9]+|p[0-9a-zA-Z]{8})/?$ show.php?id=$1 [NC]
+RewriteRule ^~([a-z.]+)/([0-9]+|p[0-9a-zA-Z]{8})/?$ show.php?project=$1&id=$2 [NC]
+RewriteRule ^([0-9]+|p[0-9a-zA-Z]{8})/([a-z|A-Z]+)/?$ show.php?id=$1&mode=$2 [NC]
+RewriteRule ^~([a-z.]+)/([0-9]+|p[0-9a-zA-Z]{8})/([a-z|A-Z]+)/?$ show.php?project=$1&id=$2&mode=$3 [NC]
+RewriteRule ^api/([a-z|A-Z]+)/([0-9]+|p[0-9a-zA-Z]{8})/?$ show.php?mode=$1&id=$2 [NC]
+RewriteRule ^~([a-z.]+)/api/([a-z|A-Z]+)/([0-9]+|p[0-9a-zA-Z]{8})/?$ show.php?project=$1&mode=$2&id=$3 [NC]
+RewriteRule ^([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/?$ show.php?id=$1&hash=$2 [NC]
+RewriteRule ^~([a-z.]+)/([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/?$ show.php?project=$1&id=$2&hash=$3 [NC]
+RewriteRule ^([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/([a-z|A-Z]+)/?$ show.php?id=$1&hash=$2&mode=$3 [NC]
+RewriteRule ^~([a-z.]+)/([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/([a-z|A-Z]+)/?$ show.php?project=$1&id=$2&hash=$3&mode=$4 [NC]
+RewriteRule ^api/([a-z|A-Z]+)/([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/?$ show.php?mode=$1&id=$2&hash=$3 [NC]
+RewriteRule ^~([a-z.]+)/api/([a-z|A-Z]+)/([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/?$ show.php?project=$1&mode=$2&id=$3&hash=$4 [NC]
+RewriteRule ^api/([a-z|A-Z]+)/([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/(.*)$ show.php?mode=$1&id=$2&hash=$3&password=$4 [NC]
+RewriteRule ^~([a-z.]+)/api/([a-z|A-Z]+)/([0-9]+|p[0-9a-zA-Z]{8})/([0-9]+)/(.*)$ show.php?project=$1&mode=$2&id=$3&hash=$4&password=$5 [NC]
