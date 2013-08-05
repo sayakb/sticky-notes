@@ -269,26 +269,26 @@ else
 }
 
 $skin->assign(array(
-    'paste_count'       => $rowcount,
-    'paste_pages'       => ceil($total / 10),
-    'error_text'        => $lang->get('no_pastes'),
-    'list_title'        => $trending ? $lang->get('trending') : $lang->get('archives'),
-    'list_icon'         => $trending ? 'trending' : 'archives',
-    'list_data'         => $output_data,
-    'list_pagination'   => $pagination,
-    'feed_time'         => $published,
-    'filter_visibility' => $skin->visibility($trending),
-    'pages_visibility'  => $skin->visibility($trending, true),
-    'trending_now'      => $nav->get('nav_trending', $project),
-    'trending_week'     => $nav->get('nav_trending', $project, $page, 'week'),
-    'trending_month'    => $nav->get('nav_trending', $project, $page, 'month'),
-    'trending_year'     => $nav->get('nav_trending', $project, $page, 'year'),
-    'trending_all'      => $nav->get('nav_trending', $project, $page, 'all'),
-    'tr_active_now'     => $skin->active(empty($age)),
-    'tr_active_week'    => $skin->active($age == 'week'),
-    'tr_active_month'   => $skin->active($age == 'month'),
-    'tr_active_year'    => $skin->active($age == 'year'),
-    'tr_active_all'     => $skin->active($age == 'all'),
+    'paste_count'           => $rowcount,
+    'paste_pages'           => ceil($total / 10),
+    'error_text'            => $lang->get('no_pastes'),
+    'list_title'            => $trending ? $lang->get('trending') : $lang->get('archives'),
+    'list_icon'             => $trending ? 'trending' : 'archives',
+    'list_data'             => $output_data,
+    'list_pagination'       => $pagination,
+    'feed_time'             => $published,
+    'trending_visibility'   => $skin->visibility($trending),
+    'archives_visibility'   => $skin->visibility($trending, true),
+    'trending_now'          => $nav->get('nav_trending', $project),
+    'trending_week'         => $nav->get('nav_trending', $project, $page, 'week'),
+    'trending_month'        => $nav->get('nav_trending', $project, $page, 'month'),
+    'trending_year'         => $nav->get('nav_trending', $project, $page, 'year'),
+    'trending_all'          => $nav->get('nav_trending', $project, $page, 'all'),
+    'tr_active_now'         => $skin->active(empty($age)),
+    'tr_active_week'        => $skin->active($age == 'week'),
+    'tr_active_month'       => $skin->active($age == 'month'),
+    'tr_active_year'        => $skin->active($age == 'year'),
+    'tr_active_all'         => $skin->active($age == 'all'),
 ));
 
 // Output the page
@@ -305,4 +305,3 @@ else
 }
 
 ?>
-
