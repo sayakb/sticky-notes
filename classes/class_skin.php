@@ -302,7 +302,7 @@ class skin
                 $idx != ($current_page) && $idx != ($current_page + 1) &&
                 $idx < ($pages - 2))
             {
-                $pagination .= ' ...';
+                $pagination .= '<li class="disabled"><a href="#">...</a></li>';
 
                 if ($idx < ($current_page - 1))
                 {
@@ -315,19 +315,8 @@ class skin
             }
             else
             {
-                if ($idx != $current_page)
-                {
-                    $pagination .= '<a href="' . $nav->get('nav_archives', $project, $idx) . '">';
-                }
-
-                $pagination .= '<span class="page_no';
-                $pagination .= ($idx == $current_page ? ' page_current' : '');
-                $pagination .= '">' . $idx . '</span>';
-
-                if ($idx != $current_page)
-                {
-                    $pagination .= "</a>";
-                }
+                $pagination .= $idx == $current_page ? '<li class="active">' : '<li>';
+                $pagination .= '<a href="' . $nav->get('nav_archives', $project, $idx) . '">' . $idx . '</a></li>';
             }
         }
 
