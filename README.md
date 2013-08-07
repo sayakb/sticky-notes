@@ -20,15 +20,15 @@ master branch. It is strongly recommended that you do not use v1.0 in a
 production environment until it is tagged as v1.0 and moved to master.
 
 
-Dependencies
-=============
+Environment setup
+==================
 
 Configuring sticky-notes is easy, you need to make the following changes:
  * Install the php Mcrypt extention (this is required by laravel)
  * Make the app/storage directory and its subfolders writable by your web server
  * You can place the contents of the `public/` directory in your web server root,
    or a subfolder. For example, if your web root is at `/var/www` and you want to
-   run sticky-notes by running http://example.com/sticky-notes, place the public
+   run sticky-notes by visiting http://example.com/sticky-notes, place the public
    folder contents inside `/var/www/sticky-notes`
  * The rest of the files can be moved outside your web root as long as the path
    to the bootstrap folder is properly adjusted within the public/index.php file
