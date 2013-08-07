@@ -26,8 +26,8 @@ Dependencies
 Configuring sticky-notes is easy, you need to make the following changes:
  * Install the php Mcrypt extention (this is required by laravel)
  * Make the app/storage directory and its subfolders writable by your web server
- * You can place the contents of the public/ directory in your web server root,
-   or a subfolder. For example, if your web root is at /var/www and you want to
+ * You can place the contents of the `public/` directory in your web server root,
+   or a subfolder. For example, if your web root is at `/var/www` and you want to
    run sticky-notes by running http://example.com/sticky-notes, place the public
    folder contents inside `/var/www/sticky-notes`
  * The rest of the files can be moved outside your web root as long as the path
