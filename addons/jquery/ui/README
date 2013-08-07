@@ -1,8 +1,0 @@
-Sticky Notes pastebin v0.2
-===========================
-
-The version of jQuery UI included with Sticky Notes may be outdated as the
-Elegant theme (which utilizes jQuery UI components) has been deprecated.
-
-If you intend to use the Elegant theme for your Sticky Notes installation,
-please consider replacing this stock copy with the latest version of jQuery UI.

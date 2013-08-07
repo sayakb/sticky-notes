@@ -1,8 +1,0 @@
-<item>
-    <title>{{paste}} #[[paste_id]]</title>
-    <link>[[paste_url]]</link>
-    <description><![CDATA[[[paste_data]]]]></description>
-    <pubDate>[[paste_time]]</pubDate>
-    <guid>[[paste_id]]/[[paste_timestamp]]</guid>
-</item>
-
