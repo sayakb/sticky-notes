@@ -81,3 +81,14 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+/*
+|--------------------------------------------------------------------------
+| Initialize custom libraries
+|--------------------------------------------------------------------------
+|
+| Initialize Sticky Notes libs with their init methods.
+|
+*/
+
+Highlighter::init();

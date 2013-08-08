@@ -7,10 +7,11 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
+    'CreateController' => $baseDir . '/app/controllers/CreateController.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
-    'HomeController' => $baseDir . '/app/controllers/HomeController.php',
+    'Highlighter' => $baseDir . '/app/lib/Highlighter.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
+    'Site' => $baseDir . '/app/models/Site.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
-    'User' => $baseDir . '/app/models/User.php',
 );
