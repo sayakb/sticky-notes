@@ -7,7 +7,7 @@ return array(
 	| Menu Configuration
 	|--------------------------------------------------------------------------
 	|
-	| Sticky Notes global menu congiguration. Each entry has the following
+	| Sticky Notes global menu configuration. Each entry has the following
 	| format:
 	|
 	| 'url'		=> array(
@@ -17,7 +17,7 @@ return array(
 	|
 	*/
 
-	'/'			=> array(
+	'new'		=> array(
 		'label'	=> 'global.new_paste',
 		'icon'	=> 'pencil'
 	),

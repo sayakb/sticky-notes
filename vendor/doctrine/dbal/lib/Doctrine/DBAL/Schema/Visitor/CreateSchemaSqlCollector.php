@@ -106,6 +106,7 @@ class CreateSchemaSqlCollector extends AbstractVisitor
     private function getNamespace($asset)
     {
         $namespace = $asset->getNamespaceName() ?: 'default';
+
         if ( !isset($this->createTableQueries[$namespace])) {
             $this->createTableQueries[$namespace] = array();
             $this->createSequenceQueries[$namespace] = array();

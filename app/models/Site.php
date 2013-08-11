@@ -40,6 +40,7 @@ class Site extends Eloquent {
 		{
 			case 'general':
 				$config->title = Lang::get('global.sticky_notes');
+				break;
 		}
 
 		return $config;

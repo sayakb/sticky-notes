@@ -11,6 +11,7 @@ return array(
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'Highlighter' => $baseDir . '/app/lib/Highlighter.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
+    'Paste' => $baseDir . '/app/models/Paste.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'Site' => $baseDir . '/app/models/Site.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',

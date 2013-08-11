@@ -27,12 +27,12 @@
 class CreateController extends BaseController {
 
 	/**
-	 * Creates a new paste item
+	 * Displays the new paste form
 	 *
 	 * @access	public
-	 * @return	void
+	 * @return	object	the parsed view
 	 */
-	public function newPaste()
+	public function getIndex()
 	{
 		// Set up the view
 		$data = array(
@@ -41,6 +41,32 @@ class CreateController extends BaseController {
 		);
 
 		return View::make('site/create', $data);
+	}
+
+	/**
+	 * Creates a new paste item
+	 *
+	 * @return	object	the parsed view
+	 */
+	public function postIndex()
+	{
+		// Insert the new paste
+		Paste::create(array(
+			'title'		=> Input::get('title'),
+			'data'		=> Input::get('data'),
+			'language'	=> Input::get('language'),
+			'password'	=> Input::get('password'),
+			'salt'		=> str_random(5),
+			'private'	=> Input::has('password') OR Input::has('private') ? 1 : 0,
+			'hash'		=> rand(100000, 999999),
+			'timestamp'	=> time(),
+			'expire'	=> intval(Input::get('expire')) + time(),
+			'ip'		=> Request::getClientIp(),
+			'urlkey'	=> Paste::getUrlKey(),
+			'hits'		=> 0
+		));
+
+		return Redirect::to('new');
 	}
 
 }
