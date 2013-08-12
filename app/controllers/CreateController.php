@@ -63,18 +63,28 @@ class CreateController extends BaseController {
 		// Run the validator
 		if ($validator->passes())
 		{
-			// Generate a unique key for the paste
+			// Password and private flags
+			$is_protected = Input::has('password');
+			$is_private = Input::has('private');
+
+			// Unique key and secure hash for the paste
 			$urlkey = Paste::getUrlKey();
 			$hash = rand(100000, 999999);
 
+			// We store the syntax highlighted code
+			$data = Input::get('data');
+			$language = Input::get('language');
+			$highlighted = Highlighter::parse($data, $language);
+
 			// Insert the new paste
 			Paste::create(array(
+				'project'	=> $this->project,
 				'title'		=> Input::get('title'),
-				'data'		=> Input::get('data'),
-				'language'	=> Input::get('language'),
+				'data'		=> $highlighted,
+				'language'	=> $language,
 				'password'	=> Input::get('password'),
 				'salt'		=> str_random(5),
-				'private'	=> Input::has('password') OR Input::has('private') ? 1 : 0,
+				'private'	=> $is_protected OR $is_private ? 1 : 0,
 				'hash'		=> $hash,
 				'urlkey'	=> $urlkey,
 				'timestamp'	=> time(),
@@ -85,14 +95,14 @@ class CreateController extends BaseController {
 
 			// Redirect to paste if there's no password
 			// Otherwise, just show a link
-			if (Input::has('password'))
+			if ($is_protected)
 			{
 				$url = link_to("view/{$urlkey}/{$hash}");
 				$message = sprintf(Lang::get('create.click_for_paste', $url));
 
 				Session::flash('success', $message);
 			}
-			else if (Input::has('private'))
+			else if ($is_private)
 			{
 				return Redirect::to("show/{$urlkey}/{$hash}");
 			}

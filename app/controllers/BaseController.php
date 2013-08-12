@@ -26,7 +26,7 @@ class BaseController extends Controller {
 	/**
 	 * @var	string	current project
 	 */
-	public $project;
+	public $project = NULL;
 
 	/**
 	 * Class constructor

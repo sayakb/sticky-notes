@@ -92,3 +92,33 @@ require app_path().'/filters.php';
 */
 
 Highlighter::init();
+
+/*
+|--------------------------------------------------------------------------
+| Handle application errors
+|--------------------------------------------------------------------------
+|
+| Shows custom screens for app errors
+|
+*/
+
+App::error(function($exception, $code)
+{
+	$data = array('site' => Site::config('general'));
+
+	switch ($code)
+	{
+		case 401:
+		case 403:
+		case 404:
+		case 500:
+			$data['errCode'] = $code;
+			break;
+
+//		default:
+//			$data['errCode'] = 'default';
+//			break;
+	}
+
+	//return Response::view('common/error', $data, $code);
+});

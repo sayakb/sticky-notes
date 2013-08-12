@@ -47,7 +47,10 @@ class Highlighter {
 	{
 		require_once base_path().'/vendor/geshi/geshi.php';
 
+		// Initialize GeSHi with defaults
 		self::$geshi = new GeSHi();
+		self::$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
+		self::$geshi->set_overall_style('word-wrap:break-word');
 	}
 
 	// --------------------------------------------------------------------
@@ -75,6 +78,22 @@ class Highlighter {
 		}
 
 		return $langs;
+	}
+
+	/**
+	 * Parses and outputs highlighted code
+	 *
+	 * @static
+	 * @param	string	code to parse
+	 * @param	string	language
+	 * @return	string	highlighted code markup
+	 */
+	public static function parse($code, $language)
+	{
+		self::$geshi->set_source($code);
+		self::$geshi->set_language($language);
+
+		return self::$geshi->parse_code($code);
 	}
 
 }

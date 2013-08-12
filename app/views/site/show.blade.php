@@ -1,0 +1,20 @@
+@extends('common.page')
+
+@section('content')
+	<div class="row">
+		<div class="col-lg-12">
+			<fieldset>
+				<legend>
+					@if (empty($paste->title))
+						{{ Lang::get('global.paste') }}
+						#{{ $paste->urlkey }}
+					@else
+						{{{ $paste->title }}}
+					@endif
+				</legend>
+
+				{{ $paste->data }}
+			</fieldset>
+		</div>
+	</div>
+@stop

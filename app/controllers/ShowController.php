@@ -33,7 +33,20 @@ class ShowController extends BaseController {
 	 */
 	public function getIndex($urlkey, $hash = "")
 	{
-		return $urlkey;
+		// Restrict paste access
+		$paste = Paste::where('urlkey', $urlkey)->first();
+
+		if ($paste->private AND $paste->hash != $hash)
+		{
+			App::abort(401);
+		}
+
+		$data = array(
+			'site'		=> Site::config('general'),
+			'paste'		=> $paste
+		);
+
+		return View::make('site/show', $data);
 	}
 
 }
