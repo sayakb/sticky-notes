@@ -13,7 +13,7 @@
 					@endif
 				</legend>
 
-				{{ $paste->data }}
+				{{ Highlighter::parse($paste->data, $paste->language) }}
 			</fieldset>
 		</div>
 	</div>

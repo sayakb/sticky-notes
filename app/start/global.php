@@ -102,7 +102,20 @@ Highlighter::init();
 |
 */
 
-App::error(function($exception, $code)
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+App::error(function(ModelNotFoundException $exception)
+{
+	$data = array(
+		'site'		=> Site::config('general'),
+		'errCode'	=> 404
+	);
+
+	return Response::view('common/error', $data, 404);
+});
+
+App::error(function(HttpException $exception, $code)
 {
 	$data = array('site' => Site::config('general'));
 
@@ -115,10 +128,10 @@ App::error(function($exception, $code)
 			$data['errCode'] = $code;
 			break;
 
-//		default:
-//			$data['errCode'] = 'default';
-//			break;
+		default:
+			$data['errCode'] = 'default';
+			break;
 	}
 
-	//return Response::view('common/error', $data, $code);
+	return Response::view('common/error', $data, $code);
 });

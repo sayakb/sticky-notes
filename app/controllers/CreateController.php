@@ -71,17 +71,12 @@ class CreateController extends BaseController {
 			$urlkey = Paste::getUrlKey();
 			$hash = rand(100000, 999999);
 
-			// We store the syntax highlighted code
-			$data = Input::get('data');
-			$language = Input::get('language');
-			$highlighted = Highlighter::parse($data, $language);
-
 			// Insert the new paste
 			Paste::create(array(
 				'project'	=> $this->project,
 				'title'		=> Input::get('title'),
-				'data'		=> $highlighted,
-				'language'	=> $language,
+				'data'		=> Input::get('data'),
+				'language'	=> Input::get('language'),
 				'password'	=> Input::get('password'),
 				'salt'		=> str_random(5),
 				'private'	=> $is_protected OR $is_private ? 1 : 0,

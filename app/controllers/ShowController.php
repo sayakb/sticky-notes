@@ -34,11 +34,24 @@ class ShowController extends BaseController {
 	public function getIndex($urlkey, $hash = "")
 	{
 		// Restrict paste access
-		$paste = Paste::where('urlkey', $urlkey)->first();
+		$paste = Paste::where('urlkey', $urlkey)->firstOrFail();
 
+		// Require hash to be passed for private pastes
 		if ($paste->private AND $paste->hash != $hash)
 		{
 			App::abort(401);
+		}
+
+		// Increment the hit counter
+		$viewed = Session::get('viewed');
+
+		if ( ! is_array($viewed) OR ! in_array($paste->id, $viewed))
+		{
+			$paste->hits++;
+			$paste->save();
+
+			$viewed[] = $paste->id;
+			Session::put('viewed', $viewed);
 		}
 
 		$data = array(
