@@ -37,7 +37,9 @@ class CreateController extends BaseController {
 		// Set up the view
 		$data = array(
 			'site'		=> Site::config('general'),
-			'languages'	=> Highlighter::languages()
+			'languages'	=> Highlighter::languages(),
+			'error'		=> Session::get('error'),
+			'success'	=> Session::get('success'),
 		);
 
 		return View::make('site/create', $data);
@@ -50,21 +52,60 @@ class CreateController extends BaseController {
 	 */
 	public function postIndex()
 	{
-		// Insert the new paste
-		Paste::create(array(
-			'title'		=> Input::get('title'),
-			'data'		=> Input::get('data'),
-			'language'	=> Input::get('language'),
-			'password'	=> Input::get('password'),
-			'salt'		=> str_random(5),
-			'private'	=> Input::has('password') OR Input::has('private') ? 1 : 0,
-			'hash'		=> rand(100000, 999999),
-			'timestamp'	=> time(),
-			'expire'	=> intval(Input::get('expire')) + time(),
-			'ip'		=> Request::getClientIp(),
-			'urlkey'	=> Paste::getUrlKey(),
-			'hits'		=> 0
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'title'		=> 'alpha_dash|max:30',
+			'data'		=> 'required',
+			'language'	=> 'in:'.Highlighter::languages(TRUE),
+			'expire'	=> 'in:'.implode(',', array_keys(Config::get('expire')))
 		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			// Generate a unique key for the paste
+			$urlkey = Paste::getUrlKey();
+			$hash = rand(100000, 999999);
+
+			// Insert the new paste
+			Paste::create(array(
+				'title'		=> Input::get('title'),
+				'data'		=> Input::get('data'),
+				'language'	=> Input::get('language'),
+				'password'	=> Input::get('password'),
+				'salt'		=> str_random(5),
+				'private'	=> Input::has('password') OR Input::has('private') ? 1 : 0,
+				'hash'		=> $hash,
+				'urlkey'	=> $urlkey,
+				'timestamp'	=> time(),
+				'expire'	=> intval(Input::get('expire')) + time(),
+				'ip'		=> Request::getClientIp(),
+				'hits'		=> 0
+			));
+
+			// Redirect to paste if there's no password
+			// Otherwise, just show a link
+			if (Input::has('password'))
+			{
+				$url = link_to("view/{$urlkey}/{$hash}");
+				$message = sprintf(Lang::get('create.click_for_paste', $url));
+
+				Session::flash('success', $message);
+			}
+			else if (Input::has('private'))
+			{
+				return Redirect::to("show/{$urlkey}/{$hash}");
+			}
+			else
+			{
+				return Redirect::to("show/{$urlkey}");
+			}
+		}
+		else
+		{
+			// Set the error message as flashdata
+			Session::flash('error', $validator->messages()->all('<p>:message</p>'));
+		}
 
 		return Redirect::to('new');
 	}

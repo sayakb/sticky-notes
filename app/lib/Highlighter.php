@@ -56,14 +56,23 @@ class Highlighter {
 	 * Fetches a list of languages supported by GeSHi
 	 *
 	 * @access	public
-	 * @return	array	with key as lang name, value as human readable name
+	 * @param	bool	return comma separated string
+	 * @return	mixed	array or string depending on the CSV flag
 	 */
-	public static function languages()
+	public static function languages($csv = FALSE)
 	{
-		$langs = self::$geshi->get_supported_languages(true);
+		// get_supported_languages takes a param that tells whether or not
+		// to return full names. We don't need full names if we just want CSV
+		$langs = self::$geshi->get_supported_languages( ! $csv);
 
-		// Sort in ascending order
-		asort($langs);
+		if ($csv)
+		{
+			$langs = implode(',', $langs);
+		}
+		else
+		{
+			asort($langs);
+		}
 
 		return $langs;
 	}

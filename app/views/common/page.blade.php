@@ -34,6 +34,29 @@
 	</div>
 
 	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				@if ( ! empty($success))
+					<div class="alert alert-success">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+
+						@foreach ($success as $msg)
+							{{ $msg }}
+						@endforeach
+					</div>
+				@elseif ( ! empty($error))
+					<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+
+						@foreach ($error as $msg)
+							{{ $msg }}
+						@endforeach
+					</div>
+				@endif
+			</div>
+		</div>
+
+	<div class="container">
 		{{ Form::open(array('autocomplete' => 'off')) }}
 			@yield('content')
 		{{ Form::close() }}

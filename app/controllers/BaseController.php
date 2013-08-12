@@ -24,6 +24,21 @@
 class BaseController extends Controller {
 
 	/**
+	 * @var	string	current project
+	 */
+	public $project;
+
+	/**
+	 * Class constructor
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$this->setupProject();
+	}
+
+	/**
 	 * Setup the layout used by the controller.
 	 *
 	 * @access	protected
@@ -34,6 +49,22 @@ class BaseController extends Controller {
 		if ( ! is_null($this->layout))
 		{
 			$this->layout = View::make($this->layout);
+		}
+	}
+
+	/**
+	 * Setup the project for sticky notes
+	 *
+	 * @return void
+	 */
+	protected function setupProject()
+	{
+		$site = Site::config('general')->hostname;
+		$host = $_SERVER["SERVER_NAME"];
+
+		if ($site != $host)
+		{
+			$this->project = trim(str_replace($site, '', $host), '.');
 		}
 	}
 

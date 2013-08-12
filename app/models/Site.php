@@ -39,6 +39,7 @@ class Site extends Eloquent {
 		switch ($section)
 		{
 			case 'general':
+				$config->hostname = 'local.kde.org';
 				$config->title = Lang::get('global.sticky_notes');
 				break;
 		}

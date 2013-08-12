@@ -34,22 +34,12 @@ return array(
 
 	'rss'		=> array(
 		'label'	=> 'global.feed',
+		'icon'	=> 'asterisk'
+	),
+
+	'docs'	=> array(
+		'label'	=> 'global.docs',
 		'icon'	=> 'book'
-	),
-
-	'doc/api'	=> array(
-		'label'	=> 'global.api',
-		'icon'	=> 'tags'
-	),
-
-	'doc/help'	=> array(
-		'label'	=> 'global.help',
-		'icon'	=> 'question-sign'
-	),
-
-	'doc/about'	=> array(
-		'label'	=> 'global.about',
-		'icon'	=> 'info-sign'
 	),
 
 );

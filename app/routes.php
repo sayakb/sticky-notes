@@ -17,3 +17,4 @@ Route::get('/', function()
 
 // Create paste route
 Route::controller('new', 'CreateController');
+Route::controller('show/{urlkey}/{hash?}', 'ShowController');

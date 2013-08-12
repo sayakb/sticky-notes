@@ -21,5 +21,6 @@ return array(
 	"expire_1week"      => "for 1 week",
 	"expire_1month"     => "for 1 month",
 	"expire_forever"    => "forever",
+	"click_for_paste"   => "Click here to view your paste: %s",
 
 );
