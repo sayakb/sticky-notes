@@ -19,6 +19,19 @@ footer {
   margin: 30px;
   text-align: center;
 }
+pre {
+  min-height: 350px;
+  background: #fdfdfd;
+}
+pre ol {
+  margin: 0;
+}
+section.list pre {
+  min-height: 110px;
+}
+section div.row:first-child h3 {
+  margin-top: 0;
+}
 .glyphicon {
   position: relative;
   top: 2px;

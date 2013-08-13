@@ -17,4 +17,9 @@ Route::get('/', function()
 
 // Create paste route
 Route::controller('new', 'CreateController');
+
+// Show paste route
 Route::controller('show/{urlkey}/{hash?}', 'ShowController');
+
+// List paste route
+Route::controller('all', 'ListController');

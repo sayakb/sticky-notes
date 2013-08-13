@@ -39,7 +39,7 @@ class ShowController extends BaseController {
 		// Require hash to be passed for private pastes
 		if ($paste->private AND $paste->hash != $hash)
 		{
-			App::abort(401);
+			App::abort(401); // Unauthorized
 		}
 
 		// Increment the hit counter
@@ -54,6 +54,7 @@ class ShowController extends BaseController {
 			Session::put('viewed', $viewed);
 		}
 
+		// Output the view
 		$data = array(
 			'site'		=> Site::config('general'),
 			'paste'		=> $paste

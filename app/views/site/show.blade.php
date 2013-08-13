@@ -1,20 +1,20 @@
 @extends('common.page')
 
 @section('content')
-	<div class="row">
-		<div class="col-lg-12">
-			<fieldset>
-				<legend>
+	<section class="show">
+		<div class="row">
+			<div class="col-lg-12">
+				<h3>
 					@if (empty($paste->title))
 						{{ Lang::get('global.paste') }}
 						#{{ $paste->urlkey }}
 					@else
 						{{{ $paste->title }}}
 					@endif
-				</legend>
+				</h3>
 
 				{{ Highlighter::parse($paste->data, $paste->language) }}
-			</fieldset>
+			</div>
 		</div>
-	</div>
+	</section>
 @stop

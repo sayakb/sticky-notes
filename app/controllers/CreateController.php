@@ -38,8 +38,7 @@ class CreateController extends BaseController {
 		$data = array(
 			'site'		=> Site::config('general'),
 			'languages'	=> Highlighter::languages(),
-			'error'		=> Session::get('error'),
-			'success'	=> Session::get('success'),
+			'error'		=> Session::get('error')
 		);
 
 		return View::make('site/create', $data);
@@ -112,7 +111,7 @@ class CreateController extends BaseController {
 			Session::flash('error', $validator->messages()->all('<p>:message</p>'));
 		}
 
-		return Redirect::to('new');
+		return Redirect::to('new')->withInput();
 	}
 
 }

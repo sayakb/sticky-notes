@@ -98,7 +98,8 @@ Highlighter::init();
 | Handle application errors
 |--------------------------------------------------------------------------
 |
-| Shows custom screens for app errors
+| Shows custom screens for app errors. This is mainly done to show a
+| friendly error message and to throw errors with ease from the view.
 |
 */
 
@@ -124,6 +125,7 @@ App::error(function(HttpException $exception, $code)
 		case 401:
 		case 403:
 		case 404:
+		case 418:
 		case 500:
 			$data['errCode'] = $code;
 			break;

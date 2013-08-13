@@ -34,7 +34,7 @@
 					Form::textarea('data', Input::old('data'), array(
 						'class'			=> 'form-control',
 						'rows'			=> 18,
-						'placeholder'	=> Lang::get('create.paste_body')
+						'placeholder'	=> Lang::get('create.paste_data')
 					))
 				}}
 			</div>
@@ -75,7 +75,7 @@
 						{{
 							Form::submit(Lang::get('global.paste'), array(
 								'name'	=> 'paste_submit',
-								'class'	=> 'btn btn-default'
+								'class'	=> 'btn btn-primary'
 							))
 						}}
 					</div>

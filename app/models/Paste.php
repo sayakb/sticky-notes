@@ -76,4 +76,28 @@ class Paste extends Eloquent {
 		}
 	}
 
+	/**
+	 * Returns the first five lines of a pasted code
+	 *
+	 * @static
+	 * @return	string	paste abstract
+	 */
+	public static function getAbstract($data)
+	{
+		$count = substr_count($data, "\n");
+
+		if ($count > 5)
+		{
+			$lines = explode("\n", $data);
+			$data = '';
+
+			for ($idx = 0; $idx < 5; $idx++)
+			{
+				$data .= ($lines[$idx] . "\n");
+			}
+		}
+
+		return trim($data);
+	}
+
 }
