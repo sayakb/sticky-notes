@@ -10,36 +10,36 @@ return array(
 	| Sticky Notes global menu configuration. Each entry has the following
 	| format:
 	|
-	| 'url'		=> array(
-	| 	'label'	=> 'global.lang_key',
-	| 	'icon'	=> 'glyphicon'
+	| 'url'      => array(
+	| 	'label'  => 'global.lang_key',
+	| 	'icon'   => 'glyphicon'
 	| )
 	|
 	*/
 
-	'new'		=> array(
-		'label'	=> 'global.new_paste',
-		'icon'	=> 'pencil'
+	'new'        => array(
+		'label'  => 'global.new_paste',
+		'icon'   => 'pencil'
 	),
 
-	'all'		=> array(
-		'label'	=> 'global.archives',
-		'icon'	=> 'list'
+	'all'        => array(
+		'label'  => 'global.archives',
+		'icon'   => 'list'
 	),
 
-	'trending'	=> array(
-		'label'	=> 'global.trending',
-		'icon'	=> 'heart'
+	'trending'   => array(
+		'label'  => 'global.trending',
+		'icon'   => 'heart'
 	),
 
-	'rss'		=> array(
-		'label'	=> 'global.feed',
-		'icon'	=> 'asterisk'
+	'rss'        => array(
+		'label'  => 'global.feed',
+		'icon'   => 'asterisk'
 	),
 
-	'docs'	=> array(
-		'label'	=> 'global.docs',
-		'icon'	=> 'book'
+	'docs'       => array(
+		'label'  => 'global.docs',
+		'icon'   => 'book'
 	),
 
 );

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "d596bb7ce5b68919782fd8f53e602f9c",
+    "hash": "e17612013fbf49e623af14d2a1d6dd82",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -624,12 +624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "1d9514469248dda2b1803cfeb6c7beffa6d53e47"
+                "reference": "e2f559ff0475e8137807fdb23cc6f58eed3e129a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/1d9514469248dda2b1803cfeb6c7beffa6d53e47",
-                "reference": "1d9514469248dda2b1803cfeb6c7beffa6d53e47",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/e2f559ff0475e8137807fdb23cc6f58eed3e129a",
+                "reference": "e2f559ff0475e8137807fdb23cc6f58eed3e129a",
                 "shasum": ""
             },
             "require": {
@@ -718,7 +718,9 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
+                    "email": "taylorotwell@gmail.com",
+                    "homepage": "https://github.com/taylorotwell",
+                    "role": "Developer"
                 }
             ],
             "description": "The Laravel Framework.",
@@ -726,7 +728,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-08-10 17:46:54"
+            "time": "2013-08-14 18:03:14"
         },
         {
             "name": "monolog/monolog",
@@ -879,16 +881,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.1.9",
+            "version": "v1.1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolas-grekas/Patchwork-UTF8.git",
-                "reference": "v1.1.9"
+                "reference": "v1.1.10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/v1.1.9",
-                "reference": "v1.1.9",
+                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/v1.1.10",
+                "reference": "v1.1.10",
                 "shasum": ""
             },
             "require": {
@@ -920,7 +922,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2013-08-04 15:20:14"
+            "time": "2013-08-13 16:36:44"
         },
         {
             "name": "predis/predis",
@@ -1432,12 +1434,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "v2.3.3"
+                "reference": "4a0fee5b86f5bbd9dfdc11ec124eba2915737ce1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/v2.3.3",
-                "reference": "v2.3.3",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/4a0fee5b86f5bbd9dfdc11ec124eba2915737ce1",
+                "reference": "4a0fee5b86f5bbd9dfdc11ec124eba2915737ce1",
                 "shasum": ""
             },
             "require": {
@@ -1470,7 +1472,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2013-07-21 12:12:18"
+            "time": "2013-08-13 20:18:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -1529,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "0cbb96cc6b4fd44830572e4b05df31d79f5fb522"
+                "reference": "4d44f520287ee19646dc5fb4eaecce86b06ab052"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/0cbb96cc6b4fd44830572e4b05df31d79f5fb522",
-                "reference": "0cbb96cc6b4fd44830572e4b05df31d79f5fb522",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/4d44f520287ee19646dc5fb4eaecce86b06ab052",
+                "reference": "4d44f520287ee19646dc5fb4eaecce86b06ab052",
                 "shasum": ""
             },
             "require": {
@@ -1591,7 +1593,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-07 18:24:25"
+            "time": "2013-08-13 20:18:00"
         },
         {
             "name": "symfony/process",
@@ -1600,12 +1602,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "24edc6eb5d4da198f88637ca8b09d2c6257051ea"
+                "reference": "ad85d4d7bbea79362376bb78bf7574d48d7e1437"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/24edc6eb5d4da198f88637ca8b09d2c6257051ea",
-                "reference": "24edc6eb5d4da198f88637ca8b09d2c6257051ea",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/ad85d4d7bbea79362376bb78bf7574d48d7e1437",
+                "reference": "ad85d4d7bbea79362376bb78bf7574d48d7e1437",
                 "shasum": ""
             },
             "require": {
@@ -1638,7 +1640,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-08 12:56:07"
+            "time": "2013-08-14 22:22:46"
         },
         {
             "name": "symfony/routing",
@@ -1647,12 +1649,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Routing.git",
-                "reference": "v2.3.3"
+                "reference": "023071a9ab677d0a8f1732dec970529cfa45fe3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Routing/zipball/v2.3.3",
-                "reference": "v2.3.3",
+                "url": "https://api.github.com/repos/symfony/Routing/zipball/023071a9ab677d0a8f1732dec970529cfa45fe3d",
+                "reference": "023071a9ab677d0a8f1732dec970529cfa45fe3d",
                 "shasum": ""
             },
             "require": {
@@ -1696,7 +1698,7 @@
             ],
             "description": "Symfony Routing Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-02 20:53:38"
+            "time": "2013-08-13 20:18:00"
         },
         {
             "name": "symfony/translation",

@@ -11,16 +11,16 @@ return array(
 	|
 	*/
 
-	'1800'		=> Lang::get('create.expire_30mins'),
+	'1800'      => Lang::get('create.expire_30mins'),
 
-	'21600'		=> Lang::get('create.expire_6hrs'),
+	'21600'     => Lang::get('create.expire_6hrs'),
 
-	'86400'		=> Lang::get('create.expire_1day'),
+	'86400'     => Lang::get('create.expire_1day'),
 
-	'604800'	=> Lang::get('create.expire_1week'),
+	'604800'    => Lang::get('create.expire_1week'),
 
-	'2592000'	=> Lang::get('create.expire_1month'),
+	'2592000'   => Lang::get('create.expire_1month'),
 
-	'0'			=> Lang::get('create.expire_forever')
+	'0'         => Lang::get('create.expire_forever')
 
 );

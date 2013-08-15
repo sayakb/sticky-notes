@@ -18,7 +18,13 @@ return array(
 	"feed"         => "Feed",
 	"docs"         => "Docs",
 	"author"       => "Author",
+	"username"     => "Username",
 	"password"     => "Password",
 	"paste"        => "Paste",
+	"login_to"     => "Log in to %s",
+	"remember"     => "Remember me",
+	"login"        => "Login",
+	"logout"       => "Logout (%s)",
+	"auth_fail"    => "Authentication failed, please try again.",
 
 );

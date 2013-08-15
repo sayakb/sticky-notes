@@ -5,12 +5,12 @@
  *
  * An open source lightweight pastebin application
  *
- * @package		StickyNotes
- * @author		Sayak Banerjee
- * @copyright	(c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
- * @license		http://www.opensource.org/licenses/bsd-license.php
- * @link		http://sayakbanerjee.com/sticky-notes
- * @since		Version 1.0
+ * @package     StickyNotes
+ * @author      Sayak Banerjee
+ * @copyright   (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
+ * @license     http://www.opensource.org/licenses/bsd-license.php
+ * @link        http://sayakbanerjee.com/sticky-notes
+ * @since       Version 1.0
  * @filesource
  */
 
@@ -20,25 +20,25 @@
  * This is the default homepage of the site and allows the user to create a new
  * paste.
  *
- * @package		StickyNotes
- * @subpackage	Controllers
- * @author		Sayak Banerjee
+ * @package     StickyNotes
+ * @subpackage  Controllers
+ * @author      Sayak Banerjee
  */
 class CreateController extends BaseController {
 
 	/**
 	 * Displays the new paste form
 	 *
-	 * @access	public
-	 * @return	object	the parsed view
+	 * @access public
+	 * @return \Illuminate\View\View
 	 */
 	public function getIndex()
 	{
 		// Set up the view
 		$data = array(
-			'site'		=> Site::config('general'),
-			'languages'	=> Highlighter::languages(),
-			'error'		=> Session::get('error')
+			'site'       => Site::config('general'),
+			'languages'  => Highlighter::languages(),
+			'error'      => Session::get('error')
 		);
 
 		return View::make('site/create', $data);
@@ -47,16 +47,16 @@ class CreateController extends BaseController {
 	/**
 	 * Creates a new paste item
 	 *
-	 * @return	object	the parsed view
+	 * @return \Illuminate\Support\Facades\Redirect
 	 */
 	public function postIndex()
 	{
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'title'		=> 'alpha_dash|max:30',
-			'data'		=> 'required',
-			'language'	=> 'in:'.Highlighter::languages(TRUE),
-			'expire'	=> 'in:'.implode(',', array_keys(Config::get('expire')))
+			'title'     => 'alpha_dash|max:30',
+			'data'      => 'required',
+			'language'  => 'in:'.Highlighter::languages(TRUE),
+			'expire'    => 'in:'.implode(',', array_keys(Config::get('expire')))
 		));
 
 		// Run the validator
@@ -70,21 +70,32 @@ class CreateController extends BaseController {
 			$urlkey = Paste::getUrlKey();
 			$hash = rand(100000, 999999);
 
+			// Set the paste author
+			if (Auth::check())
+			{
+				$author = Auth::user()->username;
+			}
+			else
+			{
+				$author = NULL;
+			}
+
 			// Insert the new paste
 			Paste::create(array(
-				'project'	=> $this->project,
-				'title'		=> Input::get('title'),
-				'data'		=> Input::get('data'),
-				'language'	=> Input::get('language'),
-				'password'	=> Input::get('password'),
-				'salt'		=> str_random(5),
-				'private'	=> $is_protected OR $is_private ? 1 : 0,
-				'hash'		=> $hash,
-				'urlkey'	=> $urlkey,
-				'timestamp'	=> time(),
-				'expire'	=> intval(Input::get('expire')) + time(),
-				'ip'		=> Request::getClientIp(),
-				'hits'		=> 0
+				'project'     => $this->project,
+				'title'       => Input::get('title'),
+				'data'        => Input::get('data'),
+				'language'    => Input::get('language'),
+				'password'    => Input::get('password'),
+				'salt'        => str_random(5),
+				'private'     => $is_protected OR $is_private ? 1 : 0,
+				'hash'        => $hash,
+				'urlkey'      => $urlkey,
+				'author'      => $author,
+				'timestamp'   => time(),
+				'expire'      => intval(Input::get('expire')) + time(),
+				'ip'          => Request::getClientIp(),
+				'hits'        => 0
 			));
 
 			// Redirect to paste if there's no password

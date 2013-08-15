@@ -5,12 +5,12 @@
  *
  * An open source lightweight pastebin application
  *
- * @package		StickyNotes
- * @author		Sayak Banerjee
- * @copyright	(c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
- * @license		http://www.opensource.org/licenses/bsd-license.php
- * @link		http://sayakbanerjee.com/sticky-notes
- * @since		Version 1.0
+ * @package     StickyNotes
+ * @author      Sayak Banerjee
+ * @copyright   (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
+ * @license     http://www.opensource.org/licenses/bsd-license.php
+ * @link        http://sayakbanerjee.com/sticky-notes
+ * @since       Version 1.0
  * @filesource
  */
 
@@ -19,24 +19,30 @@
  *
  * Manages and fetches pastes
  *
- * @package		StickyNotes
- * @subpackage	Models
- * @author		Sayak Banerjee
+ * @package     StickyNotes
+ * @subpackage  Models
+ * @author      Sayak Banerjee
  */
 class Paste extends Eloquent {
 
 	/**
-	 * @var	string	table name for the model
+	 * Table name for the model
+	 *
+	 * @var string
 	 */
 	protected $table = 'main';
 
 	/**
-	 * @var	bool	disable timestamps
+	 * Disable timestamps for the model
+	 *
+	 * @var bool
 	 */
 	public $timestamps = FALSE;
 
 	/**
-	 * @var array	define fillable properties
+	 * Define fillable properties
+	 *
+	 * @var array
 	 */
 	protected $fillable = array(
 		'id',
@@ -60,7 +66,7 @@ class Paste extends Eloquent {
 	 * Generates a unique URL key for the paste
 	 *
 	 * @static
-	 * @return string	generated key
+	 * @return string
 	 */
 	public static function getUrlKey()
 	{
@@ -80,7 +86,7 @@ class Paste extends Eloquent {
 	 * Returns the first five lines of a pasted code
 	 *
 	 * @static
-	 * @return	string	paste abstract
+	 * @return string
 	 */
 	public static function getAbstract($data)
 	{

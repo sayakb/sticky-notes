@@ -32,6 +32,9 @@ section.list pre {
 section div.row:first-child h3 {
   margin-top: 0;
 }
+.navbar {
+  background: #f2f2f2;
+}
 .glyphicon {
   position: relative;
   top: 2px;

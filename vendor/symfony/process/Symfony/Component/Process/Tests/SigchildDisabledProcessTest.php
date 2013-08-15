@@ -64,6 +64,14 @@ class SigchildDisabledProcessTest extends AbstractProcessTest
     /**
      * @expectedException \Symfony\Component\Process\Exception\RuntimeException
      */
+    public function testCheckTimeoutOnStartedProcess()
+    {
+        parent::testCheckTimeoutOnStartedProcess();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Process\Exception\RuntimeException
+     */
     public function testGetPid()
     {
         parent::testGetPid();
@@ -136,6 +144,11 @@ class SigchildDisabledProcessTest extends AbstractProcessTest
     public function testProcessThrowsExceptionWhenExternallySignaled()
     {
         $this->markTestSkipped('Retrieving Pid is not supported in sigchild environment');
+    }
+
+    public function testExitCodeIsAvailableAfterSignal()
+    {
+        $this->markTestSkipped('Signal is not supported in sigchild environment');
     }
 
     /**

@@ -95,6 +95,29 @@ Highlighter::init();
 
 /*
 |--------------------------------------------------------------------------
+| Sticky Notes auth methods
+|--------------------------------------------------------------------------
+|
+| Define the handlers for sticky-notes authentication requests.
+|
+*/
+
+use Illuminate\Auth\Guard;
+use Illuminate\Auth\StickyNotesDBUserProvider;
+
+Auth::extend('stickynotesdb', function()
+{
+	$model = Config::get('auth.model');
+	$phpass = new PasswordHash(10, false);
+
+	return new Guard(
+		new StickyNotesDBUserProvider($model, $phpass),
+		App::make('session')
+	);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Handle application errors
 |--------------------------------------------------------------------------
 |
@@ -103,35 +126,42 @@ Highlighter::init();
 |
 */
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
-App::error(function(ModelNotFoundException $exception)
-{
-	$data = array(
-		'site'		=> Site::config('general'),
-		'errCode'	=> 404
-	);
-
-	return Response::view('common/error', $data, 404);
-});
-
-App::error(function(HttpException $exception, $code)
+App::error(function($exception, $code)
 {
 	$data = array('site' => Site::config('general'));
+	$type = get_class($exception);
 
+	// Set code based on exception
+	switch ($type)
+	{
+		case 'Illuminate\Session\TokenMismatchException':
+			$code = 403;
+			break;
+
+		case 'Illuminate\Database\Eloquent\ModelNotFoundException':
+			$code = 404;
+			break;
+	}
+
+	// Set message based on code
 	switch ($code)
 	{
 		case 401:
 		case 403:
 		case 404:
 		case 418:
-		case 500:
 			$data['errCode'] = $code;
 			break;
 
 		default:
-			$data['errCode'] = 'default';
+			if (Config::get('app.debug'))
+			{
+				return;
+			}
+			else
+			{
+				$data['errCode'] = 'default';
+			}
 			break;
 	}
 

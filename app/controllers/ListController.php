@@ -5,12 +5,12 @@
  *
  * An open source lightweight pastebin application
  *
- * @package		StickyNotes
- * @author		Sayak Banerjee
- * @copyright	(c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
- * @license		http://www.opensource.org/licenses/bsd-license.php
- * @link		http://sayakbanerjee.com/sticky-notes
- * @since		Version 1.0
+ * @package     StickyNotes
+ * @author      Sayak Banerjee
+ * @copyright   (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>
+ * @license     http://www.opensource.org/licenses/bsd-license.php
+ * @link        http://sayakbanerjee.com/sticky-notes
+ * @since       Version 1.0
  * @filesource
  */
 
@@ -19,17 +19,17 @@
  *
  * This controller handles displaying of a paste lists
  *
- * @package		StickyNotes
- * @subpackage	Controllers
- * @author		Sayak Banerjee
+ * @package     StickyNotes
+ * @subpackage  Controllers
+ * @author      Sayak Banerjee
  */
 class ListController extends BaseController {
 
 	/**
 	 * Displays the default list page
 	 *
-	 * @access	public
-	 * @return	object	the parsed view
+	 * @access public
+	 * @return \Illuminate\View\View
 	 */
 	public function getIndex()
 	{
@@ -45,9 +45,9 @@ class ListController extends BaseController {
 
 		// Output the view
 		$data = array(
-			'site'		=> Site::config('general'),
-			'pastes'	=> $pastes,
-			'pages'		=> $pastes->links(),
+			'site'     => Site::config('general'),
+			'pastes'   => $pastes,
+			'pages'    => $pastes->links(),
 		);
 
 		return View::make('site/list', $data);

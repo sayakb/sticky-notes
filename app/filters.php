@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) return Redirect::guest('user/login');
 });
 
 
@@ -76,5 +76,22 @@ Route::filter('csrf', function()
 	if (Session::token() != Input::get('_token'))
 	{
 		throw new Illuminate\Session\TokenMismatchException;
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin only filter
+|--------------------------------------------------------------------------
+|
+| This filter validates that the logged in user is an administrator.
+|
+*/
+
+Route::filter('admin', function()
+{
+	if ( ! Auth::check() OR ! Auth::user()->admin)
+	{
+		App::abort(401);
 	}
 });
