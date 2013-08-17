@@ -56,13 +56,9 @@ class ShowController extends BaseController {
 			Session::put('viewed', $viewed);
 		}
 
-		// Output the view
-		$data = array(
-			'site'    => Site::config('general'),
-			'paste'   => $paste
-		);
+		$data = array('paste' => $paste);
 
-		return View::make('site/show', $data);
+		return View::make('site/show', $data, Site::defaults());
 	}
 
 }

@@ -29,7 +29,7 @@
 
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav navbar-right">
-					{{ Site::getMenu() }}
+					{{ Site::getMenu('navigation') }}
 				</ul>
 			</div>
 		</div>
@@ -70,7 +70,7 @@
 			))
 		}}
 
-		@yield('content')
+		@yield('body')
 
 		{{ Form::token() }}
 		{{ Form::close() }}

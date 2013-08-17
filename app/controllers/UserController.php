@@ -33,13 +33,7 @@ class UserController extends BaseController {
 	 */
 	public function getLogin()
 	{
-		// Set up the view
-		$data = array(
-			'site'    => Site::config('general'),
-			'error'   => Session::get('error')
-		);
-
-		return View::make('common/login', $data);
+		return View::make('common/login', array(), Site::defaults());
 	}
 
 	/**

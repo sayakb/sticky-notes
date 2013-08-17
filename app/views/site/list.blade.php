@@ -1,7 +1,7 @@
 @extends('common.page')
 
-@section('content')
-	<section class="list">
+@section('body')
+	<section id="list">
 		@foreach ($pastes as $paste)
 			<div class="row">
 				<div class="col-sm-12">

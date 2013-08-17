@@ -15,31 +15,55 @@ return array(
 	| 	'icon'   => 'glyphicon'
 	| )
 	|
+	| Each menu group must have a _showLogin member indicating whether a
+	| login/logout link will be appended or not
+	|
 	*/
 
-	'new'        => array(
-		'label'  => 'global.new_paste',
-		'icon'   => 'pencil'
+	'navigation'         => array(
+
+		'_showLogin'     => true,
+
+		'new'            => array(
+			'label'      => 'global.new_paste',
+			'icon'       => 'pencil'
+		),
+
+		'all'            => array(
+			'label'      => 'global.archives',
+			'icon'       => 'list'
+		),
+
+		'trending'       => array(
+			'label'      => 'global.trending',
+			'icon'       => 'heart'
+		),
+
+		'rss'            => array(
+			'label'      => 'global.feed',
+			'icon'       => 'asterisk'
+		),
+
+		'docs'           => array(
+			'label'      => 'global.docs',
+			'icon'       => 'book'
+		),
+
 	),
 
-	'all'        => array(
-		'label'  => 'global.archives',
-		'icon'   => 'list'
-	),
+	'admin'              => array(
 
-	'trending'   => array(
-		'label'  => 'global.trending',
-		'icon'   => 'heart'
-	),
+		'_showLogin'     => false,
 
-	'rss'        => array(
-		'label'  => 'global.feed',
-		'icon'   => 'asterisk'
-	),
+		'admin'          => array(
+			'label'      => 'admin.dashboard',
+			'icon'       => 'home'
+		),
 
-	'docs'       => array(
-		'label'  => 'global.docs',
-		'icon'   => 'book'
+		'admin/site'     => array(
+			'label'      => 'admin.site_config',
+			'icon'       => 'globe'
+		),
 	),
 
 );

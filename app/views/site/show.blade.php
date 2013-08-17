@@ -1,7 +1,7 @@
 @extends('common.page')
 
-@section('content')
-	<section class="show">
+@section('body')
+	<section id="show">
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="pre-info pre-header">

@@ -45,12 +45,11 @@ class ListController extends BaseController {
 
 		// Output the view
 		$data = array(
-			'site'     => Site::config('general'),
 			'pastes'   => $pastes,
 			'pages'    => $pastes->links(),
 		);
 
-		return View::make('site/list', $data);
+		return View::make('site/list', $data, Site::defaults());
 	}
 
 }

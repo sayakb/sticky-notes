@@ -33,7 +33,18 @@ class AdminController extends BaseController {
 	 */
 	public function getIndex()
 	{
-		return "In admin";
+		return View::make('admin/layout', array(), Site::defaults());
+	}
+
+	/**
+	 * Displays site configuration screen
+	 *
+	 * @access public
+	 * @return \Illuminate\View\View
+	 */
+	public function getSite()
+	{
+		return View::make('admin/site', array(), Site::defaults());
 	}
 
 }

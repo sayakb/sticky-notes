@@ -34,14 +34,9 @@ class CreateController extends BaseController {
 	 */
 	public function getIndex()
 	{
-		// Set up the view
-		$data = array(
-			'site'       => Site::config('general'),
-			'languages'  => Highlighter::languages(),
-			'error'      => Session::get('error')
-		);
+		$data = array('languages' => Highlighter::languages());
 
-		return View::make('site/create', $data);
+		return View::make('site/create', $data, Site::defaults());
 	}
 
 	/**

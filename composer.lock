@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "e17612013fbf49e623af14d2a1d6dd82",
+    "hash": "40d324c8275bd2b4b059f11df7e69242",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -624,12 +624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "e2f559ff0475e8137807fdb23cc6f58eed3e129a"
+                "reference": "feb030ee287dff4ceb0c7af418b8c778c2fa1994"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/e2f559ff0475e8137807fdb23cc6f58eed3e129a",
-                "reference": "e2f559ff0475e8137807fdb23cc6f58eed3e129a",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/feb030ee287dff4ceb0c7af418b8c778c2fa1994",
+                "reference": "feb030ee287dff4ceb0c7af418b8c778c2fa1994",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +728,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-08-14 18:03:14"
+            "time": "2013-08-17 03:40:18"
         },
         {
             "name": "monolog/monolog",
@@ -1531,12 +1531,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "4d44f520287ee19646dc5fb4eaecce86b06ab052"
+                "reference": "b77ad515a2bb8d81f029b8af23135e8fb151de9f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/4d44f520287ee19646dc5fb4eaecce86b06ab052",
-                "reference": "4d44f520287ee19646dc5fb4eaecce86b06ab052",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/b77ad515a2bb8d81f029b8af23135e8fb151de9f",
+                "reference": "b77ad515a2bb8d81f029b8af23135e8fb151de9f",
                 "shasum": ""
             },
             "require": {
@@ -1593,7 +1593,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-13 20:18:00"
+            "time": "2013-08-15 17:08:02"
         },
         {
             "name": "symfony/process",

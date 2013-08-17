@@ -26,6 +26,52 @@
 class Site extends Eloquent {
 
 	/**
+	 * Table name for the model
+	 *
+	 * @var string
+	 */
+	protected $table = 'config';
+
+	/**
+	 * Disable timestamps for the model
+	 *
+	 * @var bool
+	 */
+	public $timestamps = FALSE;
+
+	/**
+	 * Define fillable properties
+	 *
+	 * @var array
+	 */
+	protected $fillable = array(
+		'config_group',
+		'config_key',
+		'config_value'
+	);
+
+	/**
+	 * Defines an instance cache of config data
+	 *
+	 * @var array
+	 */
+	private static $data = array();
+
+	/**
+	 * Returns site defaults that can be used in templates
+	 *
+	 * @static
+	 * @return array
+	 */
+	public static function defaults()
+	{
+		return array(
+			'site'    => self::config('general'),
+			'error'   => Session::get('error')
+		);
+	}
+
+	/**
 	 * Fetches the site configuration data
 	 *
 	 * @access public
@@ -34,18 +80,21 @@ class Site extends Eloquent {
 	 */
 	public static function config($section)
 	{
-		$config = new stdClass();
-
-		switch ($section)
+		if ( ! isset(self::$data[$section]))
 		{
-			case 'general':
-				$config->hostname = 'local.kde.org';
-				$config->title = Lang::get('global.sticky_notes');
-				$config->perPage = 15;
-				break;
+			self::$data[$section] = new stdClass();
+			$config = self::where('config_group', $section)->get();
+
+			if ($config != NULL)
+			{
+				foreach ($config as $item)
+				{
+					self::$data[$section]->$item['config_key'] = $item['config_value'];
+				}
+			}
 		}
 
-		return $config;
+		return self::$data[$section];
 	}
 
 	/**
@@ -54,56 +103,63 @@ class Site extends Eloquent {
 	 * @access public
 	 * @return string
 	 */
-	public static function getMenu()
+	public static function getMenu($group)
 	{
 		$output = '';
 		$path = Request::path();
 
 		// Grab and parse all the menus
 		$menus = Config::get('menus');
+		$group = $menus[$group];
 
-		foreach ($menus as $key => $item)
+		foreach ($group as $key => $item)
 		{
-			$label = Lang::get($item['label']);
-			$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
-
-			// Highlight active entry
-			if ($key == $path)
+			if (strpos($key, '_') !== 0)
 			{
-				$active = ' class="active"';
-				$href = '';
+				$label = Lang::get($item['label']);
+				$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
+
+				// Highlight active entry
+				if ($key == $path)
+				{
+					$active = ' class="active"';
+					$href = '';
+				}
+				else
+				{
+					$active = '';
+					$href = 'href="'.url($key).'"';
+				}
+
+				// Generate the item
+				$output .= "<li{$active}><a {$href}>{$icon} {$label}</a></li>";
+			}
+		}
+
+		// Add login/logout link if menu is set for that
+		if ($group['_showLogin'])
+		{
+			if (Auth::check())
+			{
+				$username = Auth::user()->username;
+
+				if (strlen($username) > 10)
+				{
+					$username = substr($username, 0, 10).'&hellip;';
+				}
+
+				$label = sprintf(Lang::get('global.logout'), $username);
+				$href = 'href="'.url('user/logout').'"';
 			}
 			else
 			{
-				$active = '';
-				$href = 'href="'.url($key).'"';
+				$label = Lang::get('global.login');
+				$href = 'href="'.url('user/login').'"';
 			}
 
-			// Generate the item
-			$output .= "<li{$active}><a {$href}>{$icon} {$label}</a></li>";
+			$icon = '<span class="glyphicon glyphicon-user"></span>';
+			$output .= "<li><a {$href}>{$icon} {$label}</a></li>";
 		}
-
-		// Add login/logout link
-		if (Auth::check())
-		{
-			$username = Auth::user()->username;
-
-			if (strlen($username) > 10)
-			{
-				$username = substr($username, 0, 10).'&hellip;';
-			}
-
-			$label = sprintf(Lang::get('global.logout'), $username);
-			$href = 'href="'.url('user/logout').'"';
-		}
-		else
-		{
-			$label = Lang::get('global.login');
-			$href = 'href="'.url('user/login').'"';
-		}
-
-		$icon = '<span class="glyphicon glyphicon-user"></span>';
-		$output .= "<li><a {$href}>{$icon} {$label}</a></li>";
 
 		return $output;
 	}
