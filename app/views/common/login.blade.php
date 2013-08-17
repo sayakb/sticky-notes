@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<fieldset>
 				<legend>{{ sprintf(Lang::get('global.login_to'), $site->title) }}</legend>
 

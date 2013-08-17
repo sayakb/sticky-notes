@@ -68,7 +68,7 @@ class CreateController extends BaseController {
 
 			// Unique key and secure hash for the paste
 			$urlkey = Paste::getUrlKey();
-			$hash = rand(100000, 999999);
+			$hash = Paste::getHash();
 
 			// Set the paste author
 			if (Auth::check())

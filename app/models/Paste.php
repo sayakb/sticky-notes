@@ -83,6 +83,17 @@ class Paste extends Eloquent {
 	}
 
 	/**
+	 * Generates a secure hashfor a paste
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function getHash()
+	{
+		return strtolower(str_random(6));
+	}
+
+	/**
 	 * Returns the first five lines of a pasted code
 	 *
 	 * @static

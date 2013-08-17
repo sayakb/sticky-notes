@@ -16,7 +16,7 @@ Route::get('/', function()
 });
 
 // Show paste route
-Route::controller('show/{urlkey}/{hash?}', 'ShowController');
+Route::controller('show/{urlkey}/{hash?}/{mode?}', 'ShowController');
 
 // List paste route
 Route::controller('all', 'ListController');

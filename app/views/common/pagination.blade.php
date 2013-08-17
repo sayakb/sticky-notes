@@ -1,6 +1,6 @@
 @if ($paginator->getLastPage() > 1)
 	<div class="row text-center">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<ul class="pagination">
 				@if ($paginator->getCurrentPage() <= 1)
 					<li class="disabled"><span>&laquo;</span></li>

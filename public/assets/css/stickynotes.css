@@ -22,6 +22,9 @@ footer {
 pre {
   min-height: 350px;
   background: #fdfdfd;
+  border-radius: 0;
+  margin: -1px 0 -1px 0;
+  border-color: #e7e7e7;
 }
 pre ol {
   margin: 0;
@@ -38,4 +41,33 @@ section div.row:first-child h3 {
 .glyphicon {
   position: relative;
   top: 2px;
+}
+.pre-info {
+  background: #f2f2f2;
+  border: 1px solid #e7e7e7;
+  padding: 10px;
+  word-break: break-all;
+}
+.pre-info.pre-header {
+  border-radius: 4px 4px 0 0;
+  padding-bottom: 0;
+}
+.pre-info.pre-header h4 {
+  margin: 0;
+  margin-bottom: 5px;
+}
+.pre-info.pre-header .btn {
+  border-radius: 4px 4px 0 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+  padding-top: 3px;
+  font-weight: normal;
+  font-size: 0.95em;
+  height: 25px;
+}
+.pre-info.pre-footer {
+  border-radius: 0 0 4px 4px;
+  margin-bottom: 20px;
+  font-style: italic;
+  font-size: 0.95em;
 }

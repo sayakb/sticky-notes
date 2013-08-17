@@ -26,5 +26,7 @@ return array(
 	"login"        => "Login",
 	"logout"       => "Logout (%s)",
 	"auth_fail"    => "Authentication failed, please try again.",
-
+	"language"     => "Language: %s",
+	"posted_by"    => "Posted by %s at %s",
+	"anonymous"    => "Anonymous",
 );

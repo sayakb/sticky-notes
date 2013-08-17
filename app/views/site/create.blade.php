@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="row">
-		<div class="col-lg-4">
+		<div class="col-sm-4">
 			<div class="form-group">
 				{{
 					Form::text('title', Input::old('title'), array(
@@ -14,9 +14,9 @@
 			</div>
 		</div>
 
-		<div class="col-lg-4"></div>
+		<div class="col-sm-4"></div>
 
-		<div class="col-lg-4">
+		<div class="col-sm-4">
 			<div class="form-group">
 				{{
 					Form::select('language', $languages, Input::old('language'), array(
@@ -28,7 +28,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12">
+		<div class="col-sm-12">
 			<div class="form-group">
 				{{
 					Form::textarea('data', Input::old('data'), array(
@@ -42,7 +42,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-4">
+		<div class="col-sm-4">
 			<div class="form-group">
 				<div class="input-group">
 					<div class="input-group-addon">
@@ -59,7 +59,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-4">
+		<div class="col-sm-4">
 			<div class="form-group">
 				<div class="checkbox">
 					<label>
@@ -75,7 +75,7 @@
 			</div>
 		</div>
 
-		<div class="col-lg-4">
+		<div class="col-sm-4">
 			<div class="form-group">
 				<div class="input-group">
 					<div class="input-group-btn">

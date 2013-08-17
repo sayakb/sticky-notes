@@ -4,13 +4,15 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| List Language Lines
+	| Show Paste Language Lines
 	|--------------------------------------------------------------------------
 	|
-	| The following are localized texts that are used for lists
+	| The following are localized texts that are used for the 'show paste' page
 	|
 	*/
 
-	"show_paste"    => "Show paste",
+	"raw"         => "Raw",
+	"wrap"        => "Wrap",
+	"short_url"   => "Get short URL",
 
 );

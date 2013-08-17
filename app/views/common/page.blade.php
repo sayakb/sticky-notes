@@ -37,7 +37,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-12">
+			<div class="col-sm-12">
 				@if ( ! empty($success))
 					<div class="alert alert-success">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
