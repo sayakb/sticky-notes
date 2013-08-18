@@ -49,7 +49,7 @@ class ListController extends BaseController {
 	public function getTrending($age = 'now')
 	{
 		$perPage = Site::config('general')->perPage;
-		$pastes = Paste::trending($age, $perPage)->paginate($perPage);
+		$pastes = Paste::getTrending($age, $perPage)->paginate($perPage);
 
 		return $this->getList($pastes, TRUE);
 	}
