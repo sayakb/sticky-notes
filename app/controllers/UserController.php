@@ -61,7 +61,7 @@ class UserController extends BaseController {
 
 			if ($success)
 			{
-				return Redirect::intended('new');
+				return Redirect::intended('/');
 			}
 			else
 			{
@@ -87,7 +87,7 @@ class UserController extends BaseController {
 	{
 		Auth::logout();
 
-		return Redirect::to('new');
+		return Redirect::to('/');
 	}
 
 }

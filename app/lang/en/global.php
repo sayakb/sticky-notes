@@ -17,6 +17,7 @@ return array(
 	"trending"     => "Trending",
 	"feed"         => "Feed",
 	"docs"         => "Docs",
+	"my_pastes"    => "My pastes",
 	"author"       => "Author",
 	"username"     => "Username",
 	"password"     => "Password",

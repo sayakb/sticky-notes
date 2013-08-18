@@ -11,6 +11,12 @@ return array(
 	|
 	*/
 
-	"show_paste"    => "Show paste",
+	"show_paste"      => "Show paste",
+	"filter"          => "Filter",
+	"filter_now"      => "Right now",
+	"filter_week"     => "Last 7 days",
+	"filter_month"    => "Last 30 days",
+	"filter_year"     => "Last 365 days",
+	"filter_all"      => "All time",
 
 );

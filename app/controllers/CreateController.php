@@ -32,9 +32,12 @@ class CreateController extends BaseController {
 	 * @access public
 	 * @return \Illuminate\View\View
 	 */
-	public function getIndex()
+	public function getCreate()
 	{
-		$data = array('languages' => Highlighter::languages());
+		$data = array(
+			'action'     => 'CreateController@postCreate',
+			'languages'  => Highlighter::languages()
+		);
 
 		return View::make('site/create', $data, Site::defaults());
 	}
@@ -44,18 +47,25 @@ class CreateController extends BaseController {
 	 *
 	 * @return \Illuminate\Support\Facades\Redirect
 	 */
-	public function postIndex()
+	public function postCreate()
 	{
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'title'     => 'alpha_dash|max:30',
+			'title'     => 'max:30',
 			'data'      => 'required',
 			'language'  => 'in:'.Highlighter::languages(TRUE),
 			'expire'    => 'in:'.implode(',', array_keys(Config::get('expire')))
 		));
 
-		// Run the validator
-		if ($validator->passes())
+		// Generate anti-spam modules
+		$antispam = Antispam::make();
+
+		// Run validations
+		$resultValidation = $validator->passes();
+		$resultAntispam = $antispam->passes();
+
+		// Run validations
+		if ($resultValidation AND $resultAntispam)
 		{
 			// Password and private flags
 			$is_protected = Input::has('password');
@@ -66,14 +76,7 @@ class CreateController extends BaseController {
 			$hash = Paste::getHash();
 
 			// Set the paste author
-			if (Auth::check())
-			{
-				$author = Auth::user()->username;
-			}
-			else
-			{
-				$author = NULL;
-			}
+			$author = Auth::check() ? Auth::user()->username : NULL;
 
 			// Insert the new paste
 			Paste::create(array(
@@ -97,27 +100,34 @@ class CreateController extends BaseController {
 			// Otherwise, just show a link
 			if ($is_protected)
 			{
-				$url = link_to("view/{$urlkey}/{$hash}");
+				$url = link_to("p{$urlkey}/{$hash}");
 				$message = sprintf(Lang::get('create.click_for_paste', $url));
 
 				Session::flash('success', $message);
 			}
 			else if ($is_private)
 			{
-				return Redirect::to("show/{$urlkey}/{$hash}");
+				return Redirect::to("p{$urlkey}/{$hash}");
 			}
 			else
 			{
-				return Redirect::to("show/{$urlkey}");
+				return Redirect::to("p{$urlkey}");
 			}
 		}
 		else
 		{
 			// Set the error message as flashdata
-			Session::flash('error', $validator->messages()->all('<p>:message</p>'));
+			if ( ! $resultValidation)
+			{
+				Session::flash('error', $validator->messages()->all('<p>:message</p>'));
+			}
+			else if ( ! $resultAntispam)
+			{
+				Session::flash('error', $antispam->message());
+			}
 		}
 
-		return Redirect::to('new')->withInput();
+		return Redirect::to('/')->withInput();
 	}
 
 }

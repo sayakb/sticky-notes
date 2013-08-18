@@ -10,7 +10,12 @@
 							<h4>
 								@if (empty($paste->title))
 									{{ Lang::get('global.paste') }}
-									#{{ $paste->urlkey }}
+
+									@if ($paste->urlkey)
+										#p{{ $paste->urlkey }}
+									@else
+										#{{ $paste->id }}
+									@endif
 								@else
 									{{{ $paste->title }}}
 								@endif
@@ -31,7 +36,7 @@
 							}}
 
 							{{
-								link_to("show/{$paste->urlkey}/{$paste->hash}/raw", Lang::get('show.raw'), array(
+								link_to($paste->urlkey ? "p{$paste->urlkey}/{$paste->hash}/raw" : "{$paste->id}/{$paste->hash}/raw", Lang::get('show.raw'), array(
 									'class' => 'btn btn-success'
 								))
 							}}

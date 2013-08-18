@@ -101,11 +101,13 @@ class Site extends Eloquent {
 	 * Generates the site navigation menu
 	 *
 	 * @access public
+	 * @param  string   $group
 	 * @return string
 	 */
 	public static function getMenu($group)
 	{
 		$output = '';
+		$icon = NULL;
 		$path = Request::path();
 
 		// Grab and parse all the menus
@@ -114,13 +116,23 @@ class Site extends Eloquent {
 
 		foreach ($group as $key => $item)
 		{
-			if (strpos($key, '_') !== 0)
+			if ( ! str_contains($key, '_'))
 			{
 				$label = Lang::get($item['label']);
-				$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
+				$current = FALSE;
 
-				// Highlight active entry
-				if ($key == $path)
+				// Determine whether this is the active link
+				if ($group['_exact'] AND $key === $path)
+				{
+					$current = TRUE;
+				}
+				else if ( ! $group['_exact'] AND starts_with($path, $key))
+				{
+					$current = TRUE;
+				}
+
+				// Highlight the active item
+				if ($current)
 				{
 					$active = ' class="active"';
 					$href = '';
@@ -129,6 +141,12 @@ class Site extends Eloquent {
 				{
 					$active = '';
 					$href = 'href="'.url($key).'"';
+				}
+
+				// Set the entry icon
+				if (isset($item['icon']))
+				{
+					$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
 				}
 
 				// Generate the item

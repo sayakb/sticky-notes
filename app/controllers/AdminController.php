@@ -31,7 +31,7 @@ class AdminController extends BaseController {
 	 * @access public
 	 * @return \Illuminate\View\View
 	 */
-	public function getIndex()
+	public function getDashboard()
 	{
 		return View::make('admin/layout', array(), Site::defaults());
 	}

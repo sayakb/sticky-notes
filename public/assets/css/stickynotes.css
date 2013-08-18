@@ -68,8 +68,13 @@ section#show pre {
 .pre-info.pre-footer {
   border-radius: 0 0 4px 4px;
   margin-bottom: 20px;
-  font-style: italic;
+  color: #777;
   font-size: 0.95em;
   background: #f5f5f5;
   border: 1px solid #e7e7e7;
+}
+.well-white {
+  border: 1px solid #e7e7e7;
+  background: #fdfdfd;
+  box-shadow: none;
 }

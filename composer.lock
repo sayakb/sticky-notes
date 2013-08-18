@@ -265,12 +265,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "9c6b8615a988117dec83bdbb0fad80afef23eab8"
+                "reference": "f28a39065d455b6df1c989ea6590e971a1f0256d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/9c6b8615a988117dec83bdbb0fad80afef23eab8",
-                "reference": "9c6b8615a988117dec83bdbb0fad80afef23eab8",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/f28a39065d455b6df1c989ea6590e971a1f0256d",
+                "reference": "f28a39065d455b6df1c989ea6590e971a1f0256d",
                 "shasum": ""
             },
             "require": {
@@ -331,7 +331,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2013-07-30 05:35:10"
+            "time": "2013-08-17 18:48:00"
         },
         {
             "name": "doctrine/dbal",
@@ -1120,12 +1120,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "v2.3.3"
+                "reference": "db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/v2.3.3",
-                "reference": "v2.3.3",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3",
+                "reference": "db78f8ff7fc9e28d25ff9a0bf6ddf9f0e35fbbe3",
                 "shasum": ""
             },
             "require": {
@@ -1164,7 +1164,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-07-21 12:12:18"
+            "time": "2013-08-17 16:34:49"
         },
         {
             "name": "symfony/css-selector",
@@ -1481,12 +1481,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "f2934b0cf525bef5143e52de93f538df4aeef09c"
+                "reference": "ad778df4e7af3cfb9151eeeeb8b9823d47a2d72f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/f2934b0cf525bef5143e52de93f538df4aeef09c",
-                "reference": "f2934b0cf525bef5143e52de93f538df4aeef09c",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/ad778df4e7af3cfb9151eeeeb8b9823d47a2d72f",
+                "reference": "ad778df4e7af3cfb9151eeeeb8b9823d47a2d72f",
                 "shasum": ""
             },
             "require": {
@@ -1522,7 +1522,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-08 12:02:32"
+            "time": "2013-08-17 16:34:49"
         },
         {
             "name": "symfony/http-kernel",

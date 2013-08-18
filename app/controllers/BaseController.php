@@ -38,6 +38,7 @@ class BaseController extends Controller {
 	public function __construct()
 	{
 		$this->setupProject();
+		$this->processInput();
 	}
 
 	/**
@@ -69,6 +70,23 @@ class BaseController extends Controller {
 		{
 			$this->project = trim(str_replace($site, '', $host), '.');
 		}
+	}
+
+	/**
+	 * Process and clean the POSTed data
+	 *
+	 * @access protected
+	 * @return void
+	 */
+	protected function processInput()
+	{
+		$input = Input::all();
+
+		// Trim leading and trailing whitspace
+		$input = array_map('trim', $input);
+
+		// Merge it back to the Input data
+		Input::merge($input);
 	}
 
 }

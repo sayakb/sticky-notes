@@ -12,19 +12,23 @@ return array(
 	|
 	| 'url'      => array(
 	| 	'label'  => 'global.lang_key',
-	| 	'icon'   => 'glyphicon'
+	| 	'icon'   => 'glyphicon' // Icon is optional
 	| )
 	|
-	| Each menu group must have a _showLogin member indicating whether a
-	| login/logout link will be appended or not
+	| Properties to be added for each menu:
+	|  * _showLogin : Whether or not to append login/logout link
+	|  * _exact     : Whether an exact match should be done for determining the
+	|                 currently active link
 	|
 	*/
 
 	'navigation'         => array(
 
-		'_showLogin'     => true,
+		'_showLogin'     => TRUE,
 
-		'new'            => array(
+		'_exact'         => FALSE,
+
+		'/'              => array(
 			'label'      => 'global.new_paste',
 			'icon'       => 'pencil'
 		),
@@ -36,12 +40,7 @@ return array(
 
 		'trending'       => array(
 			'label'      => 'global.trending',
-			'icon'       => 'heart'
-		),
-
-		'rss'            => array(
-			'label'      => 'global.feed',
-			'icon'       => 'asterisk'
+			'icon'       => 'fire'
 		),
 
 		'docs'           => array(
@@ -49,11 +48,46 @@ return array(
 			'icon'       => 'book'
 		),
 
+		'user/pastes'    => array(
+			'label'      => 'global.my_pastes',
+			'icon'       => 'flag'
+		),
+
+	),
+
+	'filters'            => array(
+
+		'_showLogin'     => FALSE,
+
+		'_exact'         => TRUE,
+
+		'trending'       => array(
+			'label'      => 'list.filter_now'
+		),
+
+		'trending/week'  => array(
+			'label'      => 'list.filter_week'
+		),
+
+		'trending/month' => array(
+			'label'      => 'list.filter_month'
+		),
+
+		'trending/year'  => array(
+			'label'      => 'list.filter_year'
+		),
+
+		'trending/all'   => array(
+			'label'      => 'list.filter_all'
+		),
+
 	),
 
 	'admin'              => array(
 
-		'_showLogin'     => false,
+		'_showLogin'     => FALSE,
+
+		'_exact'         => FALSE,
 
 		'admin'          => array(
 			'label'      => 'admin.dashboard',
@@ -64,6 +98,7 @@ return array(
 			'label'      => 'admin.site_config',
 			'icon'       => 'globe'
 		),
+
 	),
 
 );

@@ -65,6 +65,7 @@
 	<div class="container">
 		{{
 			Form::open(array(
+				'action'         => isset($action) ? $action : NULL,
 				'autocomplete'   => 'off',
 				'role'           => 'form'
 			))

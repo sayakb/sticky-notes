@@ -2,6 +2,25 @@
 
 @section('body')
 	<section id="list">
+		@if ($filters)
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="well well-sm well-white">
+						<ul class="nav nav-pills">
+							<li class="disabled">
+								<a>
+									<span class="glyphicon glyphicon-filter"></span>
+									@lang('list.filter'):
+								</a>
+							</li>
+
+							{{ Site::getMenu('filters') }}
+						</ul>
+					</div>
+				</div>
+			</div>
+		@endif
+
 		@foreach ($pastes as $paste)
 			<div class="row">
 				<div class="col-sm-12">
@@ -11,7 +30,12 @@
 								<h4>
 									@if (empty($paste->title))
 										{{ Lang::get('global.paste') }}
-										#{{ $paste->urlkey }}
+
+										@if ($paste->urlkey)
+											#p{{ $paste->urlkey }}
+										@else
+											#{{ $paste->id }}
+										@endif
 									@else
 										{{{ $paste->title }}}
 									@endif
@@ -20,7 +44,7 @@
 
 							<div class="col-sm-5 text-right">
 								{{
-									link_to("show/{$paste->urlkey}", Lang::get('list.show_paste'), array(
+									link_to($paste->urlkey ? "p{$paste->urlkey}" : $paste->id, Lang::get('list.show_paste'), array(
 										'class' => 'btn btn-success'
 									))
 								}}

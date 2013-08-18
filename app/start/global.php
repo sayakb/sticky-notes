@@ -138,6 +138,7 @@ App::error(function($exception, $code)
 			$code = 403;
 			break;
 
+		case 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException':
 		case 'Illuminate\Database\Eloquent\ModelNotFoundException':
 			$code = 404;
 			break;

@@ -33,10 +33,26 @@ class ShowController extends BaseController {
 	 * @param  string  $hash
 	 * @return \Illuminate\View\View
 	 */
-	public function getIndex($urlkey, $hash = "")
+	public function getPaste($key, $hash = "", $mode = "")
 	{
-		// Restrict paste access
-		$paste = Paste::where('urlkey', $urlkey)->firstOrFail();
+		$paste = NULL;
+
+		// Fetch the paste
+		if (starts_with($key, 'p'))
+		{
+			$key = substr($key, 1);
+			$paste = Paste::where('urlkey', $key)->first();
+		}
+		else if (is_numeric($key))
+		{
+			$paste = Paste::find($key);
+		}
+
+		// Paste was not found
+		if ($paste == NULL)
+		{
+			App::abort(404);
+		}
 
 		// Require hash to be passed for private pastes
 		if ($paste->private AND $paste->hash != $hash)
