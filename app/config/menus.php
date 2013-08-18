@@ -87,7 +87,7 @@ return array(
 
 		'_showLogin'     => FALSE,
 
-		'_exact'         => FALSE,
+		'_exact'         => TRUE,
 
 		'admin'          => array(
 			'label'      => 'admin.dashboard',
