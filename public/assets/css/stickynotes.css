@@ -67,10 +67,10 @@ section#show pre {
   margin: 0;
   margin-bottom: 5px;
 }
-.pre-info.pre-header h4 .glyphicon {
-  font-size: 0.75em;
-  margin-left: 3px;
-  top: 0;
+.pre-info.pre-header span.btn:hover {
+  cursor: default;
+  background-color: #5bc0de;
+  border-color: #46b8da;
 }
 .pre-info.pre-header .btn {
   border-radius: 4px 4px 0 0;

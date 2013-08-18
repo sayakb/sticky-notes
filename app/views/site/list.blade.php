@@ -39,16 +39,20 @@
 									@else
 										{{{ $paste->title }}}
 									@endif
-
-									@if ($paste->password)
-										<span class="glyphicon glyphicon-lock text-danger" title="{{ Lang::get('global.paste_pwd') }}"></span>
-									@elseif ($paste->private)
-										<span class="glyphicon glyphicon-eye-open text-danger" title="{{ Lang::get('global.paste_pvt') }}"></span>
-									@endif
 								</h4>
 							</div>
 
 							<div class="col-sm-5 text-right">
+								@if ($paste->password)
+									<span class="btn btn-info" title="{{ Lang::get('global.paste_pwd') }}">
+										<span class="glyphicon glyphicon-lock"></span>
+									</span>
+								@elseif ($paste->private)
+									<span class="btn btn-info" title="{{ Lang::get('global.paste_pvt') }}">
+										<span class="glyphicon glyphicon-eye-open"></span>
+									</span>
+								@endif
+
 								{{
 									link_to($paste->urlkey ? "p{$paste->urlkey}" : $paste->id, Lang::get('list.show_paste'), array(
 										'class' => 'btn btn-success'
