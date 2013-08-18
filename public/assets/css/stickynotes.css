@@ -44,6 +44,17 @@ section#show pre {
   position: relative;
   top: 2px;
 }
+.jumbotron .glyphicon {
+  font-size: 1.7em;
+}
+.jumbotron .form-control {
+  width: 250px;
+  display: inline;
+  margin-top: 15px;
+}
+.jumbotron .btn {
+  margin-top: 15px;
+}
 .pre-info {
   padding: 10px;
   word-break: break-all;
@@ -55,6 +66,11 @@ section#show pre {
 .pre-info.pre-header h4 {
   margin: 0;
   margin-bottom: 5px;
+}
+.pre-info.pre-header h4 .glyphicon {
+  font-size: 0.75em;
+  margin-left: 3px;
+  top: 0;
 }
 .pre-info.pre-header .btn {
   border-radius: 4px 4px 0 0;

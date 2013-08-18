@@ -19,6 +19,12 @@
 								@else
 									{{{ $paste->title }}}
 								@endif
+
+								@if ($paste->password)
+									<span class="glyphicon glyphicon-lock text-danger" title="{{ Lang::get('global.paste_pwd') }}"></span>
+								@elseif ($paste->private)
+									<span class="glyphicon glyphicon-eye-open text-danger" title="{{ Lang::get('global.paste_pvt') }}"></span>
+								@endif
 							</h4>
 						</div>
 
@@ -44,7 +50,7 @@
 					</div>
 				</div>
 
-				{{ Highlighter::parse($paste->data, $paste->language) }}
+				{{ Highlighter::make()->parse($paste->data, $paste->language) }}
 
 				<div class="pre-info pre-footer">
 					<div class="row">

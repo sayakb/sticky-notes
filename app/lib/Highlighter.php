@@ -26,24 +26,46 @@
 class Highlighter {
 
 	/**
-	 * GeSHi instance
+	 * Stores a class instance
+	 *
+	 * @var Highlighter
+	 */
+	private static $instance;
+
+	/**
+	 * GeSHi library instance
 	 *
 	 * @access public
 	 * @var object
 	 */
-	private static $geshi;
+	private $geshi;
 
 	/**
-	 * Initialize the GeSHi class
+	 * Creates a new GeSHi instance
 	 *
-	 * @access public
 	 * @return void
 	 */
-	public static function init()
+	public function __construct()
 	{
-		self::$geshi = new GeSHi();
-		self::$geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
-		self::$geshi->set_overall_style('word-wrap:break-word');
+		$this->geshi = new GeSHi();
+		$this->geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
+		$this->geshi->set_overall_style('word-wrap:break-word');
+	}
+
+	/**
+	 * Creates a new instance of Highlighter class
+	 *
+	 * @static
+	 * @return Highlighter
+	 */
+	public static function make()
+	{
+		if ( ! isset(static::$instance))
+		{
+			static::$instance = new Highlighter();
+		}
+
+		return static::$instance;
 	}
 
 	/**
@@ -53,11 +75,11 @@ class Highlighter {
 	 * @param  bool   $csv
 	 * @return array|string
 	 */
-	public static function languages($csv = FALSE)
+	public function languages($csv = FALSE)
 	{
 		// get_supported_languages takes a param that tells whether or not
 		// to return full names. We don't need full names if we just want CSV
-		$langs = self::$geshi->get_supported_languages( ! $csv);
+		$langs = $this->geshi->get_supported_languages( ! $csv);
 
 		if ($csv)
 		{
@@ -79,12 +101,12 @@ class Highlighter {
 	 * @param  string  $language
 	 * @return string
 	 */
-	public static function parse($code, $language)
+	public function parse($code, $language)
 	{
-		self::$geshi->set_source($code);
-		self::$geshi->set_language($language);
+		$this->geshi->set_source($code);
+		$this->geshi->set_language($language);
 
-		return self::$geshi->parse_code($code);
+		return $this->geshi->parse_code($code);
 	}
 
 }

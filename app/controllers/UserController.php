@@ -66,13 +66,13 @@ class UserController extends BaseController {
 			else
 			{
 				// Auth failed, show error message
-				Session::flash('error', Lang::get('global.auth_fail'));
+				Session::flash('messages.error', Lang::get('global.auth_fail'));
 			}
 		}
 		else
 		{
 			// Set the error message as flashdata
-			Session::flash('error', $validator->messages()->all('<p>:message</p>'));
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 		}
 
 		return Redirect::to('user/login')->withInput();

@@ -63,38 +63,23 @@ class Paste extends Eloquent {
 	);
 
 	/**
-	 * Returns trending posts based on the age
+	 * Fetches a post by its urlkey or id
 	 *
-	 * @param  \Illuminate\Database\Eloquent\Model  $query
-	 * @param  string                               $age
-	 * @param  int                                  $perPage
-	 * @return \Illuminate\Database\Eloquent\Model
+	 * @param  string  $key
+	 * @return \Illuminate\Database\Eloquent\Mode|null
 	 */
-	public function scopeTrending($query, $age, $perPage)
+	public static function getByKey($key)
 	{
-		$time = time();
-		$filter = $time - 259200;
-
-		switch ($age)
+		if (starts_with($key, 'p'))
 		{
-			case 'week':
-				$filter = $time - 1814400;
-				break;
+			$key = substr($key, 1);
 
-			case 'month':
-				$filter = $time - 7776000;
-				break;
-
-			case 'year':
-				$filter = $time - 94608000;
-				break;
-
-			case 'all':
-				$filter = 0;
-				break;
+			return static::where('urlkey', $key)->first();
 		}
-
-		return $query->where('timestamp', '>=', $filter)->orderBy('hits', 'desc')->take($perPage);
+		else if (is_numeric($key))
+		{
+			return static::find($key);
+		}
 	}
 
 	/**
@@ -108,7 +93,7 @@ class Paste extends Eloquent {
 		while (TRUE)
 		{
 			$key = strtolower(str_random(8));
-			$count = Paste::where('urlkey', $key)->count();
+			$count = static::where('urlkey', $key)->count();
 
 			if ($count == 0)
 			{
@@ -151,6 +136,40 @@ class Paste extends Eloquent {
 		}
 
 		return trim($data);
+	}
+
+	/**
+	 * Returns trending posts based on the age
+	 *
+	 * @param  string  $age
+	 * @param  int     $perPage
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public static function getTrending($age, $perPage)
+	{
+		$time = time();
+		$filter = $time - 259200;
+
+		switch ($age)
+		{
+			case 'week':
+				$filter = $time - 1814400;
+				break;
+
+			case 'month':
+				$filter = $time - 7776000;
+				break;
+
+			case 'year':
+				$filter = $time - 94608000;
+				break;
+
+			case 'all':
+				$filter = 0;
+				break;
+		}
+
+		return static::where('timestamp', '>=', $filter)->orderBy('hits', 'desc')->take($perPage);
 	}
 
 }

@@ -11,8 +11,8 @@ return array(
 	|
 	*/
 
-	"raw"         => "Raw",
-	"wrap"        => "Wrap",
-	"short_url"   => "Get short URL",
+	"raw"             => "Raw",
+	"wrap"            => "Wrap",
+	"short_url"       => "Get short URL",
 
 );

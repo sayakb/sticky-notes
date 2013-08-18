@@ -84,17 +84,6 @@ require app_path().'/filters.php';
 
 /*
 |--------------------------------------------------------------------------
-| Initialize custom libraries
-|--------------------------------------------------------------------------
-|
-| Initialize Sticky Notes libs with their init methods.
-|
-*/
-
-Highlighter::init();
-
-/*
-|--------------------------------------------------------------------------
 | Sticky Notes auth methods
 |--------------------------------------------------------------------------
 |
@@ -108,10 +97,10 @@ use Illuminate\Auth\StickyNotesDBUserProvider;
 Auth::extend('stickynotesdb', function()
 {
 	$model = Config::get('auth.model');
-	$phpass = new PasswordHash(10, false);
+	$crypt = PHPass::make();
 
 	return new Guard(
-		new StickyNotesDBUserProvider($model, $phpass),
+		new StickyNotesDBUserProvider($model, $crypt),
 		App::make('session')
 	);
 });

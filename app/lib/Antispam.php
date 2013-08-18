@@ -184,11 +184,11 @@ class Antispam {
 	 */
 	private function runNoflood()
 	{
-		$posted = Session::get('posted');
+		$posted = Session::get('paste.posted');
 
 		if (time() - $posted >= 5)
 		{
-			Session::put('posted', time());
+			Session::put('paste.posted', time());
 
 			return TRUE;
 		}

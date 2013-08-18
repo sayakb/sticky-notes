@@ -10,7 +10,7 @@
 							<li class="disabled">
 								<a>
 									<span class="glyphicon glyphicon-filter"></span>
-									@lang('list.filter'):
+									{{ Lang::get('list.filter') }}:
 								</a>
 							</li>
 
@@ -39,6 +39,12 @@
 									@else
 										{{{ $paste->title }}}
 									@endif
+
+									@if ($paste->password)
+										<span class="glyphicon glyphicon-lock text-danger" title="{{ Lang::get('global.paste_pwd') }}"></span>
+									@elseif ($paste->private)
+										<span class="glyphicon glyphicon-eye-open text-danger" title="{{ Lang::get('global.paste_pvt') }}"></span>
+									@endif
 								</h4>
 							</div>
 
@@ -52,7 +58,7 @@
 						</div>
 					</div>
 
-					{{ Highlighter::parse(Paste::getAbstract($paste->data), $paste->language) }}
+					{{ Highlighter::make()->parse(Paste::getAbstract($paste->data), $paste->language) }}
 
 					<div class="pre-info pre-footer">
 						<div class="row">

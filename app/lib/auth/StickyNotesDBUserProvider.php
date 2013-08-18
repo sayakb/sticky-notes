@@ -110,7 +110,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 		$salt = $this->user->salt;
 		$hash = $user->getAuthPassword();
 
-		return $this->crypt->CheckPassword($password.$salt, $hash);
+		return $this->crypt->check('User', $password, $salt, $hash);
 	}
 
 	/**

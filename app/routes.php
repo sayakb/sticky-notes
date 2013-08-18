@@ -15,6 +15,7 @@ Route::post('create', 'CreateController@postCreate');
 
 // Show paste routes
 Route::get('{key}/{hash?}/{mode?}', 'ShowController@getPaste')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
+Route::post('{key}/{hash?}', 'ShowController@postPassword')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
 
 // List paste route
 Route::get('all', 'ListController@getAll');

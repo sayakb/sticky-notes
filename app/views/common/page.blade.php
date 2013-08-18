@@ -42,9 +42,13 @@
 					<div class="alert alert-success">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
 
-						@foreach ($success as $msg)
-							{{ $msg }}
-						@endforeach
+						@if (is_array($success))
+							@foreach ($success as $msg)
+								{{ $msg }}
+							@endforeach
+						@else
+							{{ $success }}
+						@endif
 					</div>
 				@elseif ( ! empty($error))
 					<div class="alert alert-danger">
@@ -61,6 +65,7 @@
 				@endif
 			</div>
 		</div>
+	</div>
 
 	<div class="container">
 		{{

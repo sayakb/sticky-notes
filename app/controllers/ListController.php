@@ -34,7 +34,7 @@ class ListController extends BaseController {
 	public function getAll()
 	{
 		$perPage = Site::config('general')->perPage;
-		$pastes = Paste::where('private', '<>', 1)->paginate($perPage);
+		$pastes = Paste::where('private', '<>', 1)->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
 	}
@@ -64,7 +64,7 @@ class ListController extends BaseController {
 	{
 		$perPage = Site::config('general')->perPage;
 		$user = Auth::user()->username;
-		$pastes = Paste::where('author', $user)->paginate($perPage);
+		$pastes = Paste::where('author', $user)->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
 	}

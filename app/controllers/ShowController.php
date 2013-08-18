@@ -29,24 +29,13 @@ class ShowController extends BaseController {
 	 * Displays the default view page
 	 *
 	 * @access public
-	 * @param  string  $urlkey
+	 * @param  string  $key
 	 * @param  string  $hash
 	 * @return \Illuminate\View\View
 	 */
 	public function getPaste($key, $hash = "", $mode = "")
 	{
-		$paste = NULL;
-
-		// Fetch the paste
-		if (starts_with($key, 'p'))
-		{
-			$key = substr($key, 1);
-			$paste = Paste::where('urlkey', $key)->first();
-		}
-		else if (is_numeric($key))
-		{
-			$paste = Paste::find($key);
-		}
+		$paste = Paste::getByKey($key);
 
 		// Paste was not found
 		if ($paste == NULL)
@@ -54,27 +43,62 @@ class ShowController extends BaseController {
 			App::abort(404);
 		}
 
-		// Require hash to be passed for private pastes
-		if ($paste->private AND $paste->hash != $hash)
+		// User can view his own private and protected pastes
+		if ( ! Auth::check() OR Auth::user()->username != $paste->author)
 		{
-			App::abort(401); // Unauthorized
+			// Require hash to be passed for private pastes
+			if ($paste->private AND $paste->hash != $hash)
+			{
+				App::abort(401); // Unauthorized
+			}
+
+			// Check if paste is password protected and user hasn't entered
+			// the password yet
+			if ($paste->password AND ! Session::has('paste.password'.$paste->id))
+			{
+				return View::make('site/password', array(), Site::defaults());
+			}
 		}
 
 		// Increment the hit counter
-		$viewed = Session::get('viewed');
-
-		if ( ! is_array($viewed) OR ! in_array($paste->id, $viewed))
+		if ( ! Session::has('paste.viewed'.$paste->id))
 		{
 			$paste->hits++;
 			$paste->save();
 
-			$viewed[] = $paste->id;
-			Session::put('viewed', $viewed);
+			Session::put('paste.viewed'.$paste->id, TRUE);
 		}
 
 		$data = array('paste' => $paste);
 
 		return View::make('site/show', $data, Site::defaults());
+	}
+
+	/**
+	 * Handles the paste password submission
+	 *
+	 * @param  string  $key
+	 * @param  string  $hash
+	 * @return \Illuminate\Support\Facades\Redirect|null
+	 */
+	public function postPassword($key, $hash = "")
+	{
+		$paste = Paste::getByKey($key);
+
+		if ($paste != NULL AND Input::has('password'))
+		{
+			$entered = Input::get('password');
+
+			if (PHPass::make()->check('Paste', $entered, $paste->salt, $paste->password))
+			{
+				Session::put('paste.password'.$paste->id, TRUE);
+
+				return Redirect::to("{$key}/{$hash}");
+			}
+		}
+
+		// Something wrong here
+		App::abort(401);
 	}
 
 }

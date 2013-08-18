@@ -36,7 +36,7 @@ class CreateController extends BaseController {
 	{
 		$data = array(
 			'action'     => 'CreateController@postCreate',
-			'languages'  => Highlighter::languages()
+			'languages'  => Highlighter::make()->languages()
 		);
 
 		return View::make('site/create', $data, Site::defaults());
@@ -53,7 +53,7 @@ class CreateController extends BaseController {
 		$validator = Validator::make(Input::all(), array(
 			'title'     => 'max:30',
 			'data'      => 'required',
-			'language'  => 'in:'.Highlighter::languages(TRUE),
+			'language'  => 'in:'.Highlighter::make()->languages(TRUE),
 			'expire'    => 'in:'.implode(',', array_keys(Config::get('expire')))
 		));
 
@@ -78,15 +78,24 @@ class CreateController extends BaseController {
 			// Set the paste author
 			$author = Auth::check() ? Auth::user()->username : NULL;
 
+			// Encrypt the password with a salt
+			$password = '';
+			$salt = str_random(5);
+
+			if (Input::has('password'))
+			{
+				$password = PHPass::make()->create(Input::get('password'), $salt);
+			}
+
 			// Insert the new paste
 			Paste::create(array(
 				'project'     => $this->project,
 				'title'       => Input::get('title'),
 				'data'        => Input::get('data'),
 				'language'    => Input::get('language'),
-				'password'    => Input::get('password'),
-				'salt'        => str_random(5),
 				'private'     => $is_protected OR $is_private ? 1 : 0,
+				'password'    => $password,
+				'salt'        => $salt,
 				'hash'        => $hash,
 				'urlkey'      => $urlkey,
 				'author'      => $author,
@@ -101,9 +110,9 @@ class CreateController extends BaseController {
 			if ($is_protected)
 			{
 				$url = link_to("p{$urlkey}/{$hash}");
-				$message = sprintf(Lang::get('create.click_for_paste', $url));
+				$message = sprintf(Lang::get('create.click_for_paste'), $url);
 
-				Session::flash('success', $message);
+				Session::flash('messages.success', $message);
 			}
 			else if ($is_private)
 			{
@@ -119,11 +128,11 @@ class CreateController extends BaseController {
 			// Set the error message as flashdata
 			if ( ! $resultValidation)
 			{
-				Session::flash('error', $validator->messages()->all('<p>:message</p>'));
+				Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 			}
 			else if ( ! $resultAntispam)
 			{
-				Session::flash('error', $antispam->message());
+				Session::flash('messages.error', $antispam->message());
 			}
 		}
 

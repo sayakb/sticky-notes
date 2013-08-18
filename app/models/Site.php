@@ -66,8 +66,9 @@ class Site extends Eloquent {
 	public static function defaults()
 	{
 		return array(
-			'site'    => self::config('general'),
-			'error'   => Session::get('error')
+			'site'      => static::config('general'),
+			'error'     => Session::get('messages.error'),
+			'success'   => Session::get('messages.success')
 		);
 	}
 
@@ -80,21 +81,21 @@ class Site extends Eloquent {
 	 */
 	public static function config($section)
 	{
-		if ( ! isset(self::$data[$section]))
+		if ( ! isset(static::$data[$section]))
 		{
-			self::$data[$section] = new stdClass();
-			$config = self::where('config_group', $section)->get();
+			static::$data[$section] = new stdClass();
+			$config = static::where('config_group', $section)->get();
 
 			if ($config != NULL)
 			{
 				foreach ($config as $item)
 				{
-					self::$data[$section]->$item['config_key'] = $item['config_value'];
+					static::$data[$section]->$item['config_key'] = $item['config_value'];
 				}
 			}
 		}
 
-		return self::$data[$section];
+		return static::$data[$section];
 	}
 
 	/**
