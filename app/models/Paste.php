@@ -66,7 +66,7 @@ class Paste extends Eloquent {
 	 * Fetches a post by its urlkey or id
 	 *
 	 * @param  string  $key
-	 * @return \Illuminate\Database\Eloquent\Mode|null
+	 * @return \Illuminate\Database\Eloquent\Model|null
 	 */
 	public static function getByKey($key)
 	{
@@ -83,22 +83,54 @@ class Paste extends Eloquent {
 	}
 
 	/**
-	 * Generates a unique URL key for the paste
+	 * Returns trending posts based on the age
 	 *
-	 * @static
+	 * @param  string  $age
+	 * @param  int     $perPage
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public static function getTrending($age, $perPage)
+	{
+		$time = time();
+		$filter = $time - 259200;
+
+		switch ($age)
+		{
+			case 'week':
+				$filter = $time - 1814400;
+				break;
+
+			case 'month':
+				$filter = $time - 7776000;
+				break;
+
+			case 'year':
+				$filter = $time - 94608000;
+				break;
+
+			case 'all':
+				$filter = 0;
+				break;
+		}
+
+		return static::where('timestamp', '>=', $filter)->orderBy('hits', 'desc')->take($perPage);
+	}
+
+	/**
+	 * Returns the paste key
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Model  $paste
 	 * @return string
 	 */
-	public static function getUrlKey()
+	public static function getUrlKey($paste)
 	{
-		while (TRUE)
+		if ( ! empty($paste->urlkey))
 		{
-			$key = strtolower(str_random(8));
-			$count = static::where('urlkey', $key)->count();
-
-			if ($count == 0)
-			{
-				return $key;
-			}
+			return 'p'.$paste->urlkey;
+		}
+		else
+		{
+			return $paste->id;
 		}
 	}
 
@@ -139,37 +171,23 @@ class Paste extends Eloquent {
 	}
 
 	/**
-	 * Returns trending posts based on the age
+	 * Generates a unique URL key for the paste
 	 *
-	 * @param  string  $age
-	 * @param  int     $perPage
-	 * @return \Illuminate\Database\Eloquent\Model
+	 * @static
+	 * @return string
 	 */
-	public static function getTrending($age, $perPage)
+	public static function makeUrlKey()
 	{
-		$time = time();
-		$filter = $time - 259200;
-
-		switch ($age)
+		while (TRUE)
 		{
-			case 'week':
-				$filter = $time - 1814400;
-				break;
+			$key = strtolower(str_random(8));
+			$count = static::where('urlkey', $key)->count();
 
-			case 'month':
-				$filter = $time - 7776000;
-				break;
-
-			case 'year':
-				$filter = $time - 94608000;
-				break;
-
-			case 'all':
-				$filter = 0;
-				break;
+			if ($count == 0)
+			{
+				return $key;
+			}
 		}
-
-		return static::where('timestamp', '>=', $filter)->orderBy('hits', 'desc')->take($perPage);
 	}
 
 }

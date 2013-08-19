@@ -31,11 +31,13 @@ class ShowController extends BaseController {
 	 * @access public
 	 * @param  string  $key
 	 * @param  string  $hash
-	 * @return \Illuminate\View\View
+	 * @param  string  $action
+	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect|null
 	 */
-	public function getPaste($key, $hash = "", $mode = "")
+	public function getPaste($key, $hash = "", $action = "")
 	{
 		$paste = Paste::getByKey($key);
+		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->username == $paste->author);
 
 		// Paste was not found
 		if ($paste == NULL)
@@ -43,8 +45,8 @@ class ShowController extends BaseController {
 			App::abort(404);
 		}
 
-		// User can view his own private and protected pastes
-		if ( ! Auth::check() OR Auth::user()->username != $paste->author)
+		// We do not make password prompt mandatory for owners
+		if ( ! $owner)
 		{
 			// Require hash to be passed for private pastes
 			if ($paste->private AND $paste->hash != $hash)
@@ -69,9 +71,27 @@ class ShowController extends BaseController {
 			Session::put('paste.viewed'.$paste->id, TRUE);
 		}
 
-		$data = array('paste' => $paste);
+		// Let's do some action!
+		switch ($action)
+		{
+			case 'toggle':
+				$paste->private = $paste->private ? 0 : 1;
+				$paste->password = NULL;
+				$paste->save();
+				break;
 
-		return View::make('site/show', $data, Site::defaults());
+			case 'shorten':
+				die("Short url here");
+
+			case 'raw':
+				die($paste->data);
+
+			default:
+				return View::make('site/show', array('paste' => $paste), Site::defaults());
+		}
+
+		// If we are here, we should get outta here quickly!
+		return Redirect::to(URL::previous());
 	}
 
 	/**

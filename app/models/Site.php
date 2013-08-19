@@ -65,10 +65,15 @@ class Site extends Eloquent {
 	 */
 	public static function defaults()
 	{
+		$is_authed = Auth::check();
+
 		return array(
-			'site'      => static::config('general'),
-			'error'     => Session::get('messages.error'),
-			'success'   => Session::get('messages.success')
+			'site'        => static::config('general'),
+			'error'       => Session::get('messages.error'),
+			'success'     => Session::get('messages.success'),
+			'user'        => Auth::user(),
+			'is_authed'   => $is_authed,
+			'is_admin'    => $is_authed AND Auth::user()->admin,
 		);
 	}
 

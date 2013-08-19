@@ -72,7 +72,7 @@ class CreateController extends BaseController {
 			$is_private = Input::has('private');
 
 			// Unique key and secure hash for the paste
-			$urlkey = Paste::getUrlKey();
+			$urlkey = Paste::makeUrlKey();
 			$hash = Paste::getHash();
 
 			// Set the paste author

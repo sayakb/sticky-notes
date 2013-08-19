@@ -1,6 +1,8 @@
 @extends('common.page')
 
 @section('body')
+	@include('common.alerts')
+
 	<section id="create">
 		<div class="row">
 			<div class="col-sm-4">
@@ -9,7 +11,7 @@
 						Form::text('title', Input::old('title'), array(
 							'class'         => 'form-control',
 							'maxlength'     => 30,
-							'placeholder'   => Lang::get('create.paste_title')
+							'placeholder'   => Lang::get('global.paste_title')
 						))
 					}}
 				</div>
@@ -35,7 +37,7 @@
 						Form::textarea('data', Input::old('data'), array(
 							'class'         => 'form-control',
 							'rows'          => 18,
-							'placeholder'   => Lang::get('create.paste_data')
+							'placeholder'   => Lang::get('global.paste_data')
 						))
 					}}
 				</div>

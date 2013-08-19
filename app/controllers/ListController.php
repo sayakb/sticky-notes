@@ -34,7 +34,18 @@ class ListController extends BaseController {
 	public function getAll()
 	{
 		$perPage = Site::config('general')->perPage;
-		$pastes = Paste::where('private', '<>', 1)->orderBy('id', 'desc')->paginate($perPage);
+
+		// Show all pastes to admins
+		if (Auth::check() AND Auth::user()->admin)
+		{
+			$query = Paste::query();
+		}
+		else
+		{
+			$query = Paste::where('private', '<>', 1);
+		}
+
+		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
 	}
@@ -49,6 +60,7 @@ class ListController extends BaseController {
 	public function getTrending($age = 'now')
 	{
 		$perPage = Site::config('general')->perPage;
+
 		$pastes = Paste::getTrending($age, $perPage)->paginate($perPage);
 
 		return $this->getList($pastes, TRUE);
@@ -64,6 +76,7 @@ class ListController extends BaseController {
 	{
 		$perPage = Site::config('general')->perPage;
 		$user = Auth::user()->username;
+
 		$pastes = Paste::where('author', $user)->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
@@ -88,7 +101,7 @@ class ListController extends BaseController {
 		$data = array(
 			'pastes'   => $pastes,
 			'pages'    => $pastes->links(),
-			'filters'  => $showFilters
+			'filters'  => $showFilters,
 		);
 
 		return View::make('site/list', $data, Site::defaults());

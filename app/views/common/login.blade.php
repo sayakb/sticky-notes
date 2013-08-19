@@ -7,6 +7,8 @@
 				<fieldset>
 					<legend>{{ sprintf(Lang::get('global.login_to'), $site->title) }}</legend>
 
+					@include('common.alerts')
+
 					<div class="form-group">
 						{{ Form::label('username', Lang::get('global.username')) }}
 

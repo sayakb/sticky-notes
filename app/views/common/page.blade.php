@@ -7,7 +7,6 @@
 	<title>{{ $site->title }}</title>
 
 	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
-	<link href="{{ asset('assets/css/bootstrap-glyphicons.css') }}" rel="stylesheet" />
 	<link href="{{ asset('assets/css/stickynotes.css') }}" rel="stylesheet" />
 
 	<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -15,7 +14,7 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-static-top" role="navigation">
+	<header class="navbar navbar-default navbar-static-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -27,45 +26,13 @@
 				<a class="navbar-brand" href="{{ url() }}">{{ $site->title }}</a>
 			</div>
 
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
+			<nav class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					{{ Site::getMenu('navigation') }}
 				</ul>
-			</div>
+			</nav>
 		</div>
-	</nav>
-
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12">
-				@if ( ! empty($success))
-					<div class="alert alert-success">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-
-						@if (is_array($success))
-							@foreach ($success as $msg)
-								{{ $msg }}
-							@endforeach
-						@else
-							{{ $success }}
-						@endif
-					</div>
-				@elseif ( ! empty($error))
-					<div class="alert alert-danger">
-						<button type="button" class="close" data-dismiss="alert">&times;</button>
-
-						@if (is_array($error))
-							@foreach ($error as $msg)
-								{{ $msg }}
-							@endforeach
-						@else
-							{{ $error }}
-						@endif
-					</div>
-				@endif
-			</div>
-		</div>
-	</div>
+	</header>
 
 	<div class="container">
 		{{

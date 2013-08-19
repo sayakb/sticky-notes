@@ -23,16 +23,6 @@
 						</div>
 
 						<div class="col-sm-5 text-right">
-							@if ($paste->password)
-								<span class="btn btn-warning" title="{{ Lang::get('global.paste_pwd') }}">
-									<span class="glyphicon glyphicon-lock"></span>
-								</span>
-							@elseif ($paste->private)
-								<span class="btn btn-warning" title="{{ Lang::get('global.paste_pvt') }}">
-									<span class="glyphicon glyphicon-eye-open"></span>
-								</span>
-							@endif
-
 							{{
 								link_to("#", Lang::get('show.short_url'), array(
 									'class' => 'btn btn-success'
@@ -46,10 +36,12 @@
 							}}
 
 							{{
-								link_to($paste->urlkey ? "p{$paste->urlkey}/{$paste->hash}/raw" : "{$paste->id}/{$paste->hash}/raw", Lang::get('show.raw'), array(
+								link_to(Paste::getUrlKey($paste)."/{$paste->hash}/raw", Lang::get('show.raw'), array(
 									'class' => 'btn btn-success'
 								))
 							}}
+
+							@include('site.actions')
 						</div>
 					</div>
 				</div>

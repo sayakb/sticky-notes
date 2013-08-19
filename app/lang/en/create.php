@@ -12,8 +12,6 @@ return array(
 	|
 	*/
 
-	"paste_title"       => "Paste title",
-	"paste_data"        => "Paste data",
 	"mark_private"      => "Mark as private",
 	"expire_30mins"     => "for 30 minutes",
 	"expire_6hrs"       => "for 6 hours",

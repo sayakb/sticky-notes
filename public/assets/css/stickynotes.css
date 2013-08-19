@@ -40,20 +40,18 @@ section#show pre {
 .navbar {
   background: #f2f2f2;
 }
-.glyphicon {
-  position: relative;
-  top: 2px;
-}
 .jumbotron .glyphicon {
   font-size: 1.7em;
 }
 .jumbotron .form-control {
-  width: 250px;
-  display: inline;
   margin-top: 15px;
 }
 .jumbotron .btn {
   margin-top: 15px;
+}
+.form-inline .form-control {
+  width: 250px;
+  display: inline;
 }
 .pre-info {
   padding: 10px;

@@ -4,7 +4,7 @@
 	<section id="password">
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="jumbotron text-center">
+				<div class="jumbotron text-center form-inline">
 					<h1><span class="glyphicon glyphicon-lock text-success"></span></h1>
 					<h2>{{ Lang::get('global.paste_pwd') }}</h2>
 

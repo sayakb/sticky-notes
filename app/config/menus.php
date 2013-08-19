@@ -22,81 +22,81 @@ return array(
 	|
 	*/
 
-	'navigation'         => array(
+	'navigation'            => array(
 
-		'_showLogin'     => TRUE,
+		'_showLogin'        => TRUE,
 
-		'_exact'         => FALSE,
+		'_exact'            => FALSE,
 
-		'/'              => array(
-			'label'      => 'global.new_paste',
-			'icon'       => 'pencil'
+		'all'               => array(
+			'label'         => 'global.archives',
+			'icon'          => 'list'
 		),
 
-		'all'            => array(
-			'label'      => 'global.archives',
-			'icon'       => 'list'
+		'trending'          => array(
+			'label'         => 'global.trending',
+			'icon'          => 'fire'
 		),
 
-		'trending'       => array(
-			'label'      => 'global.trending',
-			'icon'       => 'fire'
+		'docs'              => array(
+			'label'         => 'global.docs',
+			'icon'          => 'book'
 		),
 
-		'docs'           => array(
-			'label'      => 'global.docs',
-			'icon'       => 'book'
-		),
-
-		'user/pastes'    => array(
-			'label'      => 'global.my_pastes',
-			'icon'       => 'flag'
+		'user/pastes'       => array(
+			'label'         => 'global.my_pastes',
+			'icon'          => 'flag'
 		),
 
 	),
 
-	'filters'            => array(
+	'filters'               => array(
 
-		'_showLogin'     => FALSE,
+		'_showLogin'        => FALSE,
 
-		'_exact'         => TRUE,
+		'_exact'            => TRUE,
 
-		'trending'       => array(
-			'label'      => 'list.filter_now'
+		'trending'          => array(
+			'label'         => 'list.filter_now'
 		),
 
-		'trending/week'  => array(
-			'label'      => 'list.filter_week'
+		'trending/week'     => array(
+			'label'         => 'list.filter_week'
 		),
 
-		'trending/month' => array(
-			'label'      => 'list.filter_month'
+		'trending/month'    => array(
+			'label'         => 'list.filter_month'
 		),
 
-		'trending/year'  => array(
-			'label'      => 'list.filter_year'
+		'trending/year'     => array(
+			'label'         => 'list.filter_year'
 		),
 
-		'trending/all'   => array(
-			'label'      => 'list.filter_all'
+		'trending/all'      => array(
+			'label'         => 'list.filter_all'
 		),
 
 	),
 
-	'admin'              => array(
+	'admin'                 => array(
 
-		'_showLogin'     => FALSE,
+		'_showLogin'        => FALSE,
 
-		'_exact'         => TRUE,
+		'_exact'            => FALSE,
 
-		'admin'          => array(
-			'label'      => 'admin.dashboard',
-			'icon'       => 'home'
+		'admin/dashboard'   => array(
+			'label'         => 'admin.dashboard',
+			'icon'          => 'dashboard'
 		),
 
-		'admin/site'     => array(
-			'label'      => 'admin.site_config',
-			'icon'       => 'globe'
+		'admin/paste'       => array(
+			'label'         => 'admin.manage_pastes',
+			'icon'          => 'pushpin'
+		),
+
+		'admin/site'        => array(
+			'label'         => 'admin.site_config',
+			'icon'          => 'globe'
 		),
 
 	),
