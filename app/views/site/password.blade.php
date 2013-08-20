@@ -2,6 +2,13 @@
 
 @section('body')
 	<section id="password">
+		{{
+			Form::open(array(
+				'autocomplete'   => 'off',
+				'role'           => 'form'
+			))
+		}}
+
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="jumbotron text-center form-inline">
@@ -24,5 +31,8 @@
 				</div>
 			</div>
 		</div>
+
+		{{ Form::token() }}
+		{{ Form::close() }}
 	</section>
 @stop

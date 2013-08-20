@@ -21,16 +21,14 @@ Route::post('{key}/{hash?}', 'ShowController@postPassword')->where('key', 'p[a-z
 Route::get('all', 'ListController@getAll');
 Route::get('trending/{age?}', 'ListController@getTrending');
 
-// User public routes
-Route::get('user/login', 'UserController@getLogin');
-Route::post('user/login', 'UserController@postLogin');
-Route::get('user/logout', 'UserController@getLogout');
+// User operation routes
+Route::controller('user', 'UserController');
 
 // Protected routes
 Route::group(array('before' => 'auth'), function()
 {
-	// User protected routes
-	Route::get('user/pastes', 'ListController@getUserPastes');
+	// User pastes route
+	Route::get('mypastes', 'ListController@getUserPastes');
 
 	// Admin only routes
 	Route::group(array('before' => 'admin'), function()

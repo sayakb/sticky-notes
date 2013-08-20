@@ -35,18 +35,7 @@
 	</header>
 
 	<div class="container">
-		{{
-			Form::open(array(
-				'action'         => isset($action) ? $action : NULL,
-				'autocomplete'   => 'off',
-				'role'           => 'form'
-			))
-		}}
-
 		@yield('body')
-
-		{{ Form::token() }}
-		{{ Form::close() }}
 	</div>
 
 	<footer>&copy; 2013 Sayak Banerjee</footer>

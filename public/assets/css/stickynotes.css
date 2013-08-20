@@ -92,3 +92,20 @@ section#show pre {
   background: #fdfdfd;
   box-shadow: none;
 }
+.table-white > tbody > tr:nth-child(odd) > td {
+  background: #f3f3f3;
+}
+.table-user > tbody > tr > td {
+  vertical-align: middle;
+}
+.table-user .thumbnail img {
+  width: 28px;
+  height: 28px;
+}
+.form-captcha .input-group-addon {
+  padding: 0;
+}
+.form-captcha .input-group-addon img {
+  height: 30px;
+  width: 120px;
+}

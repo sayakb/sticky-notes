@@ -34,7 +34,7 @@ class ShowController extends BaseController {
 	 * @param  string  $action
 	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect|null
 	 */
-	public function getPaste($key, $hash = "", $action = "")
+	public function getPaste($key, $hash = '', $action = '')
 	{
 		$paste = Paste::getByKey($key);
 		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->username == $paste->author);
@@ -101,7 +101,7 @@ class ShowController extends BaseController {
 	 * @param  string  $hash
 	 * @return \Illuminate\Support\Facades\Redirect|null
 	 */
-	public function postPassword($key, $hash = "")
+	public function postPassword($key, $hash = '')
 	{
 		$paste = Paste::getByKey($key);
 

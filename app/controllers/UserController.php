@@ -28,7 +28,6 @@ class UserController extends BaseController {
 	/**
 	 * Displays the user login page
 	 *
-	 * @access public
 	 * @return \Illuminate\View\View
 	 */
 	public function getLogin()
@@ -66,7 +65,7 @@ class UserController extends BaseController {
 			else
 			{
 				// Auth failed, show error message
-				Session::flash('messages.error', Lang::get('global.auth_fail'));
+				Session::flash('messages.error', Lang::get('user.auth_fail'));
 			}
 		}
 		else
@@ -76,6 +75,58 @@ class UserController extends BaseController {
 		}
 
 		return Redirect::to('user/login')->withInput();
+	}
+
+	/**
+	 * Shows the user registration screen
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function getRegister()
+	{
+		return View::make('common/register', array(), Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests on the registration screen
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postRegister()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'username'    => 'required|max:50|alpha_num|unique:users,username',
+			'email'       => 'required|max:100|email|unique:users,email',
+			'dispname'    => 'max:100',
+			'password'    => 'required|min:5',
+			'captcha'     => 'required|captcha'
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			$user = new User;
+
+			$user->username = Input::get('username');
+			$user->email = Input::get('email');
+			$user->dispname = Input::get('dispname');
+			$user->salt = str_random(5);
+			$user->password = PHPass::make()->create(Input::get('password'), $user->salt);
+			$user->admin = 0;
+
+			$user->save();
+
+			Session::flash('messages.success', Lang::get('user.register_done'));
+
+			return Redirect::to('user/login');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('user/register')->withInput();
+		}
 	}
 
 	/**

@@ -35,7 +35,6 @@ class CreateController extends BaseController {
 	public function getCreate()
 	{
 		$data = array(
-			'action'     => 'CreateController@postCreate',
 			'languages'  => Highlighter::make()->languages()
 		);
 

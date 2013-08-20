@@ -128,12 +128,7 @@ class Antispam {
 			// Traverse through all blocked words
 			foreach ($words as $word)
 			{
-				$word = trim($word);
-				$word = str_replace('*', '.*?', $word);
-				$word = "/^{$word}$/i";
-
-				// Check if the string exists in the post
-				if (preg_match($word, Input::get('data')))
+				if (str_is($word, Input::get('data')))
 				{
 					return FALSE;
 				}

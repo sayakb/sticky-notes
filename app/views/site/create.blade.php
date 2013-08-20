@@ -4,11 +4,19 @@
 	@include('common.alerts')
 
 	<section id="create">
+		{{
+			Form::open(array(
+				'action'         => 'CreateController@postCreate',
+				'autocomplete'   => 'off',
+				'role'           => 'form'
+			))
+		}}
+
 		<div class="row">
 			<div class="col-sm-4">
 				<div class="form-group">
 					{{
-						Form::text('title', Input::old('title'), array(
+						Form::text('title', NULL, array(
 							'class'         => 'form-control',
 							'maxlength'     => 30,
 							'placeholder'   => Lang::get('global.paste_title')
@@ -22,7 +30,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					{{
-						Form::select('language', $languages, Input::old('language'), array(
+						Form::select('language', $languages, NULL, array(
 							'class' => 'form-control'
 						))
 					}}
@@ -34,7 +42,7 @@
 			<div class="col-sm-12">
 				<div class="form-group">
 					{{
-						Form::textarea('data', Input::old('data'), array(
+						Form::textarea('data', NULL, array(
 							'class'         => 'form-control',
 							'rows'          => 18,
 							'placeholder'   => Lang::get('global.paste_data')
@@ -67,7 +75,7 @@
 					<div class="checkbox">
 						<label>
 							{{
-								Form::checkbox('private', null, Input::old('private'), array(
+								Form::checkbox('private', NULL, NULL, array(
 									'id' => 'private'
 								))
 							}}
@@ -91,7 +99,7 @@
 						</div>
 
 						{{
-							Form::select('expire', Config::get('expire'), Input::old('expire'), array(
+							Form::select('expire', Config::get('expire'), NULL, array(
 								'class' => 'form-control'
 							))
 						}}
@@ -99,5 +107,8 @@
 				</div>
 			</div>
 		</div>
+
+		{{ Form::token() }}
+		{{ Form::close() }}
 	</section>
 @stop

@@ -71,7 +71,7 @@ class Site extends Eloquent {
 			'site'        => static::config('general'),
 			'error'       => Session::get('messages.error'),
 			'success'     => Session::get('messages.success'),
-			'user'        => Auth::user(),
+			'auth'        => Auth::user(),
 			'is_authed'   => $is_authed,
 			'is_admin'    => $is_authed AND Auth::user()->admin,
 		);

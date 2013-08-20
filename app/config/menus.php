@@ -43,7 +43,7 @@ return array(
 			'icon'          => 'book'
 		),
 
-		'user/pastes'       => array(
+		'mypastes'          => array(
 			'label'         => 'global.my_pastes',
 			'icon'          => 'flag'
 		),
@@ -94,8 +94,13 @@ return array(
 			'icon'          => 'pushpin'
 		),
 
+		'admin/user'        => array(
+			'label'         => 'admin.manage_users',
+			'icon'          => 'user'
+		),
+
 		'admin/site'        => array(
-			'label'         => 'admin.site_config',
+			'label'         => 'admin.site_settings',
 			'icon'          => 'globe'
 		),
 

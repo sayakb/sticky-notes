@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "40d324c8275bd2b4b059f11df7e69242",
+    "hash": "0ecde4cc1c9d2bee9a041e31da254ef5",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -624,12 +624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "feb030ee287dff4ceb0c7af418b8c778c2fa1994"
+                "reference": "0f31f7ebf945e42f2e57e6db2a2f0a448617405a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/feb030ee287dff4ceb0c7af418b8c778c2fa1994",
-                "reference": "feb030ee287dff4ceb0c7af418b8c778c2fa1994",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/0f31f7ebf945e42f2e57e6db2a2f0a448617405a",
+                "reference": "0f31f7ebf945e42f2e57e6db2a2f0a448617405a",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +728,54 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-08-17 03:40:18"
+            "time": "2013-08-20 02:07:10"
+        },
+        {
+            "name": "mews/captcha",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mewebstudio/captcha.git",
+                "reference": "250b87f4a2f791777059df63fe5e0c9ea3b9a5f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mewebstudio/captcha/zipball/250b87f4a2f791777059df63fe5e0c9ea3b9a5f0",
+                "reference": "250b87f4a2f791777059df63fe5e0c9ea3b9a5f0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.0.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mews\\Captcha": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Muharrem ERIN",
+                    "email": "me@mewebstudio.com"
+                }
+            ],
+            "description": "Captcha Package for Laravel 4",
+            "homepage": "http://github.com/mewebstudio/captcha",
+            "keywords": [
+                "L4",
+                "Laravel 4",
+                "captcha",
+                "captcha image",
+                "laravel",
+                "mecaptcha",
+                "security"
+            ],
+            "time": "2013-07-22 20:50:46"
         },
         {
             "name": "monolog/monolog",
@@ -881,16 +928,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.1.10",
+            "version": "v1.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolas-grekas/Patchwork-UTF8.git",
-                "reference": "v1.1.10"
+                "reference": "v1.1.11"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/v1.1.10",
-                "reference": "v1.1.10",
+                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/v1.1.11",
+                "reference": "v1.1.11",
                 "shasum": ""
             },
             "require": {
@@ -922,7 +969,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2013-08-13 16:36:44"
+            "time": "2013-08-19 09:37:02"
         },
         {
             "name": "predis/predis",
@@ -1763,9 +1810,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "mews/captcha": 20
+    },
     "platform": [
 
     ],

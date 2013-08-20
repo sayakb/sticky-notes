@@ -54,7 +54,7 @@ class AdminController extends BaseController {
 	 * @param  string  $key
 	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
 	 */
-	public function getPaste($key = "", $action = "")
+	public function getPaste($action = 'show', $key = '')
 	{
 		$paste = NULL;
 
@@ -103,15 +103,141 @@ class AdminController extends BaseController {
 	 */
 	public function postPaste()
 	{
-		if (Input::has('key'))
+		if (Input::has('search'))
 		{
-			$key = Input::get('key');
+			$key = Input::get('search');
 
-			return Redirect::to('admin/paste/'.urlencode($key));
+			return Redirect::to('admin/paste/show/'.urlencode($key));
 		}
 		else
 		{
 			return Redirect::to('admin/paste');
+		}
+	}
+
+	/**
+	 * Search, create, edit or delete users
+	 *
+	 * @param  string  $action
+	 * @param  string  $username
+	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
+	 */
+	public function getUser($action = '', $username = '')
+	{
+		$user = NULL;
+		$users = NULL;
+		$pages = NULL;
+
+		if ( ! empty($username))
+		{
+			$user = User::where('username', $username)->first();
+
+			// User was not found
+			if ($user == NULL)
+			{
+				Session::flash('messages.error', Lang::get('admin.user_404'));
+			}
+
+			// Perform user specific actions
+			switch ($action)
+			{
+				case 'delete':
+					$user->delete();
+
+					Session::flash('messages.success', Lang::get('admin.user_deleted'));
+
+					return Redirect::to('admin/user');
+			}
+		}
+		else
+		{
+			// Perform non-user specific actions
+			switch ($action)
+			{
+				case 'create':
+					return View::make('admin/user', array('user' => new User), Site::defaults());
+
+				default:
+					$perPage = Site::config('general')->perPage;
+					$users = User::orderBy('username')->paginate($perPage);
+					$pages = $users->links();
+					break;
+			}
+		}
+
+		// Render the view
+		$data = array(
+			'user'     => $user,
+			'users'    => $users,
+			'pages'    => $pages,
+		);
+
+		return View::make('admin/user', $data, Site::defaults());
+	}
+
+	/**
+	 * Handles POST actions for the user module
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postUser()
+	{
+		if (Input::has('save'))
+		{
+			$id = Input::get('id');
+
+			// Define validation rules
+			$validator = Validator::make(Input::all(), array(
+				'username'    => 'required|max:50|alpha_num|unique:users,username,'.$id,
+				'email'       => 'required|max:100|email|unique:users,email,'.$id,
+				'dispname'    => 'max:100',
+				'password'    => empty($id) ? 'required' : ''
+			));
+
+			// Run the validator
+			if ($validator->passes())
+			{
+				// If ID is there, it is an update operation
+				if ( ! empty($id))
+				{
+					$user = User::findOrFail($id);
+				}
+				else
+				{
+					$user = new User;
+				}
+
+				$user->username = Input::get('username');
+				$user->email = Input::get('email');
+				$user->dispname = Input::get('dispname');
+				$user->salt = $user->salt ?: str_random(5);
+				$user->admin = $user->id != 1 ? Input::has('admin') : 1;
+
+				if (Input::has('password'))
+				{
+					$user->password = PHPass::make()->create(Input::get('password'), $user->salt);
+				}
+
+				$user->save();
+
+				Session::flash('messages.success', Lang::get('admin.user_saved'));
+			}
+			else
+			{
+				Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+			}
+
+			return Redirect::to(URL::previous())->withInput();
+		}
+		else if (Input::has('search'))
+		{
+			$username = Input::get('search');
+
+			return Redirect::to('admin/user/edit/'.urlencode($username));
+		}
+		else
+		{
+			return Redirect::to('admin/user');
 		}
 	}
 
