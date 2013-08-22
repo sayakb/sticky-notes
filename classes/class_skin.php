@@ -452,6 +452,19 @@ class skin
 
         return $condition ? 'active' : '';
     }
+
+    // Escape a string for a certain mode
+    function mode_escape($mode, $data)
+    {
+        switch ($mode)
+        {
+            case 'json':
+                return json_encode($data);
+            case 'xml':
+            default:
+                return htmlspecialchars($data);
+        }
+    }
 }
 
 ?>

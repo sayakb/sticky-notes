@@ -272,12 +272,16 @@ if (empty($mode))
 }
 else
 {
-    $code_data = htmlspecialchars($row['data']);
+    $code_data = $skin->mode_escape($mode, $row['data']);
     $code_style = '';
 }
 
+// This is the paste key that is displayed
+$skin_key = $is_key ? 'p' . $paste_id : $paste_id;
+
 // Generate the data
-$user = empty($row['author']) ? $lang->get('anonymous') : htmlspecialchars($row['author']);
+$title = empty($row['title']) ? $lang->get('paste') . " #{$skin_key}" : $row['title'];
+$user = empty($row['author']) ? $lang->get('anonymous') : $row['author'];
 $time = date('d M Y, H:i:s e', $row['timestamp']);
 $info = $lang->get('posted_info');
 
@@ -288,45 +292,27 @@ $info = preg_replace('/\_\_time\_\_/', $time, $info);
 $lang->escape($code_data);
 $skin->escape($code_data);
 
-// Nullify newlines in API output
-if (!empty($mode) && $mode != 'raw')
-{
-    $code_data = preg_replace('/\\n|\\r\\n/', '\\\\n', $code_data);
-}
-
-$skin_key = $is_key ? 'p' . $paste_id : $paste_id;
-
 // Save URL shortening language data to cookies
 $core->set_cookie('short_get', $lang->get('short_get'), 365);
 $core->set_cookie('short_generating', $lang->get('short_generating'), 365);
 $core->set_cookie('short_error', $lang->get('short_error'), 365);
 
-// Format the paste title
-if (!empty($row['title']))
-{
-    $title = htmlspecialchars($row['title']);
-}
-else
-{
-    $title = $lang->get('paste') . " #{$skin_key}";
-}
-
 // Assign template variables
 $skin->assign(array(
     'paste_id'           => $skin_key,
-    'paste_title'        => $title,
+    'paste_title'        => $skin->mode_escape($mode, $title),
+    'paste_lang'         => $skin->mode_escape($mode, $row['language']),
+    'paste_user'         => $skin->mode_escape($mode, $user),
+    'paste_info'         => $skin->mode_escape($mode, $info),
     'paste_data'         => $code_data,
-    'paste_lang'         => htmlspecialchars($row['language']),
-    'paste_info'         => $info,
-    'paste_user'         => $user,
     'paste_timestamp'    => $row['timestamp'],
     'raw_url'            => $nav->get_paste($row['id'], $row['urlkey'], $hash, $project, 'raw'),
     'share_url'          => urlencode($core->full_uri()),
     'share_title'        => urlencode($lang->get('paste') . ' #' . $skin_key),
-    'error_visibility'   => 'hidden',
     'geshi_stylesheet'   => $code_style,
     'shorten_url'        => $core->current_uri() . "shorten.php?id={$skin_key}&project={$project}&hash={$hash}",
     'shorten_visibility' => $skin->visibility(empty($config->google_api_key), true),
+    'error_visibility'   => 'hidden',
 ));
 
 // Let's output the page now
