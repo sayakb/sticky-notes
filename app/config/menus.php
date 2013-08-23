@@ -99,6 +99,11 @@ return array(
 			'icon'          => 'user'
 		),
 
+		'admin/ban'         => array(
+			'label'         => 'admin.ban_an_ip',
+			'icon'          => 'ban-circle'
+		),
+
 		'admin/site'        => array(
 			'label'         => 'admin.site_settings',
 			'icon'          => 'globe'

@@ -73,6 +73,7 @@ class AdminController extends BaseController {
 			{
 				case 'rempass':
 					$paste->password = NULL;
+
 					$paste->save();
 
 					return Redirect::to(URL::previous());
@@ -80,6 +81,7 @@ class AdminController extends BaseController {
 				case 'toggle':
 					$paste->private = $paste->private ? 0 : 1;
 					$paste->password = NULL;
+
 					$paste->save();
 
 					return Redirect::to(URL::previous());
@@ -238,6 +240,64 @@ class AdminController extends BaseController {
 		else
 		{
 			return Redirect::to('admin/user');
+		}
+	}
+
+	/**
+	 * Displays the IP banning module
+	 *
+	 * @param  string $action
+	 * @param  string $ip
+	 * @return \Illuminate\View\View
+	 */
+	public function getBan($action = '', $ip = '')
+	{
+		// Perform IP address actions
+		switch ($action)
+		{
+			case 'remove':
+				$ipban = IPBan::findOrFail($ip);
+
+				$ipban->delete();
+
+				Session::flash('messages.success', Lang::get('admin.ip_unbanned'));
+
+				return Redirect::to('admin/ban');
+		}
+
+		return View::make('admin/ban', array('bans' => IPBan::all()), Site::defaults());
+	}
+
+	/**
+	 * Processes POST requests for the IP banning module
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postBan()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'ip'   => 'required|ip',
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			$ipban = new IPBan;
+
+			$ipban->ip = Input::get('ip');
+
+			$ipban->save();
+
+			Session::flash('messages.success', Lang::get('admin.ip_banned'));
+
+			return Redirect::to('admin/ban');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('admin/ban')->withInput();
 		}
 	}
 

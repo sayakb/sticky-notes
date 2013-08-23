@@ -15,6 +15,7 @@ return array(
 	"site_settings"      => "Site settings",
 	"manage_pastes"      => "Manage pastes",
 	"manage_users"       => "Manage users",
+	"ban_an_ip"          => "Ban an IP",
 	"field"              => "Field",
 	"value"              => "Value",
 	"posted_at"          => "Posted at",
@@ -31,5 +32,11 @@ return array(
 	"user_saved"         => "The user has been saved successfully",
 	"user_deleted"       => "The user has been deleted successfully",
 	"user_create"        => "Create new user",
+	"ip_address"         => "IP address",
+	"ban"                => "Ban",
+	"unban"              => "Unban",
+	"no_banned_ip"       => "There are no banned IP addresses",
+	"ip_banned"          => "IP address added to ban list",
+	"ip_unbanned"        => "IP address removed from ban list",
 
 );
