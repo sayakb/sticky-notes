@@ -45,9 +45,9 @@ class Site extends Eloquent {
 	 * @var array
 	 */
 	protected $fillable = array(
-		'config_group',
-		'config_key',
-		'config_value'
+		'group',
+		'key',
+		'value'
 	);
 
 	/**
@@ -78,29 +78,55 @@ class Site extends Eloquent {
 	}
 
 	/**
-	 * Fetches the site configuration data
+	 * Gets or sets the site configuration data
 	 *
 	 * @access public
-	 * @param  string  $section
-	 * @return stdClass
+	 * @param  string  $group
+	 * @param  array   $newData
+	 * @return stdClass|bool
 	 */
-	public static function config($section)
+	public static function config($group, $newData = array())
 	{
-		if ( ! isset(static::$data[$section]))
+		// Get a config value
+		if (count($newData) == 0)
 		{
-			static::$data[$section] = new stdClass();
-			$config = static::where('config_group', $section)->get();
-
-			if ($config != NULL)
+			// We first look up in the local cache
+			// If it isn't found there, we fetch it from the database
+			if ( ! isset(static::$data[$group]))
 			{
-				foreach ($config as $item)
+				static::$data[$group] = new stdClass();
+				$config = static::where('group', $group)->get();
+
+				if ($config != NULL)
 				{
-					static::$data[$section]->$item['config_key'] = $item['config_value'];
+					foreach ($config as $item)
+					{
+						static::$data[$group]->$item['key'] = $item['value'];
+					}
 				}
 			}
+
+			return static::$data[$group];
 		}
 
-		return static::$data[$section];
+		// Set config values
+		else
+		{
+			foreach ($newData as $key => $value)
+			{
+				$config = static::query();
+
+				$config->where('group', $group);
+				$config->where('key', $key);
+
+				if ($config->count() == 1)
+				{
+					$config->update(array('value' => $value));
+				}
+			}
+
+			return TRUE;
+		}
 	}
 
 	/**

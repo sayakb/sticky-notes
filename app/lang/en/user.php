@@ -19,5 +19,11 @@ return array(
 	"human_verify"      => "Human verification",
 	"auth_fail"         => "Authentication failed, please try again.",
 	"register_done"     => "Registration successful. You can now log in to the site",
+	"forgot_password"   => "Forgot password",
+	"forgot_exp"        => "Please enter the username for which you want to reset the ".
+	                       "password. An email containing the new password will be ".
+	                       "sent to the mail address associated with that account.",
+	"reset_password"    => "Reset password",
+	"reset_done"        => "Your password has been reset. Please check your email",
 
 );

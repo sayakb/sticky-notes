@@ -15,7 +15,7 @@ return array(
 	|
 	*/
 
-	'driver' => 'smtp',
+	'driver' => Site::config('mail')->driver,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'host' => 'smtp.mailgun.org',
+	'host' => Site::config('mail')->host,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -41,7 +41,7 @@ return array(
 	|
 	*/
 
-	'port' => 587,
+	'port' => Site::config('mail')->port,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -54,7 +54,10 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => null, 'name' => null),
+	'from' => array(
+		'address'   => Site::config('mail')->address,
+		'name'      => Site::config('mail')->name,
+	),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +70,7 @@ return array(
 	|
 	*/
 
-	'encryption' => 'tls',
+	'encryption' => Site::config('mail')->encryption,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -80,7 +83,7 @@ return array(
 	|
 	*/
 
-	'username' => null,
+	'username' => Site::config('mail')->username,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -93,7 +96,7 @@ return array(
 	|
 	*/
 
-	'password' => null,
+	'password' => Site::config('mail')->password,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -106,7 +109,7 @@ return array(
 	|
 	*/
 
-	'sendmail' => '/usr/sbin/sendmail -bs',
+	'sendmail' => Site::config('mail')->sendmail,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -119,6 +122,6 @@ return array(
 	|
 	*/
 
-	'pretend' => false,
+	'pretend' => Site::config('mail')->pretend,
 
 );

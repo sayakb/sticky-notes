@@ -58,7 +58,13 @@
 
 					{{
 						link_to('user/register', Lang::get('user.create_acct'), array(
-							'class'   => 'btn btn-success',
+							'class'   => 'btn btn-link',
+						))
+					}}
+
+					{{
+						link_to('user/forgot', Lang::get('user.forgot_password'), array(
+							'class'   => 'btn btn-link',
 						))
 					}}
 				</fieldset>

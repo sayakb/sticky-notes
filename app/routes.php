@@ -17,7 +17,7 @@ Route::post('create', 'CreateController@postCreate');
 Route::get('{key}/{hash?}/{action?}', 'ShowController@getPaste')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
 Route::post('{key}/{hash?}', 'ShowController@postPassword')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
 
-// List paste route
+// List paste routes
 Route::get('all', 'ListController@getAll');
 Route::get('trending/{age?}', 'ListController@getTrending');
 

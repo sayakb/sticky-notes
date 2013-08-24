@@ -4,10 +4,10 @@ Incorporate DB changes
  * Change hash in main table to `varchar(12) not null`;
  * Drop session table
  * Create config table and insert config data:
-      CREATE TABLE `paste_config` (
-       `id` int(12) unsigned NOT NULL AUTO_INCREMENT,
-       `config_group` varchar(30) NOT NULL,
-       `config_key` varchar(30) NOT NULL,
-       `config_value` text,
-       PRIMARY KEY (`id`)
-     )
+	CREATE TABLE `paste_config` (
+		`id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+		`group` varchar(30) NOT NULL,
+		`key` varchar(30) NOT NULL,
+		`value` text,
+		PRIMARY KEY (`id`)
+	)

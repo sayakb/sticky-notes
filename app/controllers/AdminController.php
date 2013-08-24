@@ -193,7 +193,7 @@ class AdminController extends BaseController {
 				'username'    => 'required|max:50|alpha_num|unique:users,username,'.$id,
 				'email'       => 'required|max:100|email|unique:users,email,'.$id,
 				'dispname'    => 'max:100',
-				'password'    => empty($id) ? 'required' : ''
+				'password'    => empty($id) ? 'required|min:5' : 'min:5'
 			));
 
 			// Run the validator
@@ -298,6 +298,49 @@ class AdminController extends BaseController {
 			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 
 			return Redirect::to('admin/ban')->withInput();
+		}
+	}
+
+	/**
+	 * Displays the email configuration module
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function getMail()
+	{
+		return View::make('admin/mail', array('mail' => Site::config('mail')), Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests to the email config form
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postMail()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'driver'        => 'required|in:smtp,mail,sendmail',
+			'host'          => 'required_if:driver,smtp',
+			'port'          => 'required_if:driver,smtp',
+			'address'       => 'required',
+			'sendmail'      => 'required_if:driver,sendmail',
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			Site::config('mail', Input::all());
+
+			Session::flash('messages.success', Lang::get('admin.mail_updated'));
+
+			return Redirect::to('admin/mail');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('admin/mail')->withInput();
 		}
 	}
 

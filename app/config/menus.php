@@ -104,9 +104,24 @@ return array(
 			'icon'          => 'ban-circle'
 		),
 
+		'admin/mail'        => array(
+			'label'         => 'admin.mail_settings',
+			'icon'          => 'envelope'
+		),
+
+		'admin/auth'        => array(
+			'label'         => 'admin.auth_settings',
+			'icon'          => 'lock'
+		),
+
+		'admin/theme'       => array(
+			'label'         => 'admin.theme_builder',
+			'icon'          => 'picture'
+		),
+
 		'admin/site'        => array(
 			'label'         => 'admin.site_settings',
-			'icon'          => 'globe'
+			'icon'          => 'wrench'
 		),
 
 	),

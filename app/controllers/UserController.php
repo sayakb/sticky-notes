@@ -32,7 +32,7 @@ class UserController extends BaseController {
 	 */
 	public function getLogin()
 	{
-		return View::make('common/login', array(), Site::defaults());
+		return View::make('user/login', array(), Site::defaults());
 	}
 
 	/**
@@ -84,7 +84,7 @@ class UserController extends BaseController {
 	 */
 	public function getRegister()
 	{
-		return View::make('common/register', array(), Site::defaults());
+		return View::make('user/register', array(), Site::defaults());
 	}
 
 	/**
@@ -139,6 +139,66 @@ class UserController extends BaseController {
 		Auth::logout();
 
 		return Redirect::to('/');
+	}
+
+	/**
+	 * Displays the password reset screen
+	 *
+	 * @return \Illuminate\View\View
+	 */
+	public function getForgot()
+	{
+		return View::make('user/forgot', array(), Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests to the password reset form
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postForgot()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'username'    => 'required|exists:users,username',
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			// Generate a random password
+			$password = str_random(8);
+
+			// Now we update the password in the database
+			$user = User::where('username', Input::get('username'))->first();
+
+			$user->password = PHPass::make()->create($password, $user->salt);
+
+			$user->save();
+
+			// Build the email template
+			$data = array_merge(Site::defaults(), array(
+				'dispname'   => $user->dispname,
+				'password'   => $password,
+			));
+
+			// Send the notification mail
+			Mail::send('mail.forgot', $data, function($message) use ($user)
+			{
+				$message->to($user->email)->subject(Lang::get('mail.forgot_subject'));
+			});
+
+			// All done!
+			Session::flash('messages.success', Lang::get('user.reset_done'));
+
+			return Redirect::to('user/login');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('user/forgot')->withInput();
+		}
 	}
 
 }
