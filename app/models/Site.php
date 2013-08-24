@@ -65,15 +65,12 @@ class Site extends Eloquent {
 	 */
 	public static function defaults()
 	{
-		$is_authed = Auth::check();
-
 		return array(
 			'site'        => static::config('general'),
 			'error'       => Session::get('messages.error'),
 			'success'     => Session::get('messages.success'),
 			'auth'        => Auth::user(),
-			'is_authed'   => $is_authed,
-			'is_admin'    => $is_authed AND Auth::user()->admin,
+			'role'        => User::getRoles(),
 		);
 	}
 
@@ -153,6 +150,12 @@ class Site extends Eloquent {
 				$label = Lang::get($item['label']);
 				$current = FALSE;
 
+				// Check if a role restriction is set
+				if (isset($item['role']) AND ! User::getRoles()->$item['role'])
+				{
+					continue;
+				}
+
 				// Determine whether this is the active link
 				if ($group['_exact'] AND $key === $path)
 				{
@@ -191,14 +194,7 @@ class Site extends Eloquent {
 		{
 			if (Auth::check())
 			{
-				$username = Auth::user()->username;
-
-				if (strlen($username) > 10)
-				{
-					$username = substr($username, 0, 10).'&hellip;';
-				}
-
-				$label = sprintf(Lang::get('global.logout'), $username);
+				$label = Lang::get('global.logout');
 				$href = 'href="'.url('user/logout').'"';
 			}
 			else

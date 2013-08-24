@@ -20,6 +20,11 @@ return array(
 	|  * _exact     : Whether an exact match should be done for determining the
 	|                 currently active link
 	|
+	| Optional properties in each item:
+	|  * icon       : Determines the glyphicon for that item
+	|  * role       : If set as 'user' or 'admin', the item will not be showed
+	|                 if the user does not belong to that role
+	|
 	*/
 
 	'navigation'            => array(
@@ -45,7 +50,14 @@ return array(
 
 		'mypastes'          => array(
 			'label'         => 'global.my_pastes',
-			'icon'          => 'flag'
+			'icon'          => 'flag',
+			'role'          => 'user'
+		),
+
+		'admin'             => array(
+			'label'         => 'global.siteadmin',
+			'icon'          => 'cog',
+			'role'          => 'admin'
 		),
 
 	),
@@ -86,42 +98,50 @@ return array(
 
 		'admin/dashboard'   => array(
 			'label'         => 'admin.dashboard',
-			'icon'          => 'dashboard'
+			'icon'          => 'dashboard',
+			'role'          => 'admin'
 		),
 
 		'admin/paste'       => array(
 			'label'         => 'admin.manage_pastes',
-			'icon'          => 'pushpin'
+			'icon'          => 'pushpin',
+			'role'          => 'admin'
 		),
 
 		'admin/user'        => array(
 			'label'         => 'admin.manage_users',
-			'icon'          => 'user'
+			'icon'          => 'user',
+			'role'          => 'admin'
 		),
 
 		'admin/ban'         => array(
 			'label'         => 'admin.ban_an_ip',
-			'icon'          => 'ban-circle'
+			'icon'          => 'ban-circle',
+			'role'          => 'admin'
 		),
 
 		'admin/mail'        => array(
 			'label'         => 'admin.mail_settings',
-			'icon'          => 'envelope'
+			'icon'          => 'envelope',
+			'role'          => 'admin'
 		),
 
 		'admin/auth'        => array(
 			'label'         => 'admin.auth_settings',
-			'icon'          => 'lock'
+			'icon'          => 'lock',
+			'role'          => 'admin'
 		),
 
 		'admin/theme'       => array(
 			'label'         => 'admin.theme_builder',
-			'icon'          => 'picture'
+			'icon'          => 'picture',
+			'role'          => 'admin'
 		),
 
 		'admin/site'        => array(
 			'label'         => 'admin.site_settings',
-			'icon'          => 'wrench'
+			'icon'          => 'wrench',
+			'role'          => 'admin'
 		),
 
 	),
