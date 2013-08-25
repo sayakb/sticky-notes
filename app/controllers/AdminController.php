@@ -420,10 +420,11 @@ class AdminController extends BaseController {
 	{
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
+			'php_key'           => 'required_if:flag_php,1',
 			'php_days'          => 'required_if:flag_php,1|integer|between:0,255',
 			'php_score'         => 'required_if:flag_php,1|integer|between:0,255',
 			'php_type'          => 'required_if:flag_php,1|integer|between:0,255',
-			'flood_threshold'   => 'required_if:flag_noflood,1|integer',
+			'flood_threshold'   => 'required_if:flag_noflood,1|integer|between:0,60',
 		));
 
 		// Run the validator

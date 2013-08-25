@@ -81,7 +81,37 @@ return array(
 	|
 	*/
 
-	'custom' => array(),
+	"custom" => array(
+
+		"php_key"         => array(
+			"required_if" => "The access key field is required if honeypot filter is enabled.",
+		),
+
+		"php_days"        => array(
+			"required_if" => "The age threshold field is required if honeypot filter is enabled.",
+			"integer"     => "The age threshold must be an integer.",
+			"between"     => "The age threshold must be between :min - :max.",
+		),
+
+		"php_score"       => array(
+			"required_if" => "The threat score field is required if honeypot filter is enabled.",
+			"integer"     => "The threat score must be an integer.",
+			"between"     => "The threat score must be between :min - :max.",
+		),
+
+		"php_type"        => array(
+			"required_if" => "The visitor filter field is required if honeypot filter is enabled.",
+			"integer"     => "The visitor filter must be an integer.",
+			"between"     => "The visitor filter must be between :min - :max.",
+		),
+
+		"flood_threshold" => array(
+			"required_if" => "The flood threshold field is required if flood filter is enabled.",
+			"integer"     => "The flood threshold must be an integer.",
+			"between"     => "The flood threshold must be between :min - :max.",
+		),
+
+	),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -94,6 +124,6 @@ return array(
 	|
 	*/
 
-	'attributes' => array(),
+	"attributes" => array(),
 
 );
