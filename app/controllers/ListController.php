@@ -86,7 +86,7 @@ class ListController extends BaseController {
 	 * Parses and displays a list
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Model  $pastes
-	 * @param  bool                                 $showFilters
+	 * @param  bool  $showFilters
 	 * @return \Illuminate\View\View
 	 */
 	private function getList($pastes, $showFilters = FALSE)

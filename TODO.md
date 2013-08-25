@@ -1,6 +1,9 @@
 Incorporate DB changes
 =======================
- * Add admin `tinyint[1]` and banned column to users table
+ * Add admin `tinyint[1]` and active column to users table.
+   active = 0 for banned user
+ * Add type column to users table with default value 'db'.
+   in update script, set value = 'ldap' for empty password
  * Change hash in main table to `varchar(12) not null`;
  * Drop session table
  * Create config table and insert config data:

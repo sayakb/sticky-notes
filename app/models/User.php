@@ -49,7 +49,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		'dispname',
 		'sid',
 		'lastlogin',
-		'admin'
+		'admin',
+		'status',
+		'active',
 	);
 
 	/**

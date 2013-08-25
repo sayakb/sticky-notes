@@ -92,7 +92,9 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 		}
 
 		// We keep it locally as we need it later to get the user salt
-		$this->user = $query->first();
+		// A filter for type=db is added to avoid getting users created by
+		// other auth methods
+		$this->user = $query->where('type', 'db')->first();
 
 		return $this->user;
 	}
@@ -106,9 +108,16 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	 */
 	public function validateCredentials(UserInterface $user, array $credentials)
 	{
+		// Collect user data
 		$password = $credentials['password'];
 		$salt = $this->user->salt;
 		$hash = $user->getAuthPassword();
+
+		// Check if user is banned
+		if ( ! $this->user->active)
+		{
+			App::error(401);
+		}
 
 		return $this->crypt->check('User', $password, $salt, $hash);
 	}
