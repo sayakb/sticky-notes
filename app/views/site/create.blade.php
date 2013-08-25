@@ -30,7 +30,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					{{
-						Form::select('language', $languages, NULL, array(
+						Form::select('language', $languages, 'text', array(
 							'class' => 'form-control'
 						))
 					}}

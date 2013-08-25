@@ -114,7 +114,7 @@ class Site extends Eloquent {
 				$config = static::query();
 
 				$config->where('group', $group);
-				$config->where('key', $key);
+				$config->where('key', camel_case($key));
 
 				if ($config->count() == 1)
 				{
@@ -208,6 +208,34 @@ class Site extends Eloquent {
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Retrieves a list of languages supported by the site
+	 *
+	 * @static
+	 * @param  bool  $csv
+	 * @return array|string
+	 */
+	public static function getLanguages($csv = FALSE)
+	{
+		$list = array();
+		$langs = scandir(app_path().'/lang');
+
+		foreach ($langs as $lang)
+		{
+			if ( ! starts_with($lang, '.'))
+			{
+				$list[$lang] = $lang;
+			}
+		}
+
+		if ($csv)
+		{
+			$list = implode(',', $list);
+		}
+
+		return $list;
 	}
 
 }

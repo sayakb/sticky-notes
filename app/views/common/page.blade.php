@@ -38,6 +38,11 @@
 		@yield('body')
 	</div>
 
-	<footer>&copy; 2013 Sayak Banerjee</footer>
+	<footer>
+		<p>{{ $site->copyright }}</p>
+
+		<!-- Please retain the following copyright notice. See http://opensource.org/licenses/BSD-3-Clause for details -->
+		<p><a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2013 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.</p>
+	</footer>
 </body>
 </html>

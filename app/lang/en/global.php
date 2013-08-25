@@ -42,6 +42,7 @@ return array(
 	"anonymous"         => "Anonymous",
 	"submit"            => "Submit",
 	"search"            => "Search",
+	"save"              => "Save",
 	"paste_pwd"         => "This paste is password protected",
 	"paste_pvt"         => "This paste is private",
 	"paste_id"          => "Paste ID",

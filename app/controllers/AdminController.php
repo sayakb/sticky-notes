@@ -352,7 +352,112 @@ class AdminController extends BaseController {
 	 */
 	public function getSite()
 	{
-		return View::make('admin/site', array(), Site::defaults());
+		// Build the view data
+		$data = array(
+			'langs'   => Site::getLanguages(),
+		);
+
+		return View::make('admin/site', $data, Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests to the site config form
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postSite()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'fqdn'          => 'required',
+			'title'         => 'required|max:20',
+			'per_page'      => 'required|integer|between:5,200',
+			'lang'          => 'required|in:'.Site::getLanguages(TRUE),
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			Site::config('general', Input::all());
+
+			Session::flash('messages.success', Lang::get('admin.site_updated'));
+
+			return Redirect::to('admin/site');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('admin/site')->withInput();
+		}
+	}
+
+	/**
+	 * Display the spam filter configuration screen
+	 *
+	 * @access public
+	 * @return \Illuminate\View\View
+	 */
+	public function getAntispam()
+	{
+		// Build the view data
+		$data = array(
+			'flags'     => Antispam::flags(),
+			'antispam'  => Site::config('antispam'),
+		);
+
+		return View::make('admin/antispam', $data, Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests to the antispam config form
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postAntispam()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'php_days'          => 'required_if:flag_php,1|integer|between:0,255',
+			'php_score'         => 'required_if:flag_php,1|integer|between:0,255',
+			'php_type'          => 'required_if:flag_php,1|integer|between:0,255',
+			'flood_threshold'   => 'required_if:flag_noflood,1|integer',
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			$services = Antispam::services();
+			$flags = array();
+
+			// Convert the service flags to CSV
+			foreach ($services as $service)
+			{
+				if (Input::has('flag_'.$service))
+				{
+					$flags[] = $service;
+				}
+			}
+
+			// Inject flag data to the configuration
+			$config = array_merge(Input::all(), array(
+				'services' => implode(',', $flags)
+			));
+
+			Site::config('antispam', $config);
+
+			Session::flash('messages.success', Lang::get('admin.antispam_updated'));
+
+			return Redirect::to('admin/antispam');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('admin/antispam')->withInput();
+		}
 	}
 
 }

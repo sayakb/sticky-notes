@@ -1,6 +1,6 @@
 Incorporate DB changes
 =======================
- * Add admin `tinyint[1]` column to users table
+ * Add admin `tinyint[1]` and banned column to users table
  * Change hash in main table to `varchar(12) not null`;
  * Drop session table
  * Create config table and insert config data:

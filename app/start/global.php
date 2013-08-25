@@ -84,6 +84,17 @@ require app_path().'/filters.php';
 
 /*
 |--------------------------------------------------------------------------
+| Set the configured site locale
+|--------------------------------------------------------------------------
+|
+| Set the active site locale as defined in the general config data.
+|
+*/
+
+App::setLocale(Site::config('general')->lang);
+
+/*
+|--------------------------------------------------------------------------
 | Sticky Notes auth methods
 |--------------------------------------------------------------------------
 |

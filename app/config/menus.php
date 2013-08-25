@@ -132,15 +132,21 @@ return array(
 			'role'          => 'admin'
 		),
 
-		'admin/theme'       => array(
-			'label'         => 'admin.theme_builder',
-			'icon'          => 'picture',
+		'admin/antispam'    => array(
+			'label'         => 'admin.spam_filters',
+			'icon'          => 'screenshot',
 			'role'          => 'admin'
 		),
 
 		'admin/site'        => array(
 			'label'         => 'admin.site_settings',
 			'icon'          => 'wrench',
+			'role'          => 'admin'
+		),
+
+		'admin/theme'       => array(
+			'label'         => 'admin.theme_builder',
+			'icon'          => 'picture',
 			'role'          => 'admin'
 		),
 

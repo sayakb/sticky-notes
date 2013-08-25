@@ -44,58 +44,84 @@
 				@if ( ! empty($user))
 					{{
 						Form::model($user, array(
-							'autocomplete'   => 'off'
+							'autocomplete'   => 'off',
+							'role'           => 'form',
+							'class'          => 'form-horizontal',
 						))
 					}}
 
 					<fieldset>
 						<legend>{{ Lang::get('admin.user_editor') }}</legend>
 
-						<div class="row">
-							<div class="col-sm-8 col-md-7 col-lg-6">
-								<div class="form-group">
-									{{ Form::label('username', Lang::get('global.username')) }}
+						<div class="form-group">
+							{{
+								Form::label('username', Lang::get('global.username'), array(
+									'class' => 'control-label col-sm-3 col-lg-2'
+								))
+							}}
 
-									{{
-										Form::text('username', NULL, array(
-											'class'         => 'form-control',
-											'maxlength'     => 50,
-										))
-									}}
-								</div>
+							<div class="col-sm-9 col-lg-10">
+								{{
+									Form::text('username', NULL, array(
+										'class'         => 'form-control',
+										'maxlength'     => 50,
+									))
+								}}
+							</div>
+						</div>
 
-								<div class="form-group">
-									{{ Form::label('email', Lang::get('global.email')) }}
+						<div class="form-group">
+							{{
+								Form::label('email', Lang::get('global.email'), array(
+									'class' => 'control-label col-sm-3 col-lg-2'
+								))
+							}}
 
-									{{
-										Form::text('email', NULL, array(
-											'class'         => 'form-control',
-											'maxlength'     => 100,
-										))
-									}}
-								</div>
+							<div class="col-sm-9 col-lg-10">
+								{{
+									Form::text('email', NULL, array(
+										'class'         => 'form-control',
+										'maxlength'     => 100,
+									))
+								}}
+							</div>
+						</div>
 
-								<div class="form-group">
-									{{ Form::label('dispname', Lang::get('global.full_name')) }}
+						<div class="form-group">
+							{{
+								Form::label('dispname', Lang::get('global.full_name'), array(
+									'class' => 'control-label col-sm-3 col-lg-2'
+								))
+							}}
 
-									{{
-										Form::text('dispname', NULL, array(
-											'class'         => 'form-control',
-											'maxlength'     => 100,
-										))
-									}}
-								</div>
+							<div class="col-sm-9 col-lg-10">
+								{{
+									Form::text('dispname', NULL, array(
+										'class'         => 'form-control',
+										'maxlength'     => 100,
+									))
+								}}
+							</div>
+						</div>
 
-								<div class="form-group">
-									{{ Form::label('password', Lang::get('global.password')) }}
+						<div class="form-group">
+							{{
+								Form::label('password', Lang::get('global.password'), array(
+									'class' => 'control-label col-sm-3 col-lg-2'
+								))
+							}}
 
-									{{
-										Form::password('password', array(
-											'class'         => 'form-control',
-										))
-									}}
-								</div>
+							<div class="col-sm-9 col-lg-10">
+								{{
+									Form::password('password', array(
+										'class'         => 'form-control',
+									))
+								}}
+							</div>
+						</div>
 
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 								<div class="checkbox">
 									<label>
 										{{
@@ -108,7 +134,11 @@
 										{{ Lang::get('global.admin') }}
 									</label>
 								</div>
+							</div>
+						</div>
 
+						<div class="form-group">
+							<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 								{{ Form::hidden('id') }}
 
 								{{
@@ -145,9 +175,11 @@
 							@foreach ($users as $user)
 								<tr>
 									<td class="text-right">
-										<div class="thumbnail pull-right">
-											{{ HTML::image('//www.gravatar.com/avatar/'.md5(strtolower($user->email)).'?s=28') }}
-										</div>
+										{{
+											HTML::image('//www.gravatar.com/avatar/'.md5(strtolower($user->email)).'?s=28', NULL, array(
+												'class' => 'img-circle'
+											))
+										}}
 									</td>
 
 									<td>{{ $user->username }}</td>

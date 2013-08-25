@@ -52,6 +52,55 @@ class Antispam {
 	}
 
 	/**
+	 * Return flags indicating whether each filter is
+	 * enabled or disabled
+	 *
+	 * @static
+	 * @return object
+	 */
+	public static function flags()
+	{
+		$flags = new stdClass();
+		$services = static::services();
+
+		// Fetching all enabled filters
+		$enabled = Site::config('antispam')->services;
+		$enabled = explode(',', $enabled);
+
+		foreach ($services as $service)
+		{
+			$flags->$service = in_array($service, $enabled);
+		}
+
+		return $flags;
+	}
+
+	/**
+	 * Returns a list of antispam services
+	 *
+	 * @static
+	 * @return array
+	 */
+	public static function services()
+	{
+		$services = array();
+		$methods = get_class_methods(static::make());
+
+		foreach ($methods as $method)
+		{
+			if (starts_with($method, 'run'))
+			{
+				$method = substr($method, 3);
+				$method = strtolower($method);
+
+				$services[] = $method;
+			}
+		}
+
+		return $services;
+	}
+
+	/**
 	 * Processes antispam filters
 	 *
 	 * @access public
@@ -69,6 +118,11 @@ class Antispam {
 			// handler available for the service. If found, we run the handler
 			$services = explode(',', $this->config->services);
 
+			// Add immutable services to the queue
+			$immutable = Config::get('antispam')['immutable'];
+			$services = array_merge($services, $immutable);
+
+			// Run the spam filters
 			foreach ($services as $service)
 			{
 				$handler = array($this, 'run'.studly_case($service));
@@ -180,8 +234,9 @@ class Antispam {
 	private function runNoflood()
 	{
 		$posted = Session::get('paste.posted');
+		$threshold = Site::config('antispam')->floodThreshold;
 
-		if (time() - $posted >= 5)
+		if (time() - $posted >= $threshold)
 		{
 			Session::put('paste.posted', time());
 
