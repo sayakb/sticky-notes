@@ -56,17 +56,21 @@
 						))
 					}}
 
-					{{
-						link_to('user/register', Lang::get('user.create_acct'), array(
-							'class'   => 'btn btn-link',
-						))
-					}}
+					@if ($auth->method == 'db')
+						@if ($auth->dbAllowReg)
+							{{
+								link_to('user/register', Lang::get('user.create_acct'), array(
+									'class'   => 'btn btn-link',
+								))
+							}}
+						@endif
 
-					{{
-						link_to('user/forgot', Lang::get('user.forgot_password'), array(
-							'class'   => 'btn btn-link',
-						))
-					}}
+						{{
+							link_to('user/forgot', Lang::get('user.forgot_password'), array(
+								'class'   => 'btn btn-link',
+							))
+						}}
+					@endif
 				</fieldset>
 			</div>
 		</div>

@@ -40,7 +40,7 @@ class ShowController extends BaseController {
 		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->username == $paste->author);
 
 		// Paste was not found
-		if ($paste == NULL)
+		if (is_null($paste))
 		{
 			App::abort(404);
 		}
@@ -105,7 +105,7 @@ class ShowController extends BaseController {
 	{
 		$paste = Paste::getByKey($key);
 
-		if ($paste != NULL AND Input::has('password'))
+		if ( ! is_null($paste) AND Input::has('password'))
 		{
 			$entered = Input::get('password');
 

@@ -25,5 +25,8 @@ return array(
 	                       "sent to the mail address associated with that account.",
 	"reset_password"    => "Reset password",
 	"reset_done"        => "Your password has been reset. Please check your email",
+	"reg_disabled"      => "Registration has been disabled on this site",
+	"forgot_disabled"   => "This feature is disabled as your user data is not stored ".
+	                       "in the site database",
 
 );

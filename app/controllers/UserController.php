@@ -33,7 +33,7 @@ class UserController extends BaseController {
 	 */
 	public function getLogin()
 	{
-		return View::make('user/login', array(), Site::defaults());
+		return View::make('user/login', array('auth' => Site::config('auth')), Site::defaults());
 	}
 
 	/**
@@ -87,6 +87,14 @@ class UserController extends BaseController {
 	 */
 	public function getRegister()
 	{
+		// Show error if registration is not allowed
+		$auth = Site::config('auth');
+
+		if ($auth->method != 'db' OR ! $auth->dbAllowReg)
+		{
+			Session::flash('messages.error', Lang::get('user.reg_disabled'));
+		}
+
 		return View::make('user/register', array(), Site::defaults());
 	}
 
@@ -98,6 +106,14 @@ class UserController extends BaseController {
 	 */
 	public function postRegister()
 	{
+		// Check if registration is allowed
+		$auth = Site::config('auth');
+
+		if ($auth->method != 'db' OR ! $auth->dbAllowReg)
+		{
+			App::abort(401);
+		}
+
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'username'    => 'required|max:50|alpha_num|unique:users,username',
@@ -154,6 +170,14 @@ class UserController extends BaseController {
 	 */
 	public function getForgot()
 	{
+		// Show error if resetting is not allowed
+		$auth = Site::config('auth');
+
+		if ($auth->method != 'db')
+		{
+			Session::flash('messages.error', Lang::get('user.forgot_disabled'));
+		}
+
 		return View::make('user/forgot', array(), Site::defaults());
 	}
 
@@ -165,6 +189,14 @@ class UserController extends BaseController {
 	 */
 	public function postForgot()
 	{
+		// Check if resetting password is allowed
+		$auth = Site::config('auth');
+
+		if ($auth->method != 'db')
+		{
+			App::abort(401);
+		}
+
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'username'    => 'required|exists:users,username',

@@ -154,6 +154,12 @@
 					{{ Form::token() }}
 					{{ Form::close() }}
 				@else
+					@if ($auth->method != 'db')
+						<div class="alert alert-info">
+							{{ sprintf(Lang::get('admin.user_auth_method'), Lang::get("admin.{$auth->method}")) }}
+						</div>
+					@endif
+
 					<table class="table table-white table-user">
 						<colgroup>
 							<col class="col-sm-1" />

@@ -16,6 +16,7 @@ return array(
     'IPBan' => $baseDir . '/app/models/IPBan.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
     'Illuminate\\Auth\\StickyNotesDBUserProvider' => $baseDir . '/app/lib/auth/StickyNotesDBUserProvider.php',
+    'Illuminate\\Auth\\StickyNotesLDAPUserProvider' => $baseDir . '/app/lib/auth/StickyNotesLDAPUserProvider.php',
     'ListController' => $baseDir . '/app/controllers/ListController.php',
     'PHPass' => $baseDir . '/app/lib/PHPass.php',
     'PasswordHash' => $vendorDir . '/phpass/PasswordHash.php',

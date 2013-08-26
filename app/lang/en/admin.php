@@ -17,7 +17,8 @@ return array(
 	"manage_users"          => "Manage users",
 	"ban_an_ip"             => "Ban an IP",
 	"mail_settings"         => "Mail settings",
-	"auth_settings"         => "Authentication",
+	"authentication"        => "Authentication",
+	"auth_settings"         => "Authentication settings",
 	"theme_builder"         => "Theme builder",
 	"spam_filters"          => "Spam filters",
 	"field"                 => "Field",
@@ -37,6 +38,8 @@ return array(
 	"user_saved"            => "The user has been saved successfully",
 	"user_deleted"          => "The user has been deleted successfully",
 	"user_create"           => "Create new user",
+	"user_auth_method"      => "Users created by the %s auth method cannot be modified ".
+	                           "using this module.",
 	"ip_address"            => "IP address",
 	"ban"                   => "Ban",
 	"unban"                 => "Unban",
@@ -101,5 +104,37 @@ return array(
 	"visitor_filter_exp"    => "Visitor type greater than or equal to this will be disallowed.",
 	"enable_filter"         => "Enable this filter",
 	"antispam_updated"      => "Spam filter settings have been updated successfully",
+	"auth_method"           => "Auth method",
+	"db"                    => "Database",
+	"ldap"                  => "LDAP",
+	"ldap_server"           => "LDAP server",
+	"ldap_server_exp"       => "If using LDAP this is the hostname or IP address of the LDAP server.",
+	"ldap_port"             => "LDAP port",
+	"ldap_port_exp"         => "Optionally you can specify a port which should be used to connect to ".
+	                           "the LDAP server instead of the default port 389.",
+	"base_dn"               => "Base dn",
+	"base_dn_exp"           => "This is the Distinguished Name, locating the user information, e.g. ".
+	                           "o=My Company,c=US.",
+	"uid"                   => "Identity uid",
+	"uid_exp"               => "This is the key under which to search for a given login identity, ".
+	                           "e.g. uid, sn, etc.",
+	"user_filter"           => "User filter",
+	"user_filter_exp"       => "Optionally you can further limit the searched objects with additional ".
+	                           "filters. For example objectClass=posixGroup would result in the use of ".
+	                           "(&(uid=\$username)(objectClass=posixGroup)).",
+	"user_dn"               => "User dn",
+	"user_dn_exp"           => "Leave blank to use anonymous binding. If filled in, sticky-notes uses ".
+	                           "the specified distinguished name on login attempts to find the correct ".
+	                           "user, e.g. uid=Username,ou=MyUnit,o=MyCompany,c=US. Required for Active ".
+	                           "Directory Servers.",
+	"ldap_password_exp"     => "Leave blank to use anonymous binding, otherwise fill in the password for ".
+	                           "the above user. Required for Active Directory Servers.<br />".
+	                           "<b>Warning</b>: This password will be stored as plain text in the database, ".
+	                           "visible to everybody who can access the sticky-notes DB.",
+	"user_reg"              => "Registration",
+	"user_reg_exp"          => "Set this to disabled to stop new user account registrations.",
+	"enabled"               => "Enabled",
+	"disabled"              => "Disabled",
+	"auth_updated"          => "User authentication settings have been updated successfully",
 
 );

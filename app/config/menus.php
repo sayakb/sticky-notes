@@ -127,7 +127,7 @@ return array(
 		),
 
 		'admin/auth'        => array(
-			'label'         => 'admin.auth_settings',
+			'label'         => 'admin.authentication',
 			'icon'          => 'lock',
 			'role'          => 'admin'
 		),

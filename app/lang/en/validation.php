@@ -111,6 +111,18 @@ return array(
 			"between"     => "The flood threshold must be between :min - :max.",
 		),
 
+		"ldap_server"     => array(
+			"required_if" => "The LDAP server field is required if LDAP method is used",
+		),
+
+		"ldap_base_dn"    => array(
+			"required_if" => "The LDAP base dn field is required if LDAP method is used",
+		),
+
+		"ldap_uid"        => array(
+			"required_if" => "The LDAP uid field is required if LDAP method is used",
+		),
+
 	),
 
 	/*

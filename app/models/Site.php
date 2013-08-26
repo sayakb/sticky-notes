@@ -69,7 +69,7 @@ class Site extends Eloquent {
 			'site'        => static::config('general'),
 			'error'       => Session::get('messages.error'),
 			'success'     => Session::get('messages.success'),
-			'auth'        => Auth::user(),
+			'user'        => Auth::user(),
 			'role'        => User::getRoles(),
 		);
 	}
@@ -94,7 +94,7 @@ class Site extends Eloquent {
 				static::$data[$group] = new stdClass();
 				$config = static::where('group', $group)->get();
 
-				if ($config != NULL)
+				if ( ! is_null($config))
 				{
 					foreach ($config as $item)
 					{

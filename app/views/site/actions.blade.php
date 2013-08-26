@@ -1,4 +1,4 @@
-@if ($role->admin OR ($role->user AND $auth->username == $paste->author))
+@if ($role->admin OR ($role->user AND $user->username == $paste->author))
 	@if ($paste->password)
 		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pwd') }}">
 			<span class="glyphicon glyphicon-lock"></span>

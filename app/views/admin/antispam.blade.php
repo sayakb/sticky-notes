@@ -39,6 +39,7 @@
 								<div class="col-sm-12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.honeypot_exp') }}</p>
+
 										<div class="checkbox">
 											<label>
 												{{ Form::checkbox('flag_php', 1, $flags->php) }}
@@ -141,6 +142,7 @@
 								<div class="col-sm-12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.word_censor_exp') }}</p>
+
 										<div class="checkbox">
 											<label>
 												{{ Form::checkbox('flag_censor', 1, $flags->censor) }}
@@ -178,6 +180,7 @@
 								<div class="col-sm-12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.stealth_exp') }}</p>
+
 										<div class="checkbox">
 											<label>
 												{{ Form::checkbox('flag_stealth', 1, $flags->stealth) }}
@@ -194,6 +197,7 @@
 								<div class="col-sm-12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.noflood_exp') }}</p>
+
 										<div class="checkbox">
 											<label>
 												{{ Form::checkbox('flag_noflood', 1, $flags->noflood) }}

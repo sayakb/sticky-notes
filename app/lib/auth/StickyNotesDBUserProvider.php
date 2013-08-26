@@ -31,14 +31,14 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	/**
 	 * The Eloquent user model.
 	 *
-	 * @var string
+	 * @var Illuminate\Database\Eloquent\Model
 	 */
 	protected $model;
 
 	/**
 	 * The password hashing library instance
 	 *
-	 * @var object
+	 * @var PHPass
 	 */
 	protected $crypt;
 
@@ -52,8 +52,8 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	/**
 	 * Initializes the provider and sets the model instance
 	 *
-	 * @param  object  $model
-	 * @param  object  $crypt
+	 * @param  Illuminate\Database\Eloquent\Model  $model
+	 * @param  PHPass  $crypt
 	 * @return void
 	 */
 	public function __construct($model, $crypt)

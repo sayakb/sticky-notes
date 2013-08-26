@@ -63,7 +63,7 @@ class AdminController extends BaseController {
 			$paste = Paste::getByKey($key);
 
 			// Paste was not found
-			if ($paste == NULL)
+			if (is_null($paste))
 			{
 				Session::flash('messages.error', Lang::get('admin.paste_404'));
 			}
@@ -132,10 +132,10 @@ class AdminController extends BaseController {
 
 		if ( ! empty($username))
 		{
-			$user = User::where('username', $username)->first();
+			$user = User::where('username', $username)->where('type', 'db')->first();
 
 			// User was not found
-			if ($user == NULL)
+			if (is_null($user))
 			{
 				Session::flash('messages.error', Lang::get('admin.user_404'));
 			}
@@ -161,7 +161,7 @@ class AdminController extends BaseController {
 
 				default:
 					$perPage = Site::config('general')->perPage;
-					$users = User::orderBy('username')->paginate($perPage);
+					$users = User::where('type', 'db')->orderBy('username')->paginate($perPage);
 					$pages = $users->links();
 					break;
 			}
@@ -172,6 +172,7 @@ class AdminController extends BaseController {
 			'user'     => $user,
 			'users'    => $users,
 			'pages'    => $pages,
+			'auth'     => Site::config('auth'),
 		);
 
 		return View::make('admin/user', $data, Site::defaults());
@@ -277,7 +278,7 @@ class AdminController extends BaseController {
 	{
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'ip'   => 'required|ip',
+			'ip' => 'required|ip',
 		));
 
 		// Run the validator
@@ -341,55 +342,6 @@ class AdminController extends BaseController {
 			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 
 			return Redirect::to('admin/mail')->withInput();
-		}
-	}
-
-	/**
-	 * Displays site configuration screen
-	 *
-	 * @access public
-	 * @return \Illuminate\View\View
-	 */
-	public function getSite()
-	{
-		// Build the view data
-		$data = array(
-			'langs'   => Site::getLanguages(),
-		);
-
-		return View::make('admin/site', $data, Site::defaults());
-	}
-
-	/**
-	 * Handles POST requests to the site config form
-	 *
-	 * @access public
-	 * @return \Illuminate\Support\Facades\Redirect
-	 */
-	public function postSite()
-	{
-		// Define validation rules
-		$validator = Validator::make(Input::all(), array(
-			'fqdn'          => 'required',
-			'title'         => 'required|max:20',
-			'per_page'      => 'required|integer|between:5,200',
-			'lang'          => 'required|in:'.Site::getLanguages(TRUE),
-		));
-
-		// Run the validator
-		if ($validator->passes())
-		{
-			Site::config('general', Input::all());
-
-			Session::flash('messages.success', Lang::get('admin.site_updated'));
-
-			return Redirect::to('admin/site');
-		}
-		else
-		{
-			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
-
-			return Redirect::to('admin/site')->withInput();
 		}
 	}
 
@@ -458,6 +410,95 @@ class AdminController extends BaseController {
 			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 
 			return Redirect::to('admin/antispam')->withInput();
+		}
+	}
+
+	/**
+	 * Displays user authentication configuration screen
+	 *
+	 * @access public
+	 * @return \Illuminate\View\View
+	 */
+	public function getAuth()
+	{
+		return View::make('admin/auth', array('auth' => Site::config('auth')), Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests to the user auth config form
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postAuth()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'method'          => 'required|in:db,ldap',
+			'db_allow_reg'    => 'required|in:0,1',
+			'ldap_server'     => 'required_if:method,ldap',
+			'ldap_base_dn'    => 'required_if:method,ldap',
+			'ldap_uid'        => 'required_if:method,ldap',
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			Site::config('auth', Input::all());
+
+			Session::flash('messages.success', Lang::get('admin.auth_updated'));
+
+			return Redirect::to('admin/auth');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('admin/auth')->withInput();
+		}
+	}
+
+	/**
+	 * Displays site configuration screen
+	 *
+	 * @access public
+	 * @return \Illuminate\View\View
+	 */
+	public function getSite()
+	{
+		return View::make('admin/site', array('langs' => Site::getLanguages()), Site::defaults());
+	}
+
+	/**
+	 * Handles POST requests to the site config form
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postSite()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'fqdn'          => 'required',
+			'title'         => 'required|max:20',
+			'per_page'      => 'required|integer|between:5,200',
+			'lang'          => 'required|in:'.Site::getLanguages(TRUE),
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			Site::config('general', Input::all());
+
+			Session::flash('messages.success', Lang::get('admin.site_updated'));
+
+			return Redirect::to('admin/site');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('admin/site')->withInput();
 		}
 	}
 
