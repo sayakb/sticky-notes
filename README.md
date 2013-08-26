@@ -16,8 +16,9 @@ Sticky Notes v1.0 is under development. It is being written using the
 [Laravel framework](http://laravel.com/).
 
 However, the currently stable version is still available and maintained in the
-master branch. It is strongly recommended that you do not use v1.0 in a
-production environment until it is tagged as v1.0 and moved to master.
+[master branch](https://github.com/sayakb/sticky-notes/tree/master).
+It is strongly recommended that you **do not** use v1.0 in a production environment
+until it is tagged as v1.0 and moved to master.
 
 
 Environment setup
