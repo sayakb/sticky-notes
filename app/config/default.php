@@ -19,6 +19,9 @@ return array(
 		'fqdn'              => 'localhost',
 		'title'             => 'Sticky Notes',
 		'perPage'           => '15',
+		'copyright'         => '',
+		'lang'              => 'en',
+		'googleApi'         => '',
 	),
 
 	'antispam'              => (object) array(
@@ -42,12 +45,6 @@ return array(
 		'password'          => '',
 		'sendmail'          => '',
 		'pretend'           => '0',
-	),
-
-	'general'               => (object) array(
-		'copyright'         => '',
-		'lang'              => 'en',
-		'googleApi'         => '',
 	),
 
 	'auth'                  => (object) array(

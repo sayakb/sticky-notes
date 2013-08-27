@@ -94,11 +94,10 @@ class Site extends Eloquent {
 				// Load the default configuration data
 				static::$data[$group] = Config::get('default')[$group];
 
-				// We need to check if Eloquent is properly initialized
-				// This is required as Site::config() may be called from
-				// various app/config files as well. While running test cases,
-				// Eloquent might not be initialized
-				if ( ! is_null(static::$resolver))
+				// When accessing from the CLI, we don't query the config table
+				// That is because Eloquent dependencies might not be loaded
+				// if not opened from the web browser.
+				if (php_sapi_name() != 'cli')
 				{
 					$config = static::where('group', $group)->get();
 
