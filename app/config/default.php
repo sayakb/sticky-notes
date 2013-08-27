@@ -11,7 +11,7 @@ return array(
 	| that are used as a fallback if the database configuration provider is
 	| unavailable.
 	|
-	| Please do not modify this file!!
+	| IMPORTANT: Please do not modify this file!!
 	|
 	*/
 
