@@ -24,6 +24,22 @@ class SigchildDisabledProcessTest extends AbstractProcessTest
     /**
      * @expectedException \Symfony\Component\Process\Exception\RuntimeException
      */
+    public function testGetExitCodeIsNullOnStart()
+    {
+        parent::testGetExitCodeIsNullOnStart();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Process\Exception\RuntimeException
+     */
+    public function testGetExitCodeIsNullOnWhenStartingAgain()
+    {
+        parent::testGetExitCodeIsNullOnWhenStartingAgain();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Process\Exception\RuntimeException
+     */
     public function testExitCodeCommandFailed()
     {
         parent::testExitCodeCommandFailed();
@@ -110,6 +126,14 @@ class SigchildDisabledProcessTest extends AbstractProcessTest
     public function testIsSuccessful()
     {
         parent::testIsSuccessful();
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Process\Exception\RuntimeException
+     */
+    public function testIsSuccessfulOnlyAfterTerminated()
+    {
+        parent::testIsSuccessfulOnlyAfterTerminated();
     }
 
     /**

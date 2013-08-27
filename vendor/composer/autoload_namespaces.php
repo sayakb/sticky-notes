@@ -36,5 +36,5 @@ return array(
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib'),
     'Doctrine\\Common\\' => array($vendorDir . '/doctrine/common/lib'),
     'ClassPreloader' => array($vendorDir . '/classpreloader/classpreloader/src'),
-    'Carbon' => array($vendorDir . '/nesbot/carbon'),
+    'Carbon' => array($vendorDir . '/nesbot/carbon/src'),
 );

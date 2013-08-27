@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Carbon\Tests;
-
 use Carbon\Carbon;
 
 class StringsTest extends TestFixture
@@ -30,6 +28,22 @@ class StringsTest extends TestFixture
    {
       $d = Carbon::create(1975, 12, 25, 14, 15, 16);
       $this->assertSame('Dec 25, 1975', $d->toFormattedDateString());
+   }
+   public function testToLocalizedFormattedDateString()
+   {
+      /****************
+
+      Working out a Travis issue on how to set a different locale
+      other than EN to test this.
+
+
+      $cache = setlocale(LC_TIME, 0);
+      setlocale(LC_TIME, 'German');
+      $d = Carbon::create(1975, 12, 25, 14, 15, 16);
+      $this->assertSame('Donnerstag 25 Dezember 1975', $d->formatLocalized('%A %d %B %Y'));
+      setlocale(LC_TIME, $cache);
+
+      *****************/
    }
    public function testToTimeString()
    {

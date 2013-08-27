@@ -91,14 +91,23 @@ class Site extends Eloquent {
 			// If it isn't found there, we fetch it from the database
 			if ( ! isset(static::$data[$group]))
 			{
-				static::$data[$group] = new stdClass();
-				$config = static::where('group', $group)->get();
+				// Load the default configuration data
+				static::$data[$group] = Config::get('default')[$group];
 
-				if ( ! is_null($config))
+				// We need to check if Eloquent is properly initialized
+				// This is required as Site::config() may be called from
+				// various app/config files as well. While running test cases,
+				// Eloquent might not be initialized
+				if ( ! is_null(static::$resolver))
 				{
-					foreach ($config as $item)
+					$config = static::where('group', $group)->get();
+
+					if ( ! is_null($config))
 					{
-						static::$data[$group]->$item['key'] = $item['value'];
+						foreach ($config as $item)
+						{
+							static::$data[$group]->$item['key'] = $item['value'];
+						}
 					}
 				}
 			}

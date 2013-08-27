@@ -64,7 +64,7 @@ class BaseController extends Controller {
 	protected function setupProject()
 	{
 		$site = Site::config('general')->fqdn;
-		$host = $_SERVER["SERVER_NAME"];
+		$host = getenv('SERVER_NAME');
 
 		if ($site != $host)
 		{
