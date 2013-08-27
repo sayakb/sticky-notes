@@ -144,12 +144,6 @@ return array(
 			'role'          => 'admin'
 		),
 
-		'admin/theme'       => array(
-			'label'         => 'admin.theme_builder',
-			'icon'          => 'picture',
-			'role'          => 'admin'
-		),
-
 	),
 
 );

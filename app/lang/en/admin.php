@@ -19,7 +19,6 @@ return array(
 	"mail_settings"         => "Mail settings",
 	"authentication"        => "Authentication",
 	"auth_settings"         => "Authentication settings",
-	"theme_builder"         => "Theme builder",
 	"spam_filters"          => "Spam filters",
 	"field"                 => "Field",
 	"value"                 => "Value",
