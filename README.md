@@ -1,6 +1,8 @@
 Sticky Notes pastebin v1.0
 ===========================
 
+[![Build Status](https://travis-ci.org/sayakb/sticky-notes.png?branch=dev-1.0)](https://travis-ci.org/sayakb/sticky-notes)
+
 Sticky notes is a free and open source pastebin application.
 This software is protected by the BSD license, which means that you can freely
 copy and share the software and its source code, and you are free to adapt from
