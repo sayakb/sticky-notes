@@ -21,6 +21,9 @@ Route::post('{key}/{hash?}', 'ShowController@postPassword')->where('key', 'p[a-z
 Route::get('all', 'ListController@getAll');
 Route::get('trending/{age?}', 'ListController@getTrending');
 
+// API routes
+Route::controller('api/{mode}', 'ApiController');
+
 // User operation routes
 Route::controller('user', 'UserController');
 
