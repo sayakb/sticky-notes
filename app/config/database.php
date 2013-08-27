@@ -55,12 +55,12 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'stickynotes',
+			'database'  => 'database',
 			'username'  => 'root',
-			'password'  => 'techslave',
+			'password'  => '',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
-			'prefix'    => 'paste_',
+			'prefix'    => '',
 		),
 
 		'pgsql' => array(
