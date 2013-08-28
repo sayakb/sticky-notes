@@ -100,14 +100,18 @@ class ApiController extends BaseController {
 	 * Gets a paste list in the specified mode
 	 *
 	 * @param  string  $mode
-	 * @param  string  $page
+	 * @param  int  $page
 	 * @return \Illuminate\View\View
 	 */
-	public function getList($mode, $page = '')
+	public function getList($mode, $page = 1)
 	{
 		$api = API::make($mode);
 
 		$perPage = Site::config('general')->perPage;
+
+		// As laravel reads the page GET parameter, we need to
+		// manually set it to use this page.
+		DB::getPaginator()->setCurrentPage($page);
 
 		// Only the public pastes are accessible via the API
 		$query = Paste::where('private', '<>', 1);
