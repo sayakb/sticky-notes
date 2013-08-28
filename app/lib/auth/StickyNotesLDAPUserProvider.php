@@ -59,6 +59,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	public function __construct($model, $auth)
 	{
 		$this->model = $model;
+
 		$this->auth = $auth;
 	}
 
@@ -113,6 +114,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	public function validateCredentials(UserInterface $user, array $credentials)
 	{
 		$ldap = FALSE;
+
 		$valid = FALSE;
 
 		// Connect to the LDAP server
@@ -132,6 +134,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 		}
 
 		@ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+
 		@ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 
 		// Try to bind with the user DN and password, if provided
@@ -145,6 +148,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 
 		// Generate the user key (filter)
 		$username = $this->ldapEscape($credentials['username']);
+
 		$key = "({$this->auth->ldapUid}={$username})";
 
 		// Check if an additional filter is set
@@ -164,6 +168,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 
 		// Look up for the user
 		$search = @ldap_search($ldap, $this->auth->ldapBaseDn, $key, array($this->auth->ldapUid), 0, 1);
+
 		$result = @ldap_get_entries($ldap, $search);
 
 		if (is_array($result) AND sizeof($result) > 1)
@@ -178,11 +183,11 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 				{
 					$this->user->username = $credentials['username'];
 					$this->user->password = '';
-					$this->user->salt = '';
-					$this->user->email = '';
-					$this->user->admin = 0;
-					$this->user->type = 'ldap';
-					$this->user->active = 1;
+					$this->user->salt     = '';
+					$this->user->email    = '';
+					$this->user->admin    = 0;
+					$this->user->type     = 'ldap';
+					$this->user->active   = 1;
 
 					$this->user->save();
 				}

@@ -1,5 +1,6 @@
 Incorporate DB changes
 =======================
+ * Add authorid (same as id of user table) to main table.
  * Add admin `tinyint[1]` and active column to users table.
    active = 0 for banned user
  * Add type column to users table with default value 'db'.

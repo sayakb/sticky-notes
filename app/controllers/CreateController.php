@@ -52,8 +52,8 @@ class CreateController extends BaseController {
 		$validator = Validator::make(Input::all(), array(
 			'title'     => 'max:30',
 			'data'      => 'required',
-			'language'  => 'in:'.Highlighter::make()->languages(TRUE),
-			'expire'    => 'in:'.implode(',', array_keys(Config::get('expire')))
+			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
+			'expire'    => 'required|in:'.implode(',', array_keys(Config::get('expire')))
 		));
 
 		// Generate anti-spam modules
@@ -61,65 +61,36 @@ class CreateController extends BaseController {
 
 		// Run validations
 		$resultValidation = $validator->passes();
+
+		// Execute antispam services
 		$resultAntispam = $antispam->passes();
 
-		// Run validations
 		if ($resultValidation AND $resultAntispam)
 		{
-			// Password and private flags
-			$is_protected = Input::has('password');
-			$is_private = Input::has('private');
+			// We inject the project into the input so that
+			// it is also inserted into the DB accordingly
+			Input::merge(array('project' => $this->project));
 
-			// Unique key and secure hash for the paste
-			$urlkey = Paste::makeUrlKey();
-			$hash = Paste::getHash();
-
-			// Set the paste author
-			$author = Auth::check() ? Auth::user()->username : NULL;
-
-			// Encrypt the password with a salt
-			$password = '';
-			$salt = str_random(5);
-
-			if (Input::has('password'))
-			{
-				$password = PHPass::make()->create(Input::get('password'), $salt);
-			}
-
-			// Insert the new paste
-			Paste::create(array(
-				'project'     => $this->project,
-				'title'       => Input::get('title'),
-				'data'        => Input::get('data'),
-				'language'    => Input::get('language'),
-				'private'     => $is_protected OR $is_private ? 1 : 0,
-				'password'    => $password,
-				'salt'        => $salt,
-				'hash'        => $hash,
-				'urlkey'      => $urlkey,
-				'author'      => $author,
-				'timestamp'   => time(),
-				'expire'      => intval(Input::get('expire')) + time(),
-				'ip'          => Request::getClientIp(),
-				'hits'        => 0
-			));
+			// All OK! Create the paste already!!
+			$paste = Paste::createNew(Input::all());
 
 			// Redirect to paste if there's no password
 			// Otherwise, just show a link
-			if ($is_protected)
+			if ($paste['is_protected'])
 			{
-				$url = link_to("p{$urlkey}/{$hash}");
+				$url = link_to('p'.$paste['urlkey'].'/'.$paste['hash']);
+
 				$message = sprintf(Lang::get('create.click_for_paste'), $url);
 
 				Session::flash('messages.success', $message);
 			}
-			else if ($is_private)
+			else if ($paste['is_private'])
 			{
-				return Redirect::to("p{$urlkey}/{$hash}");
+				return Redirect::to('p'.$paste['urlkey'].'/'.$paste['hash']);
 			}
 			else
 			{
-				return Redirect::to("p{$urlkey}");
+				return Redirect::to('p'.$paste['urlkey']);
 			}
 		}
 		else

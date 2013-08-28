@@ -37,7 +37,8 @@ class ShowController extends BaseController {
 	public function getPaste($key, $hash = '', $action = '')
 	{
 		$paste = Paste::getByKey($key);
-		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->username == $paste->author);
+
+		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->id == $paste->authorid);
 
 		// Paste was not found
 		if (is_null($paste))
@@ -66,6 +67,7 @@ class ShowController extends BaseController {
 		if ( ! Session::has('paste.viewed'.$paste->id))
 		{
 			$paste->hits++;
+
 			$paste->save();
 
 			Session::put('paste.viewed'.$paste->id, TRUE);
@@ -76,15 +78,22 @@ class ShowController extends BaseController {
 		{
 			case 'toggle':
 				$paste->private = $paste->private ? 0 : 1;
+
 				$paste->password = NULL;
+
 				$paste->save();
+
 				break;
 
 			case 'shorten':
 				die("Short url here");
 
 			case 'raw':
-				die($paste->data);
+				$response = Response::make($paste->data);
+
+				$response->header('Content-Type', 'text/plain');
+
+				return $response;
 
 			default:
 				return View::make('site/show', array('paste' => $paste), Site::defaults());

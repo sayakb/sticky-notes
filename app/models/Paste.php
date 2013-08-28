@@ -47,6 +47,7 @@ class Paste extends Eloquent {
 	protected $fillable = array(
 		'id',
 		'author',
+		'authorid',
 		'project',
 		'timestamp',
 		'expire',
@@ -61,6 +62,88 @@ class Paste extends Eloquent {
 		'urlkey',
 		'hits'
 	);
+
+	/**
+	 * Creates a new paste with the data supplied
+	 *
+	 * @static
+	 * @param  array  $data
+	 * @return array
+	 */
+	public static function createNew($data)
+	{
+		// Set the paste protected flag
+		$is_protected = ! empty($data['password']);
+
+		// Set the private paste flag
+		$is_private = ! empty($data['private']);
+
+		// We use an alphanumeric URL key to identify pastes
+		// This is done so that users do not have access to the
+		// actual primary key in the database and therefore, cannot
+		// mass download all data
+		$urlkey = static::makeUrlKey();
+
+		// This hash is used for identifying private pastes
+		// Unless being opened by the paste author, sticky notes
+		// makes passing this hass as a part of the URL mandatory
+		// for private pastes
+		$hash = static::getHash();
+
+		// Set the paste author
+		if (Auth::check())
+		{
+			$user = Auth::user();
+
+			$authorId = $user->id;
+
+			$author = $user->username;
+		}
+		else
+		{
+			$authorId = 0;
+
+			$author = NULL;
+		}
+
+		// Encrypt the password with a salt
+		$password = '';
+
+		$salt = str_random(5);
+
+		if ( ! empty($data['password']))
+		{
+			$password = PHPass::make()->create($data['password'], $salt);
+		}
+
+		// Insert the new paste
+		Paste::create(array(
+			'project'     => empty($data['project']) ? NULL : $data['project'],
+			'title'       => empty($data['title']) ? NULL : $data['title'],
+			'data'        => $data['data'],
+			'language'    => $data['language'],
+			'private'     => $is_protected OR $is_private ? 1 : 0,
+			'password'    => $password,
+			'salt'        => $salt,
+			'hash'        => $hash,
+			'urlkey'      => $urlkey,
+			'author'      => $author,
+			'authorid'    => $authorId,
+			'timestamp'   => time(),
+			'expire'      => $data['expire'] > 0 ? $data['expire'] + time() : 0,
+			'ip'          => Request::getClientIp(),
+			'hits'        => 0
+		));
+
+		// Return some paste info that is needed to
+		// build the paste URL later
+		return array(
+			'urlkey'         => $urlkey,
+			'hash'           => $hash,
+			'is_protected'   => $is_protected,
+			'is_private'     => $is_private,
+		);
+	}
 
 	/**
 	 * Fetches a post by its urlkey or id

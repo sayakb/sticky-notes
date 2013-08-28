@@ -116,8 +116,8 @@ class UserController extends BaseController {
 
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'username'    => 'required|max:50|alpha_num|unique:users,username',
-			'email'       => 'required|max:100|email|unique:users,email',
+			'username'    => 'required|max:50|alpha_num|unique:users,username,ldap,type',
+			'email'       => 'required|max:100|email|unique:users,email,ldap,type',
 			'dispname'    => 'max:100',
 			'password'    => 'required|min:5',
 			'captcha'     => 'required|captcha'
@@ -129,11 +129,11 @@ class UserController extends BaseController {
 			$user = new User;
 
 			$user->username = Input::get('username');
-			$user->email = Input::get('email');
+			$user->email    = Input::get('email');
 			$user->dispname = Input::get('dispname');
-			$user->salt = str_random(5);
+			$user->salt     = str_random(5);
 			$user->password = PHPass::make()->create(Input::get('password'), $user->salt);
-			$user->admin = 0;
+			$user->admin    = 0;
 
 			$user->save();
 
@@ -199,7 +199,7 @@ class UserController extends BaseController {
 
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'username'    => 'required|exists:users,username',
+			'username'    => 'required|exists:users,username,type,db',
 		));
 
 		// Run the validator
@@ -209,7 +209,7 @@ class UserController extends BaseController {
 			$password = str_random(8);
 
 			// Now we update the password in the database
-			$user = User::where('username', Input::get('username'))->first();
+			$user = User::where('username', Input::get('username'))->where('type', 'db')->first();
 
 			$user->password = PHPass::make()->create($password, $user->salt);
 

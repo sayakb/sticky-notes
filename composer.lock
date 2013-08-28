@@ -624,12 +624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "3271f78e85a343bde67dae5a84c79739fbe8d4be"
+                "reference": "ae164e2f07b3fde9ba51b1e098bc7915c3260c30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/3271f78e85a343bde67dae5a84c79739fbe8d4be",
-                "reference": "3271f78e85a343bde67dae5a84c79739fbe8d4be",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ae164e2f07b3fde9ba51b1e098bc7915c3260c30",
+                "reference": "ae164e2f07b3fde9ba51b1e098bc7915c3260c30",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +728,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-08-26 22:20:53"
+            "time": "2013-08-27 16:09:54"
         },
         {
             "name": "mews/captcha",
@@ -1578,12 +1578,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "0c174072574abfc412f7e478ba004df4e8305a3f"
+                "reference": "581fb22f5c0ff868c1378ef0809726cf02546ca1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/0c174072574abfc412f7e478ba004df4e8305a3f",
-                "reference": "0c174072574abfc412f7e478ba004df4e8305a3f",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/581fb22f5c0ff868c1378ef0809726cf02546ca1",
+                "reference": "581fb22f5c0ff868c1378ef0809726cf02546ca1",
                 "shasum": ""
             },
             "require": {
@@ -1640,7 +1640,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-08-23 15:31:47"
+            "time": "2013-08-27 13:39:19"
         },
         {
             "name": "symfony/process",

@@ -37,7 +37,14 @@ class BaseController extends Controller {
 	 */
 	public function __construct()
 	{
+		// We detect the subdomain being used and compare it with the
+		// FQDN stored in the database. With that data, we extract the
+		// project name and set it here
 		$this->setupProject();
+
+		// This is a part of basic input sanitation. Currently this method
+		// trims all incoming input data and merges it with the input
+		// array which is then used for processed by the controllers
 		$this->processInput();
 	}
 
@@ -64,6 +71,7 @@ class BaseController extends Controller {
 	protected function setupProject()
 	{
 		$site = Site::config('general')->fqdn;
+
 		$host = getenv('SERVER_NAME');
 
 		if ($site != $host)

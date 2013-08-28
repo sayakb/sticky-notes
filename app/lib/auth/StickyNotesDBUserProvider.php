@@ -59,6 +59,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	public function __construct($model, $crypt)
 	{
 		$this->model = $model;
+
 		$this->crypt = $crypt;
 	}
 
@@ -110,7 +111,9 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	{
 		// Collect user data
 		$password = $credentials['password'];
+
 		$salt = $this->user->salt;
+
 		$hash = $user->getAuthPassword();
 
 		// Check if user is banned

@@ -41,14 +41,26 @@ class Antispam {
 	private $message = NULL;
 
 	/**
+	 * Custom messages to be displayed if validation fails
+	 *
+	 * @var array
+	 */
+	private $customMessages;
+
+	/**
 	 * Creates a new instance of antispam class
 	 *
 	 * @static
+	 * @param  array  $messages
 	 * @return void
 	 */
-	public static function make()
+	public static function make($messages = array())
 	{
-		return new Antispam();
+		$antispam = new Antispam();
+
+		$antispam->customMessages = $messages;
+
+		return $antispam;
 	}
 
 	/**
@@ -61,11 +73,12 @@ class Antispam {
 	public static function flags()
 	{
 		$flags = new stdClass();
+
 		$services = static::services();
 
-		// Fetching all enabled filters
-		$enabled = Site::config('antispam')->services;
-		$enabled = explode(',', $enabled);
+		// Fetching all enabled filters. This value can be defined
+		// from the antispam screen in the admin panel
+		$enabled = explode(',', Site::config('antispam')->services);
 
 		foreach ($services as $service)
 		{
@@ -84,16 +97,14 @@ class Antispam {
 	public static function services()
 	{
 		$services = array();
+
 		$methods = get_class_methods(static::make());
 
 		foreach ($methods as $method)
 		{
 			if (starts_with($method, 'run'))
 			{
-				$method = substr($method, 3);
-				$method = strtolower($method);
-
-				$services[] = $method;
+				$services[] = strtolower(substr($method, 3));
 			}
 		}
 
@@ -118,8 +129,13 @@ class Antispam {
 			// handler available for the service. If found, we run the handler
 			$services = explode(',', $this->config->services);
 
-			// Add immutable services to the queue
+			// Immutable services are always executed even if they are not
+			// set explicitly from the admin panel. These services ideally
+			// require no configuration and therefore, do not appear in the
+			// antispam section of the admin panel
 			$immutable = Config::get('antispam')['immutable'];
+
+			// Add immutable services to the queue
 			$services = array_merge($services, $immutable);
 
 			// Run the spam filters
@@ -131,7 +147,14 @@ class Antispam {
 				{
 					if ( ! call_user_func($handler))
 					{
-						$this->message = Lang::get('antispam.'.$service);
+						if (isset($this->customMessages[$service]))
+						{
+							$this->message = $this->customMessages[$service];
+						}
+						else
+						{
+							$this->message = Lang::get('antispam.'.$service);
+						}
 
 						return FALSE;
 					}
@@ -218,6 +241,7 @@ class Antispam {
 	private function runStealth()
 	{
 		$data = strtolower(Input::get('data'));
+
 		$language = Input::get('language');
 
 		return ! (str_contains($data, '<a href') AND $language == 'text');
@@ -234,6 +258,7 @@ class Antispam {
 	private function runNoflood()
 	{
 		$posted = Session::get('paste.posted');
+
 		$threshold = Site::config('antispam')->floodThreshold;
 
 		if (time() - $posted >= $threshold)
@@ -275,10 +300,14 @@ class Antispam {
 			}
 
 			// Convert IP address to reversed octet format
+			// So for example, 127.0.0.1 becomes 1.0.0.127
 			$sections = explode('.', $ip);
+
 			$revIp = "{$sections[3]}.{$sections[2]}.{$sections[1]}.{$sections[0]}";
 
-			// Query Project Honey Pot
+			// Query Project Honey Pot BL
+			// The URI of the query for 127.0.0.1 would be:
+			//  - phpkey.1.0.0.127.dnsbl.httpbl.org
 			$response = dns_get_record("{$this->config->phpKey}.{$revIp}.dnsbl.httpbl.org");
 
 			// Exit if NXDOMAIN is returned
@@ -287,11 +316,15 @@ class Antispam {
 				return TRUE;
 			}
 
-			// Extract the info
+			// The information returns is:
+			//  - The age of the IP address in the honeypot database (0 - 255)
+			//  - The threat score of the IP address (0 - 255)
+			//  - The type of the threat (0 - 255)
 			$result = explode('.', $response[0]['ip']);
-			$days = $result[1];
+
+			$days  = $result[1];
 			$score = $result[2];
-			$type = $result[3];
+			$type  = $result[3];
 
 			// Perform PHP validation
 			if ($days <= $this->config->phpDays AND ($type >= $this->config->phpType OR $score >= $this->config->phpScore))

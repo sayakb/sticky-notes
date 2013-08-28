@@ -147,6 +147,13 @@
 										'class'   => 'btn btn-primary'
 									))
 								}}
+
+								{{
+									link_to('admin/user/delete/'.urlencode($user->username), Lang::get('global.delete'), array(
+										'onclick' => 'return confirm("'.Lang::get('global.action_confirm').'")',
+										'class'   => 'btn btn-danger'
+									));
+								}}
 							</div>
 						</div>
 					</fieldset>

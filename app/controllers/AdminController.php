@@ -126,45 +126,42 @@ class AdminController extends BaseController {
 	 */
 	public function getUser($action = '', $username = '')
 	{
-		$user = NULL;
-		$users = NULL;
-		$pages = NULL;
+		$perPage = Site::config('general')->perPage;
 
-		if ( ! empty($username))
+		$user = User::where('username', $username)->where('type', 'db')->first();
+
+		$users = User::where('type', 'db')->orderBy('username')->paginate($perPage);
+
+		$pages = $users->links();
+
+		// User not found
+		if ( ! empty($username) AND is_null($user))
 		{
-			$user = User::where('username', $username)->where('type', 'db')->first();
+			Session::flash('messages.error', Lang::get('admin.user_404'));
 
-			// User was not found
-			if (is_null($user))
-			{
-				Session::flash('messages.error', Lang::get('admin.user_404'));
-			}
+			return Redirect::to('admin/user');
+		}
 
-			// Perform user specific actions
-			switch ($action)
-			{
-				case 'delete':
+		// Perform the specified action
+		switch ($action)
+		{
+			case 'create':
+				return View::make('admin/user', array('user' => new User), Site::defaults());
+
+			case 'delete':
+				// Cannot delete founder user or own account
+				if ($user->id != 1 AND $user->id != Auth::user()->id)
+				{
 					$user->delete();
 
 					Session::flash('messages.success', Lang::get('admin.user_deleted'));
 
 					return Redirect::to('admin/user');
-			}
-		}
-		else
-		{
-			// Perform non-user specific actions
-			switch ($action)
-			{
-				case 'create':
-					return View::make('admin/user', array('user' => new User), Site::defaults());
-
-				default:
-					$perPage = Site::config('general')->perPage;
-					$users = User::where('type', 'db')->orderBy('username')->paginate($perPage);
-					$pages = $users->links();
-					break;
-			}
+				}
+				else
+				{
+					Session::flash('messages.error', Lang::get('admin.user_del_fail'));
+				}
 		}
 
 		// Render the view
@@ -191,8 +188,8 @@ class AdminController extends BaseController {
 
 			// Define validation rules
 			$validator = Validator::make(Input::all(), array(
-				'username'    => 'required|max:50|alpha_num|unique:users,username,'.$id,
-				'email'       => 'required|max:100|email|unique:users,email,'.$id,
+				'username'    => 'required|max:50|alpha_num|unique:users,username,'.$id.',id,type,db',
+				'email'       => 'required|max:100|email|unique:users,email,'.$id.',id,type,db',
 				'dispname'    => 'max:100',
 				'password'    => empty($id) ? 'required|min:5' : 'min:5'
 			));
@@ -211,9 +208,11 @@ class AdminController extends BaseController {
 				}
 
 				$user->username = Input::get('username');
-				$user->email = Input::get('email');
+				$user->email    = Input::get('email');
 				$user->dispname = Input::get('dispname');
-				$user->salt = $user->salt ?: str_random(5);
+				$user->salt     = $user->salt ?: str_random(5);
+
+				// The first user is always immutable
 				$user->admin = $user->id != 1 ? Input::has('admin') : 1;
 
 				if (Input::has('password'))
@@ -223,14 +222,24 @@ class AdminController extends BaseController {
 
 				$user->save();
 
+				// Username is cached in the main table, update that too
+				if ( ! empty($id))
+				{
+					Paste::where('authorid', $id)->update(array(
+						'author' => Input::get('username')
+					));
+				}
+
 				Session::flash('messages.success', Lang::get('admin.user_saved'));
+
+				return Redirect::to('admin/user');
 			}
 			else
 			{
 				Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
-			}
 
-			return Redirect::to(URL::previous())->withInput();
+				return Redirect::to(URL::previous())->withInput();
+			}
 		}
 		else if (Input::has('search'))
 		{
@@ -253,17 +262,16 @@ class AdminController extends BaseController {
 	 */
 	public function getBan($action = '', $ip = '')
 	{
-		// Perform IP address actions
-		switch ($action)
+		// Remove a specific IP address
+		if ($action == 'remove' AND ! empty($ip))
 		{
-			case 'remove':
-				$ipban = IPBan::findOrFail($ip);
+			$ipban = IPBan::findOrFail($ip);
 
-				$ipban->delete();
+			$ipban->delete();
 
-				Session::flash('messages.success', Lang::get('admin.ip_unbanned'));
+			Session::flash('messages.success', Lang::get('admin.ip_unbanned'));
 
-				return Redirect::to('admin/ban');
+			return Redirect::to('admin/ban');
 		}
 
 		return View::make('admin/ban', array('bans' => IPBan::all()), Site::defaults());

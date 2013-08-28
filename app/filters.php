@@ -69,13 +69,18 @@ Route::filter('guest', function()
 | cross-site request forgery attacks. If this special token in a user
 | session does not match the one given in this request, we'll bail.
 |
+| CSRF protection is not applied to API POST requests.
+|
 */
 
 Route::filter('csrf', function()
 {
-	if (Session::token() != Input::get('_token'))
+	if (Request::segment(1) != 'api')
 	{
-		throw new Illuminate\Session\TokenMismatchException;
+		if (Session::token() != Input::get('_token'))
+		{
+			throw new Illuminate\Session\TokenMismatchException;
+		}
 	}
 });
 

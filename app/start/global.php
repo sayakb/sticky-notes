@@ -150,7 +150,6 @@ App::error(function($exception, $code)
 			$code = 403;
 			break;
 
-		case 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException':
 		case 'Illuminate\Database\Eloquent\ModelNotFoundException':
 			$code = 404;
 			break;
@@ -162,6 +161,7 @@ App::error(function($exception, $code)
 		case 401:
 		case 403:
 		case 404:
+		case 405:
 		case 418:
 			$data['errCode'] = $code;
 			break;
@@ -178,5 +178,16 @@ App::error(function($exception, $code)
 			break;
 	}
 
-	return Response::view('common/error', $data, $code);
+	// For regular requests, we show a nice and pretty error screen
+	// When in the API, just die on the user
+	if (Request::segment(1) == 'api')
+	{
+		$message = Lang::get('errors.'.$data['errCode']);
+
+		return Response::make($message, $code);
+	}
+	else
+	{
+		return Response::view('common/error', $data, $code);
+	}
 });

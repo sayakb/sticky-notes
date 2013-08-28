@@ -22,7 +22,9 @@ Route::get('all', 'ListController@getAll');
 Route::get('trending/{age?}', 'ListController@getTrending');
 
 // API routes
-Route::controller('api/{mode}', 'ApiController');
+Route::get('api/{mode}/show/{key}/{hash?}/{password?}', 'ApiController@getShow');
+Route::get('api/{mode}/list/{page?}', 'ApiController@getList');
+Route::post('api/{mode}/create', 'ApiController@postCreate');
 
 // User operation routes
 Route::controller('user', 'UserController');

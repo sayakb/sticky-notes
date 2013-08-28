@@ -99,19 +99,25 @@ class PHPass {
 		else
 		{
 			$newHash = $this->create($password, $salt);
+
 			$oldHash = NULL;
+
 			$query = NULL;
 
 			switch($model)
 			{
 				case 'Paste':
 					$oldHash = sha1(sha1($password).$salt);
+
 					$query = Paste::query();
+
 					break;
 
 				case 'User':
 					$oldHash = sha1($password.$salt);
+
 					$query = User::query();
+
 					break;
 
 				default:

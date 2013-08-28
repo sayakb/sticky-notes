@@ -48,7 +48,9 @@ class Highlighter {
 	public function __construct()
 	{
 		$this->geshi = new GeSHi();
+
 		$this->geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
+
 		$this->geshi->set_overall_style('word-wrap:break-word');
 	}
 
@@ -104,6 +106,7 @@ class Highlighter {
 	public function parse($code, $language)
 	{
 		$this->geshi->set_source($code);
+
 		$this->geshi->set_language($language);
 
 		return $this->geshi->parse_code($code);

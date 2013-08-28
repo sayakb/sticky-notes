@@ -36,6 +36,7 @@ return array(
 	"user_editor"           => "User editor",
 	"user_saved"            => "The user has been saved successfully",
 	"user_deleted"          => "The user has been deleted successfully",
+	"user_del_fail"         => "You cannot delete this user",
 	"user_create"           => "Create new user",
 	"user_auth_method"      => "Users created by the %s auth method cannot be modified ".
 	                           "using this module.",
