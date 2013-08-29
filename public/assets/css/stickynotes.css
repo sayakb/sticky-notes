@@ -37,6 +37,21 @@ section#list pre {
 section#show pre {
   min-height: 350px;
 }
+section#create textarea {
+  font-family: monospace, serif;
+}
+section#create .form-control:-moz-placeholder {
+  font-family: sans-serif;
+}
+section#create .form-control::-moz-placeholder {
+  font-family: sans-serif;
+}
+section#create .form-control:-ms-input-placeholder {
+  font-family: sans-serif;
+}
+section#create .form-control::-webkit-input-placeholder {
+  font-family: sans-serif;
+}
 .navbar {
   background: #f2f2f2;
 }
