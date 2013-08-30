@@ -191,18 +191,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/collections.git",
-            "reference": "623caf42551b416460df786154d89bc50e3d1798"
+            "reference": "bcb53776a096a0c64579cc8d8ec0db62f1109fbc"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/collections/zipball/623caf42551b416460df786154d89bc50e3d1798",
-            "reference": "623caf42551b416460df786154d89bc50e3d1798",
+            "url": "https://api.github.com/repos/doctrine/collections/zipball/bcb53776a096a0c64579cc8d8ec0db62f1109fbc",
+            "reference": "bcb53776a096a0c64579cc8d8ec0db62f1109fbc",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.2"
         },
-        "time": "2013-07-23 08:27:26",
+        "time": "2013-08-29 16:56:45",
         "type": "library",
         "extra": {
             "branch-alias": {
