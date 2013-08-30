@@ -167,7 +167,7 @@
 						</div>
 					@endif
 
-					<table class="table table-white table-user">
+					<table class="table table-striped table-striped-dark table-user">
 						<colgroup>
 							<col class="col-sm-1" />
 							<col class="col-sm-4" />

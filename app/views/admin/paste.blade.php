@@ -31,7 +31,7 @@
 		<div class="row">
 			<div class="col-sm-12 form-inline">
 				@if ( ! empty($paste))
-					<table class="table table-white">
+					<table class="table table-striped table-striped-dark">
 						<colgroup>
 							<col class="col-xs-3 col-sm-2" />
 							<col class="col-xs-9 col-sm-10" />
@@ -62,7 +62,7 @@
 
 							<tr>
 								<td>{{ Lang::get('global.author') }}</td>
-								<td>{{ $paste->author ?: Lang::get('global.anonymous') }}</td>
+								<td>{{{ $paste->author ?: Lang::get('global.anonymous') }}}</td>
 							</tr>
 
 							<tr>

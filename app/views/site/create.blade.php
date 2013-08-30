@@ -6,7 +6,7 @@
 	<section id="create">
 		{{
 			Form::open(array(
-				'action'         => 'CreateController@postCreate',
+				'action'         => $action,
 				'autocomplete'   => 'off',
 				'role'           => 'form'
 			))
@@ -16,10 +16,11 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					{{
-						Form::text('title', NULL, array(
+						Form::text('title', $paste->title, array(
 							'class'         => 'form-control',
 							'maxlength'     => 30,
-							'placeholder'   => Lang::get('global.paste_title')
+							'placeholder'   => Lang::get('global.paste_title'),
+							$disabled       => $disabled
 						))
 					}}
 				</div>
@@ -30,8 +31,9 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					{{
-						Form::select('language', $languages, 'text', array(
-							'class' => 'form-control'
+						Form::select('language', $languages, $paste->language ?: 'text', array(
+							'class'    => 'form-control',
+							$disabled  => $disabled
 						))
 					}}
 				</div>
@@ -42,7 +44,7 @@
 			<div class="col-sm-12">
 				<div class="form-group">
 					{{
-						Form::textarea('data', NULL, array(
+						Form::textarea('data', $paste->data, array(
 							'class'         => 'form-control',
 							'rows'          => 18,
 							'placeholder'   => Lang::get('global.paste_data')
@@ -63,7 +65,8 @@
 						{{
 							Form::password('password', array(
 								'class'         => 'form-control',
-								'placeholder'   => Lang::get('global.password')
+								'placeholder'   => Lang::get('global.password'),
+								$disabled       => $disabled
 							))
 						}}
 					</div>
@@ -76,7 +79,8 @@
 						<label>
 							{{
 								Form::checkbox('private', NULL, NULL, array(
-									'id' => 'private'
+									'id'       => 'private',
+									$disabled  => $disabled
 								))
 							}}
 
@@ -103,6 +107,10 @@
 								'class' => 'form-control'
 							))
 						}}
+
+						@if ($paste->id > 0)
+							{{ Form::hidden('id', $paste->id) }}
+						@endif
 					</div>
 				</div>
 			</div>

@@ -107,7 +107,16 @@ section#create .form-control::-webkit-input-placeholder {
   background: #fdfdfd;
   box-shadow: none;
 }
-.table-white > tbody > tr:nth-child(odd) > td {
+.well-history {
+  padding: 15px;
+}
+.well-history h4 {
+  margin-top: 0;
+}
+.well-history .table {
+  margin-bottom: 0;
+}
+.table-striped-dark > tbody > tr:nth-child(odd) > td {
   background: #f3f3f3;
 }
 .table-user > tbody > tr > td {
@@ -136,6 +145,11 @@ section#create .form-control::-webkit-input-placeholder {
 }
 .nav-stacked {
   margin-bottom: 15px;
+}
+.viewport {
+  max-height: 440px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 @media (max-width: 767px) {
   .form-horizontal .control-label {

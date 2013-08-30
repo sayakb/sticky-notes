@@ -78,7 +78,7 @@ class ListController extends BaseController {
 
 		$userId = Auth::user()->id;
 
-		$pastes = Paste::where('authorid', $userId)->orderBy('id', 'desc')->paginate($perPage);
+		$pastes = Paste::where('author_id', $userId)->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
 	}

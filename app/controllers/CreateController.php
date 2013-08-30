@@ -35,7 +35,10 @@ class CreateController extends BaseController {
 	public function getCreate()
 	{
 		$data = array(
-			'languages'  => Highlighter::make()->languages()
+			'languages'  => Highlighter::make()->languages(),
+			'paste'      => new Paste,
+			'action'     => 'CreateController@postCreate',
+			'disabled'   => '',
 		);
 
 		return View::make('site/create', $data, Site::defaults());
@@ -76,21 +79,21 @@ class CreateController extends BaseController {
 
 			// Redirect to paste if there's no password
 			// Otherwise, just show a link
-			if ($paste['is_protected'])
+			if ($paste->password)
 			{
-				$url = link_to('p'.$paste['urlkey'].'/'.$paste['hash']);
+				$url = link_to("p{$paste->urlkey}/{$paste->hash}");
 
 				$message = sprintf(Lang::get('create.click_for_paste'), $url);
 
 				Session::flash('messages.success', $message);
 			}
-			else if ($paste['is_private'])
+			else if ($paste->private)
 			{
-				return Redirect::to('p'.$paste['urlkey'].'/'.$paste['hash']);
+				return Redirect::to("p{$paste->urlkey}/{$paste->hash}");
 			}
 			else
 			{
-				return Redirect::to('p'.$paste['urlkey']);
+				return Redirect::to("p{$paste->urlkey}");
 			}
 		}
 		else
@@ -106,7 +109,147 @@ class CreateController extends BaseController {
 			}
 		}
 
-		return Redirect::to('/')->withInput();
+		return Redirect::to(URL::previous())->withInput();
+	}
+
+	/**
+	 * Editor window for creating a revision
+	 *
+	 * @param  string  $key
+	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
+	 */
+	public function getRevision($key)
+	{
+		$paste = Paste::getByKey($key);
+
+		// Paste was not found
+		if (is_null($paste))
+		{
+			App::abort(404); // Not found
+		}
+		else
+		{
+			// We only allow the user to revise public pastes
+			// Private pastes need to be toggled before being revised
+			if ($paste->private OR $paste->password)
+			{
+				Session::flash('messages.error', Lang::get('create.revise_private'));
+
+				return Redirect::to(URL::previous())->withInput();
+			}
+
+			// Now that we are good, we save the paste ID in session so that
+			// when the edited paste is POSTed, we can validate against this
+			Session::put('paste.revision', $paste->id);
+		}
+
+		// Output the view
+		$data = array(
+			'languages'  => Highlighter::make()->languages(),
+			'paste'      => $paste,
+			'action'     => 'CreateController@postRevision',
+			'disabled'   => 'disabled',
+		);
+
+		return View::make('site/create', $data, Site::defaults());
+	}
+
+	/**
+	 * Creates a new paste revision
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postRevision()
+	{
+		$oldId = Input::get('id');
+
+		// First and foremost, validate the ID of the revision
+		if (Session::get('paste.revision') != $oldId)
+		{
+			App::abort(401); // Unauthorized
+		}
+
+		// Define validation rules. We don't validate the title and language
+		// here as we don't allow to change that for a revision. Instead, we
+		// will use the data from the old paste
+		$validator = Validator::make(Input::all(), array(
+			'data'    => 'required',
+			'expire'  => 'required|in:'.implode(',', array_keys(Config::get('expire')))
+		));
+
+		// Generate anti-spam modules
+		$antispam = Antispam::make();
+
+		// Run validations
+		$resultValidation = $validator->passes();
+
+		// Execute antispam services
+		$resultAntispam = $antispam->passes();
+
+		if ($resultValidation AND $resultAntispam)
+		{
+			// Get the paste being revised
+			$oldPaste = Paste::findOrFail($oldId);
+
+			// We use some data from the old paste
+			$data = array(
+				'project'      => $oldPaste->project,
+				'title'        => $oldPaste->title,
+				'language'     => $oldPaste->language,
+				'private'      => NULL,
+				'password'     => NULL,
+			);
+
+			// Merge it with the input to override the values the user submitted
+			Input::merge($data);
+
+			// All set, create the new revision
+			$newPaste = Paste::createNew(Input::all());
+
+			// We now need to update the revisions table. One entry will be
+			// created for this revision. We will also create entries for
+			// any past revisions and link it to this new paste
+			$revData = array(
+				array(
+					'paste_id'     => $newPaste->id,
+					'urlkey'       => $oldPaste->urlkey,
+					'author'       => $oldPaste->author,
+					'timestamp'    => $oldPaste->timestamp,
+				)
+			);
+
+			foreach ($oldPaste->revisions as $revision)
+			{
+				$revData[] = array(
+					'paste_id'     => $newPaste->id,
+					'urlkey'       => $revision->urlkey,
+					'author'       => $revision->author,
+					'timestamp'    => $revision->timestamp,
+				);
+			}
+
+			// Now insert this batch data to the revisions table
+			Revision::insert($revData);
+
+			// Whoa, finally we are done, take the user to the shiny new
+			// paste. Since this is a public paste, we don't need the url
+			// hash or password shebang
+			return Redirect::to("p{$newPaste->urlkey}");
+		}
+		else
+		{
+			// Set the error message as flashdata
+			if ( ! $resultValidation)
+			{
+				Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+			}
+			else if ( ! $resultAntispam)
+			{
+				Session::flash('messages.error', $antispam->message());
+			}
+		}
+
+		return Redirect::to(URL::previous())->withInput();
 	}
 
 }

@@ -47,7 +47,7 @@ class Paste extends Eloquent {
 	protected $fillable = array(
 		'id',
 		'author',
-		'authorid',
+		'author_id',
 		'project',
 		'timestamp',
 		'expire',
@@ -64,19 +64,31 @@ class Paste extends Eloquent {
 	);
 
 	/**
+	 * One paste will have many revisions. This relationship will be
+	 * used to fetch all revisions associated with one paste. The key
+	 * column that we use is paste_id
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function revisions()
+	{
+		return $this->hasMany('Revision', 'paste_id');
+	}
+
+	/**
 	 * Creates a new paste with the data supplied
 	 *
 	 * @static
 	 * @param  array  $data
-	 * @return array
+	 * @return Paste
 	 */
 	public static function createNew($data)
 	{
 		// Set the paste protected flag
-		$is_protected = ! empty($data['password']);
+		$protected = ! empty($data['password']);
 
 		// Set the private paste flag
-		$is_private = ! empty($data['private']);
+		$private = ! empty($data['private']);
 
 		// We use an alphanumeric URL key to identify pastes
 		// This is done so that users do not have access to the
@@ -117,32 +129,27 @@ class Paste extends Eloquent {
 		}
 
 		// Insert the new paste
-		Paste::create(array(
-			'project'     => empty($data['project']) ? NULL : $data['project'],
-			'title'       => empty($data['title']) ? NULL : $data['title'],
-			'data'        => $data['data'],
-			'language'    => $data['language'],
-			'private'     => $is_protected OR $is_private ? 1 : 0,
-			'password'    => $password,
-			'salt'        => $salt,
-			'hash'        => $hash,
-			'urlkey'      => $urlkey,
-			'author'      => $author,
-			'authorid'    => $authorId,
-			'timestamp'   => time(),
-			'expire'      => $data['expire'] > 0 ? $data['expire'] + time() : 0,
-			'ip'          => Request::getClientIp(),
-			'hits'        => 0
-		));
+		$paste = new Paste;
 
-		// Return some paste info that is needed to
-		// build the paste URL later
-		return array(
-			'urlkey'         => $urlkey,
-			'hash'           => $hash,
-			'is_protected'   => $is_protected,
-			'is_private'     => $is_private,
-		);
+		$paste->project   = empty($data['project']) ? NULL : $data['project'];
+		$paste->title     = empty($data['title']) ? NULL : $data['title'];
+		$paste->data      = $data['data'];
+		$paste->language  = $data['language'];
+		$paste->private   = ($protected OR $private) ? 1 : 0;
+		$paste->password  = $password;
+		$paste->salt      = $salt;
+		$paste->hash      = $hash;
+		$paste->urlkey    = $urlkey;
+		$paste->author    = $author;
+		$paste->author_id = $authorId;
+		$paste->timestamp = time();
+		$paste->expire    = $data['expire'] > 0 ? $data['expire'] + time() : 0;
+		$paste->ip        = Request::getClientIp();
+		$paste->hits      = 0;
+
+		$paste->save();
+
+		return $paste;
 	}
 
 	/**

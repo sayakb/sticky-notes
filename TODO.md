@@ -1,6 +1,6 @@
 Incorporate DB changes
 =======================
- * Add authorid (same as id of user table) to main table.
+ * Add author_id (same as id of user table) to main table.
  * Add admin `tinyint[1]` and active column to users table.
    active = 0 for banned user
  * Add type column to users table with default value 'db'.
@@ -13,5 +13,14 @@ Incorporate DB changes
 		`group` varchar(30) NOT NULL,
 		`key` varchar(30) NOT NULL,
 		`value` text,
+		PRIMARY KEY (`id`)
+	)
+ * Revisions table:
+	 CREATE TABLE `paste_revisions` (
+		`id` int(12) unsigned NOT NULL AUTO_INCREMENT,
+		`paste_id` int(12) unsigned NOT NULL,
+		`urlkey` varchar(8) NOT NULL DEFAULT '',
+		`author` varchar(50) DEFAULT '',
+		`timestamp` int(11) unsigned NOT NULL,
 		PRIMARY KEY (`id`)
 	)

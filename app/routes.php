@@ -13,6 +13,10 @@
 Route::get('/', 'CreateController@getCreate');
 Route::post('create', 'CreateController@postCreate');
 
+// Revise paste route
+Route::get('rev/{key}', 'CreateController@getRevision')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
+Route::post('revise', 'CreateController@postRevision');
+
 // Show paste routes
 Route::get('{key}/{hash?}/{action?}', 'ShowController@getPaste')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
 Route::post('{key}/{hash?}', 'ShowController@postPassword')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');

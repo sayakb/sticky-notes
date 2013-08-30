@@ -63,7 +63,7 @@
 							</div>
 
 							<div class="col-sm-6 text-right">
-								{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}
+								{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
 							</div>
 						</div>
 					</div>

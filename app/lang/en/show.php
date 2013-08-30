@@ -11,8 +11,13 @@ return array(
 	|
 	*/
 
-	"raw"             => "Raw",
-	"wrap"            => "Wrap",
-	"short_url"       => "Get short URL",
+	"raw"                => "Raw",
+	"wrap"               => "Wrap",
+	"revise"             => "Revise",
+	"version_history"    => "Version history",
+	"revision_id"        => "Revision #",
+	"created_at"         => "Created at",
+	"diff"               => "Diff",
+	"short_url"          => "Get short URL",
 
 );

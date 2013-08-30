@@ -225,7 +225,7 @@ class AdminController extends BaseController {
 				// Username is cached in the main table, update that too
 				if ( ! empty($id))
 				{
-					Paste::where('authorid', $id)->update(array(
+					Paste::where('author_id', $id)->update(array(
 						'author' => Input::get('username')
 					));
 				}

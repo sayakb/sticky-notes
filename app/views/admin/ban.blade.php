@@ -33,7 +33,7 @@
 		<div class="row">
 			<div class="col-sm-12">
 				@if ($bans->count() > 0)
-					<table class="table table-white">
+					<table class="table table-striped table-striped-dark">
 						<colgroup>
 							<col class="col-sm-11" />
 							<col class="col-sm-1" />
