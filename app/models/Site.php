@@ -92,7 +92,9 @@ class Site extends Eloquent {
 			if ( ! isset(static::$data[$group]))
 			{
 				// Load the default configuration data
-				static::$data[$group] = Config::get('default')[$group];
+				$defaults = Config::get('default');
+
+				static::$data[$group] = $defaults[$group];
 
 				// When accessing from the CLI, we don't query the config table
 				// That is because Eloquent dependencies might not be loaded
