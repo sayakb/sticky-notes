@@ -1,7 +1,7 @@
 {
 	"result":
 	{
-		"id": {{ $key }},
+		"id": {{ $urlkey }},
 		"author": {{ $author }},
 		"timestamp": {{ $timestamp }},
 		"language": {{ $language }},

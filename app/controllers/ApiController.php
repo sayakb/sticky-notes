@@ -52,16 +52,16 @@ class ApiController extends BaseController {
 	 *
 	 * @access public
 	 * @param  string  $mode
-	 * @param  string  $key
+	 * @param  string  $urlkey
 	 * @param  string  $hash
 	 * @param  string  $password
 	 * @return \Illuminate\View\View
 	 */
-	public function getShow($mode, $key, $hash = '', $password = '')
+	public function getShow($mode, $urlkey, $hash = '', $password = '')
 	{
 		$api = API::make($mode);
 
-		$paste = Paste::getByKey($key);
+		$paste = Paste::where('urlkey', $urlkey)->first();
 
 		// The paste was not found
 		if (is_null($paste))
@@ -90,8 +90,6 @@ class ApiController extends BaseController {
 
 		// Build the API data
 		$data = $paste->toArray();
-
-		$data['key'] = Paste::getUrlKey($paste);
 
 		return $api->out('show', $data);
 	}
@@ -126,8 +124,6 @@ class ApiController extends BaseController {
 		foreach ($pastes as $paste)
 		{
 			$data = $paste->toArray();
-
-			$data['key'] = Paste::getUrlKey($paste);
 
 			$list[] = $data;
 		}
@@ -199,8 +195,8 @@ class ApiController extends BaseController {
 
 		// All done! Now we need to output the urlkey and hash
 		$data = array(
-			'key'    => 'p'.$paste->urlkey,
-			'hash'   => ($paste->password OR $paste->private) ? $paste->hash : '',
+			'urlkey'  => $paste->urlkey,
+			'hash'    => ($paste->password OR $paste->private) ? $paste->hash : '',
 		);
 
 		// Return the output

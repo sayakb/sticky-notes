@@ -1,7 +1,7 @@
 {
 	"result":
 	{
-		"id": {{ $key }},
+		"id": {{ $urlkey }},
 		"hash": {{ $hash }}
 	}
 }

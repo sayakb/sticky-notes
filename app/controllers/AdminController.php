@@ -51,16 +51,16 @@ class AdminController extends BaseController {
 	 * Search, edit and delete pastes
 	 *
 	 * @param  string  $action
-	 * @param  string  $key
+	 * @param  string  $urlkey
 	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
 	 */
-	public function getPaste($action = 'show', $key = '')
+	public function getPaste($action = 'show', $urlkey = '')
 	{
 		$paste = NULL;
 
-		if ( ! empty($key))
+		if ( ! empty($urlkey))
 		{
-			$paste = Paste::getByKey($key);
+			$paste = Paste::where('urlkey', $urlkey)->first();
 
 			// Paste was not found
 			if (is_null($paste))

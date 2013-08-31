@@ -3,7 +3,7 @@
 <result>
 	<pastes>
 		@for ($idx = 1; $idx <= count($pastes); $idx++)
-			<paste_{{ $idx }}>{{ $pastes[$idx - 1]['key'] }}</paste_{{ $idx }}>
+			<paste_{{ $idx }}>{{ $pastes[$idx - 1]['urlkey'] }}</paste_{{ $idx }}>
 		@endfor
 	</pastes>
 	<count>{{ $count }}</count>

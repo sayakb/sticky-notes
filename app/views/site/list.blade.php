@@ -30,12 +30,7 @@
 								<h4>
 									@if (empty($paste->title))
 										{{ Lang::get('global.paste') }}
-
-										@if ($paste->urlkey)
-											#p{{ $paste->urlkey }}
-										@else
-											#{{ $paste->id }}
-										@endif
+										#{{ $paste->urlkey }}
 									@else
 										{{{ $paste->title }}}
 									@endif
@@ -44,7 +39,7 @@
 
 							<div class="col-sm-5 text-right">
 								{{
-									link_to(Paste::getUrlKey($paste), Lang::get('list.show_paste'), array(
+									link_to($paste->urlkey, Lang::get('list.show_paste'), array(
 										'class' => 'btn btn-success'
 									))
 								}}

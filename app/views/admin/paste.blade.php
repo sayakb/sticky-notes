@@ -47,7 +47,7 @@
 						<tbody>
 							<tr>
 								<td>{{ Lang::get('global.paste_id') }}</td>
-								<td>#{{ $paste->urlkey ?: $paste->id }}</td>
+								<td>#{{ $paste->urlkey }}</td>
 							</tr>
 
 							<tr>
@@ -100,14 +100,14 @@
 					<div class="inline">
 						@if ($paste->password)
 							{{
-								link_to('admin/paste/'.Paste::getUrlKey($paste).'/rempass', Lang::get('admin.remove_password'), array(
+								link_to("admin/paste/{$paste->urlkey}/rempass", Lang::get('admin.remove_password'), array(
 									'class' => 'btn btn-primary'
 								))
 							}}
 						@endif
 
 						{{
-							link_to('admin/paste/'.Paste::getUrlKey($paste).'/toggle',
+							link_to("admin/paste/{$paste->urlkey}/toggle",
 								$paste->private ? Lang::get('global.make_public') : Lang::get('global.make_private'),
 								array(
 									'class' => 'btn btn-primary'
@@ -116,7 +116,7 @@
 						}}
 
 						{{
-							link_to('admin/paste/'.Paste::getUrlKey($paste).'/delete', Lang::get('global.delete'), array(
+							link_to("admin/paste/{$paste->urlkey}/delete", Lang::get('global.delete'), array(
 								'class'     => 'btn btn-primary',
 								'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
 							))

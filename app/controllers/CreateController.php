@@ -81,7 +81,7 @@ class CreateController extends BaseController {
 			// Otherwise, just show a link
 			if ($paste->password)
 			{
-				$url = link_to("p{$paste->urlkey}/{$paste->hash}");
+				$url = link_to("{$paste->urlkey}/{$paste->hash}");
 
 				$message = sprintf(Lang::get('create.click_for_paste'), $url);
 
@@ -89,11 +89,11 @@ class CreateController extends BaseController {
 			}
 			else if ($paste->private)
 			{
-				return Redirect::to("p{$paste->urlkey}/{$paste->hash}");
+				return Redirect::to("{$paste->urlkey}/{$paste->hash}");
 			}
 			else
 			{
-				return Redirect::to("p{$paste->urlkey}");
+				return Redirect::to($paste->urlkey);
 			}
 		}
 		else
@@ -115,12 +115,12 @@ class CreateController extends BaseController {
 	/**
 	 * Editor window for creating a revision
 	 *
-	 * @param  string  $key
+	 * @param  string  $urlkey
 	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
 	 */
-	public function getRevision($key)
+	public function getRevision($urlkey)
 	{
-		$paste = Paste::getByKey($key);
+		$paste = Paste::where('urlkey', $urlkey)->first();
 
 		// Paste was not found
 		if (is_null($paste))
@@ -234,7 +234,7 @@ class CreateController extends BaseController {
 			// Whoa, finally we are done, take the user to the shiny new
 			// paste. Since this is a public paste, we don't need the url
 			// hash or password shebang
-			return Redirect::to("p{$newPaste->urlkey}");
+			return Redirect::to($newPaste->urlkey);
 		}
 		else
 		{

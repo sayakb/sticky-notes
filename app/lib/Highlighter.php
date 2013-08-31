@@ -36,7 +36,7 @@ class Highlighter {
 	 * GeSHi library instance
 	 *
 	 * @access public
-	 * @var object
+	 * @var GeSHi
 	 */
 	private $geshi;
 
@@ -47,6 +47,8 @@ class Highlighter {
 	 */
 	public function __construct()
 	{
+		require_once base_path().'/vendor/geshi/geshi.php';
+
 		$this->geshi = new GeSHi();
 
 		$this->geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);

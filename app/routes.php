@@ -14,19 +14,20 @@ Route::get('/', 'CreateController@getCreate');
 Route::post('create', 'CreateController@postCreate');
 
 // Revise paste route
-Route::get('rev/{key}', 'CreateController@getRevision')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
+Route::get('rev/{urlkey}', 'CreateController@getRevision')->where('urlkey', 'p[a-zA-Z0-9]+');
 Route::post('revise', 'CreateController@postRevision');
 
 // Show paste routes
-Route::get('{key}/{hash?}/{action?}', 'ShowController@getPaste')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
-Route::post('{key}/{hash?}', 'ShowController@postPassword')->where('key', 'p[a-zA-Z0-9]+|[0-9]+');
+Route::get('{urlkey}/{hash?}/{action?}', 'ShowController@getPaste')->where('urlkey', 'p[a-zA-Z0-9]+');
+Route::get('diff/{oldkey}/{newkey}', 'ShowController@getDiff');
+Route::post('{urlkey}/{hash?}', 'ShowController@postPassword')->where('urlkey', 'p[a-zA-Z0-9]+');
 
 // List paste routes
 Route::get('all', 'ListController@getAll');
 Route::get('trending/{age?}', 'ListController@getTrending');
 
 // API routes
-Route::get('api/{mode}/show/{key}/{hash?}/{password?}', 'ApiController@getShow');
+Route::get('api/{mode}/show/{urlkey}/{hash?}/{password?}', 'ApiController@getShow');
 Route::get('api/{mode}/list/{page?}', 'ApiController@getList');
 Route::post('api/{mode}/create', 'ApiController@postCreate');
 

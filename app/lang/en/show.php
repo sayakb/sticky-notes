@@ -19,5 +19,9 @@ return array(
 	"created_at"         => "Created at",
 	"diff"               => "Diff",
 	"short_url"          => "Get short URL",
+	"old_rev"            => "Old revision %s",
+	"new_rev"            => "New revision %s",
+	"revision_diff"      => "Revision differences",
+	"return_paste"       => "Return to paste",
 
 );

@@ -107,8 +107,7 @@ section#create .form-control::-webkit-input-placeholder {
   background: #fdfdfd;
   box-shadow: none;
 }
-.well-history {
-  padding: 15px;
+.well-diff {
 }
 .well-history h4 {
   margin-top: 0;

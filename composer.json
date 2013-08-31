@@ -15,9 +15,7 @@
 			"app/database/seeds",
 			"app/tests/TestCase.php",
 			"app/lib",
-			"app/lib/auth",
-			"vendor/geshi",
-			"vendor/phpass"
+			"app/lib/auth"
 		]
 	},
 	"scripts": {

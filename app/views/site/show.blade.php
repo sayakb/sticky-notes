@@ -12,12 +12,7 @@
 							<h4>
 								@if (empty($paste->title))
 									{{ Lang::get('global.paste') }}
-
-									@if ($paste->urlkey)
-										#p{{ $paste->urlkey }}
-									@else
-										#{{ $paste->id }}
-									@endif
+									#{{ $paste->urlkey }}
 								@else
 									{{{ $paste->title }}}
 								@endif
@@ -38,13 +33,13 @@
 							}}
 
 							{{
-								link_to(Paste::getUrlKey($paste)."/{$paste->hash}/raw", Lang::get('show.raw'), array(
+								link_to("{$paste->urlkey}/{$paste->hash}/raw", Lang::get('show.raw'), array(
 									'class' => 'btn btn-success'
 								))
 							}}
 
 							{{
-								link_to('rev/'.Paste::getUrlKey($paste), Lang::get('show.revise'), array(
+								link_to("rev/{$paste->urlkey}", Lang::get('show.revise'), array(
 									'class' => 'btn btn-success'
 								))
 							}}
@@ -69,7 +64,7 @@
 				</div>
 
 				@if (count($paste->revisions) > 0)
-					<fieldset class="well well-small well-white well-history">
+					<fieldset class="well well-sm well-white well-history">
 						<h4>
 							<span class="glyphicon glyphicon-time"></span>
 							{{ Lang::get('show.version_history') }}
@@ -98,7 +93,7 @@
 										<tr>
 											<td>
 												{{
-													link_to(Paste::getUrlKey($revision), Paste::getUrlKey($revision))
+													link_to($revision->urlkey, $revision->urlkey)
 												}}
 											</td>
 
@@ -116,7 +111,7 @@
 
 											<td class="text-right">
 												{{
-													link_to('diff/'.Paste::getUrlKey($paste).'/'.$revision->urlkey, Lang::get('show.diff'), array(
+													link_to("diff/{$revision->urlkey}/{$paste->urlkey}", Lang::get('show.diff'), array(
 														'class' => 'btn btn-xs btn-default'
 													))
 												}}

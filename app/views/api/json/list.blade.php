@@ -4,7 +4,7 @@
 		"pastes":
 		{
 			@for ($idx = 1; $idx <= count($pastes); $idx++)
-				"paste_{{ $idx }}": {{ $pastes[$idx - 1]['key'] }}{{ $idx < count($pastes) ? ',' : NULL }}
+				"paste_{{ $idx }}": {{ $pastes[$idx - 1]['urlkey'] }}{{ $idx < count($pastes) ? ',' : NULL }}
 			@endfor
 		},
 		"count": {{ $count }},

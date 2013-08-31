@@ -29,14 +29,14 @@ class ShowController extends BaseController {
 	 * Displays the default view page
 	 *
 	 * @access public
-	 * @param  string  $key
+	 * @param  string  $urlkey
 	 * @param  string  $hash
 	 * @param  string  $action
 	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect|null
 	 */
-	public function getPaste($key, $hash = '', $action = '')
+	public function getPaste($urlkey, $hash = '', $action = '')
 	{
-		$paste = Paste::getByKey($key);
+		$paste = Paste::where('urlkey', $urlkey)->first();
 
 		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->id == $paste->authorid);
 
@@ -106,13 +106,13 @@ class ShowController extends BaseController {
 	/**
 	 * Handles the paste password submission
 	 *
-	 * @param  string  $key
+	 * @param  string  $urlkey
 	 * @param  string  $hash
 	 * @return \Illuminate\Support\Facades\Redirect|null
 	 */
-	public function postPassword($key, $hash = '')
+	public function postPassword($urlkey, $hash = '')
 	{
-		$paste = Paste::getByKey($key);
+		$paste = Paste::where('urlkey', $urlkey)->first();
 
 		if ( ! is_null($paste) AND Input::has('password'))
 		{
@@ -128,6 +128,28 @@ class ShowController extends BaseController {
 
 		// Something wrong here
 		App::abort(401);
+	}
+
+	/**
+	 * Shows a diff between two pastes
+	 *
+	 * @param  string  $oldkey
+	 * @param  string  $newkey
+	 * @return void
+	 */
+	public function getDiff($oldkey, $newkey)
+	{
+		// Generate the paste differences
+		$diff = PHPDiff::make()->compare($oldkey, $newkey);
+
+		// Build the view data
+		$data = array(
+			'diff'      => $diff,
+			'oldkey'    => $oldkey,
+			'newkey'    => $newkey,
+		);
+
+		return View::make('site/diff', $data, Site::defaults());
 	}
 
 }

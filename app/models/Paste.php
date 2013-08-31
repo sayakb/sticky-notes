@@ -153,26 +153,6 @@ class Paste extends Eloquent {
 	}
 
 	/**
-	 * Fetches a post by its urlkey or id
-	 *
-	 * @param  string  $key
-	 * @return \Illuminate\Database\Eloquent\Model|null
-	 */
-	public static function getByKey($key)
-	{
-		if (starts_with($key, 'p'))
-		{
-			$key = substr($key, 1);
-
-			return static::where('urlkey', $key)->first();
-		}
-		else if (is_numeric($key))
-		{
-			return static::find($key);
-		}
-	}
-
-	/**
 	 * Returns trending posts based on the age
 	 *
 	 * @param  string  $age
@@ -204,24 +184,6 @@ class Paste extends Eloquent {
 		}
 
 		return static::where('timestamp', '>=', $filter)->orderBy('hits', 'desc')->take($perPage);
-	}
-
-	/**
-	 * Returns the paste key
-	 *
-	 * @param  \Illuminate\Database\Eloquent\Model  $paste
-	 * @return string
-	 */
-	public static function getUrlKey($paste)
-	{
-		if ( ! empty($paste->urlkey))
-		{
-			return 'p'.$paste->urlkey;
-		}
-		else
-		{
-			return $paste->id;
-		}
 	}
 
 	/**
@@ -270,7 +232,7 @@ class Paste extends Eloquent {
 	{
 		while (TRUE)
 		{
-			$key = strtolower(str_random(8));
+			$key = 'p'.strtolower(str_random(8));
 			$count = static::where('urlkey', $key)->count();
 
 			if ($count == 0)

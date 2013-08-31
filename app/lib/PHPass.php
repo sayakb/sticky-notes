@@ -28,14 +28,14 @@ class PHPass {
 	/**
 	 * Stores a class instance
 	 *
-	 * @var Highlighter
+	 * @var PHPass
 	 */
 	private static $instance;
 
 	/**
 	 * The crytographic library instance
 	 *
-	 * @var object
+	 * @var PasswordHash
 	 */
 	private $phpass;
 
@@ -46,6 +46,8 @@ class PHPass {
 	 */
 	public function __construct()
 	{
+		require_once base_path().'/vendor/phpass/PasswordHash.php';
+
 		$this->phpass = new PasswordHash(10, false);
 	}
 

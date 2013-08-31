@@ -17,14 +17,14 @@
 		<ul class="dropdown-menu pull-right" role="menu">
 			<li>
 				{{
-					link_to(Paste::getUrlKey($paste).'/'.$paste->hash.'/toggle',
+					link_to("{$paste->urlkey}/{$paste->hash}/toggle",
 						$paste->private ? Lang::get('global.make_public') : Lang::get('global.make_private')
 					)
 				}}
 			</li>
 
 			@if ($role->admin)
-				<li>{{ link_to('admin/paste/show/'.Paste::getUrlKey($paste), Lang::get('global.edit_paste')) }}</li>
+				<li>{{ link_to("admin/paste/show/{$paste->urlkey}", Lang::get('global.edit_paste')) }}</li>
 			@endif
 		</ul>
 	</div>
