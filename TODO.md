@@ -24,3 +24,4 @@ Incorporate DB changes
 		`timestamp` int(11) unsigned NOT NULL,
 		PRIMARY KEY (`id`)
 	)
+ * Remove sid and lastlogin from paste_users
