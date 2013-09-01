@@ -147,10 +147,8 @@ class Site extends Eloquent {
 	public static function getMenu($group)
 	{
 		$output = '';
-
-		$icon = NULL;
-
-		$path = Request::path();
+		$icon   = NULL;
+		$path   = Request::path();
 
 		// Grab and parse all the menus
 		$menus = Config::get('menus');

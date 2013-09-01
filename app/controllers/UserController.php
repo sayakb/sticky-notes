@@ -129,16 +129,11 @@ class UserController extends BaseController {
 			$user = new User;
 
 			$user->username = Input::get('username');
-
-			$user->email = Input::get('email');
-
+			$user->email    = Input::get('email');
 			$user->dispname = Input::get('dispname');
-
-			$user->salt = str_random(5);
-
+			$user->salt     = str_random(5);
 			$user->password = PHPass::make()->create(Input::get('password'), $user->salt);
-
-			$user->admin = 0;
+			$user->admin    = 0;
 
 			$user->save();
 

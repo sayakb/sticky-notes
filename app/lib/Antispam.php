@@ -325,9 +325,7 @@ class Antispam {
 			$result = explode('.', $response[0]['ip']);
 
 			$days  = $result[1];
-
 			$score = $result[2];
-
 			$type  = $result[3];
 
 			// Perform PHP validation
