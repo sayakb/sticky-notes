@@ -136,5 +136,14 @@ return array(
 	"enabled"               => "Enabled",
 	"disabled"              => "Disabled",
 	"auth_updated"          => "User authentication settings have been updated successfully",
+	"system"                => "System",
+	"statistics"            => "Statistics",
+	"versions"              => "Versions",
+	"users"                 => "Users",
+	"pastes"                => "Pastes",
+	"system_load"           => "System load",
+	"db_driver"             => "DB driver",
+	"php_version"           => "PHP version",
+	"stickynotes_version"   => "Sticky Notes version",
 
 );

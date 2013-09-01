@@ -4,6 +4,17 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Sticky Notes core version
+	|--------------------------------------------------------------------------
+	|
+	| This is the sticky notes core version number. Please do not change
+	| this value to have the update checker keep working as expected.
+	|
+	*/
+	'version' => '1.0.0',
+
+	/*
+	|--------------------------------------------------------------------------
 	| Application Debug Mode
 	|--------------------------------------------------------------------------
 	|

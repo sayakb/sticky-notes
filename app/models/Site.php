@@ -248,4 +248,51 @@ class Site extends Eloquent {
 		return $list;
 	}
 
+	/**
+	 * Gets the server load. On windows systems, it fetches the
+	 * current CPU utilization.
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function getSystemLoad()
+	{
+		// Get the system's load based on the OS
+		$os = strtolower(PHP_OS);
+
+		if (strpos($os, 'win') === FALSE)
+		{
+			if (file_exists('/proc/loadavg'))
+			{
+				$load = file_get_contents('/proc/loadavg');
+
+				$load = explode(' ', $load);
+
+				return $load[0];
+			}
+			else if (function_exists('shell_exec'))
+			{
+				$load = explode(' ', `uptime`);
+
+				return $load[count($load) - 1];
+			}
+		}
+		else
+		{
+			if (function_exists('exec'))
+			{
+				$load = array();
+
+				exec('wmic cpu get loadpercentage', $load);
+
+				if ( ! empty($load[1]))
+				{
+					return "{$load[1]}%";
+				}
+			}
+		}
+
+		return Lang::get('global.not_available');
+	}
+
 }

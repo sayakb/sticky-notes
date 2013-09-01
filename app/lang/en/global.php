@@ -50,5 +50,6 @@ return array(
 	"paste_data"        => "Paste data",
 	"paste_lang"        => "Language",
 	"action_confirm"    => "Are you sure you want to perform this action?",
+	"not_available"     => "N/A",
 
 );

@@ -9,8 +9,13 @@
 	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
 	<link href="{{ asset('assets/css/stickynotes.css') }}" rel="stylesheet" />
 
-	<script src="//code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('assets/js/stickynotes.js') }}"></script>
+
+	<script type="text/javascript">
+		var ajaxUrl = "{{ url('ajax') }}";
+	</script>
 </head>
 
 <body>
