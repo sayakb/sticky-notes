@@ -22,8 +22,8 @@
 							<b>{{ Lang::get('admin.stickynotes_version') }}:</b>
 							{{ $sn_version }}
 
-							<span class="ajax" data-realtime="false" data-onload="false" data-component="version">
-								<span class="glyphicon glyphicon-refresh text-muted"></span>
+							<span data-toggle="ajax" data-onload="true" data-component="version">
+								<span class="glyphicon glyphicon-refresh"></span>
 							</span>
 						</div>
 					</div>
@@ -67,8 +67,8 @@
 						<div class="well well-sm well-white">
 							<b>{{ Lang::get('admin.system_load') }}:</b>
 
-							<span class="ajax" data-realtime="true" data-onload="true" data-component="sysload">
-								<span class="glyphicon glyphicon-refresh text-muted"></span>
+							<span data-toggle="ajax" data-realtime="true" data-onload="true" data-component="sysload">
+								<span class="glyphicon glyphicon-refresh"></span>
 							</span>
 						</div>
 					</div>

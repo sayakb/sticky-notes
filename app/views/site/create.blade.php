@@ -31,7 +31,7 @@
 			<div class="col-sm-4">
 				<div class="form-group">
 					{{
-						Form::select('language', $languages, $paste->language ?: 'text', array(
+						Form::select('language', $languages, $paste->language ?: $language, array(
 							'class'    => 'form-control',
 							$disabled  => $disabled
 						))

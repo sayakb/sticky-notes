@@ -8,11 +8,13 @@ $baseDir = dirname($vendorDir);
 return array(
     'API' => $baseDir . '/app/lib/API.php',
     'AdminController' => $baseDir . '/app/controllers/AdminController.php',
+    'AjaxController' => $baseDir . '/app/controllers/AjaxController.php',
     'Antispam' => $baseDir . '/app/lib/Antispam.php',
     'ApiController' => $baseDir . '/app/controllers/ApiController.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'CreateController' => $baseDir . '/app/controllers/CreateController.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
+    'GoogleSvc' => $baseDir . '/app/lib/GoogleSvc.php',
     'Highlighter' => $baseDir . '/app/lib/Highlighter.php',
     'IPBan' => $baseDir . '/app/models/IPBan.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',

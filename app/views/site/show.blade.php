@@ -22,13 +22,17 @@
 						<div class="col-sm-7 text-right">
 							{{
 								link_to("#", Lang::get('show.short_url'), array(
-									'class' => 'btn btn-success'
+									'class'          => 'btn btn-success',
+									'data-toggle'    => 'ajax',
+									'data-component' => 'shorten',
+									'data-extra'     => $paste->urlkey.($paste->private ? '/'.$paste->hash : ''),
 								))
 							}}
 
 							{{
 								link_to("#", Lang::get('show.wrap'), array(
-									'class' => 'btn btn-success'
+									'class'        => 'btn btn-success',
+									'data-toggle'  => 'wrap',
 								))
 							}}
 

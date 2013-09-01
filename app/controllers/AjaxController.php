@@ -28,11 +28,23 @@ class AjaxController extends BaseController {
 	/**
 	 * Fetches the latest available sticky notes version
 	 *
-	 * @return string
+	 * @return \Illuminate\View\View
 	 */
 	public function getVersion()
 	{
+		// Get app configuration
+		$app = Config::get('app');
 
+		// Parse the version number to unified numeral format
+		$localVersion = str_replace('.', '', $app['version']);
+
+		// Get the remote version number
+		$remoteVersion = @file_get_contents($app['updateUrl']);
+
+		// Compare the versions and return the appropriate response
+		$view = intval($remoteVersion) > intval($localVersion) ? 'old' : 'ok';
+
+		return View::make("ajax/version/{$view}");
 	}
 
 	/**
@@ -43,6 +55,36 @@ class AjaxController extends BaseController {
 	public function getSysload()
 	{
 		return Site::getSystemLoad();
+	}
+
+	/**
+	 * Generates a short URL for a paste
+	 *
+	 * @param  string  $urlkey
+	 * @param  string  $hash = ''
+	 * @return \Illuminate\View\View|string
+	 */
+	public function getShorten($urlkey, $hash = '')
+	{
+		// We need to validate the paste first
+		$paste = Paste::where('urlkey', $urlkey)->first();
+
+		// Paste was not found
+		if (is_null($paste))
+		{
+			return Lang::get('ajax.error');
+		}
+
+		// If it is a private paste, we need the hash
+		if ($paste->private AND $paste->hash != $hash)
+		{
+			return Lang::get('ajax.error');
+		}
+
+		// Shorten and return the paste URL
+		$longUrl = url("{$urlkey}/{$hash}");
+
+		return GoogleSvc::urlshortener($longUrl);
 	}
 
 }

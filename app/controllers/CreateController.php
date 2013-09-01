@@ -34,12 +34,20 @@ class CreateController extends BaseController {
 	 */
 	public function getCreate()
 	{
+		// Build the view data
 		$data = array(
 			'languages'  => Highlighter::make()->languages(),
+			'language'   => 'text',
 			'paste'      => new Paste,
 			'action'     => 'CreateController@postCreate',
 			'disabled'   => '',
 		);
+
+		// Get the default language from cookie
+		if (Cookie::has('language'))
+		{
+			$data['language'] = Cookie::get('language');
+		}
 
 		return View::make('site/create', $data, Site::defaults());
 	}
@@ -68,6 +76,10 @@ class CreateController extends BaseController {
 		// Execute antispam services
 		$resultAntispam = $antispam->passes();
 
+		// Save the language as a cookie so that it is auto
+		// selected next time
+		$cookie = Cookie::forever('language', Input::get('language'));
+
 		if ($resultValidation AND $resultAntispam)
 		{
 			// We inject the project into the input so that
@@ -89,11 +101,11 @@ class CreateController extends BaseController {
 			}
 			else if ($paste->private)
 			{
-				return Redirect::to("{$paste->urlkey}/{$paste->hash}");
+				return Redirect::to("{$paste->urlkey}/{$paste->hash}")->withCookie($cookie);
 			}
 			else
 			{
-				return Redirect::to($paste->urlkey);
+				return Redirect::to($paste->urlkey)->withCookie($cookie);
 			}
 		}
 		else
@@ -109,7 +121,7 @@ class CreateController extends BaseController {
 			}
 		}
 
-		return Redirect::to(URL::previous())->withInput();
+		return Redirect::to(URL::previous())->withInput()->withCookie($cookie);
 	}
 
 	/**
@@ -146,6 +158,7 @@ class CreateController extends BaseController {
 		// Output the view
 		$data = array(
 			'languages'  => Highlighter::make()->languages(),
+			'language'   => 'text',
 			'paste'      => $paste,
 			'action'     => 'CreateController@postRevision',
 			'disabled'   => 'disabled',

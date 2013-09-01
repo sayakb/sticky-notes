@@ -11,7 +11,19 @@ return array(
 	| this value to have the update checker keep working as expected.
 	|
 	*/
+
 	'version' => '1.0.0',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Sticky Notes update URL
+	|--------------------------------------------------------------------------
+	|
+	| The update checker will use this URL to get the latest version.
+	|
+	*/
+
+	'updateUrl' => 'http://sayakb.github.io/sticky-notes/version/',
 
 	/*
 	|--------------------------------------------------------------------------

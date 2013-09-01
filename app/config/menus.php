@@ -98,7 +98,7 @@ return array(
 
 		'admin/dashboard'   => array(
 			'label'         => 'admin.dashboard',
-			'icon'          => 'dashboard',
+			'icon'          => 'home',
 			'role'          => 'admin'
 		),
 
