@@ -56,8 +56,6 @@ class Highlighter {
 		$this->geshi->set_header_type(GESHI_HEADER_DIV);
 
 		$this->geshi->set_tab_width(4);
-
-		$this->geshi->set_overall_style('word-wrap:break-word');
 	}
 
 	/**
@@ -115,7 +113,9 @@ class Highlighter {
 
 		$this->geshi->set_language($language);
 
-		return $this->geshi->parse_code($code);
+		$parsed = @$this->geshi->parse_code($code);
+
+		return $parsed ?: $code;
 	}
 
 }
