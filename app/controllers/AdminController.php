@@ -95,6 +95,7 @@ class AdminController extends BaseController {
 
 				case 'toggle':
 					$paste->private = $paste->private ? 0 : 1;
+
 					$paste->password = NULL;
 
 					$paste->save();
@@ -223,9 +224,12 @@ class AdminController extends BaseController {
 				}
 
 				$user->username = Input::get('username');
-				$user->email    = Input::get('email');
+
+				$user->email = Input::get('email');
+
 				$user->dispname = Input::get('dispname');
-				$user->salt     = $user->salt ?: str_random(5);
+
+				$user->salt = $user->salt ?: str_random(5);
 
 				// The first user is always immutable
 				$user->admin = $user->id != 1 ? Input::has('admin') : 1;

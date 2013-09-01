@@ -53,6 +53,10 @@ class Highlighter {
 
 		$this->geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
 
+		$this->geshi->set_header_type(GESHI_HEADER_DIV);
+
+		$this->geshi->set_tab_width(4);
+
 		$this->geshi->set_overall_style('word-wrap:break-word');
 	}
 

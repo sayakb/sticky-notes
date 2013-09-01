@@ -19,23 +19,13 @@ footer {
   margin: 30px;
   text-align: center;
 }
-pre {
-  background: #fdfdfd;
-  border-radius: 4px 4px 0 0;
-  margin: 0 0 -1px 0;
-  border-color: #e7e7e7;
-  overflow-x: auto;
-}
-pre ol {
-  margin: 0;
-}
 section div.row:first-child h3 {
   margin-top: 0;
 }
-section#list pre {
+section#list .pre {
   min-height: 110px;
 }
-section#show pre {
+section#show .pre {
   min-height: 350px;
 }
 section#create textarea {
@@ -102,6 +92,19 @@ section#create .form-control::-webkit-input-placeholder {
   font-size: 0.95em;
   background: #f5f5f5;
   border: 1px solid #e7e7e7;
+}
+.pre {
+  background: #fdfdfd;
+  border: 1px solid #e7e7e7;
+  padding: 9px;
+  border-radius: 4px 4px 0 0;
+  margin: 0 0 -1px 0;
+  border-color: #e7e7e7;
+  font-size: 13px;
+  overflow-x: auto;
+}
+.pre li {
+  padding-left: 5px;
 }
 .well-white {
   border: 1px solid #e7e7e7;

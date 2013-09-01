@@ -131,21 +131,35 @@ class Paste extends Eloquent {
 		// Insert the new paste
 		$paste = new Paste;
 
-		$paste->project   = empty($data['project']) ? NULL : $data['project'];
-		$paste->title     = empty($data['title']) ? NULL : $data['title'];
-		$paste->data      = $data['data'];
-		$paste->language  = $data['language'];
-		$paste->private   = ($protected OR $private) ? 1 : 0;
-		$paste->password  = $password;
-		$paste->salt      = $salt;
-		$paste->hash      = $hash;
-		$paste->urlkey    = $urlkey;
-		$paste->author    = $author;
+		$paste->project = empty($data['project']) ? NULL : $data['project'];
+
+		$paste->title = empty($data['title']) ? NULL : $data['title'];
+
+		$paste->data = $data['data'];
+
+		$paste->language = $data['language'];
+
+		$paste->private = ($protected OR $private) ? 1 : 0;
+
+		$paste->password = $password;
+
+		$paste->salt = $salt;
+
+		$paste->hash = $hash;
+
+		$paste->urlkey = $urlkey;
+
+		$paste->author = $author;
+
 		$paste->author_id = $authorId;
+
 		$paste->timestamp = time();
-		$paste->expire    = $data['expire'] > 0 ? $data['expire'] + time() : 0;
-		$paste->ip        = Request::getClientIp();
-		$paste->hits      = 0;
+
+		$paste->expire = $data['expire'] > 0 ? $data['expire'] + time() : 0;
+
+		$paste->ip = Request::getClientIp();
+
+		$paste->hits = 0;
 
 		$paste->save();
 
@@ -211,6 +225,7 @@ class Paste extends Eloquent {
 		if ($count > 5)
 		{
 			$lines = explode("\n", $data);
+
 			$data = '';
 
 			for ($idx = 0; $idx < 5; $idx++)
@@ -233,6 +248,7 @@ class Paste extends Eloquent {
 		while (TRUE)
 		{
 			$key = 'p'.strtolower(str_random(8));
+
 			$count = static::where('urlkey', $key)->count();
 
 			if ($count == 0)

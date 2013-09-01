@@ -124,6 +124,7 @@ class Site extends Eloquent {
 				$config = static::query();
 
 				$config->where('group', $group);
+
 				$config->where('key', camel_case($key));
 
 				if ($config->count() == 1)
@@ -146,11 +147,14 @@ class Site extends Eloquent {
 	public static function getMenu($group)
 	{
 		$output = '';
+
 		$icon = NULL;
+
 		$path = Request::path();
 
 		// Grab and parse all the menus
 		$menus = Config::get('menus');
+
 		$group = $menus[$group];
 
 		foreach ($group as $key => $item)
@@ -158,6 +162,7 @@ class Site extends Eloquent {
 			if ( ! str_contains($key, '_'))
 			{
 				$label = Lang::get($item['label']);
+
 				$current = FALSE;
 
 				// Check if a role restriction is set
@@ -180,11 +185,13 @@ class Site extends Eloquent {
 				if ($current)
 				{
 					$active = ' class="active"';
+
 					$href = '';
 				}
 				else
 				{
 					$active = '';
+
 					$href = 'href="'.url($key).'"';
 				}
 
@@ -205,15 +212,18 @@ class Site extends Eloquent {
 			if (Auth::check())
 			{
 				$label = Lang::get('global.logout');
+
 				$href = 'href="'.url('user/logout').'"';
 			}
 			else
 			{
 				$label = Lang::get('global.login');
+
 				$href = 'href="'.url('user/login').'"';
 			}
 
 			$icon = '<span class="glyphicon glyphicon-user"></span>';
+
 			$output .= "<li><a {$href}>{$icon} {$label}</a></li>";
 		}
 
@@ -230,6 +240,7 @@ class Site extends Eloquent {
 	public static function getLanguages($csv = FALSE)
 	{
 		$list = array();
+
 		$langs = scandir(app_path().'/lang');
 
 		foreach ($langs as $lang)

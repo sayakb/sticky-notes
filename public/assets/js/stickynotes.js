@@ -124,10 +124,10 @@ function initWrapToggle()
 {
 	$('[data-toggle="wrap"]').click(function(e)
 	{
-		var isWrapped = $('pre div').css('white-space') != 'nowrap';
+		var isWrapped = $('.pre div').css('white-space') != 'nowrap';
 		var newValue = isWrapped ? 'nowrap' : 'inherit';
 
-		$('pre div').css('white-space', newValue);
+		$('.pre div').css('white-space', newValue);
 
 		e.preventDefault();
 	});
