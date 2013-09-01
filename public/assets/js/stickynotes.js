@@ -79,6 +79,8 @@ function initAjax()
 						if (response.indexOf('http') === 0)
 						{
 							$(this).attr('href', response);
+							$(this).removeAttr('data-toggle');
+							$(this).off('click');
 						}
 
 						// Activate bootstrap components again
@@ -107,7 +109,7 @@ function initAjax()
 			}
 			else
 			{
-				$(this).click(callback);
+				$(this).on('click', callback);
 			}
 		}
 	});
