@@ -101,7 +101,7 @@ class Setup {
 			// Generate schema and create the table
 			Schema::create($action, function($table) use ($tables, $action)
 			{
-				static::schema($table, $tables[$action]);
+				Setup::schema($table, $tables[$action]);
 			});
 
 			// Get the next table name
