@@ -44,6 +44,9 @@ Route::controller('user', 'UserController');
 // AJAX routes
 Route::controller('ajax', 'AjaxController');
 
+// Application setup routes
+Route::controller('setup', 'SetupController');
+
 // Protected routes
 Route::group(array('before' => 'auth'), function()
 {
@@ -57,6 +60,9 @@ Route::group(array('before' => 'auth'), function()
 		Route::controller('admin', 'AdminController');
 	});
 });
+
+// Installed state check for everything
+Route::when('*', 'installed', array('get'));
 
 // CSRF protection for all forms
 Route::when('*', 'csrf', array('post'));

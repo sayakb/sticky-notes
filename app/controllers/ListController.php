@@ -29,7 +29,7 @@ class ListController extends BaseController {
 	 * Displays the default list page
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getAll()
 	{
@@ -55,7 +55,7 @@ class ListController extends BaseController {
 	 *
 	 * @access public
 	 * @param  string  $age
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getTrending($age = 'now')
 	{
@@ -70,7 +70,7 @@ class ListController extends BaseController {
 	 * Gets user's own pastes
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getUserPastes()
 	{
@@ -88,7 +88,7 @@ class ListController extends BaseController {
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Model  $pastes
 	 * @param  bool  $showFilters
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	private function getList($pastes, $showFilters = FALSE)
 	{

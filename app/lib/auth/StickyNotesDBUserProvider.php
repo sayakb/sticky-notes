@@ -16,6 +16,7 @@
 
 use Illuminate\Database\Connection;
 use Illuminate\Hashing\HasherInterface;
+use Session;
 
 /**
  * StickyNotesDBUserProvider Class
@@ -71,7 +72,10 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	 */
 	public function retrieveById($identifier)
 	{
-		return $this->createModel()->newQuery()->find($identifier);
+		if (Session::get('global.installed') === TRUE)
+		{
+			return $this->createModel()->newQuery()->find($identifier);
+		}
 	}
 
 	/**

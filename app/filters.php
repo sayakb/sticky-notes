@@ -35,7 +35,10 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('user/login');
+	if (Auth::guest())
+	{
+		return Redirect::guest('user/login');
+	}
 });
 
 
@@ -57,7 +60,10 @@ Route::filter('auth.basic', function()
 
 Route::filter('guest', function()
 {
-	if (Auth::check()) return Redirect::to('/');
+	if (Auth::check())
+	{
+		return Redirect::to('/');
+	}
 });
 
 /*
@@ -98,5 +104,64 @@ Route::filter('admin', function()
 	if ( ! Auth::check() OR ! Auth::user()->admin)
 	{
 		App::abort(401);
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
+| Setup validation filter
+|--------------------------------------------------------------------------
+|
+| This filter checks if Sticky Notes is marked as installed.
+|
+| The following checks are done:
+|  - If the main table does not exist, it is a fresh install
+|  - If the main table is there, but versions mismatch, it is an update
+|  - If main table is there and versions match, we should get out of setup
+|
+*/
+
+Route::filter('installed', function()
+{
+	try
+	{
+		$installed = Schema::hasTable('main');
+	}
+	catch (Exception $e)
+	{
+		$installed = FALSE;
+	}
+
+	// Set installed state to cache
+	Session::put('global.installed', $installed);
+
+	// Now we get the app and DB versions
+	// If there is no version data in the DB, the function will return 0
+	$app = Config::get('app');
+
+	$db = Site::config('general');
+
+	// Derive app and db version numbers
+	$appVersion = Site::versionNbr($app['version']);
+
+	$dbVersion = Site::versionNbr($db->version);
+
+	// Now down to business: do the checks
+	if (Request::segment(1) != 'setup')
+	{
+		Session::forget('install.stage');
+
+		if ( ! $installed)
+		{
+			return Redirect::to('setup/install');
+		}
+		else if ($appVersion > $dbVersion)
+		{
+			return Redirect::to('setup/update');
+		}
+	}
+	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('install.stage'))
+	{
+		return Redirect::to('/');
 	}
 });

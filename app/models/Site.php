@@ -51,13 +51,6 @@ class Site extends Eloquent {
 	);
 
 	/**
-	 * Defines an instance cache of config data
-	 *
-	 * @var array
-	 */
-	private static $data = array();
-
-	/**
 	 * Returns site defaults that can be used in templates
 	 *
 	 * @static
@@ -89,36 +82,48 @@ class Site extends Eloquent {
 		{
 			// We first look up in the local cache
 			// If it isn't found there, we fetch it from the database
-			if ( ! isset(static::$data[$group]))
+			if ( ! Cache::has('site.config'))
 			{
 				// Load the default configuration data
-				$defaults = Config::get('default');
+				$config = Config::get('default');
 
-				static::$data[$group] = $defaults[$group];
-
-				// When accessing from the CLI, we don't query the config table
-				// That is because Eloquent dependencies might not be loaded
-				// if not opened from the web browser.
-				if (php_sapi_name() != 'cli')
+				// We try to access the site config table here, but it may
+				// fail due to many reasons, one of them being a bad connection
+				// or script execution from CLI. If it fails, we just return
+				// the default values
+				try
 				{
-					$config = static::where('group', $group)->get();
+					$siteConfig = static::where('group', $group)->get();
 
-					if ( ! is_null($config))
+					if ( ! is_null($siteConfig))
 					{
-						foreach ($config as $item)
+						foreach ($siteConfig as $item)
 						{
-							static::$data[$group]->$item['key'] = $item['value'];
+							$config[$group]->$item['key'] = $item['value'];
 						}
 					}
 				}
+				catch(Exception $e)
+				{
+					// Suppress the exception here
+				}
+
+				// Save the fetched config data to cache
+				Cache::forever('site.config', $config);
+			}
+			else
+			{
+				// Read config data from cache
+				$config = Cache::get('site.config');
 			}
 
-			return static::$data[$group];
+			return $config[$group];
 		}
 
 		// Set config values
 		else
 		{
+			// Update the new config values in the DB
 			foreach ($newData as $key => $value)
 			{
 				$config = static::query();
@@ -131,7 +136,18 @@ class Site extends Eloquent {
 				{
 					$config->update(array('value' => $value));
 				}
+				else
+				{
+					$config->insert(array(
+						'group'  => $group,
+						'key'    => $key,
+						'value'  => $value,
+					));
+				}
 			}
+
+			// Remove the config from cache
+			Cache::forget('site.config');
 
 			return TRUE;
 		}
@@ -302,6 +318,24 @@ class Site extends Eloquent {
 		}
 
 		return Lang::get('global.not_available');
+	}
+
+	/**
+	 * Gets a version number from a version string
+	 *
+	 * @static
+	 * @param  string  $version
+	 * @return int
+	 */
+	public static function versionNbr($version)
+	{
+		$version = ! empty($version) ? $version : '0.0.0';
+
+		// Remove decimals
+		$version = str_replace('.', '', $version);
+
+		// Convert it to an integer
+		return intval($version);
 	}
 
 }

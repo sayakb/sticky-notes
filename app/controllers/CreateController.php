@@ -30,7 +30,7 @@ class CreateController extends BaseController {
 	 * Displays the new paste form
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getCreate()
 	{
@@ -128,7 +128,7 @@ class CreateController extends BaseController {
 	 * Editor window for creating a revision
 	 *
 	 * @param  string  $urlkey
-	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
+	 * @return \Illuminate\Support\Facades\View|\Illuminate\Support\Facades\Redirect
 	 */
 	public function getRevision($urlkey)
 	{

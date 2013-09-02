@@ -29,7 +29,7 @@ class UserController extends BaseController {
 	 * Displays the user login page
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getLogin()
 	{
@@ -83,7 +83,7 @@ class UserController extends BaseController {
 	 * Shows the user registration screen
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getRegister()
 	{
@@ -166,7 +166,7 @@ class UserController extends BaseController {
 	 * Displays the password reset screen
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getForgot()
 	{

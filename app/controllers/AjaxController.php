@@ -28,21 +28,23 @@ class AjaxController extends BaseController {
 	/**
 	 * Fetches the latest available sticky notes version
 	 *
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getVersion()
 	{
-		// Get app configuration
-		$app = Config::get('app');
+		// Get the site configuration
+		$site = Site::config('general');
 
-		// Parse the version number to unified numeral format
-		$localVersion = str_replace('.', '', $app['version']);
+		// Get the local (installed) version number
+		$localVersion = Site::versionNbr($site->version);
 
 		// Get the remote version number
-		$remoteVersion = @file_get_contents($app['updateUrl']);
+		$remoteVersion = @file_get_contents($site->updateUrl);
+
+		$remoteVersion = Site::versionNbr($remoteVersion);
 
 		// Compare the versions and return the appropriate response
-		$view = intval($remoteVersion) > intval($localVersion) ? 'old' : 'ok';
+		$view = $remoteVersion > $localVersion ? 'old' : 'ok';
 
 		return View::make("ajax/version/{$view}");
 	}
@@ -62,7 +64,7 @@ class AjaxController extends BaseController {
 	 *
 	 * @param  string  $urlkey
 	 * @param  string  $hash = ''
-	 * @return \Illuminate\View\View|string
+	 * @return \Illuminate\Support\Facades\View|string
 	 */
 	public function getShorten($urlkey, $hash = '')
 	{

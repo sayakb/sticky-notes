@@ -40,7 +40,7 @@ class AdminController extends BaseController {
 	 * Displays the administration dashboard
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getDashboard()
 	{
@@ -67,7 +67,7 @@ class AdminController extends BaseController {
 	 *
 	 * @param  string  $action
 	 * @param  string  $urlkey
-	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
+	 * @return \Illuminate\Support\Facades\View|\Illuminate\Support\Facades\Redirect
 	 */
 	public function getPaste($action = 'show', $urlkey = '')
 	{
@@ -138,7 +138,7 @@ class AdminController extends BaseController {
 	 *
 	 * @param  string  $action
 	 * @param  string  $username
-	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect
+	 * @return \Illuminate\Support\Facades\View|\Illuminate\Support\Facades\Redirect
 	 */
 	public function getUser($action = '', $username = '')
 	{
@@ -217,10 +217,14 @@ class AdminController extends BaseController {
 				if ( ! empty($id))
 				{
 					$user = User::findOrFail($id);
+
+					$origUsername = $user->username;
 				}
 				else
 				{
 					$user = new User;
+
+					$origUsername = NULL;
 				}
 
 				$user->username = Input::get('username');
@@ -238,11 +242,15 @@ class AdminController extends BaseController {
 
 				$user->save();
 
-				// Username is cached in the main table, update that too
+				// Username is cached in the main and revision tables, update them too
 				if ( ! empty($id))
 				{
 					Paste::where('author_id', $id)->update(array(
-						'author' => Input::get('username')
+						'author' => $user->username,
+					));
+
+					Revision::where('author', $origUsername)->update(array(
+						'author' => $user->username,
 					));
 				}
 
@@ -274,7 +282,7 @@ class AdminController extends BaseController {
 	 *
 	 * @param  string $action
 	 * @param  string $ip
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getBan($action = '', $ip = '')
 	{
@@ -329,7 +337,7 @@ class AdminController extends BaseController {
 	/**
 	 * Displays the email configuration module
 	 *
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getMail()
 	{
@@ -373,7 +381,7 @@ class AdminController extends BaseController {
 	 * Display the spam filter configuration screen
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getAntispam()
 	{
@@ -441,7 +449,7 @@ class AdminController extends BaseController {
 	 * Displays user authentication configuration screen
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getAuth()
 	{
@@ -486,7 +494,7 @@ class AdminController extends BaseController {
 	 * Displays site configuration screen
 	 *
 	 * @access public
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getSite()
 	{

@@ -26,6 +26,8 @@ return array(
     'Paste' => $baseDir . '/app/models/Paste.php',
     'Revision' => $baseDir . '/app/models/Revision.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
+    'Setup' => $baseDir . '/app/lib/Setup.php',
+    'SetupController' => $baseDir . '/app/controllers/SetupController.php',
     'ShowController' => $baseDir . '/app/controllers/ShowController.php',
     'Site' => $baseDir . '/app/models/Site.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',

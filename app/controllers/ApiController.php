@@ -55,7 +55,7 @@ class ApiController extends BaseController {
 	 * @param  string  $urlkey
 	 * @param  string  $hash
 	 * @param  string  $password
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getShow($mode, $urlkey, $hash = '', $password = '')
 	{
@@ -99,7 +99,7 @@ class ApiController extends BaseController {
 	 *
 	 * @param  string  $mode
 	 * @param  int  $page
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getList($mode, $page = 1)
 	{
@@ -142,7 +142,7 @@ class ApiController extends BaseController {
 	 * Creates a new paste via the API
 	 *
 	 * @param  string  $mode
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function postCreate($mode)
 	{

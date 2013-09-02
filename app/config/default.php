@@ -22,6 +22,8 @@ return array(
 		'copyright'         => '',
 		'lang'              => 'en',
 		'googleApi'         => '',
+		'version'           => '0.0.0',
+		'updateUrl'         => 'http://sayakb.github.io/sticky-notes/version/',
 	),
 
 	'antispam'              => (object) array(

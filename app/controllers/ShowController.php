@@ -32,7 +32,7 @@ class ShowController extends BaseController {
 	 * @param  string  $urlkey
 	 * @param  string  $hash
 	 * @param  string  $action
-	 * @return \Illuminate\View\View|\Illuminate\Support\Facades\Redirect|null
+	 * @return \Illuminate\Support\Facades\View|\Illuminate\Support\Facades\Redirect|null
 	 */
 	public function getPaste($urlkey, $hash = '', $action = '')
 	{

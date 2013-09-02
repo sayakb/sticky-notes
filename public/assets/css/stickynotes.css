@@ -70,8 +70,8 @@ section#create .form-control::-webkit-input-placeholder {
   overflow-x: auto;
   word-wrap: break-word;
 }
-.pre li {
-  padding-left: 5px;
+.pre ol {
+  margin-left: 15px;
 }
 .pre-info {
   padding: 10px;
@@ -154,6 +154,10 @@ section#create .form-control::-webkit-input-placeholder {
   max-height: 440px;
   overflow-x: hidden;
   overflow-y: auto;
+}
+.progress {
+  margin-top: 10px;
+  margin-bottom: 5px;
 }
 @media (max-width: 767px) {
   .form-horizontal .control-label {
