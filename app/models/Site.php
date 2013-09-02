@@ -89,17 +89,19 @@ class Site extends Eloquent {
 
 				// We try to access the site config table here, but it may
 				// fail due to many reasons, one of them being a bad connection
-				// or script execution from CLI. If it fails, we just return
-				// the default values
+				// If it fails, we just return the default values
 				try
 				{
-					$siteConfig = static::where('group', $group)->get();
-
-					if ( ! is_null($siteConfig))
+					if (php_sapi_name() != 'cli')
 					{
-						foreach ($siteConfig as $item)
+						$siteConfig = static::where('group', $group)->get();
+
+						if ( ! is_null($siteConfig))
 						{
-							$config[$group]->$item['key'] = $item['value'];
+							foreach ($siteConfig as $item)
+							{
+								$config[$group]->$item['key'] = $item['value'];
+							}
 						}
 					}
 				}
