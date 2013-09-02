@@ -136,7 +136,7 @@ class Setup {
 	 * @param  array  $schema
 	 * @return void
 	 */
-	private static function schema($table, $schema)
+	public static function schema($table, $schema)
 	{
 		foreach ($schema as $column)
 		{
