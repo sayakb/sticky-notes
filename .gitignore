@@ -1,2 +1,1 @@
-.directory
-config.php
+app/config/database.php

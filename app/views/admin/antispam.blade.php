@@ -1,0 +1,257 @@
+@extends('admin.layout')
+
+@section('module')
+	<section id="admin-antispam">
+		{{
+			Form::open(array(
+				'autocomplete'   => 'off',
+				'role'           => 'form',
+				'class'          => 'form-horizontal',
+			))
+		}}
+
+		<div class="row">
+			<div class="col-sm-12">
+				<fieldset>
+					<legend>{{ Lang::get('admin.spam_filters') }}</legend>
+
+					<ul class="nav nav-tabs">
+						<li class="active">
+							<a href="#service-honeypot" data-toggle="tab">{{ Lang::get('admin.honeypot') }}</a>
+						</li>
+
+						<li>
+							<a href="#service-censor" data-toggle="tab">{{ Lang::get('admin.word_censor') }}</a>
+						</li>
+
+						<li>
+							<a href="#service-stealth" data-toggle="tab">{{ Lang::get('admin.stealth') }}</a>
+						</li>
+
+						<li>
+							<a href="#service-noflood" data-toggle="tab">{{ Lang::get('admin.noflood') }}</a>
+						</li>
+					</ul>
+
+					<div class="tab-content">
+						<div id="service-honeypot" class="tab-pane fade in active">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="alert alert-info">
+										<p>{{ Lang::get('admin.honeypot_exp') }}</p>
+
+										<div class="checkbox">
+											<label>
+												{{ Form::checkbox('flag_php', 1, $flags->php) }}
+												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
+											</label>
+										</div>
+									</div>
+
+									<div class="alert alert-warning">
+										{{ Lang::get('admin.honeypot_more') }}
+										{{ link_to('http://www.projecthoneypot.org/httpbl_api.php') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('php_key', Lang::get('admin.access_key'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::text('php_key', $antispam->phpKey, array(
+											'class' => 'form-control',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.access_key_exp') }}
+										{{ link_to('http://www.projecthoneypot.org/httpbl_configure.php') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('php_days', Lang::get('admin.age_threshold'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::text('php_days', $antispam->phpDays, array(
+											'class' => 'form-control',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.age_threshold_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('php_score', Lang::get('admin.threat_score'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::text('php_score', $antispam->phpScore, array(
+											'class' => 'form-control',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.threat_score_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('php_type', Lang::get('admin.visitor_filter'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::text('php_type', $antispam->phpType, array(
+											'class' => 'form-control',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.visitor_filter_exp') }}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="service-censor" class="tab-pane fade">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="alert alert-info">
+										<p>{{ Lang::get('admin.word_censor_exp') }}</p>
+
+										<div class="checkbox">
+											<label>
+												{{ Form::checkbox('flag_censor', 1, $flags->censor) }}
+												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('censor', Lang::get('admin.phrases'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::textarea('censor', $antispam->censor, array(
+											'class' => 'form-control',
+											'rows'  => 5,
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.phrases_exp') }}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="service-stealth" class="tab-pane fade">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="alert alert-info">
+										<p>{{ Lang::get('admin.stealth_exp') }}</p>
+
+										<div class="checkbox">
+											<label>
+												{{ Form::checkbox('flag_stealth', 1, $flags->stealth) }}
+												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="service-noflood" class="tab-pane fade">
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="alert alert-info">
+										<p>{{ Lang::get('admin.noflood_exp') }}</p>
+
+										<div class="checkbox">
+											<label>
+												{{ Form::checkbox('flag_noflood', 1, $flags->noflood) }}
+												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('flood_threshold', Lang::get('admin.threshold'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									<div class="input-group">
+										{{
+											Form::text('flood_threshold', $antispam->floodThreshold, array(
+												'class' => 'form-control',
+											))
+										}}
+
+										<div class="input-group-addon">
+											{{ Lang::get('admin.seconds') }}
+										</div>
+									</div>
+
+									<div class="help-block">
+										{{ Lang::get('admin.threshold_exp') }}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<hr />
+
+					<div class="form-group">
+						<div class="col-sm-12">
+							{{
+								Form::submit(Lang::get('admin.save_all'), array(
+									'name'    => 'save',
+									'class'   => 'btn btn-primary'
+								))
+							}}
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+		{{ Form::close() }}
+	</section>
+@stop
