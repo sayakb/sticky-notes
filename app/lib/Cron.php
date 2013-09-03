@@ -42,15 +42,18 @@ class Cron {
 	 */
 	public static function run()
 	{
-		if ( ! Cache::has('cron.schedule') OR Cache::get('cron.schedule') > time())
+		if (php_sapi_name() != 'cli')
 		{
-			// Schedule run one hour from now
-			Cache::forever('cron.schedule', time() + static::$interval);
+			if ( ! Cache::has('cron.schedule') OR Cache::get('cron.schedule') > time())
+			{
+				// Schedule run one hour from now
+				Cache::forever('cron.schedule', time() + static::$interval);
 
-			// Remove expired pastes
-			Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
+				// Remove expired pastes
+				Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
 
-			// Add more cron tasks here..
+				// Add more cron tasks here..
+			}
 		}
 	}
 
