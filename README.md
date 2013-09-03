@@ -14,13 +14,9 @@ For details, please see: http://www.opensource.org/licenses/bsd-license.php
 Copyright (c) 2013, Sayak Banerjee <mail@sayakbanerjee.com>.
 All rights reserved.
 
-Sticky Notes v1.0 is under development. It is being written using the
-[Laravel framework](http://laravel.com/).
-
-However, the currently stable version is still available and maintained in the
-[master branch](https://github.com/sayakb/sticky-notes/tree/master).
-It is strongly recommended that you **do not** use v1.0 in a production environment
-until it is tagged as v1.0 and moved to master.
+Sticky Notes v1.0 is currently available as a release candidate only (pre-release).
+It is recommended that you wait for the stable release before moving over from
+any previous releases to this one.
 
 
 Environment setup
