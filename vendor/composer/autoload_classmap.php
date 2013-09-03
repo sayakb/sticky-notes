@@ -13,6 +13,7 @@ return array(
     'ApiController' => $baseDir . '/app/controllers/ApiController.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'CreateController' => $baseDir . '/app/controllers/CreateController.php',
+    'Cron' => $baseDir . '/app/lib/Cron.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'GoogleSvc' => $baseDir . '/app/lib/GoogleSvc.php',
     'Highlighter' => $baseDir . '/app/lib/Highlighter.php',

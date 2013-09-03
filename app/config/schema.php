@@ -42,22 +42,6 @@ return array(
 
 			), // config
 
-			'cron' => array(
-
-				(object) array(
-					'name'     => 'timestamp',
-					'type'     => 'integer',
-					'default'  => 0,
-				),
-
-				(object) array(
-					'name'     => 'locked',
-					'type'     => 'boolean',
-					'default'  => 0,
-				),
-
-			), // cron
-
 			'ipbans' => array(
 
 				(object) array(
@@ -479,6 +463,9 @@ return array(
 
 				// Drop the session table, we no longer need it
 				DB::update("DROP TABLE {$dbPrefix}session");
+
+				// Drop the cron table, we use cache to handle that now
+				DB::update("DROP TABLE {$dbPrefix}cron");
 
 				// Generate URL keys for all pastes
 				$pastes = Paste::where('urlkey', '')->get();
