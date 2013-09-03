@@ -32,7 +32,6 @@
 			</div>
 		</div>
 
-		{{ Form::token() }}
 		{{ Form::close() }}
 	</section>
 @stop

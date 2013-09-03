@@ -36,7 +36,6 @@
 		</div>
 		<br />
 
-		{{ Form::token() }}
 		{{ Form::close() }}
 
 		<div class="row">
@@ -158,7 +157,6 @@
 						</div>
 					</fieldset>
 
-					{{ Form::token() }}
 					{{ Form::close() }}
 				@else
 					@if ($auth->method != 'db')
@@ -211,7 +209,6 @@
 			</div>
 		</div>
 
-		{{ Form::token() }}
 		{{ Form::close() }}
 	</section>
 @stop

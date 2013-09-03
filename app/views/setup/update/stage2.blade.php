@@ -1,11 +1,11 @@
 @extends('setup.page')
 
 @section('body')
-	<section id="install">
+	<section id="update">
 		<fieldset>
-			<legend>{{ Lang::get('setup.i_stage3_title') }}</legend>
+			<legend>{{ Lang::get('setup.u_stage2_title') }}</legend>
 
-			<p>{{ Lang::get('setup.i_stage3_exp') }}</p>
+			<p>{{ Lang::get('setup.u_stage2_exp') }}</p>
 
 			<div class="row">
 				<div class="col-sm-12">
@@ -34,8 +34,8 @@
 		</fieldset>
 
 		<script type="text/javascript">
-			// Trigger the installation process
-			setup("{{ url('setup/install') }}");
+			// Trigger the update process
+			setup("{{ url('setup/update') }}", "{{ $version }}");
 		</script>
 	</section>
 @stop

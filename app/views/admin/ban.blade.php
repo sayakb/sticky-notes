@@ -27,7 +27,6 @@
 		</div>
 		<br />
 
-		{{ Form::token() }}
 		{{ Form::close() }}
 
 		<div class="row">

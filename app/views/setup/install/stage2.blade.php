@@ -3,9 +3,13 @@
 @section('body')
 	<section id="install">
 		<fieldset>
-			<legend>{{ Lang::get('setup.stage2_title') }}</legend>
+			<legend>{{ Lang::get('setup.i_stage2_title') }}</legend>
 
-			<p>{{ Lang::get('setup.stage2_exp') }}</p>
+			<div class="alert alert-danger">
+				{{ sprintf(Lang::get('setup.install_warn'), link_to('setup/update', Lang::get('setup.update_util'))) }}
+			</div>
+
+			<p>{{ Lang::get('setup.i_stage2_exp') }}</p>
 
 			{{
 				Form::submit(Lang::get('setup.start_install'), array(

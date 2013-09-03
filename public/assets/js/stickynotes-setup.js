@@ -15,16 +15,16 @@
 /**
  * Sends the install commands to the server
  *
- * @param  string  installUrl
+ * @param  string  baseUrl
  * @param  string  action
  * @return void
  */
-function install(installUrl, action)
+function setup(baseUrl, action)
 {
 	action = action !== undefined ? '/' + action : '';
 
 	$.ajax({
-		url: installUrl + '/ajax' + action + '?key=' + Math.random(),
+		url: baseUrl + '/ajax' + action + '?key=' + Math.random(),
 		success: function(response)
 		{
 			response = response.split('|');
@@ -34,28 +34,43 @@ function install(installUrl, action)
 			var nextAction = response[1];
 			var message = response[2];
 
-			// Set the percent on the screen
-			$('#bar').css('width', percent + '%');
-			$('#percent').html(percent + '%');
-
 			// Set the message
 			$('#message').html(message);
 
-			if (percent < 100)
+			if (percent != -1)
 			{
-				// Make the next request. We use setTimeout to protect
-				// the server from rapid requests
-				setTimeout(function()
+				// Set the percent on the screen
+				$('#bar').css('width', percent + '%');
+				$('#percent').html(percent + '%');
+
+				if (percent < 100)
 				{
-					install(installUrl, nextAction);
-				}, 1000);
+					// Make the next request. We use setTimeout to protect
+					// the server from rapid requests
+					setTimeout(function()
+					{
+						setup(baseUrl, nextAction);
+					}, 1000);
+				}
+				else
+				{
+					// Installation complete
+					setTimeout(function()
+					{
+						location.reload();
+					}, 2000);
+				}
 			}
 			else
 			{
-				// Installation complete
+				// Make the progress bar red
+				$('.progress-bar').removeClass('progress-bar-info');
+				$('.progress-bar').addClass('progress-bar-danger');
+
+				// Installation aborted
 				setTimeout(function()
 				{
-					location.reload();
+					window.location = baseUrl + '/error';
 				}, 2000);
 			}
 		}

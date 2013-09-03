@@ -149,7 +149,11 @@ Route::filter('installed', function()
 	// Now down to business: do the checks
 	if (Request::segment(1) != 'setup')
 	{
-		Session::forget('install.stage');
+		Session::forget('setup.stage');
+
+		Session::forget('setup.updating');
+
+		Session::forget('setup.version');
 
 		if ( ! $installed)
 		{
@@ -160,7 +164,7 @@ Route::filter('installed', function()
 			return Redirect::to('setup/update');
 		}
 	}
-	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('install.stage'))
+	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('setup.stage'))
 	{
 		return Redirect::to('/');
 	}

@@ -9,9 +9,9 @@
 		@endif
 
 		<fieldset>
-			<legend>{{ Lang::get('setup.stage1_title') }}</legend>
+			<legend>{{ Lang::get('setup.i_stage1_title') }}</legend>
 
-			<p>{{ Lang::get('setup.stage1_exp') }}</p>
+			<p>{{ Lang::get('setup.i_stage1_exp') }}</p>
 
 			<p>{{ Lang::get('setup.click_check') }}</p>
 

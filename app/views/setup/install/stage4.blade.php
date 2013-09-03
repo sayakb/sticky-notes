@@ -3,9 +3,9 @@
 @section('body')
 	<section id="install">
 		<fieldset>
-			<legend>{{ Lang::get('setup.stage4_title') }}</legend>
+			<legend>{{ Lang::get('setup.i_stage4_title') }}</legend>
 
-			<p>{{ Lang::get('setup.stage4_exp') }}</p>
+			<p>{{ Lang::get('setup.i_stage4_exp') }}</p>
 
 			<dl class="dl-horizontal well well-sm well-white">
 				<dt>{{ Lang::get('global.username') }}</dt>

@@ -27,7 +27,7 @@
 		{{
 			Form::open(array(
 				'autocomplete'   => 'off',
-				'role'           => 'form'
+				'role'           => 'form',
 			))
 		}}
 
@@ -35,7 +35,6 @@
 
 		@yield('body')
 
-		{{ Form::token() }}
 		{{ Form::close() }}
 	</div>
 

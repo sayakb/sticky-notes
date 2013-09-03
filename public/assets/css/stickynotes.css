@@ -43,6 +43,12 @@ section#create .form-control:-ms-input-placeholder {
 section#create .form-control::-webkit-input-placeholder {
   font-family: sans-serif;
 }
+section#update .form-group {
+  margin-top: 20px;
+}
+section#update .form-control {
+  width: 150px;
+}
 .navbar {
   background: #f2f2f2;
 }

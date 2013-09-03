@@ -28,21 +28,19 @@ class SetupController extends BaseController {
 	/**
 	 * Shows the installation screen
 	 *
+	 * @param  string  $method
+	 * @param  string  $action
 	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getInstall($method = 'web', $action = '')
 	{
-		//Session::flush();
-		//Cache::flush();
-
 		// Installation stage
-		$stage = Session::has('install.stage') ? Session::get('install.stage') : 1;
+		$stage = Session::has('setup.stage') ? Session::get('setup.stage') : 1;
 
 		// Output based on request method
 		switch ($method)
 		{
 			case 'web':
-				// Build view data
 				$data = array(
 					'error'       => Session::get('messages.error'),
 					'success'     => Session::get('messages.success'),
@@ -52,6 +50,12 @@ class SetupController extends BaseController {
 
 			case 'ajax':
 				return Setup::install($action);
+
+			case 'error':
+				return View::make('setup/error');
+
+			default:
+				App::abort(404); // Not found
 		}
 	}
 
@@ -69,7 +73,7 @@ class SetupController extends BaseController {
 
 			if ($status === TRUE)
 			{
-				Session::put('install.stage', 2);
+				Session::put('setup.stage', 2);
 
 				return Redirect::to('setup/install');
 			}
@@ -86,7 +90,7 @@ class SetupController extends BaseController {
 		// Stage 2 submitted
 		if (Input::has('install'))
 		{
-			Session::put('install.stage', 3);
+			Session::put('setup.stage', 3);
 
 			return Redirect::to('setup/install');
 		}
@@ -95,11 +99,66 @@ class SetupController extends BaseController {
 	/**
 	 * Shows the update screen
 	 *
+	 * @param  string  $method
+	 * @param  string  $action
 	 * @return \Illuminate\Support\Facades\View
 	 */
-	public function getUpdate()
+	public function getUpdate($method = 'web', $action = '')
 	{
-		return "in update";
+		// Updater stage
+		$stage = Session::has('setup.stage') ? Session::get('setup.stage') : 1;
+
+		// Output based on request method
+		switch ($method)
+		{
+			case 'web':
+				$data = array(
+					'error'       => Session::get('messages.error'),
+					'success'     => Session::get('messages.success'),
+					'version'     => Session::get('setup.version'),
+					'versions'    => Setup::updateVersions(),
+				);
+
+				return View::make("setup/update/stage{$stage}", $data);
+
+			case 'ajax':
+				return Setup::update($action);
+
+			case 'error':
+				return View::make('setup/error');
+
+			default:
+				App::abort(404); // Not found
+		}
+	}
+
+	/**
+	 * Handles POST requests for the update page
+	 *
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postUpdate()
+	{
+		// Define validation rules
+		$validator = Validator::make(Input::all(), array(
+			'version' => 'required|in:'.Setup::updateVersions(TRUE),
+		));
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			Session::put('setup.version', Input::get('version'));
+
+			Session::put('setup.stage', 2);
+
+			return Redirect::to('setup/update');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('setup/update')->withInput();
+		}
 	}
 
 }

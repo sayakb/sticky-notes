@@ -151,6 +151,7 @@ App::error(function($exception, $code)
 			break;
 
 		case 'Illuminate\Database\Eloquent\ModelNotFoundException':
+		case 'InvalidArgumentException':
 			$code = 404;
 			break;
 	}
