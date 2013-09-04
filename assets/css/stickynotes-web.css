@@ -1,0 +1,32 @@
+/**
+ * Sticky Notes
+ *
+ * An open source lightweight pastebin application
+ *
+ * @package     StickyNotes
+ * @author      Sayak Banerjee
+ * @copyright   (c) 2013 Sayak Banerjee <mail@sayakbanerjee.com>. All rights reserved.
+ * @license     http://www.opensource.org/licenses/bsd-license.php
+ * @link        http://sayakbanerjee.com/sticky-notes
+ * @since       Version 1.0
+ * @filesource
+ */
+
+body {
+  background: #fafafa;
+}
+footer {
+  margin: 30px;
+  text-align: center;
+}
+h3 {
+  margin-top: 50px;
+}
+.navbar {
+  background: #f2f2f2;
+}
+.thumbnail {
+  margin-left: auto;
+  margin-right: auto;
+  width: 610px;
+}
