@@ -109,6 +109,31 @@ Route::filter('admin', function()
 
 /*
 |--------------------------------------------------------------------------
+| Numeric paste ID filter
+|--------------------------------------------------------------------------
+|
+| This filter gets a paste by its numeric ID. This is here purely for
+| backward compatibility as 0.4 and older versions had an optional / did
+| not have a alphanumeric URLkey.
+|
+*/
+
+Route::filter('numeric', function()
+{
+	$key = Request::segment(1);
+
+	$hash = Request::segment(2);
+
+	if (is_numeric($key) AND $key <= Site::config('general')->preMigrate)
+	{
+		$paste = Paste::findOrFail($key);
+
+		return Redirect::to("{$paste->urlkey}/{$hash}");
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
 | Setup validation filter
 |--------------------------------------------------------------------------
 |

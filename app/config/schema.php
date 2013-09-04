@@ -483,10 +483,13 @@ return array(
 				// Get the app configuration
 				$app = Config::get('app');
 
-				// Insert fqdn and app version to site config
+				// Insert fqdn, app version and migration ID to site config
+				// The migration ID is nothing but the max paste ID while updating
+				// This will be used to allow/deny access to old pastes by their IDs
 				Site::config('general', array(
-					'fqdn'     => $fqdn,
-					'version'  => $app['version'],
+					'fqdn'        => $fqdn,
+					'version'     => $app['version'],
+					'preMigrate'  => Paste::max('id'),
 				));
 
 			}, // closure
