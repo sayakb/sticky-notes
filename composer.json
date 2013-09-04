@@ -3,8 +3,7 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"require": {
-		"laravel/framework": "4.0.*",
-		"mews/captcha": "dev-master"
+		"laravel/framework": "4.0.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -15,7 +14,8 @@
 			"app/database/seeds",
 			"app/tests/TestCase.php",
 			"app/lib",
-			"app/lib/auth"
+			"app/lib/auth",
+			"vendor/mews/captcha"
 		]
 	},
 	"scripts": {
