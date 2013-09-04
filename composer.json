@@ -15,7 +15,8 @@
 			"app/database/seeds",
 			"app/tests/TestCase.php",
 			"app/lib",
-			"app/lib/auth"
+			"app/lib/auth",
+			"app/lib/hashing"
 		]
 	},
 	"scripts": {

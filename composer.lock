@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ccab56d02ce802a2c438e142d52cbd1f",
+    "hash": "46a7ac83dca06166814d2fad753bae51",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -783,12 +783,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "933f7e26beb19ce15d97031a3fdd21d8bd83a3d3"
+                "reference": "1518320bec1f1583a0c514491528d171501dc781"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/933f7e26beb19ce15d97031a3fdd21d8bd83a3d3",
-                "reference": "933f7e26beb19ce15d97031a3fdd21d8bd83a3d3",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1518320bec1f1583a0c514491528d171501dc781",
+                "reference": "1518320bec1f1583a0c514491528d171501dc781",
                 "shasum": ""
             },
             "require": {
@@ -837,7 +837,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-08-26 09:42:58"
+            "time": "2013-09-02 10:24:25"
         },
         {
             "name": "nesbot/carbon",
@@ -977,12 +977,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "cb18d67b6ab6b8e567c1ab50fe999d1d624f9884"
+                "reference": "4824af15631f6a80a939cdc58104d03e0aadd17a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/cb18d67b6ab6b8e567c1ab50fe999d1d624f9884",
-                "reference": "cb18d67b6ab6b8e567c1ab50fe999d1d624f9884",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/4824af15631f6a80a939cdc58104d03e0aadd17a",
+                "reference": "4824af15631f6a80a939cdc58104d03e0aadd17a",
                 "shasum": ""
             },
             "require": {
@@ -1016,7 +1016,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2013-07-27 09:13:54"
+            "time": "2013-08-31 08:51:10"
         },
         {
             "name": "psr/log",
