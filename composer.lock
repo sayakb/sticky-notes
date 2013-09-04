@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "76a9071850cc957dd07aa592737bdf51",
+    "hash": "46a7ac83dca06166814d2fad753bae51",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -729,6 +729,53 @@
                 "laravel"
             ],
             "time": "2013-08-31 21:50:30"
+        },
+        {
+            "name": "mews/captcha",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mewebstudio/captcha.git",
+                "reference": "250b87f4a2f791777059df63fe5e0c9ea3b9a5f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mewebstudio/captcha/zipball/250b87f4a2f791777059df63fe5e0c9ea3b9a5f0",
+                "reference": "250b87f4a2f791777059df63fe5e0c9ea3b9a5f0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.0.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Mews\\Captcha": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Muharrem ERIN",
+                    "email": "me@mewebstudio.com"
+                }
+            ],
+            "description": "Captcha Package for Laravel 4",
+            "homepage": "http://github.com/mewebstudio/captcha",
+            "keywords": [
+                "L4",
+                "Laravel 4",
+                "captcha",
+                "captcha image",
+                "laravel",
+                "mecaptcha",
+                "security"
+            ],
+            "time": "2013-07-22 20:50:46"
         },
         {
             "name": "monolog/monolog",
@@ -1763,9 +1810,9 @@
 
     ],
     "minimum-stability": "dev",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "mews/captcha": 20
+    },
     "platform": [
 
     ],

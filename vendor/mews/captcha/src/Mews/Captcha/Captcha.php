@@ -1,6 +1,6 @@
 <?php namespace Mews\Captcha;
 
-use Config, Str, Session, PHPass, URL;
+use Config, Str, Session, Hash, URL;
 
 /**
  *
@@ -65,7 +65,7 @@ class Captcha {
 
         static::$char = Str::random(static::$config['length'], static::$config['type']);
 
-        Session::put('captchaHash', PHPass::make()->create(static::$config['sensitive'] === true ? static::$char : Str::lower(static::$char), NULL));
+        Session::put('captchaHash', Hash::make(static::$config['sensitive'] === true ? static::$char : Str::lower(static::$char)));
 
     	static::$id = $id ? $id : static::$config['id'];
 
@@ -175,7 +175,7 @@ class Captcha {
 
     /**
      * Checks if the supplied captcha test value matches the stored one
-     *
+     * 
      * @param	string	$value
      * @access	public
      * @return	bool
@@ -185,7 +185,7 @@ class Captcha {
 
 		$captchaHash = Session::get('captchaHash');
 
-        return $value != null && $captchaHash != null && PHPass::make()->check('captcha', static::$config['sensitive'] === true ? $value : Str::lower($value), NULL, $captchaHash);
+        return $value != null && $captchaHash != null && Hash::check(static::$config['sensitive'] === true ? $value : Str::lower($value), $captchaHash);
 
     }
 
