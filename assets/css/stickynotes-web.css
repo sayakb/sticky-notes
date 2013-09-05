@@ -43,3 +43,6 @@ h4 {
   padding-left: 19px;
   margin-bottom: 0;
 }
+.jumbotron .glyphicon {
+  font-size: 1.7em;
+}
