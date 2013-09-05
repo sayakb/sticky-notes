@@ -6,11 +6,11 @@
 	<meta charset="utf-8">
 	<title>Sticky Notes</title>
 
-	<link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="../assets/css/stickynotes-web.css" rel="stylesheet" />
+	<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/stickynotes-web.css" rel="stylesheet" />
 
 	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -23,37 +23,37 @@
 					<span class="icon-bar"></span>
 				</button>
 
-				<a class="navbar-brand" href="home.html">Sticky Notes</a>
+				<a class="navbar-brand" href="../home">Sticky Notes</a>
 			</div>
 
 			<nav class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<li>
-						<a href="home.html">
+						<a href="../home">
 							<span class="glyphicon glyphicon-home"></span> Home
 						</a>
 					</li>
 
 					<li class="active">
-						<a href="install.html">
+						<a href="../install">
 							<span class="glyphicon glyphicon-hdd"></span> Installation
 						</a>
 					</li>
 
 					<li>
-						<a href="update.html">
+						<a href="../update">
 							<span class="glyphicon glyphicon-open"></span> Updating
 						</a>
 					</li>
 
 					<li>
-						<a href="admin.html">
+						<a href="../admin">
 							<span class="glyphicon glyphicon-cog"></span> Administration
 						</a>
 					</li>
 
 					<li>
-						<a href="api.html">
+						<a href="../api">
 							<span class="glyphicon glyphicon-briefcase"></span> API reference
 						</a>
 					</li>
@@ -63,6 +63,19 @@
 	</header>
 
 	<div class="container">
+		<div class="well pull-right">
+			<h4>Contents</h4>
+
+			<ul>
+				<li><a href="#download-sticky-notes">Download Sticky Notes</a></li>
+				<li><a href="#set-up-a-web-server">Set up a web server</a></li>
+				<li><a href="#folder-permissions-on-linux-machines">Folder permissions on Linux machines</a></li>
+				<li><a href="#database-configuration">Database configuration</a></li>
+				<li><a href="#installing-the-system">Installing the system</a></li>
+				<li><a href="#finish-up">Finish up!</a></li>
+			</ul>
+		</div>
+
 		<h1>Installation</h1>
 
 		<hr />
@@ -73,14 +86,14 @@
 			of the installation process from end to end.
 		</p>
 
-		<h3>Download Sticky Notes</h3>
+		<h3 id="download-sticky-notes">Download Sticky Notes</h3>
 
 		<p>
-			Download the latest stable version of Sticky Notes 1.0.x from <a href="download.html">here</a>.
+			Download the latest stable version of Sticky Notes 1.0.x from <a href="../../download" target="_blank">here</a>.
 			After downloading, extract the ZIP archive to your favorite location.
 		</p>
 
-		<h3>Set up a web server</h3>
+		<h3 id="set-up-a-web-server">Set up a web server</h3>
 
 		<p>
 			Sticky Notes is a PHP application, so you will need a web server running, if you don't have one
@@ -109,7 +122,7 @@
 			set inside the <code>public/index.php</code> file.
 		</div>
 
-		<h3>Folder permissions on Linux machines</h3>
+		<h3 id="folder-permissions-on-linux-machines">Folder permissions on Linux machines</h3>
 
 		<p>
 			You'll need to change the permissions on the <code>app/storage</code> folder to
@@ -120,11 +133,12 @@
 			recommended to limit the write access to apache's user only.
 		</p>
 
-		<h3>Database configuration</h3>
+		<h3 id="database-configuration">Database configuration</h3>
 
 		<p>
-			Open the <code>app/config/database.php</code> file and fill in your database server
-			details. There are two main things to do here:
+			Go to the <code>app/config</code> folder and rename <code>database.sample.php</code>
+			to <code>database.php</code>. Now open the <code>database.php</code> file and fill
+			in your database server details. There are two main things to do here:
 		</p>
 
 		<ol>
@@ -140,7 +154,7 @@
 			</li>
 		</ol>
 
-		<h3>Installing the system</h3>
+		<h3 id="installing-the-system">Installing the system</h3>
 
 		<p>
 			If everything goes well, opening <code>http://yoursite.com</code> should serve you
@@ -149,7 +163,7 @@
 
 		<p class="text-center">
 			<span class="thumbnail">
-				<img src="../assets/img/install-start.png" alt="" />
+				<img src="../../assets/img/install-start.png" alt="" />
 			</span>
 		</p>
 
@@ -167,16 +181,16 @@
 
 		<p class="text-center">
 			<span class="thumbnail">
-				<img src="../assets/img/install-process.png" alt="" />
+				<img src="../../assets/img/install-process.png" alt="" />
 			</span>
 		</p>
 
-		<h3>Finish up!</h3>
+		<h3 id="finish-up">Finish up!</h3>
 
 		<p>
 			Once installation is complete, the installer will give you a set of admin credentials.
 			<b>Please make a note of those credentials</b>. You can change them at any point of
-			time later by logging into the admin panel. See the <a href="admin.html">Administration
+			time later by logging into the admin panel. See the <a href="../admin">Administration
 			guide</a> for details.
 		</p>
 

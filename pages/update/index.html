@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Sticky Notes</title>
+
+	<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/stickynotes-web.css" rel="stylesheet" />
+
+	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<header class="navbar navbar-default navbar-static-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a class="navbar-brand" href="../home">Sticky Notes</a>
+			</div>
+
+			<nav class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="../home">
+							<span class="glyphicon glyphicon-home"></span> Home
+						</a>
+					</li>
+
+					<li>
+						<a href="../install">
+							<span class="glyphicon glyphicon-hdd"></span> Installation
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="../update">
+							<span class="glyphicon glyphicon-open"></span> Updating
+						</a>
+					</li>
+
+					<li>
+						<a href="../admin">
+							<span class="glyphicon glyphicon-cog"></span> Administration
+						</a>
+					</li>
+
+					<li>
+						<a href="../api">
+							<span class="glyphicon glyphicon-briefcase"></span> API reference
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="container">
+		<div class="well pull-right">
+			<h4>Contents</h4>
+
+			<ul>
+				<li>
+					<a href="#updating-the-codebase">Updating the codebase</a>
+
+					<ul>
+						<li><a href="#updating-from-1-0-x">Updating from 1.0.x</a></li>
+						<li><a href="#updating-from-older-versions">Updating from older versions</a></li>
+					</ul>
+				</li>
+
+				<li><a href="#running-the-updater">Running the updater</a></li>
+			</ul>
+		</div>
+
+		<h1>Updating</h1>
+
+		<hr />
+
+		<p>
+			Sticky Notes 1.0 has a built-in hassle-free updater utility. This utility aims towards
+			making your update experience quick and smooth.
+		</p>
+
+		<p>
+			Please make sure you backup your old Sticky Notes source files and the database before
+			starting with the update process.
+		</p>
+
+		<h3 id="updating-the-codebase">Updating the codebase</h3>
+
+		<p>
+			The update process is slightly different when upgrading from an older version of
+			Sticky Notes prior to 1.0, and the update scenarios are discussed below. However, in
+			both scenarios, you need to download the latest Sticky Notes version from
+			<a href="../../download" target="_blank">here</a> and extract the archive.
+		</p>
+
+		<h4 id="updating-from-1-0-x">Updating from 1.0.x</h4>
+
+		<p>
+			Overwrite the old Sticky Notes 1.0.x files in your web root with the contents of
+			the download archive.
+		</p>
+
+		<h4 id="updating-from-older-versions">Updating from older versions</h4>
+
+		<p>
+			Move the old code files to any different location so that you are left with an
+			empty directory. Now copy over the new 1.0.x files to your web root (or wherever
+			your old code resided earlier). Now follow the <a href="../install/#database-configuration">
+			database configuration</a> steps mentioned in the <a href="../install">installation guide</a>.
+		</p>
+
+		<h3 id="running-the-updater">Running the updater</h3>
+
+		<p>
+			This is the simple part: all you need to do is visit <code>http://yoursite.com</code>
+			(your Sticky Notes site) and you should be automatically taken to the update utility.
+			Sticky Notes automatically detects the installed version. However, it is <b>strongly
+			recommended</b> that you verify that the correct version is selected.
+		</p>
+
+		<p class="text-center">
+			<span class="thumbnail">
+				<img src="../../assets/img/update.png" alt="" />
+			</span>
+		</p>
+
+		<p>
+			At this screen, click on <code>Start update</code> and the installer will update your
+			database to the newest version.
+		</p>
+
+		<div class="alert alert-info">
+			One nice feature of the installer is that it is incremental in nature. What that means
+			is, suppose you are updating from 0.4 to 1.0.2, and there are two releases (1.0.0 and
+			1.0.1) that you have skipped in between, the updater will automatically take care
+			of the updates from the missed out releases. Therefore, while the updater is running,
+			you will see that it applies the database changes for each release from your old to
+			new version one by one.
+		</div>
+	</div>
+
+	<footer>
+		<a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2013 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.
+	</footer>
+</body>
+</html>

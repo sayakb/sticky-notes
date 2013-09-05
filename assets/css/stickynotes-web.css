@@ -22,6 +22,9 @@ footer {
 h3 {
   margin-top: 50px;
 }
+h4 {
+  margin-top: 30px;
+}
 .navbar {
   background: #f2f2f2;
 }
@@ -29,4 +32,14 @@ h3 {
   margin-left: auto;
   margin-right: auto;
   width: 610px;
+}
+.well.pull-right {
+  margin: 20px 0 20px 20px;
+}
+.well.pull-right h4 {
+  margin-top: 0;
+}
+.well.pull-right ul {
+  padding-left: 19px;
+  margin-bottom: 0;
 }
