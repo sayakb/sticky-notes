@@ -4,7 +4,7 @@ Sticky notes is a powerful open-source pastebin application.
 
 See http://sayakbanerjee.com/sticky-notes for help with installation and updating.
 
-License: [www.opensource.org/licenses/bsd-license.php](BSD 2-clause license).
+License: [http://www.opensource.org/licenses/bsd-license.php](BSD 2-clause license).
 
 &copy; 2013 [Sayak Banerjee](http://sayakbanerjee.com). All rights reserved.
 
