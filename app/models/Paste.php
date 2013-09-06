@@ -216,4 +216,23 @@ class Paste extends Eloquent {
 		}
 	}
 
+	/**
+	 * Fetches available expiration times for a paste
+	 *
+	 * @static
+	 * @param  string  $langKey
+	 * @return array
+	 */
+	public static function getExpiration($langKey = 'create')
+	{
+		$times = Config::get('expire');
+
+		foreach ($times as $time => $label)
+		{
+			$times[$time] = Lang::get("{$langKey}.{$label}");
+		}
+
+		return $times;
+	}
+
 }

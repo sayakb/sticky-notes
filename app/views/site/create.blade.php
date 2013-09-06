@@ -103,7 +103,7 @@
 						</div>
 
 						{{
-							Form::select('expire', Config::get('expire'), NULL, array(
+							Form::select('expire', Paste::getExpiration(), $site->pasteAge, array(
 								'class' => 'form-control'
 							))
 						}}
