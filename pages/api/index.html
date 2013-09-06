@@ -63,13 +63,341 @@
 	</header>
 
 	<div class="container">
-		<div class="jumbotron text-center">
-			<h1>
-				<span class="glyphicon glyphicon-bullhorn text-success"></span>
-			</h1>
+		<div class="well pull-right">
+			<h4>Contents</h4>
 
-			<h2>This page is coming soon, hang in there!</h2>
+			<ul>
+				<li>
+					<a href="#creating-new-pastes">Creating new pastes</a>
+
+					<ul>
+						<li><a href="#create-mandatory-parameters">Mandatory parameters</a></li>
+						<li><a href="#create-optional-parameters">Optional parameters</a></li>
+						<li><a href="#create-return-values-on-success">Return values on success</a></li>
+						<li><a href="#create-return-values-on-error">Return values on error</a></li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#show-paste">Show paste</a>
+
+					<ul>
+						<li><a href="#show-return-values-on-success">Return values on success</a></li>
+						<li><a href="#show-return-values-on-error">Return values on error</a></li>
+					</ul>
+				</li>
+
+				<li>
+					<a href="#list-pastes">List pastes</a>
+
+					<ul>
+						<li><a href="#list-return-values-on-success">Return values on success</a></li>
+						<li><a href="#list-return-values-on-error">Return values on error</a></li>
+					</ul>
+				</li>
+			</ul>
 		</div>
+
+		<h1>API reference</h1>
+
+		<hr />
+
+		<p>
+			This document defines the REST API specifications for Sticky Notes. The API has
+			three main endpoints: <code>create</code>, <code>show</code> and <code>list</code>.
+			For each endpoint, there are a set of mandatory and optional parameters and a
+			standard output template depending upon the requested format for the response.
+		</p>
+
+		<h3 id="creating-new-pastes">Creating new pastes</h3>
+
+		<p>
+			The <code>create</code> endpoint can be used for creating a new paste from your
+			application.
+		</p>
+
+		<ul>
+			<li>
+				Service URL:
+				<code>http://yoursite.com/api/&lt;format&gt;/create</code>
+
+				<ul>
+					<li>
+						<code>format</code>:
+						Can be <code>json</code> or <code>xml</code>.
+						For example: <code>http://yoursite.com/api/json/create</code> is a valid endpoint
+					</li>
+				</ul>
+			</li>
+
+			<li>
+				HTTP method:
+				<code>POST</code>
+			</li>
+		</ul>
+
+		<h4 id="create-mandatory-parameters">Mandatory parameters</h4>
+
+		<ul>
+			<li>
+				<code>data</code>:
+				The text to be pasted
+			</li>
+
+			<li>
+				<code>language</code>:
+				The development language used (<a href="http://goo.gl/gGOXIq">click here</a> to see supported languages)
+			</li>
+		</ul>
+
+		<h4 id="create-optional-parameters">Optional parameters</h4>
+
+		<ul>
+			<li>
+				<code>title</code>:
+				The paste title
+			</li>
+
+			<li>
+				<code>private</code>:
+				Whether the paste is private or not (1 or 0)
+			</li>
+
+			<li>
+				<code>password</code>:
+				A password string to protect the paste
+			</li>
+
+			<li>
+				<code>expire</code>:
+				Time in seconds after which paste will be deleted from server
+			</li>
+
+			<li>
+				<code>project</code>:
+				Whether to associate a project with the paste
+			</li>
+		</ul>
+
+		<h4 id="create-return-values-on-success">Return values on success</h4>
+
+		<ul>
+			<li>
+				<code>id</code>:
+				ID of the paste
+			</li>
+
+			<li>
+				<code>hash</code>:
+				Hash/key for the paste (only for private pastes)
+			</li>
+		</ul>
+
+		<div class="alert alert-info">
+			URLs can be framed as <code>http://yoursite.com/&lt;id&gt;</code> for public pastes and
+			<code>http://yoursite.com/&lt;id&gt;/&lt;hash&gt;</code> for private pastes.
+		</div>
+
+		<h4 id="create-return-values-on-error">Return values on error</h4>
+
+		<ul>
+			<li>
+				<code>err_title_max_30</code>:
+				Title cannot be longer than 30 characters
+			</li>
+
+			<li>
+				<code>err_data_required</code>:
+				Paste body was not specified
+			</li>
+
+			<li>
+				<code>err_lang_required</code>:
+				Paste language was not specified
+			</li>
+
+			<li>
+				<code>err_lang_invalid</code>:
+				An invalid language was used
+			</li>
+
+			<li>
+				<code>err_expire_integer</code>:
+				The paste expiration value must be an integer
+			</li>
+
+			<li>
+				<code>err_expire_min_zero</code>:
+				The expire field cannot be less than zero
+			</li>
+		</ul>
+
+		<h3 id="show-paste">Show paste</h3>
+
+		<p>
+			The <code>show</code> endpoint can be used for returning a paste by its unique
+			identifier.
+		</p>
+
+		<ul>
+			<li>
+				Service URL:
+				<code>http://yoursite.com/api/&lt;format&gt;/show/&lt;id&gt;/&lt;hash&gt;/&lt;password&gt;</code>
+
+				<ul>
+					<li>
+						<code>format</code>:
+						Can be <code>json</code> or <code>xml</code>
+					</li>
+
+					<li>
+						<code>id</code>:
+						The unique paste identifier
+					</li>
+
+					<li>
+						<code>hash</code>:
+						Hash/key for the paste (only for private pastes)
+					</li>
+
+					<li>
+						<code>password</code>:
+						Password to unlock the paste (only for protected pastes)
+					</li>
+				</ul>
+			</li>
+
+			<li>
+				HTTP method:
+				<code>GET</code>
+			</li>
+		</ul>
+
+		<h4 id="show-return-values-on-success">Return values on success</h4>
+
+		<ul>
+			<li>
+				<code>id</code>:
+				ID of the paste
+			</li>
+
+			<li>
+				<code>author</code>:
+				Author of the paste
+			</li>
+
+			<li>
+				<code>timestamp</code>:
+				UNIX timestamp representing paste creation time
+			</li>
+
+			<li>
+				<code>language</code>:
+				Language of the paste data
+			</li>
+
+			<li>
+				<code>title</code>:
+				The paste title
+			</li>
+
+			<li>
+				<code>data</code>:
+				The pasted code
+			</li>
+
+			<li>
+				<code>project</code>:
+				Project name (if any) associated with the paste
+			</li>
+
+			<li>
+				<code>hits</code>:
+				Number of views
+			</li>
+		</ul>
+
+		<h4 id="show-return-values-on-error">Return values on error</h4>
+
+		<ul>
+			<li>
+				<code>err_not_found</code>:
+				Paste not found
+			</li>
+
+			<li>
+				<code>err_invalid_hash</code>:
+				Invalid hash code for a private paste
+			</li>
+
+			<li>
+				<code>err_password_required</code>:
+				Password required to view the paste
+			</li>
+
+			<li>
+				<code>err_invalid_password</code>:
+				Incorrect password supplied
+			</li>
+		</ul>
+
+		<h3 id="list-pastes">List pastes</h3>
+
+		<p>
+			The <code>list</code> endpoint can be used for getting a list of pastes IDs.
+		</p>
+
+		<ul>
+			<li>
+				Service URL:
+				<code>http://yoursite.com/api/&lt;format&gt;/list/&lt;page&gt;</code>
+
+				<ul>
+					<li>
+						<code>format</code>:
+						Can be <code>json</code> or <code>xml</code>
+					</li>
+
+					<li>
+						<code>page</code>:
+						The list page to be fetched
+					</li>
+				</ul>
+			</li>
+
+			<li>
+				HTTP method:
+				<code>GET</code>
+			</li>
+		</ul>
+
+		<h4 id="list-return-values-on-success">Return values on success</h4>
+
+		<ul>
+			<li>
+				<code>pastes</code>:
+				Contains sub-elements like paste1, paste2 etc. each of which have a paste ID
+			</li>
+
+			<li>
+				<code>count</code>:
+				Number of paste elements enclosed within <code>pastes</code>
+			</li>
+
+			<li>
+				<code>pages</code>:
+				Total number of pages
+			</li>
+		</ul>
+
+		<h4 id="list-return-values-on-error">Return values on error</h4>
+
+		<ul>
+			<li>
+				<code>err_no_pastes</code>:
+				No pastes found
+			</li>
+		</ul>
 	</div>
 
 	<footer>
