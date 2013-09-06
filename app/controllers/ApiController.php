@@ -116,6 +116,12 @@ class ApiController extends BaseController {
 
 		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
 
+		// Check if no pastes were found
+		if ($pastes->count() === 0)
+		{
+			return $api->error('no_pastes', 418);
+		}
+
 		// We populate the data manually here as there is some
 		// per item processing to be done
 		$list = array();
