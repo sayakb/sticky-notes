@@ -163,7 +163,7 @@ class ApiController extends BaseController {
 			'title'     => 'max:30',
 			'data'      => 'required',
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
-			'expire'    => 'required|in:'.implode(',', array_keys(Config::get('expire'))),
+			'expire'    => 'in:'.implode(',', array_keys(Config::get('expire'))),
 		), $custom);
 
 		// Run validations

@@ -128,6 +128,12 @@ class Paste extends Eloquent {
 			$password = PHPass::make()->create($data['password'], $salt);
 		}
 
+		// Set the paste expiration time default
+		if ( ! isset($data['expire']))
+		{
+			$data['expire'] = 0;
+		}
+
 		// Insert the new paste
 		$paste = new Paste;
 
