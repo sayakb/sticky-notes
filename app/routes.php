@@ -50,6 +50,12 @@ Route::controller('ajax', 'AjaxController');
 // Application setup routes
 Route::controller('setup', 'SetupController');
 
+// Documentation routes
+Route::get('docs', function()
+{
+	return Redirect::to('http://sayakbanerjee.com/sticky-notes');
+});
+
 // Protected routes
 Route::group(array('before' => 'auth'), function()
 {
