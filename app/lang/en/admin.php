@@ -133,6 +133,8 @@ return array(
 	                           "visible to everybody who can access the sticky-notes DB.",
 	"user_reg"              => "Registration",
 	"user_reg_exp"          => "Set this to disabled to stop new user account registrations.",
+	"reg_captcha"           => "Captcha module",
+	"reg_captcha_exp"       => "Enable or disable display of a visual verification field on the registration screen.",
 	"enabled"               => "Enabled",
 	"disabled"              => "Disabled",
 	"auth_updated"          => "User authentication settings have been updated successfully",

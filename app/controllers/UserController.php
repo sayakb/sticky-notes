@@ -95,7 +95,7 @@ class UserController extends BaseController {
 			Session::flash('messages.error', Lang::get('user.reg_disabled'));
 		}
 
-		return View::make('user/register', array(), Site::defaults());
+		return View::make('user/register', array('auth' => $auth), Site::defaults());
 	}
 
 	/**
@@ -115,13 +115,20 @@ class UserController extends BaseController {
 		}
 
 		// Define validation rules
-		$validator = Validator::make(Input::all(), array(
+		$rules = array(
 			'username'    => 'required|max:50|alpha_num|unique:users,username,ldap,type',
 			'email'       => 'required|max:100|email|unique:users,email,ldap,type',
 			'dispname'    => 'max:100',
 			'password'    => 'required|min:5',
-			'captcha'     => 'required|captcha'
-		));
+		);
+
+		// Check if captcha is enabled, and if it is, validate it
+		if ($auth->dbShowCaptcha)
+		{
+			$rules['captcha'] = 'required|captcha';
+		}
+
+		$validator = Validator::make(Input::all(), $rules);
 
 		// Run the validator
 		if ($validator->passes())

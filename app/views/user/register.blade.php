@@ -59,21 +59,23 @@
 						}}
 					</div>
 
-					<div class="form-group form-captcha">
-						{{ Form::label('captcha', Lang::get('user.human_verify')) }}
+					@if ($auth->dbShowCaptcha)
+						<div class="form-group form-captcha">
+							{{ Form::label('captcha', Lang::get('user.human_verify')) }}
 
-						<div class="input-group">
-							<span class="input-group-addon">
-								{{ HTML::image(Captcha::img()) }}
-							</span>
+							<div class="input-group">
+								<span class="input-group-addon">
+									{{ HTML::image(Captcha::img()) }}
+								</span>
 
-							{{
-								Form::text('captcha', NULL, array(
-									'class'   => 'form-control',
-								))
-							}}
+								{{
+									Form::text('captcha', NULL, array(
+										'class'   => 'form-control',
+									))
+								}}
+							</div>
 						</div>
-					</div>
+					@endif
 
 					{{
 						Form::submit(Lang::get('user.register'), array(

@@ -53,6 +53,7 @@ return array(
 	'auth'                  => (object) array(
 		'method'            => 'db',
 		'dbAllowReg'        => '1',
+		'dbShowCaptcha'     => '1',
 		'ldapServer'        => '127.0.0.1',
 		'ldapPort'          => '389',
 		'ldapBaseDn'        => '',

@@ -492,6 +492,9 @@ return array(
 					'preMigrate'  => Paste::max('id'),
 				));
 
+				// All done, flush the cache!
+				Cache::flush();
+
 			}, // closure
 
 		), // 0.4.0

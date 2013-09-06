@@ -94,13 +94,13 @@ class Site extends Eloquent {
 				{
 					if (php_sapi_name() != 'cli')
 					{
-						$siteConfig = static::where('group', $group)->get();
+						$siteConfig = static::all();
 
 						if ( ! is_null($siteConfig))
 						{
 							foreach ($siteConfig as $item)
 							{
-								$config[$group]->$item['key'] = $item['value'];
+								$config[$item['group']]->$item['key'] = $item['value'];
 							}
 						}
 					}
