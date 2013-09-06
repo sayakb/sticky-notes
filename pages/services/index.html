@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<title>Sticky Notes</title>
+
+	<link href="../../assets/img/favicon.png" rel="shortcut icon" />
+	<link href="../../assets/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="../../assets/css/stickynotes-web.css" rel="stylesheet" />
+
+	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="../../assets/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<header class="navbar navbar-default navbar-static-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+
+				<a class="navbar-brand" href="../home">Sticky Notes</a>
+			</div>
+
+			<nav class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a href="../home">
+							<span class="glyphicon glyphicon-home"></span> Home
+						</a>
+					</li>
+
+					<li>
+						<a href="../install">
+							<span class="glyphicon glyphicon-hdd"></span> Installation
+						</a>
+					</li>
+
+					<li>
+						<a href="../update">
+							<span class="glyphicon glyphicon-open"></span> Updating
+						</a>
+					</li>
+
+					<li>
+						<a href="../api">
+							<span class="glyphicon glyphicon-briefcase"></span> API reference
+						</a>
+					</li>
+
+					<li class="active">
+						<a href="../services">
+							<span class="glyphicon glyphicon-cog"></span> Services
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<div class="container">
+		<div class="well pull-right col-sm-4 col-md-3">
+			<h4>Contents</h4>
+
+			<ul>
+				<li><a href="#honeypot">Honeypot</a></li>
+				<li><a href="#url-shortener">URL shortener</a></li>
+				<li><a href="#project-pastebins">Project pastebins</a></li>
+				<li><a href="#other-services">Other services</a></li>
+			</ul>
+		</div>
+
+		<h1>Services</h1>
+
+		<hr />
+
+		<p>
+			This document highlights the services offered by Sticky Notes v1 and the configuration
+			involved in enabling those features.
+		</p>
+
+		<h3 id="honeypot">Honeypot</h3>
+
+		<p>
+			Project Honeypot is an initiative to identify spammers and harvesters and stop them
+			from invading your site. Sticky Notes integrates with Project Honeypot out-of-the-box
+			and all you need to do is to get an API key <a href="http://goo.gl/vXwMHp">here</a>.
+			Once you have your API key, go to <code>Admin &rarr; Spam filters</code> in your site,
+			fill in the API key and enable the plugin.
+		</p>
+
+		<h3 id="url-shortener">URL shortener</h3>
+
+		<p>
+			Sticky Notes consumes the <a href="http://goo.gl">goo.gl</a> URL shortener API. This
+			adds a &quot;Get short URL&quot; button to the paste pages. To enable this service,
+			get your Google API Key from the <a href="http://goo.gl/4TcGGB">Google API Console</a>
+			and set it in the <code>Admin &rarr; Site settings</code> module.
+		</p>
+
+		<h3 id="project-pastebins">Project pastebins</h3>
+
+		<p>
+			If you are setting up a pastebin for your organization and want different projects to
+			have their own dedicated paste area, all you need is a tiny bit of configuration and
+			you're done! To use this service, you need to set up a wildcard DNS record in your
+			zones file to point to the same nameserver. See <a href="http://goo.gl/woCePO">this
+			Wikipedia article</a> for details.
+		</p>
+
+		<p>
+			Once set up, visiting <code>http://someproject.yoursite.com</code> will provide that
+			project a dedicated namespace with archives and other lists showing entries made for
+			that project only. However, visiting <code>http://yoursite.com</code> will display
+			data from all projects including the ones directly made to the root site itself.
+		</p>
+
+		<h3 id="other-services">Other services</h3>
+
+		<p>
+			Sticky Notes comes with a whole big list of features that &quot;just work&quot; and
+			don't require any configuration - however, most services provide you full control
+			so that you can choose not to use them. For example, you can choose to disable one
+			or more antispam filters from the admin panel of your site. You can choose to disable
+			visual verification for users registering on your site by disabling the captcha
+			module from the <code>Admin &rarr; Authentication &rarr; Database</code> screen, and
+			even completely stop users from registering if you want to create users manually from
+			the <code>Manage users</code> screen of the admin panel.
+		</p>
+
+		<p>
+			If you have any questions on Sticky Notes or if you would like to have a new functionality
+			implemented, please create a ticket <a href="http://goo.gl/qEa8kb">here/a>.
+		</p>
+	</div>
+
+	<footer>
+		<a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2013 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.
+	</footer>
+</body>
+</html>
