@@ -339,7 +339,7 @@ class Site extends Eloquent {
 	 */
 	public static function versionNbr($version)
 	{
-		$version = ! empty($version) ? $version : '0.0.0';
+		$version = ! empty($version) ? $version : '0.0';
 
 		// Remove decimals
 		$version = str_replace('.', '', $version);
