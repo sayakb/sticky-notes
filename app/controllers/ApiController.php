@@ -82,7 +82,7 @@ class ApiController extends BaseController {
 			{
 				return $api->error('password_required', 403);
 			}
-			else if ($paste->password != $password)
+			else if (PHPass::make()->check('Paste', $password, $paste->salt, $paste->password))
 			{
 				return $api->error('invalid_password', 403);
 			}
