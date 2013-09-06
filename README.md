@@ -21,6 +21,10 @@ License: [BSD 2-clause license](http://www.opensource.org/licenses/bsd-license.p
 		<td>
 			<a href="http://goo.gl/7KmAFP">API reference</a>
 		</td>
+
+		<td>
+			<a href="http://goo.gl/TKyj4D">Services</a>
+		</td>
 	</tr>
 </table>
 
