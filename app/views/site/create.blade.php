@@ -96,7 +96,7 @@
 						<div class="input-group-btn">
 							{{
 								Form::submit(Lang::get('global.paste'), array(
-									'name'    => 'submit',
+									'name'    => '_submit',
 									'class'   => 'btn btn-primary'
 								))
 							}}

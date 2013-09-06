@@ -24,7 +24,7 @@
 
 					{{
 						Form::submit(Lang::get('global.submit'), array(
-							'name'    => 'submit',
+							'name'    => '_submit',
 							'class'   => 'btn btn-primary'
 						))
 					}}

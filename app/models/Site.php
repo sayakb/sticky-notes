@@ -128,23 +128,31 @@ class Site extends Eloquent {
 			// Update the new config values in the DB
 			foreach ($newData as $key => $value)
 			{
-				$config = static::query();
-
-				$config->where('group', $group);
-
-				$config->where('key', camel_case($key));
-
-				if ($config->count() == 1)
+				if ( ! starts_with($key, '_'))
 				{
-					$config->update(array('value' => $value));
-				}
-				else
-				{
-					$config->insert(array(
-						'group'  => $group,
-						'key'    => $key,
-						'value'  => $value,
-					));
+					$key = camel_case($key);
+
+					// Get the existing value of the config
+					$config = static::query();
+
+					$config->where('group', $group);
+
+					$config->where('key', $key);
+
+					// Do an UPSERT, i.e. if the value exists, update it.
+					// If it doesn't, insert it.
+					if ($config->count() > 0)
+					{
+						$config->update(array('value' => $value));
+					}
+					else
+					{
+						$config->insert(array(
+							'group'  => $group,
+							'key'    => $key,
+							'value'  => $value,
+						));
+					}
 				}
 			}
 

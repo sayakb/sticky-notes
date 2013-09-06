@@ -130,7 +130,7 @@
 						<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 							{{
 								Form::submit(Lang::get('global.save'), array(
-									'name'    => 'save',
+									'name'    => '_save',
 									'class'   => 'btn btn-primary'
 								))
 							}}

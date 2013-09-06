@@ -23,7 +23,7 @@
 
 			{{
 				Form::submit(Lang::get('setup.start_update'), array(
-					'name'    => 'update',
+					'name'    => '_update',
 					'class'   => 'btn btn-primary'
 				))
 			}}

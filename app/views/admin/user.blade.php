@@ -142,7 +142,7 @@
 
 								{{
 									Form::submit(Lang::get('global.submit'), array(
-										'name'    => 'save',
+										'name'    => '_save',
 										'class'   => 'btn btn-primary'
 									))
 								}}

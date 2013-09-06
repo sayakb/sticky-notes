@@ -17,7 +17,7 @@
 
 			{{
 				Form::submit(Lang::get('setup.test_connection'), array(
-					'name'    => 'test',
+					'name'    => '_test',
 					'class'   => 'btn btn-primary'
 				))
 			}}

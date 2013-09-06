@@ -33,7 +33,7 @@
 
 					{{
 						Form::submit(Lang::get('user.reset_password'), array(
-							'name'    => 'reset',
+							'name'    => '_reset',
 							'class'   => 'btn btn-primary'
 						))
 					}}

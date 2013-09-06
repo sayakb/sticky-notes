@@ -79,7 +79,7 @@
 
 					{{
 						Form::submit(Lang::get('user.register'), array(
-							'name'    => 'register',
+							'name'    => '_register',
 							'class'   => 'btn btn-primary'
 						))
 					}}

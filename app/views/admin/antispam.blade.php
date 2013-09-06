@@ -242,7 +242,7 @@
 						<div class="col-sm-12">
 							{{
 								Form::submit(Lang::get('admin.save_all'), array(
-									'name'    => 'save',
+									'name'    => '_save',
 									'class'   => 'btn btn-primary'
 								))
 							}}
