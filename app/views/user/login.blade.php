@@ -51,7 +51,7 @@
 
 					{{
 						Form::submit(Lang::get('user.login'), array(
-							'name'    => 'login',
+							'name'    => '_login',
 							'class'   => 'btn btn-primary'
 						))
 					}}

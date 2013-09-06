@@ -128,6 +128,12 @@ class Paste extends Eloquent {
 			$password = PHPass::make()->create($data['password'], $salt);
 		}
 
+		// Set the paste expiration time default
+		if ( ! isset($data['expire']))
+		{
+			$data['expire'] = 0;
+		}
+
 		// Insert the new paste
 		$paste = new Paste;
 
@@ -153,40 +159,6 @@ class Paste extends Eloquent {
 	}
 
 	/**
-	 * Returns trending posts based on the age
-	 *
-	 * @param  string  $age
-	 * @param  int     $perPage
-	 * @return \Illuminate\Database\Eloquent\Model
-	 */
-	public static function getTrending($age, $perPage)
-	{
-		$time = time();
-		$filter = $time - 259200;
-
-		switch ($age)
-		{
-			case 'week':
-				$filter = $time - 1814400;
-				break;
-
-			case 'month':
-				$filter = $time - 7776000;
-				break;
-
-			case 'year':
-				$filter = $time - 94608000;
-				break;
-
-			case 'all':
-				$filter = 0;
-				break;
-		}
-
-		return static::where('timestamp', '>=', $filter)->orderBy('hits', 'desc')->take($perPage);
-	}
-
-	/**
 	 * Generates a secure hashfor a paste
 	 *
 	 * @static
@@ -201,7 +173,7 @@ class Paste extends Eloquent {
 	 * Returns the first five lines of a pasted code
 	 *
 	 * @static
-	 * @param  string   $data
+	 * @param  string  $data
 	 * @return string
 	 */
 	public static function getAbstract($data)
@@ -242,6 +214,25 @@ class Paste extends Eloquent {
 				return $key;
 			}
 		}
+	}
+
+	/**
+	 * Fetches available expiration times for a paste
+	 *
+	 * @static
+	 * @param  string  $langKey
+	 * @return array
+	 */
+	public static function getExpiration($langKey = 'create')
+	{
+		$times = Config::get('expire');
+
+		foreach ($times as $time => $label)
+		{
+			$times[$time] = Lang::get("{$langKey}.{$label}");
+		}
+
+		return $times;
 	}
 
 }

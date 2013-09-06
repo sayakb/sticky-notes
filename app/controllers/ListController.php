@@ -45,6 +45,12 @@ class ListController extends BaseController {
 			$query = Paste::where('private', '<>', 1);
 		}
 
+		// Filter by project
+		if ( ! empty($this->project))
+		{
+			$query = $query->where('project', $this->project);
+		}
+
 		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
@@ -61,7 +67,42 @@ class ListController extends BaseController {
 	{
 		$perPage = Site::config('general')->perPage;
 
-		$pastes = Paste::getTrending($age, $perPage)->paginate($perPage);
+		$time = time();
+
+		$filter = $time - 259200;
+
+		// Calculate age based on filter
+		switch ($age)
+		{
+			case 'week':
+				$filter = $time - 1814400;
+				break;
+
+			case 'month':
+				$filter = $time - 7776000;
+				break;
+
+			case 'year':
+				$filter = $time - 94608000;
+				break;
+
+			case 'all':
+				$filter = 0;
+				break;
+		}
+
+		// Get all pastes matching the age filter
+		$query = Paste::where('timestamp', '>=', $filter);
+
+		// Filter by project
+		if ( ! empty($this->project))
+		{
+			$query = $query->where('project', $this->project);
+		}
+
+		// We do not really need paginate() here, however the generic method
+		// we are using here depends on it.
+		$pastes = $query->orderBy('hits', 'desc')->take($perPage)->paginate($perPage);
 
 		return $this->getList($pastes, TRUE);
 	}

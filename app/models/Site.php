@@ -62,6 +62,7 @@ class Site extends Eloquent {
 			'site'        => static::config('general'),
 			'error'       => Session::get('messages.error'),
 			'success'     => Session::get('messages.success'),
+			'services'    => explode(',', static::config('antispam')->services),
 			'user'        => Auth::user(),
 			'role'        => User::getRoles(),
 		);
@@ -94,13 +95,13 @@ class Site extends Eloquent {
 				{
 					if (php_sapi_name() != 'cli')
 					{
-						$siteConfig = static::where('group', $group)->get();
+						$siteConfig = static::all();
 
 						if ( ! is_null($siteConfig))
 						{
 							foreach ($siteConfig as $item)
 							{
-								$config[$group]->$item['key'] = $item['value'];
+								$config[$item['group']]->$item['key'] = $item['value'];
 							}
 						}
 					}
@@ -128,23 +129,31 @@ class Site extends Eloquent {
 			// Update the new config values in the DB
 			foreach ($newData as $key => $value)
 			{
-				$config = static::query();
-
-				$config->where('group', $group);
-
-				$config->where('key', camel_case($key));
-
-				if ($config->count() == 1)
+				if ( ! starts_with($key, '_'))
 				{
-					$config->update(array('value' => $value));
-				}
-				else
-				{
-					$config->insert(array(
-						'group'  => $group,
-						'key'    => $key,
-						'value'  => $value,
-					));
+					$key = camel_case($key);
+
+					// Get the existing value of the config
+					$config = static::query();
+
+					$config->where('group', $group);
+
+					$config->where('key', $key);
+
+					// Do an UPSERT, i.e. if the value exists, update it.
+					// If it doesn't, insert it.
+					if ($config->count() > 0)
+					{
+						$config->update(array('value' => $value));
+					}
+					else
+					{
+						$config->insert(array(
+							'group'  => $group,
+							'key'    => $key,
+							'value'  => $value,
+						));
+					}
 				}
 			}
 
@@ -200,7 +209,7 @@ class Site extends Eloquent {
 				// Highlight the active item
 				if ($current)
 				{
-					$active = ' class="active"';
+					$active = 'class="active"';
 
 					$href = '';
 				}
@@ -218,7 +227,7 @@ class Site extends Eloquent {
 				}
 
 				// Generate the item
-				$output .= "<li{$active}><a {$href}>{$icon} {$label}</a></li>";
+				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 			}
 		}
 
@@ -238,9 +247,12 @@ class Site extends Eloquent {
 				$href = 'href="'.url('user/login').'"';
 			}
 
+			// Are we on the login screen?
+			$active = $path == 'user/login' ? 'class="active"' : '';
+
 			$icon = '<span class="glyphicon glyphicon-user"></span>';
 
-			$output .= "<li><a {$href}>{$icon} {$label}</a></li>";
+			$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 		}
 
 		return $output;
@@ -331,7 +343,7 @@ class Site extends Eloquent {
 	 */
 	public static function versionNbr($version)
 	{
-		$version = ! empty($version) ? $version : '0.0.0';
+		$version = ! empty($version) ? $version : '0.0';
 
 		// Remove decimals
 		$version = str_replace('.', '', $version);

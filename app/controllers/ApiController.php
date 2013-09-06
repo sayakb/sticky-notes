@@ -82,7 +82,7 @@ class ApiController extends BaseController {
 			{
 				return $api->error('password_required', 403);
 			}
-			else if ($paste->password != $password)
+			else if (PHPass::make()->check('Paste', $password, $paste->salt, $paste->password))
 			{
 				return $api->error('invalid_password', 403);
 			}
@@ -115,6 +115,12 @@ class ApiController extends BaseController {
 		$query = Paste::where('private', '<>', 1);
 
 		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
+
+		// Check if no pastes were found
+		if ($pastes->count() === 0)
+		{
+			return $api->error('no_pastes', 418);
+		}
 
 		// We populate the data manually here as there is some
 		// per item processing to be done
@@ -154,8 +160,8 @@ class ApiController extends BaseController {
 			'data.required'       => 'data_required',
 			'language.required'   => 'lang_required',
 			'language.in'         => 'lang_invalid',
-			'expire.required'     => 'expire_required',
-			'expire.in'           => 'expire_invalid',
+			'expire.integer'      => 'expire_integer',
+			'expire.min'          => 'expire_min_zero',
 		);
 
 		// Define validation rules
@@ -163,7 +169,7 @@ class ApiController extends BaseController {
 			'title'     => 'max:30',
 			'data'      => 'required',
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
-			'expire'    => 'required|in:'.implode(',', array_keys(Config::get('expire'))),
+			'expire'    => 'integer|min:0',
 		), $custom);
 
 		// Run validations

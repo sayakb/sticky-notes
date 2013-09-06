@@ -13,7 +13,7 @@
 
 			{{
 				Form::submit(Lang::get('setup.start_install'), array(
-					'name'    => 'install',
+					'name'    => '_install',
 					'class'   => 'btn btn-primary'
 				))
 			}}

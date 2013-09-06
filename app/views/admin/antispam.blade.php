@@ -15,7 +15,7 @@
 				<fieldset>
 					<legend>{{ Lang::get('admin.spam_filters') }}</legend>
 
-					<ul class="nav nav-tabs">
+					<ul id="tabs-antispam" class="nav nav-tabs">
 						<li class="active">
 							<a href="#service-honeypot" data-toggle="tab">{{ Lang::get('admin.honeypot') }}</a>
 						</li>
@@ -242,7 +242,7 @@
 						<div class="col-sm-12">
 							{{
 								Form::submit(Lang::get('admin.save_all'), array(
-									'name'    => 'save',
+									'name'    => '_save',
 									'class'   => 'btn btn-primary'
 								))
 							}}

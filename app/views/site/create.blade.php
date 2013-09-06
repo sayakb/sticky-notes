@@ -96,14 +96,14 @@
 						<div class="input-group-btn">
 							{{
 								Form::submit(Lang::get('global.paste'), array(
-									'name'    => 'submit',
+									'name'    => '_submit',
 									'class'   => 'btn btn-primary'
 								))
 							}}
 						</div>
 
 						{{
-							Form::select('expire', Config::get('expire'), NULL, array(
+							Form::select('expire', Paste::getExpiration(), $site->pasteAge, array(
 								'class' => 'form-control'
 							))
 						}}

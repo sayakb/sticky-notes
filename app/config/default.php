@@ -22,12 +22,14 @@ return array(
 		'copyright'         => '',
 		'lang'              => 'en',
 		'googleApi'         => '',
-		'version'           => '0.0.0',
+		'version'           => '0.0',
 		'updateUrl'         => 'http://sayakb.github.io/sticky-notes/version/',
+		'preMigrate'        => '0',
+		'pasteAge'          => '1800',
 	),
 
 	'antispam'              => (object) array(
-		'services'          => 'censor,stealth,noflood,php',
+		'services'          => 'censor,stealth,noflood',
 		'phpKey'            => '',
 		'phpDays'           => '90',
 		'phpScore'          => '50',
@@ -52,6 +54,7 @@ return array(
 	'auth'                  => (object) array(
 		'method'            => 'db',
 		'dbAllowReg'        => '1',
+		'dbShowCaptcha'     => '1',
 		'ldapServer'        => '127.0.0.1',
 		'ldapPort'          => '389',
 		'ldapBaseDn'        => '',

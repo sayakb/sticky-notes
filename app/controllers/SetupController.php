@@ -67,7 +67,7 @@ class SetupController extends BaseController {
 	public function postInstall()
 	{
 		// Stage 1 submitted
-		if (Input::has('test'))
+		if (Input::has('_test'))
 		{
 			$status = Setup::testConnection();
 
@@ -88,7 +88,7 @@ class SetupController extends BaseController {
 		}
 
 		// Stage 2 submitted
-		if (Input::has('install'))
+		if (Input::has('_install'))
 		{
 			Session::put('setup.stage', 3);
 

@@ -20,7 +20,10 @@ Route::get('rev/{urlkey}', 'CreateController@getRevision')->where('urlkey', 'p[a
 Route::post('revise', 'CreateController@postRevision');
 
 // Show paste routes
-Route::get('{urlkey}/{hash?}/{action?}', 'ShowController@getPaste')->where('urlkey', 'p[a-zA-Z0-9]+');
+Route::group(array('before' => 'numeric'), function()
+{
+	Route::get('{urlkey}/{hash?}/{action?}', 'ShowController@getPaste')->where('urlkey', 'p[a-zA-Z0-9]+|[0-9]+');
+});
 
 Route::get('diff/{oldkey}/{newkey}', 'ShowController@getDiff');
 
@@ -46,6 +49,12 @@ Route::controller('ajax', 'AjaxController');
 
 // Application setup routes
 Route::controller('setup', 'SetupController');
+
+// Documentation routes
+Route::get('docs', function()
+{
+	return Redirect::to('http://sayakbanerjee.com/sticky-notes');
+});
 
 // Protected routes
 Route::group(array('before' => 'auth'), function()

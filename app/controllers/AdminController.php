@@ -198,7 +198,7 @@ class AdminController extends BaseController {
 	 */
 	public function postUser()
 	{
-		if (Input::has('save'))
+		if (Input::has('_save'))
 		{
 			$id = Input::get('id');
 

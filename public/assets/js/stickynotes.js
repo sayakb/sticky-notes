@@ -27,6 +27,9 @@ function stickyNotes()
 
 	// Initialize the code editor
 	initEditor();
+
+	// Initialize tab persistence
+	initTabPersistence();
 }
 
 /**
@@ -176,6 +179,41 @@ function initBootstrap()
 {
 	// Activate tooltips
 	$('[data-toggle="tooltip"]').tooltip();
+}
+
+/**
+ * Saves the tab state on all pages
+ *
+ * @return void
+ */
+function initTabPersistence()
+{
+	// Restore the previous tab state
+	$('.nav-tabs').each(function()
+	{
+		var id = $(this).attr('id');
+		var index = $.cookie('stickynotes_tabstate');
+
+		if (index !== undefined)
+		{
+			$('.nav-tabs > li:eq(' + index + ') a').tab('show');
+		}
+	});
+
+	// Save the current tab state
+	$('.nav-tabs > li > a').on('shown.bs.tab', function (e)
+	{
+		var id = $(this).parents('.nav-tabs').attr('id');
+		var index = $(this).parents('li').index();
+
+		$.cookie('stickynotes_tabstate', index);
+	})
+
+	// Clear tab state when navigated to a different page
+	if ($('.nav-tabs').length == 0)
+	{
+		$.cookie('stickynotes_tabstate', null);
+	}
 }
 
 /**

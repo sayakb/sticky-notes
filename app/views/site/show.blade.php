@@ -20,14 +20,16 @@
 						</div>
 
 						<div class="col-sm-7 text-right">
-							{{
-								link_to("#", Lang::get('show.short_url'), array(
-									'class'          => 'btn btn-success',
-									'data-toggle'    => 'ajax',
-									'data-component' => 'shorten',
-									'data-extra'     => $paste->urlkey.($paste->private ? '/'.$paste->hash : ''),
-								))
-							}}
+							@if ( ! empty($site->googleApi))
+								{{
+									link_to("#", Lang::get('show.short_url'), array(
+										'class'          => 'btn btn-success',
+										'data-toggle'    => 'ajax',
+										'data-component' => 'shorten',
+										'data-extra'     => $paste->urlkey.($paste->private ? '/'.$paste->hash : ''),
+									))
+								}}
+							@endif
 
 							{{
 								link_to("#", Lang::get('show.wrap'), array(

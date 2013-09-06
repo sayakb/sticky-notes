@@ -77,7 +77,7 @@
 
 							<tr>
 								<td>{{ Lang::get('admin.expires_at') }}</td>
-								<td>{{ date('d M Y, H:i:s e', $paste->expire) }}</td>
+								<td>{{ $paste->expire > 0 ? date('d M Y, H:i:s e', $paste->expire) : '-' }}</td>
 							</tr>
 
 							<tr>

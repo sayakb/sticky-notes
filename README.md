@@ -1,33 +1,33 @@
-Sticky Notes pastebin v1.0
-===========================
+# Sticky Notes v1.0 [![Build Status](https://travis-ci.org/sayakb/sticky-notes.png?branch=dev-1.0)](http://goo.gl/DRaaX0)
 
-[![Build Status](https://travis-ci.org/sayakb/sticky-notes.png?branch=dev-1.0)](https://travis-ci.org/sayakb/sticky-notes)
+Sticky notes is a powerful open-source pastebin application.
 
-Sticky notes is a free and open source pastebin application.
-This software is protected by the BSD license, which means that you can freely
-copy and share the software and its source code, and you are free to adapt from
-this work. Although you may not remove the original copyright notice.
-For details, please see: http://www.opensource.org/licenses/bsd-license.php
+License: [BSD 2-clause license](http://www.opensource.org/licenses/bsd-license.php).
+
+<table>
+	<tr>
+		<td>
+			<a href="http://goo.gl/IsOmmD">Download</a>
+		</td>
+
+		<td>
+			<a href="http://goo.gl/iWpHzb">Installation guide</a>
+		</td>
+
+		<td>
+			<a href="http://goo.gl/uJlgH4">Update guide</a>
+		</td>
+
+		<td>
+			<a href="http://goo.gl/7KmAFP">API reference</a>
+		</td>
+
+		<td>
+			<a href="http://goo.gl/TKyj4D">Services</a>
+		</td>
+	</tr>
+</table>
+
+&copy; 2013 [Sayak Banerjee](http://sayakbanerjee.com). All rights reserved.
 
 [![](http://www.pledgie.com/campaigns/20549.png?skin_name=chrome)](http://goo.gl/oWyEG)
-
-Copyright (c) 2013, Sayak Banerjee <mail@sayakbanerjee.com>.
-All rights reserved.
-
-Sticky Notes v1.0 is currently available as a release candidate only (pre-release).
-It is recommended that you wait for the stable release before moving over from
-any previous releases to this one.
-
-
-Environment setup
-==================
-
-Configuring sticky-notes is easy, you need to make the following changes:
- * Install the php Mcrypt extention (this is required by laravel)
- * Make the app/storage directory and its subfolders writable by your web server
- * You can place the contents of the `public/` directory in your web server root,
-   or a subfolder. For example, if your web root is at `/var/www` and you want to
-   run sticky-notes by visiting http://example.com/sticky-notes, place the public
-   folder contents inside `/var/www/sticky-notes`
- * The rest of the files can be moved outside your web root as long as the path
-   to the bootstrap folder is properly adjusted within the public/index.php file

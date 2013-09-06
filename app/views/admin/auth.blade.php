@@ -34,7 +34,7 @@
 						</div>
 					</div>
 
-					<ul class="nav nav-tabs">
+					<ul id="tabs-auth" class="nav nav-tabs">
 						<li class="active">
 							<a href="#auth-ldap" data-toggle="tab">{{ Lang::get('admin.ldap') }}</a>
 						</li>
@@ -210,6 +210,29 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('db_show_captcha', Lang::get('admin.reg_captcha'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::select('db_show_captcha', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $auth->dbShowCaptcha, array(
+											'class' => 'form-control'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.reg_captcha_exp') }}
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -219,7 +242,7 @@
 						<div class="col-sm-12">
 							{{
 								Form::submit(Lang::get('admin.save_all'), array(
-									'name'    => 'save',
+									'name'    => '_save',
 									'class'   => 'btn btn-primary'
 								))
 							}}
