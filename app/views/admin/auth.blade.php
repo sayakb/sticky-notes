@@ -34,7 +34,7 @@
 						</div>
 					</div>
 
-					<ul class="nav nav-tabs">
+					<ul id="tabs-auth" class="nav nav-tabs">
 						<li class="active">
 							<a href="#auth-ldap" data-toggle="tab">{{ Lang::get('admin.ldap') }}</a>
 						</li>

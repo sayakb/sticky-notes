@@ -10,6 +10,7 @@
 	<link href="{{ asset('assets/css/stickynotes.css') }}" rel="stylesheet" />
 
 	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="{{ asset('assets/js/jquery.cookie.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('assets/js/stickynotes.js') }}"></script>
 

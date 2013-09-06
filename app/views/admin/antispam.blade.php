@@ -15,7 +15,7 @@
 				<fieldset>
 					<legend>{{ Lang::get('admin.spam_filters') }}</legend>
 
-					<ul class="nav nav-tabs">
+					<ul id="tabs-antispam" class="nav nav-tabs">
 						<li class="active">
 							<a href="#service-honeypot" data-toggle="tab">{{ Lang::get('admin.honeypot') }}</a>
 						</li>
