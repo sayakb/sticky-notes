@@ -208,7 +208,7 @@ class Site extends Eloquent {
 				// Highlight the active item
 				if ($current)
 				{
-					$active = ' class="active"';
+					$active = 'class="active"';
 
 					$href = '';
 				}
@@ -226,7 +226,7 @@ class Site extends Eloquent {
 				}
 
 				// Generate the item
-				$output .= "<li{$active}><a {$href}>{$icon} {$label}</a></li>";
+				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 			}
 		}
 
@@ -246,9 +246,12 @@ class Site extends Eloquent {
 				$href = 'href="'.url('user/login').'"';
 			}
 
+			// Are we on the login screen?
+			$active = $path == 'user/login' ? 'class="active"' : '';
+
 			$icon = '<span class="glyphicon glyphicon-user"></span>';
 
-			$output .= "<li><a {$href}>{$icon} {$label}</a></li>";
+			$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 		}
 
 		return $output;
