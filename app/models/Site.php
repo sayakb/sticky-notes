@@ -62,6 +62,7 @@ class Site extends Eloquent {
 			'site'        => static::config('general'),
 			'error'       => Session::get('messages.error'),
 			'success'     => Session::get('messages.success'),
+			'services'    => explode(',', static::config('antispam')->services),
 			'user'        => Auth::user(),
 			'role'        => User::getRoles(),
 		);
