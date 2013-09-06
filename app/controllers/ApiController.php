@@ -154,7 +154,6 @@ class ApiController extends BaseController {
 			'data.required'       => 'data_required',
 			'language.required'   => 'lang_required',
 			'language.in'         => 'lang_invalid',
-			'expire.required'     => 'expire_required',
 			'expire.in'           => 'expire_invalid',
 		);
 
