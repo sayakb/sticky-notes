@@ -6,6 +6,7 @@
 	<meta charset="utf-8">
 	<title>{{ Lang::get('global.sticky_notes') }}</title>
 
+	<link href="{{ asset('assets/img/favicon.png') }}" rel="shortcut icon" />
 	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
 	<link href="{{ asset('assets/css/stickynotes.css') }}" rel="stylesheet" />
 
