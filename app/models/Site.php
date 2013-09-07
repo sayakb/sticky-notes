@@ -168,95 +168,108 @@ class Site extends Eloquent {
 	 * Generates the site navigation menu
 	 *
 	 * @access public
-	 * @param  string   $group
+	 * @param  string  $menu
 	 * @return string
 	 */
-	public static function getMenu($group)
+	public static function getMenu($menu)
 	{
-		$output = NULL;
-
 		$path = Request::path();
+
+		$auth = Auth::check();
 
 		// Grab and parse all the menus
 		$menus = Config::get('menus');
 
-		$group = $menus[$group];
+		$group = $menus[$menu];
 
-		foreach ($group as $key => $item)
+		// Build the menu items
+		if ( ! Cache::has("site.menu.{$menu}.{$path}.{$auth}"))
 		{
-			if ( ! str_contains($key, '_'))
+			$output = NULL;
+
+			foreach ($group as $key => $item)
 			{
-				$label = Lang::get($item['label']);
-
-				$current = FALSE;
-
-				// Check if a role restriction is set
-				if (isset($item['role']) AND ! User::getRoles()->$item['role'])
+				if ( ! str_contains($key, '_'))
 				{
-					continue;
+					$label = Lang::get($item['label']);
+
+					$current = FALSE;
+
+					// Check if a role restriction is set
+					if (isset($item['role']) AND ! User::getRoles()->$item['role'])
+					{
+						continue;
+					}
+
+					// Determine whether this is the active link
+					if ($group['_exact'] AND $key === $path)
+					{
+						$current = TRUE;
+					}
+					else if ( ! $group['_exact'] AND starts_with($path, $key))
+					{
+						$current = TRUE;
+					}
+
+					// Highlight the active item
+					if ($current)
+					{
+						$active = 'class="active"';
+
+						$href = '';
+					}
+					else
+					{
+						$active = '';
+
+						$href = 'href="'.url($key).'"';
+					}
+
+					// Set the entry icon
+					if (isset($item['icon']))
+					{
+						$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
+					}
+					else
+					{
+						$icon = NULL;
+					}
+
+					// Generate the item
+					$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 				}
+			}
 
-				// Determine whether this is the active link
-				if ($group['_exact'] AND $key === $path)
+			// Add login/logout link if menu is set for that
+			if ($group['_showLogin'])
+			{
+				if (Auth::check())
 				{
-					$current = TRUE;
-				}
-				else if ( ! $group['_exact'] AND starts_with($path, $key))
-				{
-					$current = TRUE;
-				}
+					$label = Lang::get('global.logout');
 
-				// Highlight the active item
-				if ($current)
-				{
-					$active = 'class="active"';
-
-					$href = '';
+					$href = 'href="'.url('user/logout').'"';
 				}
 				else
 				{
-					$active = '';
+					$label = Lang::get('global.login');
 
-					$href = 'href="'.url($key).'"';
+					$href = 'href="'.url('user/login').'"';
 				}
 
-				// Set the entry icon
-				if (isset($item['icon']))
-				{
-					$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
-				}
-				else
-				{
-					$icon = NULL;
-				}
+				// Are we on the login screen?
+				$active = $path == 'user/login' ? 'class="active"' : '';
 
-				// Generate the item
+				$icon = '<span class="glyphicon glyphicon-user"></span>';
+
 				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 			}
+
+			// Save the parsed menu to cache
+			Cache::forever("site.menu.{$menu}.{$path}.{$auth}", $output);
 		}
-
-		// Add login/logout link if menu is set for that
-		if ($group['_showLogin'])
+		else
 		{
-			if (Auth::check())
-			{
-				$label = Lang::get('global.logout');
-
-				$href = 'href="'.url('user/logout').'"';
-			}
-			else
-			{
-				$label = Lang::get('global.login');
-
-				$href = 'href="'.url('user/login').'"';
-			}
-
-			// Are we on the login screen?
-			$active = $path == 'user/login' ? 'class="active"' : '';
-
-			$icon = '<span class="glyphicon glyphicon-user"></span>';
-
-			$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
+			$output = Cache::get("site.menu.{$menu}.{$path}.{$auth}");
 		}
 
 		return $output;
@@ -300,6 +313,8 @@ class Site extends Eloquent {
 	 */
 	public static function getSystemLoad()
 	{
+		$sysload = NULL;
+
 		// Get the system's load based on the OS
 		$os = strtolower(PHP_OS);
 
@@ -311,13 +326,13 @@ class Site extends Eloquent {
 
 				$load = explode(' ', $load);
 
-				return $load[0];
+				$sysload = $load[0];
 			}
 			else if (function_exists('shell_exec'))
 			{
 				$load = explode(' ', `uptime`);
 
-				return $load[count($load) - 1];
+				$sysload = $load[count($load) - 1];
 			}
 		}
 		else
@@ -330,12 +345,12 @@ class Site extends Eloquent {
 
 				if ( ! empty($load[1]))
 				{
-					return "{$load[1]}%";
+					$sysload = "{$load[1]}%";
 				}
 			}
 		}
 
-		return Lang::get('global.not_available');
+		return empty($sysload) ? Lang::get('global.not_available') : $sysload;
 	}
 
 	/**
