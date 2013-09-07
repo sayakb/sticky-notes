@@ -24,7 +24,7 @@
 			</li>
 
 			@if ($role->admin)
-				<li>{{ link_to("admin/paste/show/{$paste->urlkey}", Lang::get('global.edit_paste')) }}</li>
+				<li>{{ link_to("admin/paste/{$paste->urlkey}", Lang::get('global.edit_paste')) }}</li>
 			@endif
 		</ul>
 	</div>

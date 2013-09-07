@@ -65,11 +65,11 @@ class AdminController extends BaseController {
 	/**
 	 * Search, edit and delete pastes
 	 *
-	 * @param  string  $action
 	 * @param  string  $urlkey
+	 * @param  string  $action
 	 * @return \Illuminate\Support\Facades\View|\Illuminate\Support\Facades\Redirect
 	 */
-	public function getPaste($action = 'show', $urlkey = '')
+	public function getPaste($urlkey = '', $action = '')
 	{
 		$paste = NULL;
 
@@ -125,7 +125,7 @@ class AdminController extends BaseController {
 		{
 			$key = Input::get('search');
 
-			return Redirect::to('admin/paste/show/'.urlencode($key));
+			return Redirect::to('admin/paste/'.urlencode($key));
 		}
 		else
 		{
