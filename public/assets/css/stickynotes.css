@@ -28,6 +28,10 @@ section#list .pre {
 section#show .pre {
   min-height: 350px;
 }
+section#show .pre li:hover,
+section#show .pre li.highlight {
+  background-color: #fbf7d3;
+}
 section#create textarea {
   font-family: monospace, serif;
 }

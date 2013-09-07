@@ -30,6 +30,9 @@ function stickyNotes()
 
 	// Initialize tab persistence
 	initTabPersistence();
+
+	// Initialize line reference
+	initLineReference();
 }
 
 /**
@@ -213,6 +216,44 @@ function initTabPersistence()
 	if ($('.nav-tabs').length == 0)
 	{
 		$.cookie('stickynotes_tabstate', null);
+	}
+}
+
+/**
+ * Highlights lines upon clicking them on the #show page
+ *
+ * @return void
+ */
+function initLineReference()
+{
+	if ($('section#show').length != 0)
+	{
+		var line = 1;
+
+		// First, we allocate unique IDs to all lines
+		$('.pre li').each(function()
+		{
+			$(this).attr('id', 'line-' + line++);
+		});
+
+		// Next, navigate to an ID if the user requested it
+		var anchor = window.location.hash;
+
+		if (anchor.length > 0)
+		{
+			window.location = anchor;
+
+			$(anchor).addClass('highlight');
+		}
+
+		// Click to change anchor
+		$('.pre li').click(function()
+		{
+			window.location.hash = '#' + $(this).attr('id');
+
+			$('.pre li').removeClass('highlight');
+			$(this).addClass('highlight');
+		});
 	}
 }
 
