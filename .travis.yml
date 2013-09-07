@@ -6,7 +6,7 @@ php:
 
 branches:
   only:
-    - "dev-1.0"
+    - "master"
 
 before_script:
   - mysql -e 'create database `database`;'
