@@ -94,6 +94,8 @@ class AdminController extends BaseController {
 					return Redirect::to(URL::previous());
 
 				case 'toggle':
+					Revision::where('urlkey', $paste->urlkey)->delete();
+
 					$paste->private = $paste->private ? 0 : 1;
 
 					$paste->password = NULL;
@@ -103,6 +105,8 @@ class AdminController extends BaseController {
 					return Redirect::to(URL::previous());
 
 				case 'delete':
+					Revision::where('urlkey', $paste->urlkey)->delete();
+
 					$paste->delete();
 
 					Session::flash('messages.success', Lang::get('admin.paste_deleted'));

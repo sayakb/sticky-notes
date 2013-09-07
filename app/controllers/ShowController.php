@@ -77,6 +77,8 @@ class ShowController extends BaseController {
 		switch ($action)
 		{
 			case 'toggle':
+				Revision::where('urlkey', $paste->urlkey)->delete();
+
 				$paste->private = $paste->private ? 0 : 1;
 
 				$paste->password = NULL;
