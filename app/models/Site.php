@@ -93,7 +93,7 @@ class Site extends Eloquent {
 				{
 					if (php_sapi_name() != 'cli')
 					{
-						$siteConfig = static::all();
+						$siteConfig = Site::all();
 
 						if ( ! is_null($siteConfig))
 						{
