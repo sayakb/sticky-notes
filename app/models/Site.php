@@ -173,9 +173,9 @@ class Site extends Eloquent {
 	 */
 	public static function getMenu($group)
 	{
-		$output = '';
-		$icon   = NULL;
-		$path   = Request::path();
+		$output = NULL;
+
+		$path = Request::path();
 
 		// Grab and parse all the menus
 		$menus = Config::get('menus');
@@ -224,6 +224,10 @@ class Site extends Eloquent {
 				if (isset($item['icon']))
 				{
 					$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
+				}
+				else
+				{
+					$icon = NULL;
 				}
 
 				// Generate the item
