@@ -176,8 +176,8 @@ class Site extends Eloquent {
 
 		$group = $menus[$menu];
 
-		// Build the menu items. Items are cached for 1 day (1440 minutes)
-		$output = Cache::remember("site.menu.{$menu}.{$path}.{$user}", 1440, function()
+		// Build the menu items. Items are cached for 60 minutes
+		$output = Cache::remember("site.menu.{$menu}.{$path}.{$user}", 60, function() use ($path, $user, $group)
 		{
 			$output = NULL;
 
