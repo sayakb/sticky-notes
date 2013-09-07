@@ -173,9 +173,11 @@ class Site extends Eloquent {
 	 */
 	public static function getMenu($menu)
 	{
+		// Current path - will be used to highlight menu item
 		$path = Request::path();
 
-		$auth = Auth::check();
+		// Current user ID for role based menus
+		$user = Auth::check() ? Auth::user()->id : 0;
 
 		// Grab and parse all the menus
 		$menus = Config::get('menus');
@@ -183,7 +185,7 @@ class Site extends Eloquent {
 		$group = $menus[$menu];
 
 		// Build the menu items
-		if ( ! Cache::has("site.menu.{$menu}.{$path}.{$auth}"))
+		if ( ! Cache::has("site.menu.{$menu}.{$path}.{$user}"))
 		{
 			$output = NULL;
 
@@ -235,7 +237,7 @@ class Site extends Eloquent {
 						$icon = NULL;
 					}
 
-					// Generate the item
+					// Generate the item markup
 					$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 				}
 			}
@@ -243,7 +245,7 @@ class Site extends Eloquent {
 			// Add login/logout link if menu is set for that
 			if ($group['_showLogin'])
 			{
-				if (Auth::check())
+				if ($user)
 				{
 					$label = Lang::get('global.logout');
 
@@ -261,15 +263,16 @@ class Site extends Eloquent {
 
 				$icon = '<span class="glyphicon glyphicon-user"></span>';
 
+				// Generate the markup
 				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 			}
 
-			// Save the parsed menu to cache
-			Cache::forever("site.menu.{$menu}.{$path}.{$auth}", $output);
+			// Save the parsed menu to cache for 1 day
+			Cache::put("site.menu.{$menu}.{$path}.{$user}", $output, 1440);
 		}
 		else
 		{
-			$output = Cache::get("site.menu.{$menu}.{$path}.{$auth}");
+			$output = Cache::get("site.menu.{$menu}.{$path}.{$user}");
 		}
 
 		return $output;
