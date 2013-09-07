@@ -147,8 +147,12 @@ Cron::run();
 
 App::error(function($exception, $code)
 {
-	$data = array('site' => Site::config('general'));
 	$type = get_class($exception);
+
+	$data = array(
+		'site'      => Site::config('general'),
+		'services'  => array(),
+	);
 
 	// Set code based on exception
 	switch ($type)
