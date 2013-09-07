@@ -46,16 +46,17 @@ class Cron {
 		{
 			if (php_sapi_name() != 'cli')
 			{
-				if ( ! Cache::has('cron.schedule') OR Cache::get('cron.schedule') > time())
+				// We run the cron tasks once every 60 minutes
+				Cache::remember('cron.run', 60, function()
 				{
-					// Schedule run one hour from now
-					Cache::forever('cron.schedule', time() + static::$interval);
-
 					// Remove expired pastes
 					Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
 
 					// Add more cron tasks here..
-				}
+
+					// Crun run successfully
+					return TRUE;
+				});
 			}
 		}
 		catch(Exception $e)

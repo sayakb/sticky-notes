@@ -81,9 +81,7 @@ class Site extends Eloquent {
 		// Get a config value
 		if (count($newData) == 0)
 		{
-			// We first look up in the local cache
-			// If it isn't found there, we fetch it from the database
-			if ( ! Cache::has('site.config'))
+			$config = Cache::rememberForever('site.config', function()
 			{
 				// Load the default configuration data
 				$config = Config::get('default');
@@ -111,14 +109,8 @@ class Site extends Eloquent {
 					// Suppress the exception here
 				}
 
-				// Save the fetched config data to cache
-				Cache::forever('site.config', $config);
-			}
-			else
-			{
-				// Read config data from cache
-				$config = Cache::get('site.config');
-			}
+				return $config;
+			});
 
 			return $config[$group];
 		}
@@ -184,8 +176,8 @@ class Site extends Eloquent {
 
 		$group = $menus[$menu];
 
-		// Build the menu items
-		if ( ! Cache::has("site.menu.{$menu}.{$path}.{$user}"))
+		// Build the menu items. Items are cached for 1 day (1440 minutes)
+		$output = Cache::remember("site.menu.{$menu}.{$path}.{$user}", 1440, function()
 		{
 			$output = NULL;
 
@@ -267,13 +259,8 @@ class Site extends Eloquent {
 				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
 			}
 
-			// Save the parsed menu to cache for 1 day
-			Cache::put("site.menu.{$menu}.{$path}.{$user}", $output, 1440);
-		}
-		else
-		{
-			$output = Cache::get("site.menu.{$menu}.{$path}.{$user}");
-		}
+			return $output;
+		});
 
 		return $output;
 	}
