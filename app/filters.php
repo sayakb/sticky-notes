@@ -167,9 +167,9 @@ Route::filter('installed', function()
 	$db = Site::config('general');
 
 	// Derive app and db version numbers
-	$appVersion = Site::versionNbr($app['version']);
+	$appVersion = System::version($app['version']);
 
-	$dbVersion = Site::versionNbr($db->version);
+	$dbVersion = System::version($db->version);
 
 	// Now down to business: do the checks
 	if (Request::segment(1) != 'setup')

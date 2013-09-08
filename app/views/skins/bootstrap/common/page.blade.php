@@ -35,7 +35,7 @@
 
 			<nav class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav navbar-right">
-					{{ Site::getMenu('navigation') }}
+					{{ View::menu('navigation') }}
 				</ul>
 			</nav>
 		</div>

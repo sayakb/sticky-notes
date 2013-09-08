@@ -36,12 +36,12 @@ class AjaxController extends BaseController {
 		$site = Site::config('general');
 
 		// Get the local (installed) version number
-		$localVersion = Site::versionNbr($site->version);
+		$localVersion = System::version($site->version);
 
 		// Get the remote version number
-		$remoteVersion = @file_get_contents($site->updateUrl);
+		$remoteVersion = File::getRemote($site->updateUrl);
 
-		$remoteVersion = Site::versionNbr($remoteVersion);
+		$remoteVersion = System::version($remoteVersion);
 
 		// Compare the versions and return the appropriate response
 		$view = $remoteVersion > $localVersion ? 'old' : 'ok';
@@ -56,7 +56,7 @@ class AjaxController extends BaseController {
 	 */
 	public function getSysload()
 	{
-		return Site::getSystemLoad();
+		return System::load();
 	}
 
 	/**

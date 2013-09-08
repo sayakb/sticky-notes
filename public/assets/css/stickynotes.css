@@ -136,10 +136,6 @@ section#update .form-control {
 .table-user > tbody > tr > td {
   vertical-align: middle;
 }
-.table-user .thumbnail img {
-  width: 28px;
-  height: 28px;
-}
 .form-horizontal .help-block {
   margin-bottom: 0;
 }
@@ -168,6 +164,9 @@ section#update .form-control {
 .progress {
   margin-top: 10px;
   margin-bottom: 5px;
+}
+.img-thumbnail.pull-left {
+  margin-right: 20px;
 }
 @media (max-width: 767px) {
   .form-horizontal .control-label {

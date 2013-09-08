@@ -20,6 +20,7 @@ return array(
 	"authentication"        => "Authentication",
 	"auth_settings"         => "Authentication settings",
 	"spam_filters"          => "Spam filters",
+	"skin_chooser"          => "Skin chooser",
 	"field"                 => "Field",
 	"value"                 => "Value",
 	"save_all"              => "Save all",
@@ -155,5 +156,11 @@ return array(
 	"db_driver"             => "DB driver",
 	"php_version"           => "PHP version",
 	"stickynotes_version"   => "Sticky Notes version",
+	"skin_applied"          => "The selected skin has been applied to your site",
+	"skin_version"          => "The selected skin is incompatible with this version Sticky Notes",
+	"skin_error"            => "The selected skin cannot be used as it is invalid",
+	"version"               => "Version",
+	"use_theme"             => "Use this theme",
+	"theme_active"          => "Active",
 
 );

@@ -495,7 +495,7 @@ class AdminController extends BaseController {
 	 */
 	public function getSite()
 	{
-		return View::make('admin/site', array('langs' => Site::getLanguages()));
+		return View::make('admin/site', array('langs' => System::directories('lang')));
 	}
 
 	/**
@@ -511,7 +511,7 @@ class AdminController extends BaseController {
 			'fqdn'          => 'required',
 			'title'         => 'required|max:20',
 			'per_page'      => 'required|integer|between:5,200',
-			'lang'          => 'required|in:'.Site::getLanguages(TRUE),
+			'lang'          => 'required|in:'.System::directories('lang', TRUE),
 		));
 
 		// Run the validator
@@ -528,6 +528,104 @@ class AdminController extends BaseController {
 			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 
 			return Redirect::to('admin/site')->withInput();
+		}
+	}
+
+	/**
+	 * Displays the skin chooser
+	 *
+	 * @access public
+	 * @param  string  $action
+	 * @param  string  $skin
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function getSkin($action = 'list', $skin = '')
+	{
+		$version = System::version(Site::config('general')->version);
+
+		$skins = System::directories('views/skins');
+
+		$list = array();
+
+		// Output the response based on the action
+		switch ($action)
+		{
+			case 'list':
+				foreach ($skins as $skin)
+				{
+					if (File::exists(app_path()."/views/skins/{$skin}/{$skin}.info"))
+					{
+						$info = @json_decode(File::get(app_path()."/views/skins/{$skin}/{$skin}.info"), TRUE);
+
+						$data = array(
+							'key'          => $skin,
+							'name'         => isset($info['name']) ? $info['name'] : $skin,
+							'version'      => isset($info['themeVersion']) ? $info['themeVersion'] : '1.0',
+							'description'  => isset($info['description']) ? $info['description'] : NULL,
+							'author'       => NULL,
+						);
+
+						if (isset($info['author']))
+						{
+							if (isset($info['authorWebsite']))
+							{
+								$data['author'] = link_to($info['authorWebsite'], $info['author']);
+							}
+							else
+							{
+								$data['author'] = $info['author'];
+							}
+						}
+
+						$list[] = (object) $data;
+					}
+				}
+
+				return View::make('admin/skin', array('skins' => $list));
+
+			case 'set':
+				if (File::exists(app_path()."/views/skins/{$skin}/{$skin}.info"))
+				{
+					$info = @json_decode(File::get(app_path()."/views/skins/{$skin}/{$skin}.info"), TRUE);
+
+					// The theme info 'minCoreVersion' tells us the minimum version needed for
+					// the theme to work. So we check if the system version is newer
+					// than the core version before setting the theme
+					if (isset($info['minCoreVersion']) AND $version >= System::version($info['minCoreVersion']))
+					{
+						Site::config('general', array('skin' => $skin));
+
+						Cache::flush();
+
+						Session::flash('messages.success', Lang::get('admin.skin_applied'));
+					}
+					else
+					{
+						Session::flash('messages.error', Lang::get('admin.skin_version'));
+					}
+
+					return Redirect::to('admin/skin');
+				}
+
+				Session::flash('messages.error', Lang::get('admin.skin_error'));
+
+				return Redirect::to('admin/skin');
+
+			case 'preview':
+				if (File::exists(app_path()."/views/skins/{$skin}/{$skin}.png"))
+				{
+					$preview = File::get(app_path()."/views/skins/{$skin}/{$skin}.png");
+				}
+				else
+				{
+					$preview = File::get(public_path().'/assets/img/no-preview.png');
+				}
+
+				$response = Response::make($preview);
+
+				$response->header('Content-Type', 'image/png');
+
+				return $response;
 		}
 	}
 

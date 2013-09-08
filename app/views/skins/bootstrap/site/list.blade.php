@@ -14,7 +14,7 @@
 								</a>
 							</li>
 
-							{{ Site::getMenu('filters') }}
+							{{ View::menu('filters') }}
 						</ul>
 					</div>
 				</div>

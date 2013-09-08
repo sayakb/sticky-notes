@@ -36,7 +36,7 @@ return array(
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -220,6 +220,7 @@ return array(
 		'PHPDiff'         => 'StickyNotes\PHPDiff',
 		'Response'        => 'StickyNotes\Response',
 		'Setup'           => 'StickyNotes\Setup',
+		'System'          => 'StickyNotes\System',
 		'View'            => 'StickyNotes\View',
 
 		// PHPDiff

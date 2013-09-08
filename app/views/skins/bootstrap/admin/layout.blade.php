@@ -4,7 +4,7 @@
 	<div class="row">
 		<div class="col-sm-3">
 			<ul class="nav nav-pills nav-stacked">
-				{{ Site::getMenu('admin') }}
+				{{ View::menu('admin') }}
 			</ul>
 		</div>
 

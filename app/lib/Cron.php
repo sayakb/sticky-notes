@@ -48,7 +48,7 @@ class Cron {
 	{
 		// We do a version number check to ensure that we
 		// have Sticky Notes installed for cron to run
-		if (Site::versionNbr(Site::config('general')->version) > 0)
+		if (System::version(Site::config('general')->version) > 0)
 		{
 			// We run the cron tasks once every 60 minutes
 			Cache::remember('cron.run', 60, function()

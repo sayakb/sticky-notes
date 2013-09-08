@@ -144,6 +144,12 @@ return array(
 			'role'          => 'admin'
 		),
 
+		'admin/skin'        => array(
+			'label'         => 'admin.skin_chooser',
+			'icon'          => 'picture',
+			'role'          => 'admin'
+		),
+
 	),
 
 );
