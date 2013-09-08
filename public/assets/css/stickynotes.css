@@ -53,6 +53,9 @@ section#update .form-group {
 section#update .form-control {
   width: 150px;
 }
+section#admin-skin h3 {
+  margin-top: 0;
+}
 .navbar {
   background: #f2f2f2;
 }
@@ -167,6 +170,7 @@ section#update .form-control {
 }
 .img-thumbnail.pull-left {
   margin-right: 20px;
+  margin-bottom: 20px;
 }
 @media (max-width: 767px) {
   .form-horizontal .control-label {

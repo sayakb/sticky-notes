@@ -16,14 +16,14 @@
 							))
 						}}
 
-						<h4>
+						<h3>
 							{{{ $skin->name }}}
 
 							<small>
 								{{ Lang::get('admin.version') }}:
 								{{{ $skin->version }}}
 							</small>
-						</h4>
+						</h3>
 
 						@if ( ! empty($skin->author))
 							<p>
@@ -48,8 +48,6 @@
 						@endif
 					</div>
 				</div>
-
-				<br />
 			@endforeach
 		</fieldset>
 	</section>
