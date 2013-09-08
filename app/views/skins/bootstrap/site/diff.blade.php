@@ -1,6 +1,6 @@
 @extends('skins.bootstrap.common.page')
 
-<link href="{{ asset('assets/css/phpdiff.css') }}" rel="stylesheet" />
+<link href="{{ View::asset('css/phpdiff.css') }}" rel="stylesheet" />
 
 @section('body')
 	<section id="diff">

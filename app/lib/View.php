@@ -80,23 +80,36 @@ class View extends \Illuminate\Support\Facades\View {
 	}
 
 	/**
-	 * Injects the skin name into a view name.
+	 * Injects skin to asset paths.
+	 *
+	 * @static
+	 * @param  string  $asset
+	 * @return string
+	 */
+	public static function asset($asset)
+	{
+		return asset('assets/'.static::skin($asset, FALSE));
+	}
+
+	/**
+	 * Injects the skin name into a resource name.
 	 * This excludes the e-mail, JSON and XML templates.
 	 *
 	 * @static
-	 * @param  string  $view
+	 * @param  string  $resource
+	 * @param  bool    $prefix
 	 * @return string
 	 */
-	public static function skin($view)
+	public static function skin($resource, $prefix = TRUE)
 	{
-		if ( ! starts_with($view, 'templates'))
+		if ( ! starts_with($resource, 'templates'))
 		{
 			$skin = Site::config('general')->skin;
 
-			$view = "skins/{$skin}/{$view}";
+			$resource = ($prefix ? 'skins/' : '')."{$skin}/{$resource}";
 		}
 
-		return $view;
+		return $resource;
 	}
 
 	/**

@@ -51,6 +51,13 @@ class Site extends Eloquent {
 	);
 
 	/**
+	 * Local store for site config
+	 *
+	 * @var array
+	 */
+	private static $config = FALSE;
+
+	/**
 	 * Gets or sets the site configuration data
 	 *
 	 * @access public
@@ -63,7 +70,7 @@ class Site extends Eloquent {
 		// Get a config value
 		if (count($newData) == 0)
 		{
-			$config = Cache::rememberForever('site.config', function()
+			$config = static::$config ?: Cache::rememberForever('site.config', function()
 			{
 				// Load the default configuration data
 				$config = Config::get('default');
@@ -93,6 +100,8 @@ class Site extends Eloquent {
 
 				return $config;
 			});
+
+			static::$config = $config;
 
 			return empty($group) ? (object) $config : $config[$group];
 		}
@@ -131,8 +140,9 @@ class Site extends Eloquent {
 				}
 			}
 
-			// Remove the config from cache
 			Cache::forget('site.config');
+
+			static::$config = FALSE;
 
 			return TRUE;
 		}

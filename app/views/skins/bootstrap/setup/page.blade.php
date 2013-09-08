@@ -6,13 +6,13 @@
 	<meta charset="utf-8">
 	<title>{{ Lang::get('global.sticky_notes') }}</title>
 
-	<link href="{{ asset('assets/img/favicon.png') }}" rel="shortcut icon" />
-	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
-	<link href="{{ asset('assets/css/stickynotes.css') }}" rel="stylesheet" />
+	<link href="{{ View::asset('img/favicon.png') }}" rel="shortcut icon" />
+	<link href="{{ View::asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+	<link href="{{ View::asset('css/stickynotes.css') }}" rel="stylesheet" />
 
 	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-	<script type="text/javascript" src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-	<script type="text/javascript" src="{{ asset('assets/js/stickynotes-setup.js') }}"></script>
+	<script type="text/javascript" src="{{ View::asset('js/bootstrap.min.js') }}"></script>
+	<script type="text/javascript" src="{{ View::asset('js/stickynotes-setup.js') }}"></script>
 </head>
 
 <body>
