@@ -59,7 +59,7 @@ class AdminController extends BaseController {
 			'db_driver'     => $db['default'],
 		);
 
-		return View::make('admin/dashboard', $data, Site::defaults());
+		return View::make('admin/dashboard', $data);
 	}
 
 	/**
@@ -115,7 +115,7 @@ class AdminController extends BaseController {
 			}
 		}
 
-		return View::make('admin/paste', array('paste' => $paste), Site::defaults());
+		return View::make('admin/paste', array('paste' => $paste));
 	}
 
 	/**
@@ -166,7 +166,7 @@ class AdminController extends BaseController {
 		switch ($action)
 		{
 			case 'create':
-				return View::make('admin/user', array('user' => new User), Site::defaults());
+				return View::make('admin/user', array('user' => new User));
 
 			case 'delete':
 				// Cannot delete founder user or own account
@@ -189,10 +189,9 @@ class AdminController extends BaseController {
 			'user'     => $user,
 			'users'    => $users,
 			'pages'    => $pages,
-			'auth'     => Site::config('auth'),
 		);
 
-		return View::make('admin/user', $data, Site::defaults());
+		return View::make('admin/user', $data);
 	}
 
 	/**
@@ -284,8 +283,8 @@ class AdminController extends BaseController {
 	/**
 	 * Displays the IP banning module
 	 *
-	 * @param  string $action
-	 * @param  string $ip
+	 * @param  string  $action
+	 * @param  string  $ip
 	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getBan($action = '', $ip = '')
@@ -302,7 +301,7 @@ class AdminController extends BaseController {
 			return Redirect::to('admin/ban');
 		}
 
-		return View::make('admin/ban', array('bans' => IPBan::all()), Site::defaults());
+		return View::make('admin/ban', array('bans' => IPBan::all()));
 	}
 
 	/**
@@ -345,7 +344,7 @@ class AdminController extends BaseController {
 	 */
 	public function getMail()
 	{
-		return View::make('admin/mail', array('mail' => Site::config('mail')), Site::defaults());
+		return View::make('admin/mail');
 	}
 
 	/**
@@ -389,13 +388,7 @@ class AdminController extends BaseController {
 	 */
 	public function getAntispam()
 	{
-		// Build the view data
-		$data = array(
-			'flags'     => Antispam::flags(),
-			'antispam'  => Site::config('antispam'),
-		);
-
-		return View::make('admin/antispam', $data, Site::defaults());
+		return View::make('admin/antispam', array('flags' => Antispam::flags()));
 	}
 
 	/**
@@ -457,7 +450,7 @@ class AdminController extends BaseController {
 	 */
 	public function getAuth()
 	{
-		return View::make('admin/auth', array('auth' => Site::config('auth')), Site::defaults());
+		return View::make('admin/auth');
 	}
 
 	/**
@@ -502,7 +495,7 @@ class AdminController extends BaseController {
 	 */
 	public function getSite()
 	{
-		return View::make('admin/site', array('langs' => Site::getLanguages()), Site::defaults());
+		return View::make('admin/site', array('langs' => Site::getLanguages()));
 	}
 
 	/**

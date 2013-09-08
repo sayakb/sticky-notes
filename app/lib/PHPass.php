@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,10 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use PasswordHash;
+use Paste;
+use User;
 
 /**
  * PHPass class

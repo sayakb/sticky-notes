@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,13 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use App;
+use Diff;
+use DiffRenderer;
+use Lang;
+use Paste;
+use Revision;
 
 /**
  * PHPDiff class
@@ -50,7 +57,7 @@ class PHPDiff {
 
 		require_once base_path().'/vendor/phpdiff/Diff/Renderer/Html/SideBySide.php';
 
-		$this->renderer = new Diff_Renderer_Html_SideBySide;
+		$this->renderer = new DiffRenderer;
 	}
 
 	/**

@@ -149,11 +149,6 @@ App::error(function($exception, $code)
 {
 	$type = get_class($exception);
 
-	$data = array(
-		'site'      => Site::config('general'),
-		'services'  => array(),
-	);
-
 	// Set code based on exception
 	switch ($type)
 	{

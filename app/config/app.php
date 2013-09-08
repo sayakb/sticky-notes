@@ -103,6 +103,7 @@ return array(
 
 	'providers' => array(
 
+		// Illuminate
 		'Illuminate\Foundation\Providers\ArtisanServiceProvider',
 		'Illuminate\Auth\AuthServiceProvider',
 		'Illuminate\Cache\CacheServiceProvider',
@@ -135,7 +136,11 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+
+		// Mews
 		'Mews\Captcha\CaptchaServiceProvider',
+
+		// StickyNotes
 		'StickyNotes\Hashing\HashServiceProvider',
 
 	),
@@ -166,12 +171,12 @@ return array(
 
 	'aliases' => array(
 
+		// Illuminate
 		'App'             => 'Illuminate\Support\Facades\App',
 		'Artisan'         => 'Illuminate\Support\Facades\Artisan',
 		'Auth'            => 'Illuminate\Support\Facades\Auth',
 		'Blade'           => 'Illuminate\Support\Facades\Blade',
 		'Cache'           => 'Illuminate\Support\Facades\Cache',
-		'Captcha'         => 'Mews\Captcha\Facades\Captcha',
 		'ClassLoader'     => 'Illuminate\Support\ClassLoader',
 		'Config'          => 'Illuminate\Support\Facades\Config',
 		'Controller'      => 'Illuminate\Routing\Controllers\Controller',
@@ -194,7 +199,6 @@ return array(
 		'Redirect'        => 'Illuminate\Support\Facades\Redirect',
 		'Redis'           => 'Illuminate\Support\Facades\Redis',
 		'Request'         => 'Illuminate\Support\Facades\Request',
-		'Response'        => 'Illuminate\Support\Facades\Response',
 		'Route'           => 'Illuminate\Support\Facades\Route',
 		'Schema'          => 'Illuminate\Support\Facades\Schema',
 		'Seeder'          => 'Illuminate\Database\Seeder',
@@ -202,7 +206,24 @@ return array(
 		'Str'             => 'Illuminate\Support\Str',
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
-		'View'            => 'Illuminate\Support\Facades\View',
+
+		// Mews
+		'Captcha'         => 'Mews\Captcha\Facades\Captcha',
+
+		// StickyNotes
+		'API'             => 'StickyNotes\API',
+		'Antispam'        => 'StickyNotes\Antispam',
+		'Cron'            => 'StickyNotes\Cron',
+		'GoogleSvc'       => 'StickyNotes\GoogleSvc',
+		'Highlighter'     => 'StickyNotes\Highlighter',
+		'PHPass'          => 'StickyNotes\PHPass',
+		'PHPDiff'         => 'StickyNotes\PHPDiff',
+		'Response'        => 'StickyNotes\Response',
+		'Setup'           => 'StickyNotes\Setup',
+		'View'            => 'StickyNotes\View',
+
+		// PHPDiff
+		'DiffRenderer'    => 'Diff_Renderer_Html_SideBySide',
 
 	),
 

@@ -59,7 +59,7 @@ class ShowController extends BaseController {
 			// the password yet
 			if ($paste->password AND ! Session::has('paste.password'.$paste->id))
 			{
-				return View::make('site/password', array(), Site::defaults());
+				return View::make('site/password', array());
 			}
 		}
 
@@ -98,7 +98,7 @@ class ShowController extends BaseController {
 				return $response;
 
 			default:
-				return View::make('site/show', array('paste' => $paste), Site::defaults());
+				return View::make('site/show', array('paste' => $paste));
 		}
 
 		// If we are here, we should get outta here quickly!
@@ -151,7 +151,7 @@ class ShowController extends BaseController {
 			'newkey'    => $newkey,
 		);
 
-		return View::make('site/diff', $data, Site::defaults());
+		return View::make('site/diff', $data);
 	}
 
 }

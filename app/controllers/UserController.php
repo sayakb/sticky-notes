@@ -33,7 +33,7 @@ class UserController extends BaseController {
 	 */
 	public function getLogin()
 	{
-		return View::make('user/login', array('auth' => Site::config('auth')), Site::defaults());
+		return View::make('user/login');
 	}
 
 	/**
@@ -95,7 +95,7 @@ class UserController extends BaseController {
 			Session::flash('messages.error', Lang::get('user.reg_disabled'));
 		}
 
-		return View::make('user/register', array('auth' => $auth), Site::defaults());
+		return View::make('user/register');
 	}
 
 	/**
@@ -185,7 +185,7 @@ class UserController extends BaseController {
 			Session::flash('messages.error', Lang::get('user.forgot_disabled'));
 		}
 
-		return View::make('user/forgot', array(), Site::defaults());
+		return View::make('user/forgot');
 	}
 
 	/**
@@ -223,13 +223,13 @@ class UserController extends BaseController {
 			$user->save();
 
 			// Build the email template
-			$data = array_merge(Site::defaults(), array(
+			$data = array_merge(View::defaults(), array(
 				'dispname'   => $user->dispname,
 				'password'   => $password,
 			));
 
 			// Send the notification mail
-			Mail::send('mail.forgot', $data, function($message) use ($user)
+			Mail::send('templates/email/forgot', $data, function($message) use ($user)
 			{
 				$message->to($user->email)->subject(Lang::get('mail.forgot_subject'));
 			});

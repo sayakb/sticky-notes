@@ -26,6 +26,7 @@ return array(
 		'updateUrl'         => 'http://sayakb.github.io/sticky-notes/version/',
 		'preMigrate'        => '0',
 		'pasteAge'          => '1800',
+		'skin'              => 'bootstrap',
 	),
 
 	'antispam'              => (object) array(

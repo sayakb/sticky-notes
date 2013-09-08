@@ -1176,6 +1176,12 @@ class Request
                 return 443;
             }
         }
+        if ($host = $this->headers->get('HOST')) {
+            if (false !== ($pos = strrpos($host, ':'))) {
+                return intval(substr($host, $pos + 1));
+            }
+            return 'https' === $this->getScheme() ? 443 : 80;
+        }
         return $this->server->get('SERVER_PORT');
     }
     public function getUser()
@@ -1509,14 +1515,14 @@ class Request
             return rtrim($prefix, '/');
         }
         $truncatedRequestUri = $requestUri;
-        if (($pos = strpos($requestUri, '?')) !== false) {
+        if (false !== ($pos = strpos($requestUri, '?'))) {
             $truncatedRequestUri = substr($requestUri, 0, $pos);
         }
         $basename = basename($baseUrl);
         if (empty($basename) || !strpos(rawurldecode($truncatedRequestUri), $basename)) {
             return '';
         }
-        if (strlen($requestUri) >= strlen($baseUrl) && (false !== ($pos = strpos($requestUri, $baseUrl)) && $pos !== 0)) {
+        if (strlen($requestUri) >= strlen($baseUrl) && false !== ($pos = strpos($requestUri, $baseUrl)) && $pos !== 0) {
             $baseUrl = substr($requestUri, 0, $pos + strlen($baseUrl));
         }
         return rtrim($baseUrl, '/');
@@ -1787,15 +1793,22 @@ class ServerBag extends ParameterBag
             } elseif (isset($this->parameters['REDIRECT_HTTP_AUTHORIZATION'])) {
                 $authorizationHeader = $this->parameters['REDIRECT_HTTP_AUTHORIZATION'];
             }
-            if (null !== $authorizationHeader && 0 === stripos($authorizationHeader, 'basic')) {
-                $exploded = explode(':', base64_decode(substr($authorizationHeader, 6)));
-                if (count($exploded) == 2) {
-                    list($headers['PHP_AUTH_USER'], $headers['PHP_AUTH_PW']) = $exploded;
+            if (null !== $authorizationHeader) {
+                if (0 === stripos($authorizationHeader, 'basic')) {
+                    $exploded = explode(':', base64_decode(substr($authorizationHeader, 6)));
+                    if (count($exploded) == 2) {
+                        list($headers['PHP_AUTH_USER'], $headers['PHP_AUTH_PW']) = $exploded;
+                    }
+                } elseif (empty($this->parameters['PHP_AUTH_DIGEST']) && 0 === stripos($authorizationHeader, 'digest')) {
+                    $headers['PHP_AUTH_DIGEST'] = $authorizationHeader;
+                    $this->parameters['PHP_AUTH_DIGEST'] = $authorizationHeader;
                 }
             }
         }
         if (isset($headers['PHP_AUTH_USER'])) {
             $headers['AUTHORIZATION'] = 'Basic ' . base64_encode($headers['PHP_AUTH_USER'] . ':' . $headers['PHP_AUTH_PW']);
+        } elseif (isset($headers['PHP_AUTH_DIGEST'])) {
+            $headers['AUTHORIZATION'] = $headers['PHP_AUTH_DIGEST'];
         }
         return $headers;
     }
@@ -3257,8 +3270,7 @@ class ExceptionServiceProvider extends ServiceProvider
     }
     protected function getResourcePath()
     {
-        $base = $this->app['path.base'];
-        return $base . '/vendor/laravel/framework/src/Illuminate/Exception/resources';
+        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Exception' . '/resources';
     }
 }
 namespace Illuminate\Routing;
@@ -4217,10 +4229,6 @@ class ProviderRepository
         $path = $this->manifestPath . '/services.json';
         $this->files->put($path, json_encode($manifest));
         return $manifest;
-    }
-    protected function getManifestPath($app)
-    {
-        return $this->manifestPath;
     }
     protected function freshManifest(array $providers)
     {
@@ -5381,6 +5389,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     protected $appends = array();
     protected $fillable = array();
     protected $guarded = array('*');
+    protected $dates = array();
     protected $touches = array();
     protected $with = array();
     public $exists = false;
@@ -6153,7 +6162,8 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function getDates()
     {
-        return array(static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT);
+        $defaults = array(static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT);
+        return array_merge($this->dates, $defaults);
     }
     public function fromDateTime($value)
     {
@@ -6590,7 +6600,7 @@ class Store extends SymfonySession
     }
     protected function mergeNewFlashes(array $keys)
     {
-        $values = array_unique(array_merge($this->get('flash.new'), $keys));
+        $values = array_unique(array_merge($this->get('flash.new', array()), $keys));
         $this->put('flash.new', $values);
     }
     protected function removeFromOldFlashData(array $keys)

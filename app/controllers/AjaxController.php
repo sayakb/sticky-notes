@@ -63,7 +63,7 @@ class AjaxController extends BaseController {
 	 * Generates a short URL for a paste
 	 *
 	 * @param  string  $urlkey
-	 * @param  string  $hash = ''
+	 * @param  string  $hash
 	 * @return \Illuminate\Support\Facades\View|string
 	 */
 	public function getShorten($urlkey, $hash = '')

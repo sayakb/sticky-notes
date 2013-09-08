@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,8 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use Response;
 
 /**
  * API class
@@ -52,7 +54,7 @@ class API {
 	 * Throws a user specified error
 	 *
 	 * @param  string  $error
-	 * @param  int  $code
+	 * @param  int     $code
 	 * @return void
 	 */
 	public function error($error, $code = 200)
@@ -65,8 +67,8 @@ class API {
 	 * before that
 	 *
 	 * @param  string  $view
-	 * @param  array  $data
-	 * @param  int  $code
+	 * @param  array   $data
+	 * @param  int     $code
 	 * @return void
 	 */
 	public function out($view, $data, $code = 200)
@@ -79,7 +81,7 @@ class API {
 		array_walk_recursive($data, $callback);
 
 		// Now we create a custom response
-		$response = Response::view("api.{$this->mode}.{$view}", $data, $code);
+		$response = Response::view("templates/{$this->mode}/{$view}", $data, $code);
 
 		// We set the header based on mode
 		switch ($this->mode)

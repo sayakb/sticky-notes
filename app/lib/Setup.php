@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,11 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use Config;
+use Lang;
+use Schema;
+use Session;
 
 /**
  * Setup class
@@ -213,8 +218,8 @@ class Setup {
 	 * Applies a specific table schema to a table
 	 *
 	 * @static
-	 * @param  Illuminate\Database\Schema\Blueprint  $table
-	 * @param  array  $schema
+	 * @param  \Illuminate\Database\Schema\Blueprint  $table
+	 * @param  array                                  $schema
 	 * @return void
 	 */
 	public static function schema($table, $schema)
@@ -258,7 +263,7 @@ class Setup {
 	 *
 	 * @static
 	 * @param  string  $action
-	 * @param  array  $actions
+	 * @param  array   $actions
 	 * @param  string  $langKey
 	 * @return string
 	 */

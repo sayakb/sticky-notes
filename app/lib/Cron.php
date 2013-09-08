@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,10 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use Cache;
+use Paste;
+use Site;
 
 /**
  * Cron class
@@ -42,26 +46,21 @@ class Cron {
 	 */
 	public static function run()
 	{
-		try
+		// We do a version number check to ensure that we
+		// have Sticky Notes installed for cron to run
+		if (Site::versionNbr(Site::config('general')->version) > 0)
 		{
-			if (php_sapi_name() != 'cli')
+			// We run the cron tasks once every 60 minutes
+			Cache::remember('cron.run', 60, function()
 			{
-				// We run the cron tasks once every 60 minutes
-				Cache::remember('cron.run', 60, function()
-				{
-					// Remove expired pastes
-					Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
+				// Remove expired pastes
+				Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
 
-					// Add more cron tasks here..
+				// Add more cron tasks here..
 
-					// Crun run successfully
-					return TRUE;
-				});
-			}
-		}
-		catch(Exception $e)
-		{
-			// Suppress the exception here
+				// Crun run successfully
+				return TRUE;
+			});
 		}
 	}
 

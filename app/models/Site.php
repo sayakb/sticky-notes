@@ -51,24 +51,6 @@ class Site extends Eloquent {
 	);
 
 	/**
-	 * Returns site defaults that can be used in templates
-	 *
-	 * @static
-	 * @return array
-	 */
-	public static function defaults()
-	{
-		return array(
-			'site'        => static::config('general'),
-			'error'       => Session::get('messages.error'),
-			'success'     => Session::get('messages.success'),
-			'services'    => explode(',', static::config('antispam')->services),
-			'user'        => Auth::user(),
-			'role'        => User::getRoles(),
-		);
-	}
-
-	/**
 	 * Gets or sets the site configuration data
 	 *
 	 * @access public
@@ -76,7 +58,7 @@ class Site extends Eloquent {
 	 * @param  array   $newData
 	 * @return stdClass|bool
 	 */
-	public static function config($group, $newData = array())
+	public static function config($group = '', $newData = array())
 	{
 		// Get a config value
 		if (count($newData) == 0)
@@ -112,11 +94,11 @@ class Site extends Eloquent {
 				return $config;
 			});
 
-			return $config[$group];
+			return empty($group) ? (object) $config : $config[$group];
 		}
 
-		// Set config values
-		else
+		// Set config values for a group
+		else if ( ! empty($group))
 		{
 			// Update the new config values in the DB
 			foreach ($newData as $key => $value)

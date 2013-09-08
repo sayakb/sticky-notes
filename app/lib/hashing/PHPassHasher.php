@@ -15,6 +15,7 @@
  */
 
 use Illuminate\Hashing\HasherInterface;
+use StickyNotes\PHPass;
 
 /**
  * PHPassHasher Class
@@ -36,7 +37,7 @@ class PHPassHasher implements HasherInterface {
 	 */
 	public function make($value, array $options = array())
 	{
-		return \PHPass::make()->create($value, NULL);
+		return PHPass::make()->create($value, NULL);
 	}
 
 	/**
@@ -49,7 +50,7 @@ class PHPassHasher implements HasherInterface {
 	 */
 	public function check($value, $hashedValue, array $options = array())
 	{
-		return \PHPass::make()->check('hasher', $value, NULL, $hashedValue);
+		return PHPass::make()->check('hasher', $value, NULL, $hashedValue);
 	}
 
 	/**

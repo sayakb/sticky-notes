@@ -26,6 +26,6 @@ return array(
 	|
 	*/
 
-	'pagination' => 'common/pagination',
+	'pagination' => View::skin('common/pagination'),
 
 );

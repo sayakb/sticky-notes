@@ -56,7 +56,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	 * Initializes the provider and sets the model instance
 	 *
 	 * @param  Illuminate\Database\Eloquent\Model  $model
-	 * @param  PHPass  $crypt
+	 * @param  PHPass                              $crypt
 	 * @return void
 	 */
 	public function __construct($model, $crypt)
@@ -110,7 +110,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	 * Validate a user against the given credentials.
 	 *
 	 * @param  \Illuminate\Auth\UserInterface  $user
-	 * @param  array  $credentials
+	 * @param  array                           $credentials
 	 * @return bool
 	 */
 	public function validateCredentials(UserInterface $user, array $credentials)

@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,8 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use GeSHi;
 
 /**
  * Highlighter class
@@ -78,7 +80,7 @@ class Highlighter {
 	 * Fetches a list of languages supported by GeSHi
 	 *
 	 * @access public
-	 * @param  bool   $csv
+	 * @param  bool  $csv
 	 * @return array|string
 	 */
 	public function languages($csv = FALSE)

@@ -128,7 +128,7 @@ class ListController extends BaseController {
 	 * Parses and displays a list
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Model  $pastes
-	 * @param  bool  $showFilters
+	 * @param  bool                                 $showFilters
 	 * @return \Illuminate\Support\Facades\View
 	 */
 	private function getList($pastes, $showFilters = FALSE)
@@ -146,7 +146,7 @@ class ListController extends BaseController {
 			'filters'  => $showFilters,
 		);
 
-		return View::make('site/list', $data, Site::defaults());
+		return View::make('site/list', $data);
 	}
 
 }

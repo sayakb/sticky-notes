@@ -1,4 +1,4 @@
-<?php
+<?php namespace StickyNotes;
 
 /**
  * Sticky Notes
@@ -13,6 +13,16 @@
  * @since       Version 1.0
  * @filesource
  */
+
+use Config;
+use Input;
+use IPBan;
+use Lang;
+use Object;
+use Request;
+use Session;
+use Site;
+use stdClass;
 
 /**
  * Antispam class

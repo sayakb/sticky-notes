@@ -98,7 +98,7 @@ class ApiController extends BaseController {
 	 * Gets a paste list in the specified mode
 	 *
 	 * @param  string  $mode
-	 * @param  int  $page
+	 * @param  int     $page
 	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getList($mode, $page = 1)

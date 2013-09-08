@@ -49,7 +49,7 @@ class CreateController extends BaseController {
 			$data['language'] = Cookie::get('language');
 		}
 
-		return View::make('site/create', $data, Site::defaults());
+		return View::make('site/create', $data);
 	}
 
 	/**
@@ -164,7 +164,7 @@ class CreateController extends BaseController {
 			'disabled'   => 'disabled',
 		);
 
-		return View::make('site/create', $data, Site::defaults());
+		return View::make('site/create', $data);
 	}
 
 	/**

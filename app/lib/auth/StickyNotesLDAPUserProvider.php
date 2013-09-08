@@ -55,7 +55,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	 * Initializes the provider and sets the model instance
 	 *
 	 * @param  Illuminate\Database\Eloquent\Model  $model
-	 * @param  array  $auth
+	 * @param  array                               $auth
 	 * @return void
 	 */
 	public function __construct($model, $auth)
@@ -113,7 +113,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	 * Validate a user against the given credentials.
 	 *
 	 * @param  \Illuminate\Auth\UserInterface  $user
-	 * @param  array  $credentials
+	 * @param  array                           $credentials
 	 * @return bool
 	 */
 	public function validateCredentials(UserInterface $user, array $credentials)
