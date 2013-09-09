@@ -123,6 +123,29 @@
 							</div>
 
 							<div class="form-group">
+								{{
+									Form::label('active', Lang::get('admin.status'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									<div class="checkbox">
+										<label>
+											{{
+												Form::checkbox('active', NULL, NULL, array(
+													'id'         => 'active',
+													'disabled'   => $founder ? 'disabled' : NULL
+												))
+											}}
+
+											{{ Lang::get('admin.active') }}
+										</label>
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
 								<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 									<div class="checkbox">
 										<label>
@@ -134,23 +157,6 @@
 											}}
 
 											{{ Lang::get('global.admin') }}
-										</label>
-									</div>
-								</div>
-							</div>
-
-							<div class="form-group">
-								<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-									<div class="checkbox">
-										<label>
-											{{
-												Form::checkbox('active', NULL, NULL, array(
-													'id'         => 'active',
-													'disabled'   => $founder ? 'disabled' : NULL
-												))
-											}}
-
-											{{ Lang::get('admin.active') }}
 										</label>
 									</div>
 								</div>
