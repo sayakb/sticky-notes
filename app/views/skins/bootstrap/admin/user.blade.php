@@ -135,7 +135,7 @@
 											{{
 												Form::checkbox('active', NULL, NULL, array(
 													'id'         => 'active',
-													'disabled'   => $founder ? 'disabled' : NULL
+													'disabled'   => $founder ?: NULL
 												))
 											}}
 
@@ -152,7 +152,7 @@
 											{{
 												Form::checkbox('admin', NULL, NULL, array(
 													'id'         => 'admin',
-													'disabled'   => $founder ? 'disabled' : NULL
+													'disabled'   => $founder ?: NULL
 												))
 											}}
 

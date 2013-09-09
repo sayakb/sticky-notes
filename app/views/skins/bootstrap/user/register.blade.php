@@ -14,6 +14,12 @@
 				<fieldset>
 					<legend>{{ Lang::get('user.create_acct') }}</legend>
 
+					@if ($site->auth->method != 'db' OR ! $site->dbAllowReg)
+						<div class="alert alert-danger">
+							{{ Lang::get('user.reg_disabled') }}
+						</div>
+					@endif
+
 					@include('skins.bootstrap.common.alerts')
 
 					<div class="form-group">
@@ -79,8 +85,9 @@
 
 					{{
 						Form::submit(Lang::get('user.register'), array(
-							'name'    => '_register',
-							'class'   => 'btn btn-primary'
+							'name'      => '_register',
+							'class'     => 'btn btn-primary',
+							'disabled'  => $site->auth->method != 'db' OR ! $site->dbAllowReg ?: NULL,
 						))
 					}}
 				</fieldset>
