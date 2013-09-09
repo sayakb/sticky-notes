@@ -37,7 +37,7 @@
 						@if ($site->general->skin == $skin->key)
 							<button class="btn btn-success disabled" disabled="disabled">
 								<span class="glyphicon glyphicon-ok"></span>
-								{{ Lang::get('admin.theme_active') }}
+								{{ Lang::get('admin.active') }}
 							</button>
 						@else
 							{{
