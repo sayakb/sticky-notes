@@ -129,7 +129,7 @@
 											{{
 												Form::checkbox('admin', NULL, NULL, array(
 													'id'         => 'admin',
-													'disabled'   => $user->id == 1 ? 'disabled' : NULL
+													'disabled'   => $founder ? 'disabled' : NULL
 												))
 											}}
 
