@@ -18,6 +18,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserProviderInterface;
 use Illuminate\Database\Connection;
 use Illuminate\Hashing\HasherInterface;
+use App;
 use Session;
 
 /**
@@ -125,7 +126,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 		// Check if user is banned
 		if ( ! $this->user->active)
 		{
-			App::error(401);
+			App::abort(401);
 		}
 
 		return $this->crypt->check('User', $password, $salt, $hash);

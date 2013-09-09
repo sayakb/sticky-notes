@@ -18,7 +18,7 @@ return array(
 	"feed"              => "Feed",
 	"docs"              => "Docs",
 	"siteadmin"         => "Admin",
-	"my_pastes"         => "My pastes",
+	"my_profile"        => "My profile",
 	"author"            => "Author",
 	"username"          => "Username",
 	"password"          => "Password",

@@ -49,6 +49,31 @@ Route::filter('auth.basic', function()
 
 /*
 |--------------------------------------------------------------------------
+| Authentication Config Filters
+|--------------------------------------------------------------------------
+|
+| The following filters are used to verify that DB based auth is enabled.
+| An additional reg allowed check is performed for POST to register page.
+|
+*/
+
+Route::filter('auth.config', function()
+{
+	$auth = Site::config('auth');
+
+	if ($auth->method != 'db')
+	{
+		App::abort(401);
+	}
+
+	if (Request::segment(2) == 'register' AND ! $auth->dbAllowReg)
+	{
+		App::abort(401);
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
 | Guest Filter
 |--------------------------------------------------------------------------
 |
@@ -101,7 +126,7 @@ Route::filter('csrf', function()
 
 Route::filter('admin', function()
 {
-	if ( ! Auth::check() OR ! Auth::user()->admin)
+	if (Auth::guest() OR ! Auth::user()->admin)
 	{
 		App::abort(401);
 	}

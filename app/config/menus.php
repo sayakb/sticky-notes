@@ -48,8 +48,8 @@ return array(
 			'icon'          => 'book'
 		),
 
-		'mypastes'          => array(
-			'label'         => 'global.my_pastes',
+		'user/profile'      => array(
+			'label'         => 'global.my_profile',
 			'icon'          => 'flag',
 			'role'          => 'user'
 		),

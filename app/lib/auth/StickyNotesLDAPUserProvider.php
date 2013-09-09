@@ -18,6 +18,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserProviderInterface;
 use Illuminate\Database\Connection;
 use Illuminate\Hashing\HasherInterface;
+use Session;
 
 /**
  * StickyNotesLDAPUserProvider Class

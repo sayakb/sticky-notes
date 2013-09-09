@@ -106,7 +106,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			static::$roles->user  = FALSE;
 			static::$roles->admin = FALSE;
 
-			if ( ! Auth::check())
+			if (Auth::guest())
 			{
 				static::$roles->guest = TRUE;
 			}

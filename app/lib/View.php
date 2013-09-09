@@ -46,9 +46,9 @@ class View extends \Illuminate\Support\Facades\View {
 		$site = Site::config('general');
 
 		$defaults = array(
-			'site'        => Site::config(),
-			'error'       => Session::get('messages.error'),
-			'success'     => Session::get('messages.success'),
+			'site'       => Site::config(),
+			'error'      => Session::get('messages.error'),
+			'success'    => Session::get('messages.success'),
 		);
 
 		// View can be called even before tables are available.
@@ -57,8 +57,8 @@ class View extends \Illuminate\Support\Facades\View {
 		if (System::version($site->version) > 0)
 		{
 			$defaults = array_merge($defaults, array(
-				'user'        => Auth::user(),
-				'role'        => User::getRoles(),
+				'auth'   => Auth::user(),
+				'role'   => User::getRoles(),
 			));
 		}
 

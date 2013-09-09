@@ -26,7 +26,11 @@ return array(
 	"reset_password"    => "Reset password",
 	"reset_done"        => "Your password has been reset. Please check your email",
 	"reg_disabled"      => "Registration has been disabled on this site",
-	"forgot_disabled"   => "This feature is disabled as your user data is not stored ".
+	"feature_disabled"  => "This feature is disabled as your user data is not stored ".
 	                       "in the site database",
+	"your_profile"      => "Your profile",
+	"my_pastes"         => "View my pastes",
+	"new_password"      => "New password",
+	"profile_saved"     => "Your profile has been saved",
 
 );

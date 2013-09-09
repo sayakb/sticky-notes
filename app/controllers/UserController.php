@@ -87,14 +87,6 @@ class UserController extends BaseController {
 	 */
 	public function getRegister()
 	{
-		// Show error if registration is not allowed
-		$auth = Site::config('auth');
-
-		if ($auth->method != 'db' OR ! $auth->dbAllowReg)
-		{
-			Session::flash('messages.error', Lang::get('user.reg_disabled'));
-		}
-
 		return View::make('user/register');
 	}
 
@@ -106,18 +98,10 @@ class UserController extends BaseController {
 	 */
 	public function postRegister()
 	{
-		// Check if registration is allowed
-		$auth = Site::config('auth');
-
-		if ($auth->method != 'db' OR ! $auth->dbAllowReg)
-		{
-			App::abort(401);
-		}
-
 		// Define validation rules
 		$rules = array(
-			'username'    => 'required|max:50|alpha_num|unique:users,username,ldap,type',
-			'email'       => 'required|max:100|email|unique:users,email,ldap,type',
+			'username'    => 'required|max:50|alpha_num|unique:users,username,-1,id,type,db',
+			'email'       => 'required|max:100|email|unique:users,email,-1,id,type,db',
 			'dispname'    => 'max:100',
 			'password'    => 'required|min:5',
 		);
@@ -177,14 +161,6 @@ class UserController extends BaseController {
 	 */
 	public function getForgot()
 	{
-		// Show error if resetting is not allowed
-		$auth = Site::config('auth');
-
-		if ($auth->method != 'db')
-		{
-			Session::flash('messages.error', Lang::get('user.forgot_disabled'));
-		}
-
 		return View::make('user/forgot');
 	}
 
@@ -196,14 +172,6 @@ class UserController extends BaseController {
 	 */
 	public function postForgot()
 	{
-		// Check if resetting password is allowed
-		$auth = Site::config('auth');
-
-		if ($auth->method != 'db')
-		{
-			App::abort(401);
-		}
-
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'username'    => 'required|exists:users,username,type,db',
@@ -244,6 +212,63 @@ class UserController extends BaseController {
 			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 
 			return Redirect::to('user/forgot')->withInput();
+		}
+	}
+
+	/**
+	 * Displays the user profile screen
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function getProfile()
+	{
+		return View::make('user/profile');
+	}
+
+	/**
+	 * Handles POST requests on the user profile
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postProfile()
+	{
+		$user = Auth::user();
+
+		// Define validation rules
+		$rules = array(
+			'username'    => 'max:50|alpha_num|unique:users,username,'.$user->id.',id,type,db',
+			'email'       => 'required|max:100|email|unique:users,email,'.$user->id.',id,type,db',
+			'dispname'    => 'max:100',
+			'password'    => 'min:5',
+		);
+
+		$validator = Validator::make(Input::all(), $rules);
+
+		// Run the validator
+		if ($validator->passes())
+		{
+			$user->username = $user->admin ? Input::get('username') : $user->username;
+			$user->email    = Input::get('email');
+			$user->dispname = Input::get('dispname');
+
+			if (Input::has('password'))
+			{
+				$user->password = PHPass::make()->create(Input::get('password'), $user->salt);
+			}
+
+			$user->save();
+
+			Session::flash('messages.success', Lang::get('user.profile_saved'));
+
+			return Redirect::to('user/profile');
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('user/profile')->withInput();
 		}
 	}
 

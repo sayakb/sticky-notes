@@ -41,9 +41,6 @@ Route::get('api/{mode}/list/{page?}', 'ApiController@getList');
 
 Route::post('api/{mode}/create', 'ApiController@postCreate');
 
-// User operation routes
-Route::controller('user', 'UserController');
-
 // AJAX routes
 Route::controller('ajax', 'AjaxController');
 
@@ -56,22 +53,51 @@ Route::get('docs', function()
 	return Redirect::to('http://sayakbanerjee.com/sticky-notes');
 });
 
+// User operation routes
+Route::get('user/login', 'UserController@getLogin');
+
+Route::post('user/login', 'UserController@postLogin');
+
+Route::get('user/logout', 'UserController@getLogout');
+
+Route::get('user/register', 'UserController@getRegister');
+
+Route::get('user/forgot', 'UserController@getForgot');
+
+// DB-only user operations
+Route::group(array('before' => 'auth.config'), function()
+{
+	// Submit user registration
+	Route::post('user/register', 'UserController@postRegister');
+
+	// Submit forgot password
+	Route::post('user/forgot', 'UserController@postForgot');
+
+	// Submit user profile
+	Route::group(array('before' => 'auth'), function()
+	{
+		Route::post('user/profile', 'UserController@postProfile');
+	});
+});
+
 // Protected routes
 Route::group(array('before' => 'auth'), function()
 {
 	// User pastes route
-	Route::get('mypastes', 'ListController@getUserPastes');
+	Route::get('user/pastes', 'ListController@getUserPastes');
+
+	// User profile route
+	Route::get('user/profile', 'UserController@getProfile');
 
 	// Admin only routes
 	Route::group(array('before' => 'admin'), function()
 	{
-		// Admin routes
 		Route::controller('admin', 'AdminController');
 	});
 });
 
 // Installed state check for everything
-Route::when('*', 'installed', array('get'));
+Route::when('*', 'installed', array('get', 'post'));
 
 // CSRF protection for all forms
 Route::when('*', 'csrf', array('post'));
