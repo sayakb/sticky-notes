@@ -161,6 +161,7 @@ return array(
 	"skin_error"            => "The selected skin cannot be used as it is invalid",
 	"version"               => "Version",
 	"use_theme"             => "Use this theme",
-	"theme_active"          => "Active",
+	"active"                => "Active",
+	"status"                => "Status",
 
 );
