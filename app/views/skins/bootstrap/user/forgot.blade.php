@@ -14,6 +14,12 @@
 				<fieldset>
 					<legend>{{ Lang::get('user.forgot_password') }}</legend>
 
+					@if ($site->auth->method != 'db')
+						<div class="alert alert-danger">
+							{{ Lang::get('user.feature_disabled') }}
+						</div>
+					@endif
+
 					@include('skins.bootstrap.common.alerts')
 
 					<div class="form-group">
@@ -22,7 +28,7 @@
 						{{
 							Form::text('username', NULL, array(
 								'class'       => 'form-control',
-								'maxlength'   => 50
+								'maxlength'   => 50,
 							))
 						}}
 
@@ -33,8 +39,9 @@
 
 					{{
 						Form::submit(Lang::get('user.reset_password'), array(
-							'name'    => '_reset',
-							'class'   => 'btn btn-primary'
+							'name'      => '_reset',
+							'class'     => 'btn btn-primary',
+							'disabled'  => $site->auth->method != 'db' ?: NULL,
 						))
 					}}
 				</fieldset>
