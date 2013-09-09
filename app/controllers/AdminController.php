@@ -191,6 +191,12 @@ class AdminController extends BaseController {
 			'pages'    => $pages,
 		);
 
+		// Set the founder flag. Founders cannot be unset as admins
+		if ( ! is_null($user))
+		{
+			$data['founder'] = User::min('id') == $user->id;
+		}
+
 		return View::make('admin/user', $data);
 	}
 
@@ -236,7 +242,7 @@ class AdminController extends BaseController {
 				$user->salt     = $user->salt ?: str_random(5);
 
 				// The first user is always immutable
-				$user->admin = $user->id != 1 ? Input::has('admin') : 1;
+				$user->admin = $user->id > User::min('id') ? Input::has('admin') : 1;
 
 				if (Input::has('password'))
 				{
