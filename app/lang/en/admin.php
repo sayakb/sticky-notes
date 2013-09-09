@@ -131,6 +131,9 @@ return array(
 	"user_filter_exp"       => "Optionally you can further limit the searched objects with additional ".
 	                           "filters. For example objectClass=posixGroup would result in the use of ".
 	                           "(&(uid=\$username)(objectClass=posixGroup)).",
+	"admin_group"           => "Admin group",
+	"admin_group_exp"       => "Specify an administrator group in the format objectClass=posixGroup where ".
+	                           "posixGroup is the admin group name in your LDAP user store.",
 	"user_dn"               => "User dn",
 	"user_dn_exp"           => "Leave blank to use anonymous binding. If filled in, sticky-notes uses ".
 	                           "the specified distinguished name on login attempts to find the correct ".

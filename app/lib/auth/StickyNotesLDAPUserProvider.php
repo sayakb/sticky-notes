@@ -18,6 +18,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserProviderInterface;
 use Illuminate\Database\Connection;
 use Illuminate\Hashing\HasherInterface;
+use Cache;
 use Session;
 
 /**
@@ -172,28 +173,50 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 			$key = "(&{$key}{$filter})";
 		}
 
-		// Look up for the user
-		$search = @ldap_search($ldap, $this->auth->ldapBaseDn, $key, array($this->auth->ldapUid), 0, 1);
+		// Build the ldap admin filter
+		$ldapAdmin = explode('=', $this->auth->ldapAdmin);
 
-		$result = @ldap_get_entries($ldap, $search);
+		$objectClass = trim($ldapAdmin[0]);
 
-		if (is_array($result) AND sizeof($result) > 1)
+		$posixGroup = trim($ldapAdmin[1]);
+
+		// Look up for the user's details
+		$search = @ldap_search($ldap, $this->auth->ldapBaseDn, $key);
+
+		$entry = @ldap_first_entry($ldap, $search);
+
+		if ( ! empty($entry))
 		{
+			$dn = @ldap_get_dn($ldap, $entry);
+
 			// Validate credentials by binding with user's password
-			if (@ldap_bind($ldap, $result[0]['dn'], $credentials['password']))
+			if (@ldap_bind($ldap, $dn, $credentials['password']))
 			{
-				// Now we check if retrieveByCredentials returned a new model
-				// If it was a new model, that means we need to inject the user
-				// details to it and save the user
-				if (is_null($this->user->id))
+				// We check if the user is a member of the admin group
+				// If so, we make him an admin in Sticky Notes.
+				$groups = @ldap_get_values($ldap, $entry, $objectClass);
+
+				$isAdmin = (is_array($groups) AND in_array($posixGroup, $groups)) ? 1 : 0;
+
+				// We need to flush the cache as the menus need to be parsed
+				// again for this user.
+				if ($this->user->admin != $isAdmin)
+				{
+					Cache::flush();
+				}
+
+				// Now if this is a new user, retrieveByCredentials would have
+				// returned a new model. If it is an existing user, $this->user
+				// has an instance of that user. Either way, we update the user info.
+				if (is_null($this->user->id) OR $this->user->admin != $isAdmin)
 				{
 					$this->user->username = $credentials['username'];
 					$this->user->password = '';
 					$this->user->salt     = '';
 					$this->user->email    = '';
-					$this->user->admin    = 0;
 					$this->user->type     = 'ldap';
 					$this->user->active   = 1;
+					$this->user->admin    = $isAdmin;
 
 					$this->user->save();
 				}

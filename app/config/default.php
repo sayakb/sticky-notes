@@ -61,6 +61,7 @@ return array(
 		'ldapBaseDn'        => '',
 		'ldapUid'           => '',
 		'ldapFilter'        => '',
+		'ldapAdmin'         => '',
 		'ldapUserDn'        => '',
 		'ldapPassword'      => '',
 	),

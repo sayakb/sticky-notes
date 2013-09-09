@@ -477,6 +477,7 @@ class AdminController extends BaseController {
 			'ldap_server'     => 'required_if:method,ldap',
 			'ldap_base_dn'    => 'required_if:method,ldap',
 			'ldap_uid'        => 'required_if:method,ldap',
+			'ldap_admin'      => 'required_if:method,ldap',
 		));
 
 		// Run the validator

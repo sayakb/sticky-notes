@@ -112,15 +112,19 @@ return array(
 		),
 
 		"ldap_server"     => array(
-			"required_if" => "The LDAP server field is required if LDAP method is used",
+			"required_if" => "The LDAP server field is required if LDAP method is used.",
 		),
 
 		"ldap_base_dn"    => array(
-			"required_if" => "The LDAP base dn field is required if LDAP method is used",
+			"required_if" => "The LDAP base dn field is required if LDAP method is used.",
 		),
 
 		"ldap_uid"        => array(
-			"required_if" => "The LDAP uid field is required if LDAP method is used",
+			"required_if" => "The LDAP uid field is required if LDAP method is used.",
+		),
+
+		"ldap_admin"      => array(
+			"required_if" => "The LDAP admin group field is required if LDAP method is used.",
 		),
 
 	),
