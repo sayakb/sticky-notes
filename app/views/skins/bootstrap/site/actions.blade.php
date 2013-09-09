@@ -1,10 +1,10 @@
 @if ($role->admin OR ($role->user AND $auth->id == $paste->author_id))
 	@if ($paste->password)
-		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pwd') }}">
+		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pwd') }}" data-toggle="tooltip">
 			<span class="glyphicon glyphicon-lock"></span>
 		</span>
 	@elseif ($paste->private)
-		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pvt') }}">
+		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pvt') }}" data-toggle="tooltip">
 			<span class="glyphicon glyphicon-eye-open"></span>
 		</span>
 	@endif

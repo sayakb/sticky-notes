@@ -148,6 +148,26 @@
 
 							<div class="form-group">
 								{{
+									Form::label('ldap_admin', Lang::get('admin.admin_group'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::text('ldap_admin', $site->auth->ldapAdmin, array(
+											'class' => 'form-control',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.admin_group_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
 									Form::label('ldap_user_dn', Lang::get('admin.user_dn'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))

@@ -33,6 +33,9 @@ function stickyNotes()
 
 	// Initialize line reference
 	initLineReference();
+
+	// Initialize bootstrap components
+	initBootstrap();
 }
 
 /**
