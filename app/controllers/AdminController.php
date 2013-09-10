@@ -195,7 +195,7 @@ class AdminController extends BaseController {
 			'user'     => $user,
 			'users'    => $users,
 			'pages'    => $pages,
-			'founder'  => $user->id == User::min('id'),
+			'founder'  => is_null($user) ? FALSE : $user->id == User::min('id'),
 		);
 
 		return View::make('admin/user', $data);
