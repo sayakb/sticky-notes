@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+language: php
+
+php:
+  - "5.5"
+  - "5.4"
+
+branches:
+  only:
+    - "master"
+
+before_script:
+  - mysql -e 'create database `database`;'
+=======
 branches:
   except:
     - "/^skin-.*$/"
+>>>>>>> skin-bootstrap
