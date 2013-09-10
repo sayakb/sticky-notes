@@ -146,7 +146,13 @@
 							</div>
 
 							<div class="form-group">
-								<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
+								{{
+									Form::label('admin', Lang::get('admin.role'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
 									<div class="checkbox">
 										<label>
 											{{
