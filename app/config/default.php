@@ -41,9 +41,9 @@ return array(
 
 	'mail'                  => (object) array(
 		'driver'            => 'smtp',
-		'host'              => 'smtp.mailgun.org',
-		'port'              => '587',
-		'address'           => 'webmaster@localhost',
+		'host'              => 'localhost',
+		'port'              => '25',
+		'address'           => 'webmaster@sticky.notes',
 		'name'              => 'Webmaster',
 		'encryption'        => 'ssl',
 		'username'          => '',
