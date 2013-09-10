@@ -166,7 +166,12 @@ class AdminController extends BaseController {
 		switch ($action)
 		{
 			case 'create':
-				return View::make('admin/user', array('user' => new User));
+				$data = array(
+					'user'     => new User,
+					'founder'  => FALSE,
+				);
+
+				return View::make('admin/user', $data);
 
 			case 'delete':
 				// Cannot delete founder user or own account
@@ -184,18 +189,14 @@ class AdminController extends BaseController {
 				}
 		}
 
-		// Render the view
+		// Render the view. The founder flag here makes sure that the first
+		// user cannot be blocked or removed from admin status.
 		$data = array(
 			'user'     => $user,
 			'users'    => $users,
 			'pages'    => $pages,
+			'founder'  => $user->id == User::min('id'),
 		);
-
-		// Set the founder flag. Founders cannot be unset as admins
-		if ( ! is_null($user))
-		{
-			$data['founder'] = $user->id == User::min('id');
-		}
 
 		return View::make('admin/user', $data);
 	}

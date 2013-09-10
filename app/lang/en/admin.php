@@ -166,5 +166,6 @@ return array(
 	"use_theme"             => "Use this theme",
 	"active"                => "Active",
 	"status"                => "Status",
+	"role"                  => "Role",
 
 );
