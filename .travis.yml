@@ -10,4 +10,3 @@ branches:
 
 before_script:
   - mysql -e 'create database `database`;'
-
