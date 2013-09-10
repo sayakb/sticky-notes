@@ -38,16 +38,26 @@ class Setup {
 	 */
 	public static function testConnection()
 	{
-		try
-		{
-			Schema::getConnection();
+		set_exception_handler(array(__CLASS__, 'testConnectionHandler'));
 
-			return TRUE;
-		}
-		catch (Exception $e)
-		{
-			return $e->getMessage();
-		}
+		Schema::getConnection();
+
+		return TRUE;
+	}
+
+	/**
+	 * Exception handler for PDO exceptions.
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function testConnectionHandler($e)
+	{
+		$error = sprintf(Lang::get('setup.test_fail'), $e->getMessage());
+
+		Session::flash('messages.error', $error);
+
+		header('Location:'.url('setup/install'));
 	}
 
 	/**

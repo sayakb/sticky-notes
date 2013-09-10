@@ -72,30 +72,19 @@ class Site extends Eloquent {
 		{
 			$config = static::$config ?: Cache::rememberForever('site.config', function()
 			{
-				// Load the default configuration data
 				$config = Config::get('default');
 
-				// We try to access the site config table here, but it may
-				// fail due to many reasons, one of them being a bad connection
-				// If it fails, we just return the default values
-				try
+				if (php_sapi_name() != 'cli' AND Schema::hasTable('config'))
 				{
-					if (php_sapi_name() != 'cli')
-					{
-						$siteConfig = Site::all();
+					$siteConfig = Site::all();
 
-						if ( ! is_null($siteConfig))
+					if ( ! is_null($siteConfig))
+					{
+						foreach ($siteConfig as $item)
 						{
-							foreach ($siteConfig as $item)
-							{
-								$config[$item['group']]->$item['key'] = $item['value'];
-							}
+							$config[$item['group']]->$item['key'] = $item['value'];
 						}
 					}
-				}
-				catch(Exception $e)
-				{
-					// Suppress the exception here
 				}
 
 				return $config;

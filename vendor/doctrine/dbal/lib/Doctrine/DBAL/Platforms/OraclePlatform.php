@@ -113,22 +113,6 @@ class OraclePlatform extends AbstractPlatform
     /**
      * {@inheritDoc}
      */
-    public function getDateAddHourExpression($date, $hours)
-    {
-        return '(' . $date . '+' . $hours . '/24)';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getDateSubHourExpression($date, $hours)
-    {
-        return '(' . $date . '-' . $hours . '/24)';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getDateAddDaysExpression($date, $days)
     {
         return '(' . $date . '+' . $days . ')';
@@ -629,13 +613,7 @@ LEFT JOIN user_cons_columns r_cols
              * Do not add query part if only comment has changed
              */
             if ( ! ($columnHasChangedComment && count($columnDiff->changedProperties) === 1)) {
-                $columnInfo = $column->toArray();
-
-                if ( ! $columnDiff->hasChanged('notnull')) {
-                    $columnInfo['notnull'] = false;
-                }
-
-                $fields[] = $column->getQuotedName($this) . ' ' . $this->getColumnDeclarationSQL('', $columnInfo);
+                $fields[] = $column->getQuotedName($this). ' ' . $this->getColumnDeclarationSQL('', $column->toArray());
             }
 
             if ($columnHasChangedComment) {

@@ -75,10 +75,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	 */
 	public function retrieveById($identifier)
 	{
-		if (Session::get('global.installed') === TRUE)
-		{
-			return $this->createModel()->newQuery()->find($identifier);
-		}
+		return $this->createModel()->newQuery()->find($identifier);
 	}
 
 	/**

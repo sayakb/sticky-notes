@@ -182,9 +182,6 @@ Route::filter('installed', function()
 		$installed = FALSE;
 	}
 
-	// Set installed state to cache
-	Session::put('global.installed', $installed);
-
 	// Now we get the app and DB versions
 	// If there is no version data in the DB, the function will return 0
 	$app = Config::get('app');
@@ -211,6 +208,8 @@ Route::filter('installed', function()
 		}
 		else if ($appVersion > $dbVersion)
 		{
+			Auth::logout();
+
 			return Redirect::to('setup/update');
 		}
 	}

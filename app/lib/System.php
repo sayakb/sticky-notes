@@ -16,6 +16,7 @@
 
 use File;
 use Lang;
+use Session;
 
 /**
  * System class

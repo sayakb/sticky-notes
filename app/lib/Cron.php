@@ -16,6 +16,7 @@
 
 use Cache;
 use Paste;
+use Schema;
 use Site;
 
 /**
@@ -46,12 +47,10 @@ class Cron {
 	 */
 	public static function run()
 	{
-		// We do a version number check to ensure that we
-		// have Sticky Notes installed for cron to run
-		if (System::version(Site::config('general')->version) > 0)
+		// We run the cron tasks once every 60 minutes
+		Cache::remember('cron.run', 60, function()
 		{
-			// We run the cron tasks once every 60 minutes
-			Cache::remember('cron.run', 60, function()
+			if (php_sapi_name() != 'cli' AND Schema::hasTable('cron'))
 			{
 				// Remove expired pastes
 				Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
@@ -60,8 +59,8 @@ class Cron {
 
 				// Crun run successfully
 				return TRUE;
-			});
-		}
+			}
+		});
 	}
 
 }

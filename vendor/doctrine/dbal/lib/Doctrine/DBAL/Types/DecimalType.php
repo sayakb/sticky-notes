@@ -22,7 +22,7 @@ namespace Doctrine\DBAL\Types;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
- * Type that maps an SQL DECIMAL to a PHP string.
+ * Type that maps an SQL DECIMAL to a PHP double.
  *
  * @since 2.0
  */

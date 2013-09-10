@@ -335,35 +335,30 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "dev-master",
+            "version": "2.4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "2ebae44b44449da05af7ee5f2bd0a06ea6445b77"
+                "reference": "814e53d0c538a995e3a36452710d4c039f6c2723"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/2ebae44b44449da05af7ee5f2bd0a06ea6445b77",
-                "reference": "2ebae44b44449da05af7ee5f2bd0a06ea6445b77",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/814e53d0c538a995e3a36452710d4c039f6c2723",
+                "reference": "814e53d0c538a995e3a36452710d4c039f6c2723",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": "2.4.*@beta",
+                "doctrine/common": "~2.4",
                 "php": ">=5.3.2"
             },
             "require-dev": {
                 "phpunit/phpunit": "3.7.*",
-                "symfony/console": "2.*"
+                "symfony/console": "~2.0"
             },
             "suggest": {
                 "symfony/console": "Allows use of the command line interface"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.5.x-dev"
-                }
-            },
             "autoload": {
                 "psr-0": {
                     "Doctrine\\DBAL\\": "lib/"
@@ -401,7 +396,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2013-09-07 10:41:45"
+            "time": "2013-09-08 07:51:49"
         },
         {
             "name": "doctrine/inflector",
@@ -624,12 +619,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0802bde2ef554517f71c869b71caf8b340847d0d"
+                "reference": "58eb9e9cb069e049e7edf334b869a47c1b060a95"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0802bde2ef554517f71c869b71caf8b340847d0d",
-                "reference": "0802bde2ef554517f71c869b71caf8b340847d0d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/58eb9e9cb069e049e7edf334b869a47c1b060a95",
+                "reference": "58eb9e9cb069e049e7edf334b869a47c1b060a95",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +723,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-09-07 05:09:22"
+            "time": "2013-09-10 02:54:30"
         },
         {
             "name": "mews/captcha",
@@ -841,16 +836,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.3.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "24c4262e994f7f2a258db5ccb5b2f34073f162ca"
+                "reference": "06f0b8a99a90c5392ceccb09b75b74ff6c08ec07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/24c4262e994f7f2a258db5ccb5b2f34073f162ca",
-                "reference": "24c4262e994f7f2a258db5ccb5b2f34073f162ca",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/06f0b8a99a90c5392ceccb09b75b74ff6c08ec07",
+                "reference": "06f0b8a99a90c5392ceccb09b75b74ff6c08ec07",
                 "shasum": ""
             },
             "require": {
@@ -880,7 +875,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2013-08-21 04:36:40"
+            "time": "2013-09-09 02:39:19"
         },
         {
             "name": "nikic/php-parser",
@@ -1528,12 +1523,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "d9a6b4b517463f3804282fc053a5046637d52fe8"
+                "reference": "903e22f3bc236bb92a1031c111bca4829931ba40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/d9a6b4b517463f3804282fc053a5046637d52fe8",
-                "reference": "d9a6b4b517463f3804282fc053a5046637d52fe8",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/903e22f3bc236bb92a1031c111bca4829931ba40",
+                "reference": "903e22f3bc236bb92a1031c111bca4829931ba40",
                 "shasum": ""
             },
             "require": {
@@ -1569,7 +1564,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-07 16:30:19"
+            "time": "2013-09-08 16:12:21"
         },
         {
             "name": "symfony/http-kernel",
@@ -1578,12 +1573,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "0bd6f23256c47d209ed0f30ce54aef0405a750ec"
+                "reference": "db8bdfc092c6e70bdaf93cd7b09b3fcb5e43528b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/0bd6f23256c47d209ed0f30ce54aef0405a750ec",
-                "reference": "0bd6f23256c47d209ed0f30ce54aef0405a750ec",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/db8bdfc092c6e70bdaf93cd7b09b3fcb5e43528b",
+                "reference": "db8bdfc092c6e70bdaf93cd7b09b3fcb5e43528b",
                 "shasum": ""
             },
             "require": {
@@ -1640,7 +1635,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-06 18:20:34"
+            "time": "2013-09-08 16:12:21"
         },
         {
             "name": "symfony/process",

@@ -71,6 +71,24 @@ class Carbon extends DateTime
       self::SATURDAY  => 'Saturday'
    );
 
+    /**
+    * Terms used to detect if a time passed is a relative date for testing purposes
+    *
+    * @var array
+    */
+    private static $relativeKeywords = array(
+      'this',
+      'next',
+      'last',
+      'tomorrow',
+      'yesterday',
+      '+',
+      '-',
+      'first',
+      'last',
+      'ago'
+    );
+
    /**
     * Number of X in Y
     */
@@ -92,6 +110,8 @@ class Carbon extends DateTime
     * @param  DateTimeZone|string $object
     *
     * @return DateTimeZone
+    *
+    * @throws InvalidArgumentException
     */
    protected static function safeCreateDateTimeZone($object)
    {
@@ -125,8 +145,12 @@ class Carbon extends DateTime
    {
       // If the class has a test now set and we are trying to create a now()
       // instance then override as required
-      if (static::hasTestNow() && (empty($time) || $time === 'now')) {
-         $time = static::getTestNow()->toDateTimeString();
+      if (static::hasTestNow() && (empty($time) || $time === 'now' || self::hasRelativeKeywords($time))) {
+         if (self::hasRelativeKeywords($time)) {
+            $time = static::getRelativeTest($time)->toDateTimeString();
+         } else {
+            $time = static::getTestNow()->toDateTimeString();
+         }
          $tz = static::getTestNow()->tz;
       }
 
@@ -157,6 +181,8 @@ class Carbon extends DateTime
     *
     * @param string              $time
     * @param DateTimeZone|string $tz
+    *
+    * @return Carbon
     */
    public static function parse($time = null, $tz = null)
    {
@@ -288,6 +314,8 @@ class Carbon extends DateTime
     * @param  DateTimeZone|string $tz
     *
     * @return Carbon
+    *
+    * @throws InvalidArgumentException
     */
    public static function createFromFormat($format, $time, $tz = null)
    {
@@ -301,7 +329,7 @@ class Carbon extends DateTime
          return self::instance($dt);
       }
 
-      $errors = DateTime::getLastErrors();
+      $errors = static::getLastErrors();
       throw new InvalidArgumentException(implode(PHP_EOL, $errors['errors']));
    }
 
@@ -442,6 +470,8 @@ class Carbon extends DateTime
     *
     * @param string                      $name
     * @param string|integer|DateTimeZone $value
+    *
+    * @throws InvalidArgumentException
     */
    public function __set($name, $value)
    {
@@ -649,6 +679,8 @@ class Carbon extends DateTime
     * Set the instance's timezone from a string or object
     *
     * @param DateTimeZone|string $value
+    *
+    * @return self
     */
    public function setTimezone($value)
    {
@@ -704,6 +736,33 @@ class Carbon extends DateTime
       return static::getTestNow() !== null;
    }
 
+   /**
+    * Determine if there is a relative keyword in the time string, this is to
+    * create dates relative to now for test instances. e.g.: next tuesday
+    *
+    * @return boolean true if there is a keyword, otherwise false
+    */
+   public static function hasRelativeKeywords($time) {
+      foreach(self::$relativeKeywords as $keyword) {
+         if (stripos($time, $keyword) !== false) {
+            return true;
+        }
+      }
+      return false;
+   }
+
+   /**
+    * Gets a Carbon instance relative to the current test instance.
+    * e.g.: last thursday, tomorrow
+    *
+    * @return Carbon relative to the current instance used for testing
+    */
+   public static function getRelativeTest($time) {
+      $instance = new static();
+      $instance->modify($time);
+      return $instance;
+   }
+
    ///////////////////////////////////////////////////////////////////
    /////////////////////// STRING FORMATTING /////////////////////////
    ///////////////////////////////////////////////////////////////////
@@ -718,7 +777,13 @@ class Carbon extends DateTime
     */
    public function formatLocalized($format)
    {
-     return strftime($format, $this->timestamp);
+      // Check for Windows to find and replace the %e
+      // modifier correctly
+      if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+          $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+      }
+
+      return strftime($format, $this->timestamp);
    }
 
    /**
@@ -788,7 +853,7 @@ class Carbon extends DateTime
     */
    public function toATOMString()
    {
-      return $this->format(DateTime::ATOM);
+      return $this->format(self::ATOM);
    }
 
    /**
@@ -798,7 +863,7 @@ class Carbon extends DateTime
     */
    public function toCOOKIEString()
    {
-      return $this->format(DateTime::COOKIE);
+      return $this->format(self::COOKIE);
    }
 
    /**
@@ -808,7 +873,7 @@ class Carbon extends DateTime
     */
    public function toISO8601String()
    {
-      return $this->format(DateTime::ISO8601);
+      return $this->format(self::ISO8601);
    }
 
    /**
@@ -818,7 +883,7 @@ class Carbon extends DateTime
     */
    public function toRFC822String()
    {
-      return $this->format(DateTime::RFC822);
+      return $this->format(self::RFC822);
    }
 
    /**
@@ -828,7 +893,7 @@ class Carbon extends DateTime
     */
    public function toRFC850String()
    {
-      return $this->format(DateTime::RFC850);
+      return $this->format(self::RFC850);
    }
 
    /**
@@ -838,7 +903,7 @@ class Carbon extends DateTime
     */
    public function toRFC1036String()
    {
-      return $this->format(DateTime::RFC1036);
+      return $this->format(self::RFC1036);
    }
 
    /**
@@ -848,7 +913,7 @@ class Carbon extends DateTime
     */
    public function toRFC1123String()
    {
-      return $this->format(DateTime::RFC1123);
+      return $this->format(self::RFC1123);
    }
 
    /**
@@ -858,7 +923,7 @@ class Carbon extends DateTime
     */
    public function toRFC2822String()
    {
-      return $this->format(DateTime::RFC2822);
+      return $this->format(self::RFC2822);
    }
 
    /**
@@ -868,7 +933,7 @@ class Carbon extends DateTime
     */
    public function toRFC3339String()
    {
-      return $this->format(DateTime::RFC3339);
+      return $this->format(self::RFC3339);
    }
 
    /**
@@ -878,7 +943,7 @@ class Carbon extends DateTime
     */
    public function toRSSString()
    {
-      return $this->format(DateTime::RSS);
+      return $this->format(self::RSS);
    }
 
    /**
@@ -888,7 +953,7 @@ class Carbon extends DateTime
     */
    public function toW3CString()
    {
-      return $this->format(DateTime::W3C);
+      return $this->format(self::W3C);
    }
 
    ///////////////////////////////////////////////////////////////////
@@ -1450,9 +1515,8 @@ class Carbon extends DateTime
    public function diffInYears(Carbon $dt = null, $abs = true)
    {
       $dt = ($dt === null) ? static::now($this->tz) : $dt;
-      $sign = ($abs) ? '' : '%r';
 
-      return intval($this->diff($dt)->format($sign.'%y'));
+      return intval($this->diff($dt, $abs)->format('%r%y'));
    }
 
    /**
@@ -1466,14 +1530,8 @@ class Carbon extends DateTime
    public function diffInMonths(Carbon $dt = null, $abs = true)
    {
       $dt = ($dt === null) ? static::now($this->tz) : $dt;
-      list($sign, $years, $months) = explode(':', $this->diff($dt)->format('%r:%y:%m'));
-      $value = ($years * self::MONTHS_PER_YEAR) + $months;
 
-      if ($sign === '-' && !$abs) {
-         $value = $value * -1;
-      }
-
-      return $value;
+      return $this->diffInYears($dt, $abs) * self::MONTHS_PER_YEAR + $this->diff($dt, $abs)->format('%r%m');
    }
 
    /**
@@ -1487,9 +1545,8 @@ class Carbon extends DateTime
    public function diffInDays(Carbon $dt = null, $abs = true)
    {
       $dt = ($dt === null) ? static::now($this->tz) : $dt;
-      $sign = ($abs) ? '' : '%r';
 
-      return intval($this->diff($dt)->format($sign.'%a'));
+      return intval($this->diff($dt, $abs)->format('%r%a'));
    }
 
    /**
@@ -1563,8 +1620,6 @@ class Carbon extends DateTime
     */
    public function diffForHumans(Carbon $other = null)
    {
-      $txt = '';
-
       $isNow = $other === null;
 
       if ($isNow) {

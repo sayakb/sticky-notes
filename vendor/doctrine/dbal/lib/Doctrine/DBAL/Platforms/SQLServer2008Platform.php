@@ -52,14 +52,6 @@ class SQLServer2008Platform extends SQLServer2005Platform
     {
         return 'TIME(0)';
     }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public function getDateTimeTzTypeDeclarationSQL(array $fieldDeclaration)
-    {
-        return 'DATETIMEOFFSET(6)';
-    }
 
     /**
      * {@inheritDoc}
@@ -104,7 +96,6 @@ class SQLServer2008Platform extends SQLServer2005Platform
         $this->doctrineTypeMapping['datetime2'] = 'datetime';
         $this->doctrineTypeMapping['date'] = 'date';
         $this->doctrineTypeMapping['time'] = 'time';
-        $this->doctrineTypeMapping['datetimeoffset'] = 'datetimetz';
     }
 
     /**

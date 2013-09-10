@@ -940,36 +940,6 @@ abstract class AbstractPlatform
     }
 
     /**
-     * Returns the SQL to add the number of given hours to a date.
-     *
-     * @param string  $date
-     * @param integer $hours
-     *
-     * @return string
-     *
-     * @throws \Doctrine\DBAL\DBALException If not supported on this platform.
-     */
-    public function getDateAddHourExpression($date, $hours)
-    {
-        throw DBALException::notSupported(__METHOD__);
-    }
-
-    /**
-     * Returns the SQL to subtract the number of given hours to a date.
-     *
-     * @param string  $date
-     * @param integer $hours
-     *
-     * @return string
-     *
-     * @throws \Doctrine\DBAL\DBALException If not supported on this platform.
-     */
-    public function getDateSubHourExpression($date, $hours)
-    {
-        throw DBALException::notSupported(__METHOD__);
-    }
-
-    /**
      * Returns the SQL to add the number of given days to a date.
      *
      * @param string  $date
@@ -1515,32 +1485,6 @@ abstract class AbstractPlatform
     public function getCreatePrimaryKeySQL(Index $index, $table)
     {
         return 'ALTER TABLE ' . $table . ' ADD PRIMARY KEY (' . $this->getIndexFieldDeclarationListSQL($index->getQuotedColumns($this)) . ')';
-    }
-
-    /**
-     * Returns the SQL to create a named schema.
-     *
-     * @param string $schemaName
-     *
-     * @return string
-     * @throws \Doctrine\DBAL\DBALException If not supported on this platform.
-     */
-    public function getCreateSchemaSQL($schemaName)
-    {
-        throw DBALException::notSupported(__METHOD__);
-    }
-
-    /**
-     * Checks whether the schema $schemaName needs creating.
-     *
-     * @param string $schemaName
-     *
-     * @return boolean
-     * @throws \Doctrine\DBAL\DBALException If not supported on this platform.
-     */
-    public function schemaNeedsCreation($schemaName)
-    {
-        throw DBALException::notSupported(__METHOD__);
     }
 
     /**

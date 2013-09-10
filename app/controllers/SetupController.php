@@ -77,14 +77,6 @@ class SetupController extends BaseController {
 
 				return Redirect::to('setup/install');
 			}
-			else
-			{
-				$error = sprintf(Lang::get('setup.test_fail'), $status);
-
-				Session::flash('messages.error', $error);
-
-				return Redirect::to('setup/install')->withInput();
-			}
 		}
 
 		// Stage 2 submitted
