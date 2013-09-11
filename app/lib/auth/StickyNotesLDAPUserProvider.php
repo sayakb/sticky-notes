@@ -170,13 +170,6 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 			$key = "(&{$key}{$filter})";
 		}
 
-		// Build the ldap admin filter
-		$ldapAdmin = explode('=', $this->auth->ldapAdmin);
-
-		$objectClass = trim($ldapAdmin[0]);
-
-		$posixGroup = trim($ldapAdmin[1]);
-
 		// Look up for the user's details
 		$search = @ldap_search($ldap, $this->auth->ldapBaseDn, $key);
 
@@ -189,11 +182,21 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 			// Validate credentials by binding with user's password
 			if (@ldap_bind($ldap, $dn, $credentials['password']))
 			{
-				// We check if the user is a member of the admin group
-				// If so, we make him an admin in Sticky Notes.
-				$groups = @ldap_get_values($ldap, $entry, $objectClass);
+				// If the admin filter is not there, being a mandatory field,
+				// this can only mean that the site was updated from an older
+				// Sticky Notes. Therefore, we set isAdmin always 1.
+				if ( ! empty($this->auth->ldapAdmin))
+				{
+					$ldapAdmin = array_map('trim', explode('=', $this->auth->ldapAdmin));
 
-				$isAdmin = (is_array($groups) AND in_array($posixGroup, $groups)) ? 1 : 0;
+					$groups = @ldap_get_values($ldap, $entry, $ldapAdmin[0]);
+
+					$isAdmin = (is_array($groups) AND in_array($ldapAdmin[1], $groups)) ? 1 : 0;
+				}
+				else
+				{
+					$isAdmin = 1;
+				}
 
 				// We need to flush the cache as the menus need to be parsed
 				// again for this user.

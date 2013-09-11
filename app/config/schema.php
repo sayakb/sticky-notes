@@ -455,7 +455,7 @@ return array(
 				DB::update("UPDATE {$dbPrefix}main SET urlkey = CONCAT('p', urlkey) WHERE urlkey <> ''");
 
 				// Setup admin = true for all users because
-				// for 0.4.0, only admins could log in
+				// for 0.4, only admins could log in
 				DB::update("UPDATE {$dbPrefix}users SET admin = 1");
 
 				// Set user type = ldap for users without passwords
@@ -492,12 +492,59 @@ return array(
 					'preMigrate'  => Paste::max('id'),
 				));
 
+				// Now we migrate the old config data
+				if (File::exists(app_path().'/config/config.php'))
+				{
+					include app_path().'/config/config.php';
+
+					Site::config('general', array(
+						'title'          => html_entity_decode($site_name),
+						'copyright'      => html_entity_decode($site_copyright),
+					));
+
+					Site::config('antispam', array(
+						'services'       => html_entity_decode($sg_services),
+						'phpKey'         => html_entity_decode($sg_php_key),
+						'phpDays'        => html_entity_decode($sg_php_days),
+						'phpScore'       => html_entity_decode($sg_php_score),
+						'phpType'        => html_entity_decode($sg_php_type),
+						'censor'         => html_entity_decode($sg_censor),
+					));
+
+					Site::config('auth', array(
+						'method'         => html_entity_decode($auth_method),
+						'ldapServer'     => html_entity_decode($ldap_server),
+						'ldapPort'       => html_entity_decode($ldap_port),
+						'ldapBaseDn'     => html_entity_decode($ldap_base_dn),
+						'ldapUid'        => html_entity_decode($ldap_uid),
+						'ldapFilter'     => html_entity_decode($ldap_filter),
+						'ldapUserDn'     => html_entity_decode($ldap_user_dn),
+						'ldapPassword'   => html_entity_decode($ldap_password),
+					));
+
+					Site::config('mail', array(
+						'host'           => html_entity_decode($smtp_host),
+						'port'           => html_entity_decode($smtp_port),
+						'encryption'     => html_entity_decode($smtp_crypt),
+						'username'       => html_entity_decode($smtp_username),
+						'password'       => html_entity_decode($smtp_password),
+						'address'        => html_entity_decode($smtp_from),
+					));
+
+					// If auth method is LDAP, notify the user to set
+					// an admin filter.
+					if ($auth_method == 'ldap')
+					{
+						Setup::messages('0.4', Lang::get('setup.ldap_update_warn'));
+					}
+				}
+
 				// All done, flush the cache!
 				Cache::flush();
 
 			}, // closure
 
-		), // 0.4.0
+		), // 0.4
 
 	), // update
 

@@ -332,4 +332,28 @@ class Setup {
 		return $versions;
 	}
 
+	/**
+	 * Gets or sets installer messages
+	 *
+	 * @static
+	 * @param  string  $version
+	 * @param  string  $message
+	 * @return array|null
+	 */
+	public static function messages($version = NULL, $message = NULL)
+	{
+		$messages = Session::has('setup.messages') ? Session::get('setup.messages') : array();
+
+		if (is_null($message))
+		{
+			return is_null($version) ? $messages : $messages[$version];
+		}
+		else if ( ! is_null($version))
+		{
+			$messages[$version] = $message;
+		}
+
+		Session::put('setup.messages', $messages);
+	}
+
 }

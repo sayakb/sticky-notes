@@ -109,6 +109,7 @@ class SetupController extends BaseController {
 					'success'     => Session::get('messages.success'),
 					'version'     => Session::get('setup.version'),
 					'versions'    => Setup::updateVersions(),
+					'messages'    => Setup::messages(),
 				);
 
 				return View::make("setup/update/stage{$stage}", $data);
