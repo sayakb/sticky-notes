@@ -7,6 +7,8 @@
 
 			<p>{{ Lang::get('setup.u_stage1_exp') }}</p>
 
+			<p>{{ Lang::get('setup.update_config') }}</p>
+
 			<div class="form-group">
 				{{
 					Form::label('version', Lang::get('setup.update_from'), array(
