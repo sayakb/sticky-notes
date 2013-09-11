@@ -50,7 +50,7 @@ class Cron {
 		// We run the cron tasks once every 60 minutes
 		Cache::remember('cron.run', 60, function()
 		{
-			if (php_sapi_name() != 'cli' AND Schema::hasTable('cron'))
+			if (System::installed() AND Schema::hasTable('cron'))
 			{
 				// Remove expired pastes
 				Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();

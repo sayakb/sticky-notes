@@ -182,6 +182,9 @@ Route::filter('installed', function()
 		$installed = FALSE;
 	}
 
+	// Set the installed flag so it is accessible everywhere
+	Session::set('global.installed', $installed);
+
 	// Now we get the app and DB versions
 	// If there is no version data in the DB, the function will return 0
 	$app = Config::get('app');

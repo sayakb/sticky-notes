@@ -126,4 +126,15 @@ class System {
 		return intval($version);
 	}
 
+	/**
+	 * Determines the installed state of the system
+	 *
+	 * @static
+	 * @return bool
+	 */
+	public static function installed()
+	{
+		return php_sapi_name() != 'cli' AND Session::get('global.installed') === TRUE;
+	}
+
 }

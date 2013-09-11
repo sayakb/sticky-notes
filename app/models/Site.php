@@ -74,7 +74,7 @@ class Site extends Eloquent {
 			{
 				$config = Config::get('default');
 
-				if (php_sapi_name() != 'cli' AND Schema::hasTable('config'))
+				if (System::installed() AND Schema::hasTable('config'))
 				{
 					$siteConfig = Site::all();
 

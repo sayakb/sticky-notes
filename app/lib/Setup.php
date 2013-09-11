@@ -14,8 +14,10 @@
  * @filesource
  */
 
+use App;
 use Config;
 use Lang;
+use Redirect;
 use Schema;
 use Session;
 
@@ -38,26 +40,11 @@ class Setup {
 	 */
 	public static function testConnection()
 	{
-		set_exception_handler(array(__CLASS__, 'testConnectionHandler'));
+		static::setHandler('dbTest');
 
 		Schema::getConnection();
 
 		return TRUE;
-	}
-
-	/**
-	 * Exception handler for PDO exceptions.
-	 *
-	 * @static
-	 * @return void
-	 */
-	public static function testConnectionHandler($e)
-	{
-		$error = sprintf(Lang::get('setup.test_fail'), $e->getMessage());
-
-		Session::flash('messages.error', $error);
-
-		header('Location:'.url('setup/install'));
 	}
 
 	/**
@@ -110,6 +97,9 @@ class Setup {
 		{
 			try
 			{
+				// In case the exception is not caught
+				static::setHandler('mainProcess');
+
 				// Drop the table
 				Schema::dropIfExists($action);
 
@@ -158,6 +148,8 @@ class Setup {
 		{
 			Session::put('setup.updating', TRUE);
 
+			Session::forget('setup.messages');
+
 			return "5|{$action}|".sprintf(Lang::get('setup.process_version'), $action);
 		}
 
@@ -174,6 +166,9 @@ class Setup {
 		{
 			try
 			{
+				// In case the exception is not caught
+				static::setHandler('mainProcess');
+
 				// Scope is the current version being processed
 				$scope = $versions[$action];
 
@@ -354,6 +349,34 @@ class Setup {
 		}
 
 		Session::put('setup.messages', $messages);
+	}
+
+	/**
+	 * Sets the error handler based on category
+	 *
+	 * @static
+	 * @param  string  $category
+	 * @return void
+	 */
+	private static function setHandler($category)
+	{
+		App::error(function($e, $c) use ($category)
+		{
+			switch ($category)
+			{
+				case 'dbTest':
+					$error = sprintf(Lang::get('setup.test_fail'), $e->getMessage());
+
+					Session::flash('messages.error', $error);
+
+					return Redirect::to('setup/install');
+
+				case 'mainProcess':
+					Session::put('setup.error', $e->getMessage());
+
+					return '-1||'.Lang::get('setup.error_occurred');
+			}
+		});
 	}
 
 }

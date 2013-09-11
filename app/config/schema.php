@@ -492,44 +492,51 @@ return array(
 					'preMigrate'  => Paste::max('id'),
 				));
 
+				// This is the v0.4 config file
+				$configFile = app_path().'/config/config.php';
+
 				// Now we migrate the old config data
-				if (File::exists(app_path().'/config/config.php'))
+				if (File::exists($configFile))
 				{
-					include app_path().'/config/config.php';
+					include $configFile;
 
-					Site::config('general', array(
-						'title'          => html_entity_decode($site_name),
-						'copyright'      => html_entity_decode($site_copyright),
-					));
+					// Import site settings
+					Site::config('general', array_map('html_entity_decode', array(
+						'title'          => $site_name,
+						'copyright'      => $site_copyright,
+					)));
 
-					Site::config('antispam', array(
-						'services'       => html_entity_decode($sg_services),
-						'phpKey'         => html_entity_decode($sg_php_key),
-						'phpDays'        => html_entity_decode($sg_php_days),
-						'phpScore'       => html_entity_decode($sg_php_score),
-						'phpType'        => html_entity_decode($sg_php_type),
-						'censor'         => html_entity_decode($sg_censor),
-					));
+					// Import antispam settings
+					Site::config('antispam', array_map('html_entity_decode', array(
+						'services'       => $sg_services,
+						'phpKey'         => $sg_php_key,
+						'phpDays'        => $sg_php_days,
+						'phpScore'       => $sg_php_score,
+						'phpType'        => $sg_php_type,
+						'censor'         => $sg_censor,
+					)));
 
-					Site::config('auth', array(
-						'method'         => html_entity_decode($auth_method),
-						'ldapServer'     => html_entity_decode($ldap_server),
-						'ldapPort'       => html_entity_decode($ldap_port),
-						'ldapBaseDn'     => html_entity_decode($ldap_base_dn),
-						'ldapUid'        => html_entity_decode($ldap_uid),
-						'ldapFilter'     => html_entity_decode($ldap_filter),
-						'ldapUserDn'     => html_entity_decode($ldap_user_dn),
-						'ldapPassword'   => html_entity_decode($ldap_password),
-					));
+					// Import authentication settings
+					Site::config('auth', array_map('html_entity_decode', array(
+						'method'         => $auth_method,
+						'ldapServer'     => $ldap_server,
+						'ldapPort'       => $ldap_port,
+						'ldapBaseDn'     => $ldap_base_dn,
+						'ldapUid'        => $ldap_uid,
+						'ldapFilter'     => $ldap_filter,
+						'ldapUserDn'     => $ldap_user_dn,
+						'ldapPassword'   => $ldap_password,
+					)));
 
-					Site::config('mail', array(
-						'host'           => html_entity_decode($smtp_host),
-						'port'           => html_entity_decode($smtp_port),
-						'encryption'     => html_entity_decode($smtp_crypt),
-						'username'       => html_entity_decode($smtp_username),
-						'password'       => html_entity_decode($smtp_password),
-						'address'        => html_entity_decode($smtp_from),
-					));
+					// Import SMTP settings
+					Site::config('mail', array_map('html_entity_decode', array(
+						'host'           => $smtp_host,
+						'port'           => $smtp_port,
+						'encryption'     => $smtp_crypt,
+						'username'       => $smtp_username,
+						'password'       => $smtp_password,
+						'address'        => $smtp_from,
+					)));
 
 					// If auth method is LDAP, notify the user to set
 					// an admin filter.
@@ -537,6 +544,9 @@ return array(
 					{
 						Setup::messages('0.4', Lang::get('setup.ldap_update_warn'));
 					}
+
+					// Remove the old config file
+					File::delete($configFile);
 				}
 
 				// All done, flush the cache!
