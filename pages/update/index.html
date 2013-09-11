@@ -116,9 +116,15 @@
 		<p>
 			Move the old code files to any different location so that you are left with an
 			empty directory. Now copy over the new 1.x files to your web root (or wherever
-			your old code resided earlier). Now follow the <a href="../install/#database-configuration">
+			your old code resided earlier). Follow the <a href="../install/#database-configuration">
 			database configuration</a> steps mentioned in the <a href="../install">installation guide</a>.
 		</p>
+
+		<div class="alert alert-info">
+			<b>Important:</b> If you wish to migrate your old site settings (antispam, email,
+			authentication and general site settings), place your old <code>config.php</code>
+			inside <code>app/config</code> folder before running the updater.
+		</div>
 
 		<h3 id="running-the-updater">Running the updater</h3>
 
