@@ -302,7 +302,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 class Application extends Container implements HttpKernelInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.0.6';
+    const VERSION = '4.0.7';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -949,11 +949,19 @@ class Request
                 $query = $parameters;
                 break;
         }
+        $queryString = '';
         if (isset($components['query'])) {
             parse_str(html_entity_decode($components['query']), $qs);
-            $query = array_replace($qs, $query);
+            if ($query) {
+                $query = array_replace($qs, $query);
+                $queryString = http_build_query($query, '', '&');
+            } else {
+                $query = $qs;
+                $queryString = $components['query'];
+            }
+        } elseif ($query) {
+            $queryString = http_build_query($query, '', '&');
         }
-        $queryString = http_build_query($query, '', '&');
         $server['REQUEST_URI'] = $components['path'] . ('' !== $queryString ? '?' . $queryString : '');
         $server['QUERY_STRING'] = $queryString;
         return new static($query, $request, array(), $cookies, $files, $server, $content);
@@ -989,8 +997,11 @@ class Request
         $dup->basePath = null;
         $dup->method = null;
         $dup->format = null;
-        if (!$dup->get('_format')) {
-            $dup->setRequestFormat($this->getRequestFormat());
+        if (!$dup->get('_format') && $this->get('_format')) {
+            $dup->attributes->set('_format', $this->get('_format'));
+        }
+        if (!$dup->getRequestFormat(null)) {
+            $dup->setRequestFormat($format = $this->getRequestFormat(null));
         }
         return $dup;
     }
@@ -2238,6 +2249,7 @@ class NativeSessionStorage implements SessionStorageInterface
             } else {
                 session_start();
             }
+            $this->loadSession();
         }
         return $ret;
     }
@@ -3623,7 +3635,7 @@ class ErrorHandler
         if (null === ($error = error_get_last())) {
             return;
         }
-        unset($this->reservedMemory);
+        $this->reservedMemory = '';
         $type = $error['type'];
         if (0 === $this->level || !in_array($type, array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE))) {
             return;
@@ -5862,7 +5874,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function freshTimestamp()
     {
-        return new DateTime();
+        return new Carbon();
     }
     public function freshTimestampString()
     {

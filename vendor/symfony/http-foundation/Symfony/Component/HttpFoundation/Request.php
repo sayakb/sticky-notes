@@ -346,11 +346,20 @@ class Request
                 break;
         }
 
+        $queryString = '';
         if (isset($components['query'])) {
             parse_str(html_entity_decode($components['query']), $qs);
-            $query = array_replace($qs, $query);
+
+            if ($query) {
+                $query = array_replace($qs, $query);
+                $queryString = http_build_query($query, '', '&');
+            } else {
+                $query = $qs;
+                $queryString = $components['query'];
+            }
+        } elseif ($query) {
+            $queryString = http_build_query($query, '', '&');
         }
-        $queryString = http_build_query($query, '', '&');
 
         $server['REQUEST_URI'] = $components['path'].('' !== $queryString ? '?'.$queryString : '');
         $server['QUERY_STRING'] = $queryString;
@@ -404,9 +413,12 @@ class Request
         $dup->method = null;
         $dup->format = null;
 
-        if (!$dup->get('_format')) {
-            // we set the request format to null if the current request is not known
-            $dup->setRequestFormat($this->getRequestFormat(null));
+        if (!$dup->get('_format') && $this->get('_format')) {
+            $dup->attributes->set('_format', $this->get('_format'));
+        }
+
+        if (!$dup->getRequestFormat(null)) {
+            $dup->setRequestFormat($format = $this->getRequestFormat(null));
         }
 
         return $dup;
