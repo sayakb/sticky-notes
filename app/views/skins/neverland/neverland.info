@@ -1,0 +1,8 @@
+{
+	"name"           : "Neverland",
+	"themeVersion"   : "1.1",
+	"minCoreVersion" : "1.0",
+	"description"    : "Neverland is a theme built on Bootstrap 2.x for KDE websites. It is a clean and crisp responsive theme and is used across all major kde.org websites.",
+	"author"         : "Sayak Banerjee",
+	"authorWebsite"  : "http://sayakbanerjee.com"
+}

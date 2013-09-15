@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.setup.page')
+@extends('skins.neverland.setup.page')
 
 @section('body')
 	<section id="update">
@@ -9,7 +9,7 @@
 
 			<p>{{ Lang::get('setup.update_config') }}</p>
 
-			<div class="form-group">
+			<p>
 				{{
 					Form::label('version', Lang::get('setup.update_from'), array(
 						'class' => 'control-label'
@@ -21,7 +21,7 @@
 						'class' => 'form-control'
 					))
 				}}
-			</div>
+			</p>
 
 			{{
 				Form::submit(Lang::get('setup.start_update'), array(

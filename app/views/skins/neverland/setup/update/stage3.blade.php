@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.setup.page')
+@extends('skins.neverland.setup.page')
 
 @section('body')
 	<section id="update">

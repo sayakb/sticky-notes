@@ -1,14 +1,14 @@
-@extends('skins.bootstrap.common.page')
+@extends('skins.neverland.common.page')
 
 @section('body')
-	@include('skins.bootstrap.common.alerts')
+	@include('skins.neverland.common.alerts')
 
 	<section id="show">
-		<div class="row">
-			<div class="col-sm-12">
+		<div class="row-fluid">
+			<div class="span12">
 				<div class="pre-info pre-header">
-					<div class="row">
-						<div class="col-sm-5">
+					<div class="row-fluid">
+						<div class="span5">
 							<h4>
 								@if (empty($paste->title))
 									{{ Lang::get('global.paste') }}
@@ -19,7 +19,7 @@
 							</h4>
 						</div>
 
-						<div class="col-sm-7 text-right">
+						<div class="span7 align-right">
 							@if ( ! empty($site->general->googleApi))
 								{{
 									link_to("#", Lang::get('show.short_url'), array(
@@ -50,7 +50,7 @@
 								))
 							}}
 
-							@include('skins.bootstrap.site.actions')
+							@include('skins.neverland.site.actions')
 						</div>
 					</div>
 				</div>
@@ -60,31 +60,31 @@
 				</div>
 
 				<div class="pre-info pre-footer">
-					<div class="row">
-						<div class="col-sm-6">
+					<div class="row-fluid">
+						<div class="span6">
 							{{ sprintf(Lang::get('global.language'), $paste->language) }}
 						</div>
 
-						<div class="col-sm-6 text-right">
+						<div class="span6 align-right">
 							{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
 						</div>
 					</div>
 				</div>
 
 				@if (count($paste->revisions) > 0)
-					<fieldset class="well well-sm well-white well-history">
+					<fieldset class="well well-small well-white well-history">
 						<h4>
-							<span class="glyphicon glyphicon-time"></span>
+							<i class="icon-time"></i>
 							{{ Lang::get('show.version_history') }}
 						</h4>
 
 						<div class="viewport">
 							<table class="table table-striped table-responsive">
 								<colgroup>
-									<col class="col-xs-3" />
-									<col class="col-xs-3" />
-									<col class="col-xs-5" />
-									<col class="col-xs-1" />
+									<col class="span3" />
+									<col class="span3" />
+									<col class="span5" />
+									<col class="span1" />
 								</colgroup>
 
 								<thead>
@@ -117,10 +117,10 @@
 												}}
 											</td>
 
-											<td class="text-right">
+											<td class="align-right">
 												{{
 													link_to("diff/{$revision->urlkey}/{$paste->urlkey}", Lang::get('show.diff'), array(
-														'class' => 'btn btn-xs btn-default'
+														'class' => 'btn btn-mini btn-default'
 													))
 												}}
 											</td>

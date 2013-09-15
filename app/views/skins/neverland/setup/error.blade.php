@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.setup.page')
+@extends('skins.neverland.setup.page')
 
 @section('body')
 	<section id="install">
@@ -7,7 +7,7 @@
 
 			<p>{{ Lang::get('setup.error_exp') }}</p>
 
-			<div class="well well-sm well-white">
+			<div class="well well-small well-white">
 				{{ Session::get('setup.error') }}
 			</div>
 		</fieldset>

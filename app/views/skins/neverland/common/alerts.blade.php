@@ -1,6 +1,6 @@
-<div class="row">
-	<div class="col-sm-12">
-		@if ( ! empty($success))
+@if ( ! empty($success))
+	<div class="row-fluid">
+		<div class="span12">
 			<div class="alert alert-success">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 
@@ -12,7 +12,11 @@
 					{{ $success }}
 				@endif
 			</div>
-		@elseif ( ! empty($error))
+		</div>
+	</div>
+@elseif ( ! empty($error))
+	<div class="row-fluid">
+		<div class="span12">
 			<div class="alert alert-danger">
 				<button type="button" class="close" data-dismiss="alert">&times;</button>
 
@@ -24,6 +28,6 @@
 					{{ $error }}
 				@endif
 			</div>
-		@endif
+		</div>
 	</div>
-</div>
+@endif

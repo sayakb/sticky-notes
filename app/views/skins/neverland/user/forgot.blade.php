@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.common.page')
+@extends('skins.neverland.common.page')
 
 @section('body')
 	<section id="forgot">
@@ -9,8 +9,8 @@
 			))
 		}}
 
-		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+		<div class="row-fluid">
+			<div class="span6 offset3">
 				<fieldset>
 					<legend>{{ Lang::get('user.forgot_password') }}</legend>
 
@@ -20,14 +20,14 @@
 						</div>
 					@endif
 
-					@include('skins.bootstrap.common.alerts')
+					@include('skins.neverland.common.alerts')
 
 					<div class="form-group">
 						{{ Form::label('username', Lang::get('global.username')) }}
 
 						{{
 							Form::text('username', NULL, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'maxlength'   => 50,
 							))
 						}}
@@ -37,13 +37,15 @@
 						</div>
 					</div>
 
-					{{
-						Form::submit(Lang::get('user.reset_password'), array(
-							'name'      => '_reset',
-							'class'     => 'btn btn-primary',
-							'disabled'  => $site->auth->method != 'db' ?: NULL,
-						))
-					}}
+					<div class="form-actions">
+						{{
+							Form::submit(Lang::get('user.reset_password'), array(
+								'name'      => '_reset',
+								'class'     => 'btn btn-primary',
+								'disabled'  => $site->auth->method != 'db' ?: NULL,
+							))
+						}}
+					</div>
 				</fieldset>
 			</div>
 		</div>

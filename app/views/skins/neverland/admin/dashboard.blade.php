@@ -1,74 +1,74 @@
-@extends('skins.bootstrap.admin.layout')
+@extends('skins.neverland.admin.layout')
 
 @section('module')
 	<section id="admin-dashboard">
-		<div class="row">
-			<div class="col-sm-12">
-				<h4>
-					<span class="glyphicon glyphicon-time"></span>
+		<div class="row-fluid">
+			<div class="span12">
+				<h5>
+					<i class="icon-time"></i>
 					{{ Lang::get('admin.versions') }}
-				</h4>
+				</h5>
 
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="well well-sm well-white">
+				<div class="row-fluid">
+					<div class="span6">
+						<div class="well well-small well-white">
 							<b>{{ Lang::get('admin.php_version') }}:</b>
 							{{ $php_version }}
 						</div>
 					</div>
 
-					<div class="col-sm-6">
-						<div class="well well-sm well-white">
+					<div class="span6">
+						<div class="well well-small well-white">
 							<b>{{ Lang::get('admin.stickynotes_version') }}:</b>
 							{{ $sn_version }}
 
 							<span data-toggle="ajax" data-onload="true" data-component="version">
-								<span class="glyphicon glyphicon-refresh"></span>
+								<i class="icon-refresh"></i>
 							</span>
 						</div>
 					</div>
 				</div>
 
-				<h4>
-					<span class="glyphicon glyphicon-stats"></span>
+				<h5>
+					<i class="icon-signal"></i>
 					{{ Lang::get('admin.statistics') }}
-				</h4>
+				</h5>
 
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="well well-sm well-white">
+				<div class="row-fluid">
+					<div class="span6">
+						<div class="well well-small well-white">
 							<b>{{ Lang::get('admin.users') }}:</b>
 							{{ $users }}
 						</div>
 					</div>
 
-					<div class="col-sm-6">
-						<div class="well well-sm well-white">
+					<div class="span6">
+						<div class="well well-small well-white">
 							<b>{{ Lang::get('admin.pastes') }}:</b>
 							{{ $pastes }}
 						</div>
 					</div>
 				</div>
 
-				<h4>
-					<span class="glyphicon glyphicon-briefcase"></span>
+				<h5>
+					<i class="icon-briefcase"></i>
 					{{ Lang::get('admin.system') }}
-				</h4>
+				</h5>
 
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="well well-sm well-white">
+				<div class="row-fluid">
+					<div class="span6">
+						<div class="well well-small well-white">
 							<b>{{ Lang::get('admin.db_driver') }}:</b>
 							{{ $db_driver }}
 						</div>
 					</div>
 
-					<div class="col-sm-6">
-						<div class="well well-sm well-white">
+					<div class="span6">
+						<div class="well well-small well-white">
 							<b>{{ Lang::get('admin.system_load') }}:</b>
 
 							<span data-toggle="ajax" data-realtime="true" data-onload="true" data-component="sysload">
-								<span class="glyphicon glyphicon-refresh"></span>
+								<i class="icon-refresh"></i>
 							</span>
 						</div>
 					</div>

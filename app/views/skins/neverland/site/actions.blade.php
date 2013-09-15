@@ -1,17 +1,17 @@
 @if ($role->admin OR ($role->user AND $auth->id == $paste->author_id))
 	@if ($paste->password)
 		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pwd') }}" data-toggle="tooltip">
-			<span class="glyphicon glyphicon-lock"></span>
+			<i class="icon-lock icon-white"></i>
 		</span>
 	@elseif ($paste->private)
 		<span class="btn btn-warning" title="{{ Lang::get('global.paste_pvt') }}" data-toggle="tooltip">
-			<span class="glyphicon glyphicon-eye-open"></span>
+			<i class="icon-eye-open icon-white"></i>
 		</span>
 	@endif
 
-	<div class="btn-group text-left">
+	<span class="btn-group align-left">
 		<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-			<span class="glyphicon glyphicon-cog"></span>
+			<i class="icon-cog icon-white"></i>
 		</button>
 
 		<ul class="dropdown-menu pull-right" role="menu">
@@ -27,5 +27,5 @@
 				<li>{{ link_to("admin/paste/{$paste->urlkey}", Lang::get('global.edit_paste')) }}</li>
 			@endif
 		</ul>
-	</div>
+	</span>
 @endif

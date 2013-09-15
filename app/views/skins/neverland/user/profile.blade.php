@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.common.page')
+@extends('skins.neverland.common.page')
 
 @section('body')
 	<section id="register">
@@ -9,8 +9,8 @@
 			))
 		}}
 
-		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+		<div class="row-fluid">
+			<div class="span6 offset3">
 				<fieldset>
 					<legend>{{ Lang::get('user.your_profile') }}</legend>
 
@@ -20,14 +20,14 @@
 						</div>
 					@endif
 
-					@include('skins.bootstrap.common.alerts')
+					@include('skins.neverland.common.alerts')
 
 					<div class="form-group">
 						{{ Form::label('username', Lang::get('global.username')) }}
 
 						{{
 							Form::text('username', $auth->username, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'disabled'    => ! $auth->admin ?: NULL
 							))
 						}}
@@ -38,7 +38,7 @@
 
 						{{
 							Form::text('email', $auth->email, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'maxlength'   => 100,
 							))
 						}}
@@ -49,7 +49,7 @@
 
 						{{
 							Form::text('dispname', $auth->dispname, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'maxlength'   => 100,
 							))
 						}}
@@ -61,25 +61,27 @@
 
 							{{
 								Form::password('password', array(
-									'class'   => 'form-control',
+									'class'   => 'input-stretch',
 								))
 							}}
 						</div>
 					@endif
 
-					{{
-						Form::submit(Lang::get('global.save'), array(
-							'name'      => '_save',
-							'class'     => 'btn btn-primary',
-							'disabled'  => $site->auth->method != 'db' ?: NULL,
-						))
-					}}
+					<div class="form-actions">
+						{{
+							Form::submit(Lang::get('global.save'), array(
+								'name'      => '_save',
+								'class'     => 'btn btn-primary',
+								'disabled'  => $site->auth->method != 'db' ?: NULL,
+							))
+						}}
 
-					{{
-						link_to('user/pastes', Lang::get('user.my_pastes'), array(
-							'class' => 'btn btn-link',
-						))
-					}}
+						{{
+							link_to('user/pastes', Lang::get('user.my_pastes'), array(
+								'class' => 'btn btn-link',
+							))
+						}}
+					</div>
 				</fieldset>
 			</div>
 		</div>

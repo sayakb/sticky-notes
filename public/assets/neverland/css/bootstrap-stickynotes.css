@@ -12,18 +12,20 @@
  * @filesource
  */
 
-body {
-  background: #fafafa;
+select {
+  background: white;
 }
-footer {
-  margin: 30px;
-  text-align: center;
+h4 small {
+  display: inline;
+  margin-left: 5px;
+  color: #777;
+  font-size: 0.7em;
 }
-section div.row:first-child h3 {
-  margin-top: 0;
+section#create .checkbox {
+  margin-left: 10px;
 }
 section#list .pre {
-  min-height: 110px;
+  min-height: 100px;
 }
 section#show .pre {
   min-height: 350px;
@@ -47,30 +49,29 @@ section#create .form-control:-ms-input-placeholder {
 section#create .form-control::-webkit-input-placeholder {
   font-family: sans-serif;
 }
-section#update .form-group {
-  margin-top: 20px;
+section#register .input-prepend .add-on {
+  padding: 0;
+  height: 31px;
 }
-section#update .form-control {
-  width: 150px;
+section#admin-skin h4 {
+  margin-bottom: 10px;
+  line-height: 1em;
 }
-section#admin-skin h3 {
-  margin-top: 0;
+section#admin-skin .thumbnail {
+  margin-right: 20px;
 }
-.navbar {
-  background: #f2f2f2;
+section#admin-skin .row-fluid {
+  margin-bottom: 20px;
 }
-.jumbotron .glyphicon {
-  font-size: 1.7em;
+select.input-xxlarge {
+  width: 543px;
 }
-.jumbotron .form-control {
-  margin-top: 15px;
+.alert p,
+.alert ul {
+  margin-bottom: 0;
 }
-.jumbotron .btn {
-  margin-top: 15px;
-}
-.form-inline .form-control {
-  width: 250px;
-  display: inline;
+.alert .close {
+  top: -5px;
 }
 .pre {
   background: #fdfdfd;
@@ -84,7 +85,8 @@ section#admin-skin h3 {
   word-wrap: break-word;
 }
 .pre ol {
-  margin-left: 15px;
+  margin-bottom: 0;
+  margin-left: 55px;
 }
 .pre-info {
   padding: 10px;
@@ -96,7 +98,7 @@ section#admin-skin h3 {
 }
 .pre-info.pre-header h4 {
   margin: 0;
-  margin-bottom: 5px;
+  margin-bottom: 0;
 }
 .pre-info.pre-header span.btn:hover {
   cursor: default;
@@ -111,6 +113,18 @@ section#admin-skin h3 {
   font-weight: normal;
   font-size: 0.95em;
   height: 25px;
+  position: relative;
+  top: 5px;
+}
+.pre-info.pre-header .btn-group {
+  font-size: inherit;
+}
+.pre-info.pre-header .btn-group .btn {
+  height: 29px;
+  padding-top: 0;
+}
+.pre-info.pre-header .btn-group .dropdown-menu {
+  top: 28px;
 }
 .pre-info.pre-footer {
   border-radius: 0 0 4px 4px;
@@ -119,13 +133,12 @@ section#admin-skin h3 {
   font-size: 0.95em;
   background: #f5f5f5;
   border: 1px solid #e7e7e7;
+  padding-bottom: 5px;
 }
 .well-white {
   border: 1px solid #e7e7e7;
   background: #fdfdfd;
   box-shadow: none;
-}
-.well-diff {
 }
 .well-history h4 {
   margin-top: 0;
@@ -133,48 +146,42 @@ section#admin-skin h3 {
 .well-history .table {
   margin-bottom: 0;
 }
+.well-history .btn {
+  margin-bottom: 0;
+
+}
 .table-striped-dark > tbody > tr:nth-child(odd) > td {
   background: #f3f3f3;
 }
 .table-user > tbody > tr > td {
   vertical-align: middle;
 }
-.form-horizontal .help-block {
+.hero-unit input,
+.hero-unit input {
+  height: 20px;
+}
+.input-append .btn,
+.input-prepend .btn {
+  font-size: 14px;
+  height: 30px;
+  padding-top: 3px;
+}
+.pagination {
+  margin-top: 0;
+}
+.pagination li a,
+.pagination li span {
+  padding: 7px 12px 7px 12px;
+}
+.form-inline .btn {
+  margin-bottom: -1px;
+}
+.form-horizontal fieldset {
+  margin-top: -20px;
+}
+.form-horizontal legend {
   margin-bottom: 0;
 }
-.form-captcha .input-group-addon {
-  padding: 0;
-}
-.form-captcha .input-group-addon img {
-  height: 30px;
-  width: 120px;
-}
-.nav-tabs {
-  margin-bottom: 20px;
-}
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover {
-  background: #fafafa;
-}
-.nav-stacked {
-  margin-bottom: 15px;
-}
-.viewport {
-  max-height: 440px;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-.progress {
-  margin-top: 10px;
-  margin-bottom: 5px;
-}
-.img-thumbnail.pull-left {
-  margin-right: 20px;
-  margin-bottom: 20px;
-}
-@media (max-width: 767px) {
-  .form-horizontal .control-label {
-    padding-top: 0;
-    margin-bottom: 5px;
-  }
+.form-horizontal div.checkbox {
+  margin-top: 5px;
 }

@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.admin.layout')
+@extends('skins.neverland.admin.layout')
 
 @section('module')
 	<section id="admin-paste">
@@ -12,11 +12,10 @@
 				))
 			}}
 
-			<div class="row">
-				<div class="col-sm-12 form-inline">
+			<div class="row-fluid">
+				<div class="span12 form-inline">
 					{{
 						Form::text('search', NULL, array(
-							'class'         => 'form-control',
 							'maxlength'     => 30,
 							'placeholder'   => Lang::get('global.paste_id')
 						))
@@ -31,13 +30,13 @@
 			</div>
 			<br />
 
-			<div class="row">
-				<div class="col-sm-12 form-inline">
+			<div class="row-fluid">
+				<div class="span12 form-inline">
 					@if ( ! empty($paste))
 						<table class="table table-striped table-striped-dark">
 							<colgroup>
-								<col class="col-xs-3 col-sm-2" />
-								<col class="col-xs-9 col-sm-10" />
+								<col class="span2" />
+								<col class="span10" />
 							</colgroup>
 
 							<thead>
@@ -100,7 +99,7 @@
 							</tbody>
 						</table>
 
-						<div class="inline">
+						<div class="form-actions">
 							@if ($paste->password)
 								{{
 									link_to("admin/paste/{$paste->urlkey}/rempass", Lang::get('admin.remove_password'), array(
@@ -126,8 +125,8 @@
 							}}
 						</div>
 					@else
-						<div class="jumbotron text-center">
-							<h1><span class="glyphicon glyphicon-search text-warning"></span></h1>
+						<div class="hero-unit align-center">
+							{{ HTML::image(View::asset('img/search.png')) }}
 							<h2>{{ Lang::get('admin.paste_exp') }}</h2>
 						</div>
 					@endif
