@@ -516,6 +516,7 @@ return array(
 					Site::config('general', array_map('html_entity_decode', array(
 						'title'          => $site_name,
 						'copyright'      => $site_copyright,
+						'googleApi'      => $google_api_key,
 					)));
 
 					// Import antispam settings
