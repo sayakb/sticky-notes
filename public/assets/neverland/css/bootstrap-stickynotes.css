@@ -43,16 +43,16 @@ section#create textarea {
 section#create .checkbox {
   margin-left: 10px;
 }
-section#create .form-control:-moz-placeholder {
+section#create .input-stretch:-moz-placeholder {
   font-family: sans-serif;
 }
-section#create .form-control::-moz-placeholder {
+section#create .input-stretch::-moz-placeholder {
   font-family: sans-serif;
 }
-section#create .form-control:-ms-input-placeholder {
+section#create .input-stretch:-ms-input-placeholder {
   font-family: sans-serif;
 }
-section#create .form-control::-webkit-input-placeholder {
+section#create .input-stretch::-webkit-input-placeholder {
   font-family: sans-serif;
 }
 section#register .input-prepend .add-on {

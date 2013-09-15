@@ -73,7 +73,9 @@ function initAjax()
 			var callback = function(e)
 			{
 				// Add the loading icon
-				$(this).html('<span class="glyphicon glyphicon-refresh"></span>');
+				var iconWhite = $(this).hasClass('btn') ? 'icon-white' : '';
+
+				$(this).html('<i class="icon-refresh ' + iconWhite + '"></i>');
 
 				// Send the AJAX request
 				$.ajax({
