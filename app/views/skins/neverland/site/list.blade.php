@@ -7,11 +7,9 @@
 				<div class="span12">
 					<div class="well well-small well-white">
 						<ul class="nav nav-pills">
-							<li class="disabled">
-								<a>
-									<i class="icon-filter"></i>
-									{{ Lang::get('list.filter') }}:
-								</a>
+							<li class="nav-text">
+								<i class="icon-filter"></i>
+								{{ Lang::get('list.filter') }}:
 							</li>
 
 							{{ View::menu('filters') }}
