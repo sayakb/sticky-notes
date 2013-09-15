@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.admin.layout')
+@extends('skins.neverland.admin.layout')
 
 @section('module')
 	<section id="admin-antispam">
@@ -6,12 +6,11 @@
 			Form::open(array(
 				'autocomplete'   => 'off',
 				'role'           => 'form',
-				'class'          => 'form-horizontal',
 			))
 		}}
 
-		<div class="row">
-			<div class="col-sm-12">
+		<div class="row-fluid">
+			<div class="span12">
 				<fieldset>
 					<legend>{{ Lang::get('admin.spam_filters') }}</legend>
 
@@ -33,10 +32,10 @@
 						</li>
 					</ul>
 
-					<div class="tab-content">
+					<div class="tab-content form-horizontal">
 						<div id="service-honeypot" class="tab-pane fade in active">
-							<div class="row">
-								<div class="col-sm-12">
+							<div class="row-fluid">
+								<div class="span12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.honeypot_exp') }}</p>
 
@@ -55,17 +54,17 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="control-group">
 								{{
 									Form::label('php_key', Lang::get('admin.access_key'), array(
-										'class' => 'control-label col-sm-3 col-lg-2'
+										'class' => 'control-label span2'
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
+								<div class="span9">
 									{{
 										Form::text('php_key', $site->antispam->phpKey, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 										))
 									}}
 
@@ -76,17 +75,17 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="control-group">
 								{{
 									Form::label('php_days', Lang::get('admin.age_threshold'), array(
-										'class' => 'control-label col-sm-3 col-lg-2'
+										'class' => 'control-label span2'
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
+								<div class="span9">
 									{{
 										Form::text('php_days', $site->antispam->phpDays, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 										))
 									}}
 
@@ -96,17 +95,17 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="control-group">
 								{{
 									Form::label('php_score', Lang::get('admin.threat_score'), array(
-										'class' => 'control-label col-sm-3 col-lg-2'
+										'class' => 'control-label span2'
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
+								<div class="span9">
 									{{
 										Form::text('php_score', $site->antispam->phpScore, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 										))
 									}}
 
@@ -116,17 +115,17 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="control-group">
 								{{
 									Form::label('php_type', Lang::get('admin.visitor_filter'), array(
-										'class' => 'control-label col-sm-3 col-lg-2'
+										'class' => 'control-label span2'
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
+								<div class="span9">
 									{{
 										Form::text('php_type', $site->antispam->phpType, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 										))
 									}}
 
@@ -138,8 +137,8 @@
 						</div>
 
 						<div id="service-censor" class="tab-pane fade">
-							<div class="row">
-								<div class="col-sm-12">
+							<div class="row-fluid">
+								<div class="span12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.word_censor_exp') }}</p>
 
@@ -153,17 +152,17 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="control-group">
 								{{
 									Form::label('censor', Lang::get('admin.phrases'), array(
-										'class' => 'control-label col-sm-3 col-lg-2'
+										'class' => 'control-label span2'
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
+								<div class="span9">
 									{{
 										Form::textarea('censor', $site->antispam->censor, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 											'rows'  => 5,
 										))
 									}}
@@ -176,8 +175,8 @@
 						</div>
 
 						<div id="service-stealth" class="tab-pane fade">
-							<div class="row">
-								<div class="col-sm-12">
+							<div class="row-fluid">
+								<div class="span12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.stealth_exp') }}</p>
 
@@ -193,8 +192,8 @@
 						</div>
 
 						<div id="service-noflood" class="tab-pane fade">
-							<div class="row">
-								<div class="col-sm-12">
+							<div class="row-fluid">
+								<div class="span12">
 									<div class="alert alert-info">
 										<p>{{ Lang::get('admin.noflood_exp') }}</p>
 
@@ -208,22 +207,22 @@
 								</div>
 							</div>
 
-							<div class="form-group">
+							<div class="control-group">
 								{{
 									Form::label('flood_threshold', Lang::get('admin.threshold'), array(
-										'class' => 'control-label col-sm-3 col-lg-2'
+										'class' => 'control-label span2'
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
-									<div class="input-group">
+								<div class="span9">
+									<div class="input-append">
 										{{
 											Form::text('flood_threshold', $site->antispam->floodThreshold, array(
-												'class' => 'form-control',
+												'class' => 'input-xxlarge',
 											))
 										}}
 
-										<div class="input-group-addon">
+										<div class="add-on">
 											{{ Lang::get('admin.seconds') }}
 										</div>
 									</div>
@@ -236,17 +235,13 @@
 						</div>
 					</div>
 
-					<hr />
-
-					<div class="form-group">
-						<div class="col-sm-12">
-							{{
-								Form::submit(Lang::get('admin.save_all'), array(
-									'name'    => '_save',
-									'class'   => 'btn btn-primary'
-								))
-							}}
-						</div>
+					<div class="form-actions">
+						{{
+							Form::submit(Lang::get('admin.save_all'), array(
+								'name'    => '_save',
+								'class'   => 'btn btn-primary'
+							))
+						}}
 					</div>
 				</fieldset>
 			</div>

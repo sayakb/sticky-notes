@@ -1,4 +1,4 @@
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-      title="{{ Lang::get('ajax.version_old') }}"
-      data-toggle="tooltip">
-</span>
+<i class="icon-exclamation-sign icon-blue"
+   title="{{ Lang::get('ajax.version_old') }}"
+   data-toggle="tooltip">
+</i>

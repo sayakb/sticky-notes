@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.setup.page')
+@extends('skins.neverland.setup.page')
 
 @section('body')
 	<section id="install">
@@ -7,7 +7,7 @@
 
 			<p>{{ Lang::get('setup.i_stage4_exp') }}</p>
 
-			<dl class="dl-horizontal well well-sm well-white">
+			<dl class="dl-horizontal well well-small well-white">
 				<dt>{{ Lang::get('global.username') }}</dt>
 				<dd>{{ Session::get('install.username') }}</dd>
 

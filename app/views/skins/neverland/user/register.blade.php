@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.common.page')
+@extends('skins.neverland.common.page')
 
 @section('body')
 	<section id="register">
@@ -9,25 +9,25 @@
 			))
 		}}
 
-		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+		<div class="row-fluid">
+			<div class="span6 offset3">
 				<fieldset>
 					<legend>{{ Lang::get('user.create_acct') }}</legend>
 
-					@if ($site->auth->method != 'db' OR ! $site->dbAllowReg)
+					@if ($site->auth->method != 'db' OR ! $site->auth->dbAllowReg)
 						<div class="alert alert-danger">
 							{{ Lang::get('user.reg_disabled') }}
 						</div>
 					@endif
 
-					@include('skins.bootstrap.common.alerts')
+					@include('skins.neverland.common.alerts')
 
 					<div class="form-group">
 						{{ Form::label('username', Lang::get('global.username')) }}
 
 						{{
 							Form::text('username', NULL, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'maxlength'   => 50,
 							))
 						}}
@@ -38,7 +38,7 @@
 
 						{{
 							Form::text('email', NULL, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'maxlength'   => 100,
 							))
 						}}
@@ -49,7 +49,7 @@
 
 						{{
 							Form::text('dispname', NULL, array(
-								'class'       => 'form-control',
+								'class'       => 'input-stretch',
 								'maxlength'   => 100,
 							))
 						}}
@@ -60,7 +60,7 @@
 
 						{{
 							Form::password('password', array(
-								'class'   => 'form-control',
+								'class'   => 'input-stretch',
 							))
 						}}
 					</div>
@@ -69,27 +69,25 @@
 						<div class="form-group form-captcha">
 							{{ Form::label('captcha', Lang::get('user.human_verify')) }}
 
-							<div class="input-group">
-								<span class="input-group-addon">
+							<div class="input-prepend">
+								<span class="add-on">
 									{{ HTML::image(Captcha::img()) }}
 								</span>
 
-								{{
-									Form::text('captcha', NULL, array(
-										'class'   => 'form-control',
-									))
-								}}
+								{{ Form::text('captcha', NULL) }}
 							</div>
 						</div>
 					@endif
 
-					{{
-						Form::submit(Lang::get('user.register'), array(
-							'name'      => '_register',
-							'class'     => 'btn btn-primary',
-							'disabled'  => $site->auth->method != 'db' OR ! $site->dbAllowReg ?: NULL,
-						))
-					}}
+					<div class="form-actions">
+						{{
+							Form::submit(Lang::get('user.register'), array(
+								'name'      => '_register',
+								'class'     => 'btn btn-primary',
+								'disabled'  => ($site->auth->method != 'db' OR ! $site->auth->dbAllowReg) ?: NULL,
+							))
+						}}
+					</div>
 				</fieldset>
 			</div>
 		</div>

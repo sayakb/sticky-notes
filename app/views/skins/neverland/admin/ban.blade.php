@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.admin.layout')
+@extends('skins.neverland.admin.layout')
 
 @section('module')
 	<section id="admin-ban">
@@ -12,11 +12,10 @@
 				))
 			}}
 
-			<div class="row">
-				<div class="col-sm-12 form-inline">
+			<div class="row-fluid">
+				<div class="span12 form-inline">
 					{{
 						Form::text('ip', NULL, array(
-							'class'         => 'form-control',
 							'placeholder'   => Lang::get('admin.ip_address')
 						))
 					}}
@@ -28,17 +27,16 @@
 					}}
 				</div>
 			</div>
-			<br />
 
 			{{ Form::close() }}
 
-			<div class="row">
-				<div class="col-sm-12">
+			<div class="row-fluid">
+				<div class="span12">
 					@if ($bans->count() > 0)
 						<table class="table table-striped table-striped-dark">
 							<colgroup>
-								<col class="col-sm-11" />
-								<col class="col-sm-1" />
+								<col class="span11" />
+								<col class="span1" />
 							</colgroup>
 
 							<thead>
@@ -53,7 +51,7 @@
 									<tr>
 										<td>{{ $ban->ip }}</td>
 
-										<td class="text-center">
+										<td class="align-right">
 											{{ link_to('admin/ban/remove/'.urlencode($ban->ip), Lang::get('admin.unban')) }}
 										</td>
 									</tr>
@@ -61,8 +59,8 @@
 							</tbody>
 						</table>
 					@else
-						<div class="jumbotron text-center">
-							<h1><span class="glyphicon glyphicon-info-sign text-info"></span></h1>
+						<div class="hero-unit align-center">
+							{{ HTML::image(View::asset('img/info-sign.png')) }}
 							<h2>{{ Lang::get('admin.no_banned_ip') }}</h2>
 						</div>
 					@endif

@@ -1,4 +1,4 @@
-<span class="glyphicon glyphicon-ok-sign text-success"
-      title="{{ Lang::get('ajax.version_ok') }}"
-      data-toggle="tooltip">
-</span>
+<i class="icon-ok-sign icon-blue"
+   title="{{ Lang::get('ajax.version_ok') }}"
+   data-toggle="tooltip">
+</i>

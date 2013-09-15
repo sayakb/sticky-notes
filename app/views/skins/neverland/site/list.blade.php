@@ -1,15 +1,15 @@
-@extends('skins.bootstrap.common.page')
+@extends('skins.neverland.common.page')
 
 @section('body')
 	<section id="list">
 		@if ($filters)
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="well well-sm well-white">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="well well-small well-white">
 						<ul class="nav nav-pills">
 							<li class="disabled">
 								<a>
-									<span class="glyphicon glyphicon-filter"></span>
+									<i class="icon-filter"></i>
 									{{ Lang::get('list.filter') }}:
 								</a>
 							</li>
@@ -22,11 +22,11 @@
 		@endif
 
 		@foreach ($pastes as $paste)
-			<div class="row">
-				<div class="col-sm-12">
+			<div class="row-fluid">
+				<div class="span12">
 					<div class="pre-info pre-header">
-						<div class="row">
-							<div class="col-sm-7">
+						<div class="row-fluid">
+							<div class="span7">
 								<h4>
 									@if (empty($paste->title))
 										{{ Lang::get('global.paste') }}
@@ -37,29 +37,29 @@
 								</h4>
 							</div>
 
-							<div class="col-sm-5 text-right">
+							<div class="span5 align-right">
 								{{
 									link_to($paste->urlkey, Lang::get('list.show_paste'), array(
 										'class' => 'btn btn-success'
 									))
 								}}
 
-								@include('skins.bootstrap.site.actions')
+								@include('skins.neverland.site.actions')
 							</div>
 						</div>
 					</div>
 
-					<div class="well well-sm well-white pre">
+					<div class="well well-small well-white pre">
 						{{ Highlighter::make()->parse(Paste::getAbstract($paste->data), $paste->language) }}
 					</div>
 
 					<div class="pre-info pre-footer">
-						<div class="row">
-							<div class="col-sm-6">
+						<div class="row-fluid">
+							<div class="span6">
 								{{ sprintf(Lang::get('global.language'), $paste->language) }}
 							</div>
 
-							<div class="col-sm-6 text-right">
+							<div class="span6 align-right">
 								{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
 							</div>
 						</div>

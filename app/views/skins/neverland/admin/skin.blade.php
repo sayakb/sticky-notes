@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.admin.layout')
+@extends('skins.neverland.admin.layout')
 
 @section('module')
 	<section id="admin-skin">
@@ -6,24 +6,24 @@
 			<legend>{{ Lang::get('admin.skin_chooser') }}</legend>
 
 			@foreach ($skins as $skin)
-				<div class="row">
-					<div class="col-sm-12">
+				<div class="row-fluid">
+					<div class="span12">
 						{{
 							HTML::image(url('admin/skin/preview/'.urlencode($skin->key)), NULL, array(
-								'class'   => 'img-thumbnail pull-left',
+								'class'   => 'thumbnail pull-left',
 								'width'   => 310,
 								'height'  => 190,
 							))
 						}}
 
-						<h3>
+						<h4>
 							{{{ $skin->name }}}
 
 							<small>
 								{{ Lang::get('admin.version') }}:
 								{{{ $skin->version }}}
 							</small>
-						</h3>
+						</h4>
 
 						@if ( ! empty($skin->author))
 							<p>
@@ -36,7 +36,7 @@
 
 						@if ($site->general->skin == $skin->key)
 							<button class="btn btn-success disabled" disabled="disabled">
-								<span class="glyphicon glyphicon-ok"></span>
+								<i class="icon-ok icon-white"></i>
 								{{ Lang::get('admin.active') }}
 							</button>
 						@else
