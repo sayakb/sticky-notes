@@ -14,7 +14,7 @@
 				<fieldset>
 					<legend>{{ Lang::get('user.create_acct') }}</legend>
 
-					@if ($site->auth->method != 'db' OR ! $site->dbAllowReg)
+					@if ($site->auth->method != 'db' OR ! $site->auth->dbAllowReg)
 						<div class="alert alert-danger">
 							{{ Lang::get('user.reg_disabled') }}
 						</div>
@@ -87,7 +87,7 @@
 						Form::submit(Lang::get('user.register'), array(
 							'name'      => '_register',
 							'class'     => 'btn btn-primary',
-							'disabled'  => $site->auth->method != 'db' OR ! $site->dbAllowReg ?: NULL,
+							'disabled'  => ($site->auth->method != 'db' OR ! $site->auth->dbAllowReg) ?: NULL,
 						))
 					}}
 				</fieldset>
