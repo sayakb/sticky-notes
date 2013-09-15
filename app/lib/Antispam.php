@@ -256,7 +256,7 @@ class Antispam {
 
 		$language = Input::get('language');
 
-		return ! (str_contains($data, '<a href') AND $language == 'text');
+		return ! (preg_match('/https?:\/\//', $data) AND $language == 'text');
 	}
 
 	/**
