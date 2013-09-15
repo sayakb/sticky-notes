@@ -58,6 +58,8 @@ class Highlighter {
 		$this->geshi->set_header_type(GESHI_HEADER_DIV);
 
 		$this->geshi->set_tab_width(4);
+
+		$this->geshi->set_code_style('vertical-align: middle', TRUE);
 	}
 
 	/**

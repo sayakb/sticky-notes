@@ -178,7 +178,7 @@ class View extends \Illuminate\Support\Facades\View {
 					// Set the entry icon
 					if (isset($item['icon']))
 					{
-						$icon = '<span class="glyphicon glyphicon-'.$item['icon'].'"></span>';
+						$icon = View::make('common/icon', array('icon' => $item['icon']));
 					}
 					else
 					{
@@ -209,7 +209,7 @@ class View extends \Illuminate\Support\Facades\View {
 				// Are we on the login screen?
 				$active = $path == 'user/login' ? 'class="active"' : '';
 
-				$icon = '<span class="glyphicon glyphicon-user"></span>';
+				$icon = View::make('common/icon', array('icon' => 'user'));;
 
 				// Generate the markup
 				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";

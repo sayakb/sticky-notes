@@ -104,7 +104,7 @@ return array(
 
 		'admin/paste'       => array(
 			'label'         => 'admin.manage_pastes',
-			'icon'          => 'pushpin',
+			'icon'          => 'file',
 			'role'          => 'admin'
 		),
 
