@@ -21,8 +21,11 @@ h4 small {
   color: #777;
   font-size: 0.7em;
 }
-section#create .checkbox {
-  margin-left: 10px;
+section#list .well .nav-pills {
+  margin-bottom: 0;
+}
+section#list .well .nav-pills .nav-text {
+  margin: 5px 10px 0 0;
 }
 section#list .pre {
   min-height: 100px;
@@ -36,6 +39,9 @@ section#show .pre li.highlight {
 }
 section#create textarea {
   font-family: monospace, serif;
+}
+section#create .checkbox {
+  margin-left: 10px;
 }
 section#create .form-control:-moz-placeholder {
   font-family: sans-serif;
