@@ -124,7 +124,7 @@ class ShowController extends BaseController {
 			{
 				Session::put('paste.password'.$paste->id, TRUE);
 
-				return Redirect::to("{$key}/{$hash}");
+				return Redirect::to("{$urlkey}/{$hash}");
 			}
 		}
 

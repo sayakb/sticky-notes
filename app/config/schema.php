@@ -467,14 +467,26 @@ return array(
 				// Drop the cron table, we use cache to handle that now
 				DB::update("DROP TABLE {$dbPrefix}cron");
 
-				// Generate URL keys for all pastes
-				$pastes = Paste::where('urlkey', '')->get();
-
-				foreach ($pastes as $paste)
+				// Generate URL keys for pastes that do not have a key.
+				// We process the pastes in batches of 1000 to avoid running
+				// out of memory.
+				while (TRUE)
 				{
-					$paste->urlkey = Paste::makeUrlKey();
+					$pastes = Paste::where('urlkey', '')->take(1000)->get(array('id','urlkey'));
 
-					$paste->save();
+					if ($pastes->count() > 0)
+					{
+						foreach ($pastes as $paste)
+						{
+							$paste->urlkey = Paste::makeUrlKey();
+
+							$paste->save();
+						}
+					}
+					else
+					{
+						break;
+					}
 				}
 
 				// Get the FQDN for the server

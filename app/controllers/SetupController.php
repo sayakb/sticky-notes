@@ -26,6 +26,20 @@
 class SetupController extends BaseController {
 
 	/**
+	 * The constructor sets the maximum execution time.
+	 *
+	 * This is needed as the script will take more time, especially when
+	 * running the updater.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function __construct()
+	{
+		set_time_limit(3600);
+	}
+
+	/**
 	 * Shows the installation screen
 	 *
 	 * @param  string  $method
