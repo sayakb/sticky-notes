@@ -204,6 +204,13 @@ class CreateController extends BaseController {
 			// Get the paste being revised
 			$oldPaste = Paste::findOrFail($oldId);
 
+			// If the old paste's content is same as the revision,
+			// we simply redirect to the old paste itself
+			if (crc32($oldPaste->data) == crc32(Input::get('data')))
+			{
+				return Redirect::to($oldPaste->urlkey);
+			}
+
 			// We use some data from the old paste
 			$data = array(
 				'project'      => $oldPaste->project,
