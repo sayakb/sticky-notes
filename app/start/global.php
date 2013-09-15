@@ -108,14 +108,17 @@ Auth::extend('stickynotesldap', function()
 
 /*
 |--------------------------------------------------------------------------
-| Run cron tasks
+| Blade code tags
 |--------------------------------------------------------------------------
 |
-| Trigger cron jobs that will run every N minutes.
+| Define the custom blade tags to handle code such as assignment.
 |
 */
 
-Cron::run();
+Blade::extend(function($value)
+{
+	return preg_replace('/\{\?(.+)\?\}/', '<?php ${1} ?>', $value);
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -183,3 +186,14 @@ App::error(function($exception, $code)
 		return Response::view('common/error', $data, $code);
 	}
 });
+
+/*
+|--------------------------------------------------------------------------
+| Run cron tasks
+|--------------------------------------------------------------------------
+|
+| Trigger cron jobs that will run every N minutes.
+|
+*/
+
+Cron::run();
