@@ -6,7 +6,7 @@
 			<div class="span12">
 				<div class="hero-unit align-center">
 					{{ HTML::image(View::asset('img/exclamation-sign.png')) }}
-					<h1>{{ Lang::get('errors.'.$errCode) }}</h1>
+					<h2>{{ Lang::get('errors.'.$errCode) }}</h2>
 				</div>
 			</div>
 		</div>
