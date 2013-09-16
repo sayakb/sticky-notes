@@ -47,8 +47,8 @@ class Cron {
 	 */
 	public static function run()
 	{
-		// We run the cron tasks once every 60 minutes
-		Cache::remember('site.cron', 60, function()
+		// We run the cron tasks once every 30 minutes
+		Cache::remember('site.cron', 30, function()
 		{
 			if (System::installed() AND Schema::hasTable('cron'))
 			{
