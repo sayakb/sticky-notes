@@ -48,7 +48,7 @@
 					</div>
 
 					<div class="well well-small well-white pre">
-						{{ Highlighter::make()->parse(Paste::getAbstract($paste->data), $paste->language) }}
+						{{ Highlighter::make()->parse($paste->id.'list', Paste::getAbstract($paste->data), $paste->language) }}
 					</div>
 
 					<div class="pre-info pre-footer">
