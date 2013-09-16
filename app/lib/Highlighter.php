@@ -41,7 +41,7 @@ class Highlighter {
 	 * @access public
 	 * @var GeSHi
 	 */
-	private $geshi;
+	public $geshi;
 
 	/**
 	 * Creates a new GeSHi instance
@@ -115,13 +115,15 @@ class Highlighter {
 	 */
 	public function parse($key, $code, $language)
 	{
-		$parsed = Cache::remember("site.code.{$key}", 45000, function() use ($code, $language)
+		$geshi = $this->geshi;
+
+		$parsed = Cache::remember("site.code.{$key}", 45000, function() use ($geshi, $code, $language)
 		{
-			$this->geshi->set_source($code);
+			$geshi->set_source($code);
 
-			$this->geshi->set_language($language);
+			$geshi->set_language($language);
 
-			return @$this->geshi->parse_code($code);
+			return @$geshi->parse_code($code);
 		});
 
 		return $parsed ?: $code;
