@@ -14,6 +14,7 @@
  * @filesource
  */
 
+use Cache;
 use GeSHi;
 
 /**
@@ -107,17 +108,21 @@ class Highlighter {
 	 * Parses and outputs highlighted code
 	 *
 	 * @static
+	 * @param  string  $key
 	 * @param  string  $code
 	 * @param  string  $language
 	 * @return string
 	 */
-	public function parse($code, $language)
+	public function parse($key, $code, $language)
 	{
-		$this->geshi->set_source($code);
+		$parsed = Cache::remember("site.code.{$key}", 45000, function() use ($code, $language)
+		{
+			$this->geshi->set_source($code);
 
-		$this->geshi->set_language($language);
+			$this->geshi->set_language($language);
 
-		$parsed = @$this->geshi->parse_code($code);
+			return @$this->geshi->parse_code($code);
+		});
 
 		return $parsed ?: $code;
 	}
