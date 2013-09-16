@@ -37,7 +37,7 @@ class Response extends \Illuminate\Support\Facades\Response {
 	 */
 	public static function view($view, $data = array(), $status = 200, array $headers = array())
 	{
-		$data = array_merge($data, View::defaults());
+		$data = array_merge(View::defaults(), $data);
 
 		return parent::view(View::skin($view), $data, $status, $headers);
 	}
