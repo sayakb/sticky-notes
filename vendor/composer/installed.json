@@ -330,12 +330,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/doctrine/common.git",
-            "reference": "4233262c8a94b2f22189ce3e5972dae25aa6764b"
+            "reference": "d9dea98243c733ff589aab10e321de4f14a63ab4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/doctrine/common/zipball/4233262c8a94b2f22189ce3e5972dae25aa6764b",
-            "reference": "4233262c8a94b2f22189ce3e5972dae25aa6764b",
+            "url": "https://api.github.com/repos/doctrine/common/zipball/d9dea98243c733ff589aab10e321de4f14a63ab4",
+            "reference": "d9dea98243c733ff589aab10e321de4f14a63ab4",
             "shasum": ""
         },
         "require": {
@@ -346,7 +346,7 @@
             "doctrine/lexer": "1.*",
             "php": ">=5.3.2"
         },
-        "time": "2013-09-11 09:23:32",
+        "time": "2013-09-16 09:32:54",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1127,12 +1127,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "1518320bec1f1583a0c514491528d171501dc781"
+            "reference": "99aad2e05932908008f09c26c462864df3ddcd0e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1518320bec1f1583a0c514491528d171501dc781",
-            "reference": "1518320bec1f1583a0c514491528d171501dc781",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/99aad2e05932908008f09c26c462864df3ddcd0e",
+            "reference": "99aad2e05932908008f09c26c462864df3ddcd0e",
             "shasum": ""
         },
         "require": {
@@ -1151,7 +1151,7 @@
             "mlehner/gelf-php": "Allow sending log messages to a GrayLog2 server",
             "raven/raven": "Allow sending log messages to a Sentry server"
         },
-        "time": "2013-09-02 10:24:25",
+        "time": "2013-09-16 09:56:03",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1575,18 +1575,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Process.git",
-            "reference": "ca5703f0a73470e5c88709f3fdd1986cf9918e7c"
+            "reference": "67c4dff91cc30c128e7c9656c3d892c0d45a8ac4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Process/zipball/ca5703f0a73470e5c88709f3fdd1986cf9918e7c",
-            "reference": "ca5703f0a73470e5c88709f3fdd1986cf9918e7c",
+            "url": "https://api.github.com/repos/symfony/Process/zipball/67c4dff91cc30c128e7c9656c3d892c0d45a8ac4",
+            "reference": "67c4dff91cc30c128e7c9656c3d892c0d45a8ac4",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2013-09-12 12:57:47",
+        "time": "2013-09-16 11:47:05",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1624,12 +1624,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpKernel.git",
-            "reference": "f42c09457e6cdebdc34bb1603178c8e69be1565a"
+            "reference": "674a6b021803888e7575537e8dd423007c6aa549"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/f42c09457e6cdebdc34bb1603178c8e69be1565a",
-            "reference": "f42c09457e6cdebdc34bb1603178c8e69be1565a",
+            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/674a6b021803888e7575537e8dd423007c6aa549",
+            "reference": "674a6b021803888e7575537e8dd423007c6aa549",
             "shasum": ""
         },
         "require": {
@@ -1659,7 +1659,7 @@
             "symfony/dependency-injection": "",
             "symfony/finder": ""
         },
-        "time": "2013-09-13 12:20:37",
+        "time": "2013-09-16 11:23:31",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1697,18 +1697,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpFoundation.git",
-            "reference": "329b059893fdcc9399962ca5881d988264123d23"
+            "reference": "0ffbce778188a57f61c79e1ca3e6c1142a6ca56b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/329b059893fdcc9399962ca5881d988264123d23",
-            "reference": "329b059893fdcc9399962ca5881d988264123d23",
+            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/0ffbce778188a57f61c79e1ca3e6c1142a6ca56b",
+            "reference": "0ffbce778188a57f61c79e1ca3e6c1142a6ca56b",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2013-09-13 12:20:37",
+        "time": "2013-09-16 11:23:31",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1748,12 +1748,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "733492c75437005c076d271a7bf7be7ffdb30da5"
+            "reference": "9857193607b53373c078eb591771779d9f3812d8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/733492c75437005c076d271a7bf7be7ffdb30da5",
-            "reference": "733492c75437005c076d271a7bf7be7ffdb30da5",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/9857193607b53373c078eb591771779d9f3812d8",
+            "reference": "9857193607b53373c078eb591771779d9f3812d8",
             "shasum": ""
         },
         "require": {
@@ -1816,7 +1816,7 @@
             "pda/pheanstalk": "2.0.*",
             "phpunit/phpunit": "3.7.*"
         },
-        "time": "2013-09-13 02:51:03",
+        "time": "2013-09-16 14:07:09",
         "type": "library",
         "extra": {
             "branch-alias": {

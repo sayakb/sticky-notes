@@ -94,6 +94,12 @@ class ListController extends BaseController {
 		// Get all pastes matching the age filter
 		$query = Paste::where('timestamp', '>=', $filter);
 
+		// Hide private pastes from non-admins
+		if (Auth::guest() OR ! Auth::user()->admin)
+		{
+			$query = $query->where('private', '<>', 1);
+		}
+
 		// Filter by project
 		if ( ! empty($this->project))
 		{
