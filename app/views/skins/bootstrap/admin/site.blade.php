@@ -147,6 +147,27 @@
 					</div>
 
 					<div class="form-group">
+						{{
+							Form::label('proxy', Lang::get('admin.ip_tracking'), array(
+								'class' => 'control-label col-sm-3 col-lg-2'
+							))
+						}}
+
+						<div class="col-sm-9 col-lg-10">
+							<div class="checkbox">
+								<label>
+									{{ Form::checkbox('proxy', 1, $site->general->proxy) }}
+									{{ Lang::get('admin.trust_proxy') }}
+								</label>
+							</div>
+
+							<div class="help-block">
+								{{ Lang::get('admin.trust_proxy_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
 						<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 							{{
 								Form::submit(Lang::get('global.save'), array(
