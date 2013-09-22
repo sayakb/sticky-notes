@@ -168,6 +168,14 @@ App::error(function($exception, $code)
 			}
 			else
 			{
+				// We check if flushing the cache will solve the problem
+				if ( ! Input::has('e'))
+				{
+					Cache::flush();
+
+					return Redirect::to('?e=1');
+				}
+
 				$data['errCode'] = 'default';
 			}
 			break;
@@ -186,6 +194,29 @@ App::error(function($exception, $code)
 		return Response::view('common/error', $data, $code);
 	}
 });
+
+/*
+|--------------------------------------------------------------------------
+| Trust proxy headers
+|--------------------------------------------------------------------------
+|
+| Checks if the site is behind a proxy server (or a load balancer) and
+| set whether to trust the client IP sent in the request that comes via
+| the proxy intermediary.
+|
+*/
+
+if (Site::config('general')->proxy)
+{
+	// Trust the client proxy address
+	Request::setTrustedProxies(array(Request::getClientIp()));
+
+	// Trust the client IP header
+	Request::setTrustedHeaderName(\Symfony\Component\HttpFoundation\Request::HEADER_CLIENT_IP, 'X-Forwarded-For');
+
+	// Trust the client protocol header
+	Request::setTrustedHeaderName(\Symfony\Component\HttpFoundation\Request::HEADER_CLIENT_PROTO, 'X-Forwarded-Proto');
+}
 
 /*
 |--------------------------------------------------------------------------

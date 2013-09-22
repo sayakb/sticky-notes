@@ -27,6 +27,7 @@ return array(
 		'preMigrate'        => '0',
 		'pasteAge'          => '1800',
 		'skin'              => 'bootstrap',
+		'proxy'             => '0',
 	),
 
 	'antispam'              => (object) array(

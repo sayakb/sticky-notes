@@ -82,6 +82,10 @@ return array(
 	"google_api_key"        => "Google API Key",
 	"google_api_exp"        => "You can generate an API key at the",
 	"google_api_console"    => "Google API Console",
+	"ip_tracking"           => "IP tracking",
+	"trust_proxy"           => "Trust proxy headers",
+	"trust_proxy_exp"       => "Set this option if your site is behind a proxy intermediary (such as a ".
+	                           "load balancer) to get the actual client IP address.",
 	"site_updated"          => "Site settings updated successfully",
 	"word_censor"           => "Word censor",
 	"word_censor_exp"       => "This module allows you to block pastes that contain specific words. ".
