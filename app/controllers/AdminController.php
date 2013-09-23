@@ -214,7 +214,7 @@ class AdminController extends BaseController {
 
 			// Define validation rules
 			$validator = Validator::make(Input::all(), array(
-				'username'    => 'required|max:50|alpha_num|unique:users,username,'.$id.',id,type,db',
+				'username'    => 'required|max:50|alpha_dash|unique:users,username,'.$id.',id,type,db',
 				'email'       => 'required|max:100|email|unique:users,email,'.$id.',id,type,db',
 				'dispname'    => 'max:100',
 				'password'    => empty($id) ? 'required|min:5' : 'min:5'
