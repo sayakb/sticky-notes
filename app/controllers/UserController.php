@@ -100,14 +100,14 @@ class UserController extends BaseController {
 	{
 		// Define validation rules
 		$rules = array(
-			'username'    => 'required|max:50|alpha_num|unique:users,username,-1,id,type,db',
+			'username'    => 'required|max:50|alpha_dash|unique:users,username,-1,id,type,db',
 			'email'       => 'required|max:100|email|unique:users,email,-1,id,type,db',
 			'dispname'    => 'max:100',
 			'password'    => 'required|min:5',
 		);
 
 		// Check if captcha is enabled, and if it is, validate it
-		if ($auth->dbShowCaptcha)
+		if (Site::config('auth')->dbShowCaptcha)
 		{
 			$rules['captcha'] = 'required|captcha';
 		}
@@ -238,7 +238,7 @@ class UserController extends BaseController {
 
 		// Define validation rules
 		$rules = array(
-			'username'    => 'max:50|alpha_num|unique:users,username,'.$user->id.',id,type,db',
+			'username'    => 'max:50|alpha_dash|unique:users,username,'.$user->id.',id,type,db',
 			'email'       => 'required|max:100|email|unique:users,email,'.$user->id.',id,type,db',
 			'dispname'    => 'max:100',
 			'password'    => 'min:5',
