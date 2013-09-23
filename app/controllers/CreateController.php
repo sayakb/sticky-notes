@@ -40,7 +40,7 @@ class CreateController extends BaseController {
 			'language'   => 'text',
 			'paste'      => new Paste,
 			'action'     => 'CreateController@postCreate',
-			'disabled'   => '',
+			'disabled'   => 'data-enabled',
 		);
 
 		// Get the default language from cookie
