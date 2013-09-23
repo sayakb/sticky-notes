@@ -98,7 +98,7 @@ class Highlighter {
 		}
 		else
 		{
-			asort($langs);
+			asort($langs, SORT_STRING|SORT_FLAG_CASE);
 		}
 
 		return $langs;
