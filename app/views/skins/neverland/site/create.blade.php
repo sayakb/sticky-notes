@@ -19,7 +19,7 @@
 						'class'         => 'input-xlarge',
 						'maxlength'     => 30,
 						'placeholder'   => Lang::get('global.paste_title'),
-						$disabled       => $disabled
+						'disabled'      => $disabled
 					))
 				}}
 			</div>
@@ -28,7 +28,7 @@
 				{{
 					Form::select('language', $languages, $paste->language ?: $language, array(
 						'class'    => 'input-xlarge',
-						$disabled  => $disabled
+						'disabled' => $disabled
 					))
 				}}
 			</div>
@@ -58,7 +58,7 @@
 							Form::password('password', array(
 								'class'         => 'input-xlarge -right',
 								'placeholder'   => Lang::get('global.password'),
-								$disabled       => $disabled
+								'disabled'      => $disabled
 							))
 						}}
 					</div>
@@ -67,7 +67,7 @@
 						{{
 							Form::checkbox('private', NULL, NULL, array(
 								'id'       => 'private',
-								$disabled  => $disabled
+								'disabled' => $disabled
 							))
 						}}
 
