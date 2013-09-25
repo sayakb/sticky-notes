@@ -44,7 +44,7 @@
 				<div class="span12">
 					@if ( ! empty($user))
 						{{
-							Form::model($user, array(
+							Form::open(array(
 								'autocomplete'   => 'off',
 								'role'           => 'form',
 								'class'          => 'form-horizontal',
@@ -63,7 +63,7 @@
 
 								<div class="span9">
 									{{
-										Form::text('username', NULL, array(
+										Form::text('username', $user->username, array(
 											'class'         => 'input-xxlarge',
 											'maxlength'     => 50,
 										))
@@ -80,7 +80,7 @@
 
 								<div class="span9">
 									{{
-										Form::text('email', NULL, array(
+										Form::text('email', $user->email, array(
 											'class'         => 'input-xxlarge',
 											'maxlength'     => 100,
 										))
@@ -97,7 +97,7 @@
 
 								<div class="span9">
 									{{
-										Form::text('dispname', NULL, array(
+										Form::text('dispname', $user->dispname, array(
 											'class'         => 'input-xxlarge',
 											'maxlength'     => 100,
 										))
@@ -132,7 +132,7 @@
 									<div class="checkbox">
 										<label>
 											{{
-												Form::checkbox('active', NULL, NULL, array(
+												Form::checkbox('active', 1, $user->active, array(
 													'id'         => 'active',
 													'disabled'   => $founder ?: NULL
 												))
@@ -155,7 +155,7 @@
 									<div class="checkbox">
 										<label>
 											{{
-												Form::checkbox('admin', NULL, NULL, array(
+												Form::checkbox('admin', 1, $user->admin, array(
 													'id'         => 'admin',
 													'disabled'   => $founder ?: NULL
 												))
@@ -168,7 +168,7 @@
 							</div>
 
 							<div class="form-actions">
-								{{ Form::hidden('id') }}
+								{{ Form::hidden('id', $user->id) }}
 
 								{{
 									Form::submit(Lang::get('global.submit'), array(
