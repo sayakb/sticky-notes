@@ -249,6 +249,8 @@ class UserController extends BaseController {
 		// Run the validator
 		if ($validator->passes())
 		{
+			$origUsername = $user->username;
+
 			$user->username = $user->admin ? Input::get('username') : $user->username;
 			$user->email    = Input::get('email');
 			$user->dispname = Input::get('dispname');
@@ -259,6 +261,16 @@ class UserController extends BaseController {
 			}
 
 			$user->save();
+
+			// Update cached username in the main table
+			Paste::where('author_id', $user->id)->update(array(
+				'author' => $user->username,
+			));
+
+			// Update cached username in the revisions table
+			Revision::where('author', $origUsername)->update(array(
+				'author' => $user->username,
+			));
 
 			Session::flash('messages.success', Lang::get('user.profile_saved'));
 
