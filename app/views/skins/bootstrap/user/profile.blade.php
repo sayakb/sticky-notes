@@ -3,7 +3,7 @@
 @section('body')
 	<section id="register">
 		{{
-			Form::model($auth, array(
+			Form::open(array(
 				'autocomplete'   => 'off',
 				'role'           => 'form',
 			))
