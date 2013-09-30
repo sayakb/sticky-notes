@@ -448,6 +448,9 @@ return array(
 				// A raw query is fine here as 0.4 supported MySQL only
 				DB::update("ALTER TABLE {$dbPrefix}main MODIFY COLUMN hash VARCHAR(12) NOT NULL");
 
+				// Increase length of the paste data field
+				DB::update("ALTER TABLE {$dbPrefix}main MODIFY COLUMN data MEDIUMTEXT NOT NULL");
+
 				// Change the urlkey to VARCHAR(9), as we prepent 'p' now
 				DB::update("ALTER TABLE {$dbPrefix}main MODIFY COLUMN urlkey VARCHAR(9) NOT NULL DEFAULT ''");
 
