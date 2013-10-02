@@ -22,7 +22,6 @@ use Request;
 use Schema;
 use Session;
 use Site;
-use System;
 use User;
 
 /**
