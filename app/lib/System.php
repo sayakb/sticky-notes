@@ -17,6 +17,7 @@
 use File;
 use Lang;
 use Session;
+use Site;
 
 /**
  * System class
@@ -124,6 +125,24 @@ class System {
 
 		// Convert it to an integer
 		return intval($version);
+	}
+
+	/**
+	 * Returns the current project name
+	 *
+	 * @static
+	 * @return string|null
+	 */
+	public static function project()
+	{
+		$site = Site::config('general')->fqdn;
+
+		$host = getenv('SERVER_NAME');
+
+		if ($site != $host)
+		{
+			return trim(str_replace($site, '', $host), '.');
+		}
 	}
 
 	/**

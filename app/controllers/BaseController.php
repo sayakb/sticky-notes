@@ -28,7 +28,7 @@ class BaseController extends Controller {
 	 *
 	 * @var string
 	 */
-	public $project = NULL;
+	public $project;
 
 	/**
 	 * Class constructor
@@ -40,7 +40,7 @@ class BaseController extends Controller {
 		// We detect the subdomain being used and compare it with the
 		// FQDN stored in the database. With that data, we extract the
 		// project name and set it here
-		$this->setupProject();
+		$this->project = System::project();
 
 		// This is a part of basic input sanitation. Currently this method
 		// trims all incoming input data and merges it with the input
@@ -59,24 +59,6 @@ class BaseController extends Controller {
 		if ( ! is_null($this->layout))
 		{
 			$this->layout = View::make($this->layout);
-		}
-	}
-
-	/**
-	 * Setup the project for sticky notes
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	protected function setupProject()
-	{
-		$site = Site::config('general')->fqdn;
-
-		$host = getenv('SERVER_NAME');
-
-		if ($site != $host)
-		{
-			$this->project = trim(str_replace($site, '', $host), '.');
 		}
 	}
 

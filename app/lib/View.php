@@ -22,6 +22,7 @@ use Request;
 use Schema;
 use Session;
 use Site;
+use System;
 use User;
 
 /**
@@ -127,13 +128,20 @@ class View extends \Illuminate\Support\Facades\View {
 		// Current user ID for role based menus
 		$user = Auth::check() ? Auth::user()->id : 0;
 
+		// Get current project name
+		$project = System::project();
+
 		// Grab and parse all the menus
 		$menus = Config::get('menus');
 
 		$group = $menus[$menu];
 
+		// The cache key is not only menu and path specific but also
+		// unique for a user and a project
+		$cacheKey = "site.menu.{$menu}.{$path}.{$user}.{$project}";
+
 		// Build the menu items. Items are cached for 60 minutes
-		$output = Cache::remember("site.menu.{$menu}.{$path}.{$user}", 60, function() use ($path, $user, $group)
+		$output = Cache::remember($cacheKey, 60, function() use ($path, $user, $group)
 		{
 			$output = NULL;
 
