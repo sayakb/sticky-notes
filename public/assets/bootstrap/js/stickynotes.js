@@ -250,12 +250,15 @@ function initLineReference()
 		}
 
 		// Click to change anchor
-		$('.pre li').click(function()
+		$('.pre li').mouseup(function()
 		{
-			window.location.hash = '#' + $(this).attr('id');
+			if (window.getSelection() == '')
+			{
+				window.location.hash = '#' + $(this).attr('id');
 
-			$('.pre li').removeClass('highlight');
-			$(this).addClass('highlight');
+				$('.pre li').removeClass('highlight');
+				$(this).addClass('highlight');
+			}
 		});
 	}
 }
