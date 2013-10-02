@@ -7,7 +7,7 @@ License: [BSD 2-clause license](http://www.opensource.org/licenses/bsd-license.p
 <table>
 	<tr>
 		<td>
-			<a href="http://goo.gl/XKb6rK">Demo</a>
+			<a href="http://goo.gl/NuS8lV">Demo</a>
 		</td>
 
 		<td>
