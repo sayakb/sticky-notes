@@ -189,12 +189,20 @@ Route::filter('installed', function()
 	// If there is no version data in the DB, the function will return 0
 	$app = Config::get('app');
 
-	$db = Site::config('general');
-
-	// Derive app and db version numbers
 	$appVersion = System::version($app['version']);
 
-	$dbVersion = System::version($db->version);
+	$dbVersion = System::version(Site::config('general')->version);
+
+	// We clear the cache to verify if there is a version mismatch
+	// This usually should not be required but we do this to avoid the
+	// update screen from popping up when we the user updates the
+	// sticky-notes code
+	if ($appVersion > $dbVersion)
+	{
+		Cache::flush();
+
+		$dbVersion = System::version(Site::config('general')->version);
+	}
 
 	// Now down to business: do the checks
 	if (Request::segment(1) != 'setup')
