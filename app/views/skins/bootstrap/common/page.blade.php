@@ -10,7 +10,7 @@
 	<link href="{{ View::asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 	<link href="{{ View::asset('css/stickynotes.css') }}" rel="stylesheet" />
 
-	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="{{ View::asset('js/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/jquery.cookie.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/stickynotes.js') }}"></script>
