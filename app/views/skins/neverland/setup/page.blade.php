@@ -11,7 +11,7 @@
 	<link href="//cdn.kde.org/css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="//cdn.kde.org/css/bootstrap-stickynotes.css" rel="stylesheet" />
 
-	<script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="{{ View::asset('js/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="//cdn.kde.org/js/bootstrap.js"></script>
 	<script type="text/javascript" src="{{ View::asset('js/stickynotes-setup.js') }}"></script>
 </head>
