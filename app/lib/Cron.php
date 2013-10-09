@@ -50,7 +50,7 @@ class Cron {
 		// We run the cron tasks once every 5 minutes
 		Cache::remember('site.cron', 5, function()
 		{
-			if (System::installed() AND Schema::hasTable('cron'))
+			if (System::installed())
 			{
 				// Remove expired pastes
 				Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
