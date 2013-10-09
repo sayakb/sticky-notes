@@ -52,7 +52,10 @@ class ClassLoader
 }
 namespace Illuminate\Container;
 
-use Closure, ArrayAccess, ReflectionParameter;
+use Closure;
+use ArrayAccess;
+use ReflectionClass;
+use ReflectionParameter;
 class BindingResolutionException extends \Exception
 {
 
@@ -162,7 +165,7 @@ class Container implements ArrayAccess
         if ($concrete instanceof Closure) {
             return $concrete($this, $parameters);
         }
-        $reflector = new \ReflectionClass($concrete);
+        $reflector = new ReflectionClass($concrete);
         if (!$reflector->isInstantiable()) {
             $message = "Target [{$concrete}] is not instantiable.";
             throw new BindingResolutionException($message);
@@ -256,6 +259,7 @@ class Container implements ArrayAccess
     public function offsetUnset($key)
     {
         unset($this->bindings[$key]);
+        unset($this->instances[$key]);
     }
 }
 namespace Symfony\Component\HttpKernel;
@@ -294,15 +298,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Debug\Exception\FatalErrorException;
 use Illuminate\Support\Contracts\ResponsePreparerInterface;
-use Symfony\Component\HttpKernel\Exception\FatalErrorException;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 class Application extends Container implements HttpKernelInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.0.7';
+    const VERSION = '4.0.8';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -530,8 +534,8 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     }
     public function prepareRequest(Request $request)
     {
-        if (isset($this['session'])) {
-            $request->setSessionStore($this['session']);
+        if (isset($this['session.store'])) {
+            $request->setSessionStore($this['session.store']);
         }
         return $request;
     }
@@ -587,6 +591,10 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
         $manifest = $this['config']['app.manifest'];
         return new ProviderRepository(new Filesystem(), $manifest);
     }
+    public function getLocale()
+    {
+        return $this['config']->get('app.locale');
+    }
     public function setLocale($locale)
     {
         $this['config']->set('app.locale', $locale);
@@ -625,7 +633,8 @@ namespace Illuminate\Http;
 
 use Illuminate\Session\Store as SessionStore;
 use Symfony\Component\HttpFoundation\ParameterBag;
-class Request extends \Symfony\Component\HttpFoundation\Request
+use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+class Request extends SymfonyRequest
 {
     protected $json;
     protected $sessionStore;
@@ -729,11 +738,11 @@ class Request extends \Symfony\Component\HttpFoundation\Request
     }
     public function file($key = null, $default = null)
     {
-        return $this->retrieveItem('files', $key, $default);
+        return array_get($this->files->all(), $key, $default);
     }
     public function hasFile($key)
     {
-        return $this->files->has($key) and !is_null($this->file($key));
+        return $this->file($key) instanceof \SplFileInfo;
     }
     public function header($key = null, $default = null)
     {
@@ -1251,7 +1260,7 @@ class Request
     public function isSecure()
     {
         if (self::$trustedProxies && self::$trustedHeaders[self::HEADER_CLIENT_PROTO] && ($proto = $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_PROTO]))) {
-            return in_array(strtolower($proto), array('https', 'on', '1'));
+            return in_array(strtolower(current(explode(',', $proto))), array('https', 'on', 'ssl', '1'));
         }
         return 'on' == strtolower($this->server->get('HTTPS')) || 1 == $this->server->get('HTTPS');
     }
@@ -3147,7 +3156,7 @@ abstract class ServiceProvider
         if ($this->app['files']->isDirectory($lang)) {
             $this->app['translator']->addNamespace($namespace, $lang);
         }
-        $appView = $this->getAppViewPath($package, $namespace);
+        $appView = $this->getAppViewPath($package);
         if ($this->app['files']->isDirectory($appView)) {
             $this->app['view']->addNamespace($namespace, $appView);
         }
@@ -3187,9 +3196,9 @@ abstract class ServiceProvider
             $artisan->resolveCommands($commands);
         });
     }
-    protected function getAppViewPath($package, $namespace)
+    protected function getAppViewPath($package)
     {
-        return $this->app['path'] . "/views/packages/{$package}/{$namespace}";
+        return $this->app['path'] . "/views/packages/{$package}";
     }
     public function provides()
     {
@@ -3203,6 +3212,7 @@ abstract class ServiceProvider
 namespace Illuminate\Exception;
 
 use Closure;
+use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Illuminate\Support\ServiceProvider;
@@ -3244,7 +3254,7 @@ class ExceptionServiceProvider extends ServiceProvider
     {
         $this->registerWhoopsHandler();
         $this->app['whoops'] = $this->app->share(function ($app) {
-            with($whoops = new \Whoops\Run())->allowQuit(false);
+            with($whoops = new Run())->allowQuit(false);
             return $whoops->pushHandler($app['whoops.handler']);
         });
     }
@@ -3317,8 +3327,8 @@ class RoutingServiceProvider extends ServiceProvider
     {
         $this->app['redirect'] = $this->app->share(function ($app) {
             $redirector = new Redirector($app['url']);
-            if (isset($app['session'])) {
-                $redirector->setSession($app['session']);
+            if (isset($app['session.store'])) {
+                $redirector->setSession($app['session.store']);
             }
             return $redirector;
         });
@@ -3354,10 +3364,22 @@ abstract class Facade
         if (static::isMock()) {
             $mock = static::$resolvedInstance[$name];
         } else {
-            static::$resolvedInstance[$name] = $mock = \Mockery::mock(static::getMockableClass($name));
-            static::$app->instance($name, $mock);
+            $mock = static::createFreshMockInstance($name);
         }
         return call_user_func_array(array($mock, 'shouldReceive'), func_get_args());
+    }
+    protected static function createFreshMockInstance($name)
+    {
+        static::$resolvedInstance[$name] = $mock = static::createMockByName($name);
+        if (isset(static::$app)) {
+            static::$app->instance($name, $mock);
+        }
+        return $mock;
+    }
+    protected static function createMockByName($name)
+    {
+        $class = static::getMockableClass($name);
+        return $class ? \Mockery::mock($class) : \Mockery::mock();
     }
     protected static function isMock()
     {
@@ -3366,7 +3388,9 @@ abstract class Facade
     }
     protected static function getMockableClass()
     {
-        return get_class(static::getFacadeRoot());
+        if ($root = static::getFacadeRoot()) {
+            return get_class($root);
+        }
     }
     public static function getFacadeRoot()
     {
@@ -3522,6 +3546,10 @@ class Str
     public static function upper($value)
     {
         return mb_strtoupper($value);
+    }
+    public static function title($value)
+    {
+        return mb_convert_case($value, MB_CASE_TITLE, 'UTF-8');
     }
     public static function singular($value)
     {
@@ -3773,7 +3801,7 @@ class Repository extends NamespacedItemResolver implements ArrayAccess
     }
     public function addNamespace($namespace, $hint)
     {
-        return $this->loader->addNamespace($namespace, $hint);
+        $this->loader->addNamespace($namespace, $hint);
     }
     public function getNamespaces()
     {
@@ -3997,6 +4025,14 @@ class Filesystem
     {
         return file_put_contents($path, $contents);
     }
+    public function prepend($path, $data)
+    {
+        if ($this->exists($path)) {
+            return $this->put($path, $data . $this->get($path));
+        } else {
+            return $this->put($data);
+        }
+    }
     public function append($path, $data)
     {
         return file_put_contents($path, $data, FILE_APPEND);
@@ -4099,7 +4135,7 @@ class Filesystem
     public function deleteDirectory($directory, $preserve = false)
     {
         if (!$this->isDirectory($directory)) {
-            return;
+            return false;
         }
         $items = new FilesystemIterator($directory);
         foreach ($items as $item) {
@@ -4112,6 +4148,7 @@ class Filesystem
         if (!$preserve) {
             @rmdir($directory);
         }
+        return true;
     }
     public function cleanDirectory($directory)
     {
@@ -4317,6 +4354,7 @@ namespace Illuminate\Session;
 use Illuminate\Support\ServiceProvider;
 class SessionServiceProvider extends ServiceProvider
 {
+    protected $cookieDefaults = array('secure' => false, 'http_only' => true);
     public function boot()
     {
         $this->registerSessionEvents();
@@ -4335,14 +4373,14 @@ class SessionServiceProvider extends ServiceProvider
     }
     protected function registerSessionManager()
     {
-        $this->app['session.manager'] = $this->app->share(function ($app) {
+        $this->app['session'] = $this->app->share(function ($app) {
             return new SessionManager($app);
         });
     }
     protected function registerSessionDriver()
     {
-        $this->app['session'] = $this->app->share(function ($app) {
-            $manager = $app['session.manager'];
+        $this->app['session.store'] = $this->app->share(function ($app) {
+            $manager = $app['session'];
             return $manager->driver();
         });
     }
@@ -4357,7 +4395,7 @@ class SessionServiceProvider extends ServiceProvider
     protected function registerBootingEvent()
     {
         $this->app->booting(function ($app) {
-            $app['session']->start();
+            $app['session.store']->start();
         });
     }
     protected function registerCloseEvent()
@@ -4368,7 +4406,7 @@ class SessionServiceProvider extends ServiceProvider
         $this->registerCookieToucher();
         $app = $this->app;
         $this->app->close(function () use($app) {
-            $app['session']->save();
+            $app['session.store']->save();
         });
     }
     protected function registerCookieToucher()
@@ -4382,9 +4420,9 @@ class SessionServiceProvider extends ServiceProvider
     }
     public function touchSessionCookie()
     {
-        $config = $this->app['config']['session'];
+        $config = array_merge($this->cookieDefaults, $this->app['config']['session']);
         $expire = $this->getExpireTime($config);
-        setcookie($config['cookie'], session_id(), $expire, $config['path'], $config['domain'], false, true);
+        setcookie($config['cookie'], session_id(), $expire, $config['path'], $config['domain'], $config['secure'], $config['http_only']);
     }
     protected function getExpireTime($config)
     {
@@ -4462,7 +4500,7 @@ class ViewServiceProvider extends ServiceProvider
         list($app, $me) = array($this->app, $this);
         $app->booted(function () use($app, $me) {
             if ($me->sessionHasErrors($app)) {
-                $errors = $app['session']->get('errors');
+                $errors = $app['session.store']->get('errors');
                 $app['view']->share('errors', $errors);
             } else {
                 $app['view']->share('errors', new MessageBag());
@@ -4472,8 +4510,8 @@ class ViewServiceProvider extends ServiceProvider
     public function sessionHasErrors($app)
     {
         $config = $app['config']['session'];
-        if (isset($app['session']) and !is_null($config['driver'])) {
-            return $app['session']->has('errors');
+        if (isset($app['session.store']) and !is_null($config['driver'])) {
+            return $app['session.store']->has('errors');
         }
     }
 }
@@ -4922,7 +4960,7 @@ class Router
     {
         foreach ((array) $names as $name) {
             if (!is_null($methods)) {
-                $methods = array_change_key_case((array) $methods);
+                $methods = array_map('strtolower', (array) $methods);
             }
             $this->patternFilters[$pattern][] = compact('name', 'methods');
         }
@@ -5257,12 +5295,12 @@ class Dispatcher
     public function listen($event, $listener, $priority = 0)
     {
         if (str_contains($event, '*')) {
-            return $this->setupWildcardListen($event, $listener, $priority = 0);
+            return $this->setupWildcardListen($event, $listener);
         }
         $this->listeners[$event][$priority][] = $this->makeListener($listener);
         unset($this->sorted[$event]);
     }
-    protected function setupWildcardListen($event, $listener, $priority)
+    protected function setupWildcardListen($event, $listener)
     {
         $this->wildcards[$event][] = $this->makeListener($listener);
     }
@@ -5370,11 +5408,12 @@ namespace Illuminate\Database\Eloquent;
 
 use Closure;
 use DateTime;
-use Carbon\Carbon;
 use ArrayAccess;
+use Carbon\Carbon;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Contracts\JsonableInterface;
@@ -5418,9 +5457,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function __construct(array $attributes = array())
     {
         if (!isset(static::$booted[get_class($this)])) {
-            static::boot();
             static::$booted[get_class($this)] = true;
+            static::boot();
         }
+        $this->syncOriginal();
         $this->fill($attributes);
     }
     protected static function boot()
@@ -5448,7 +5488,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function fill(array $attributes)
     {
-        foreach ($attributes as $key => $value) {
+        foreach ($this->fillableFromArray($attributes) as $key => $value) {
             $key = $this->removeTableFromKey($key);
             if ($this->isFillable($key)) {
                 $this->setAttribute($key, $value);
@@ -5457,6 +5497,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             }
         }
         return $this;
+    }
+    protected function fillableFromArray(array $attributes)
+    {
+        if (count($this->fillable) > 0) {
+            return array_intersect_key($attributes, array_flip($this->fillable));
+        }
+        return $attributes;
     }
     public function newInstance($attributes = array(), $exists = false)
     {
@@ -5476,6 +5523,28 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $model->save();
         return $model;
     }
+    public static function firstOrCreate(array $attributes)
+    {
+        if (!is_null($instance = static::firstByAttributes($attributes))) {
+            return $instance;
+        }
+        return static::create($attributes);
+    }
+    public static function firstOrNew(array $attributes)
+    {
+        if (!is_null($instance = static::firstByAttributes($attributes))) {
+            return $instance;
+        }
+        return new static($attributes);
+    }
+    protected static function firstByAttributes($attributes)
+    {
+        $query = static::query();
+        foreach ($attributes as $key => $value) {
+            $query->where($key, $value);
+        }
+        return $query->first() ?: null;
+    }
     public static function query()
     {
         return with(new static())->newQuery();
@@ -5494,9 +5563,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public static function find($id, $columns = array('*'))
     {
         $instance = new static();
-        if (is_array($id)) {
-            return $instance->newQuery()->whereIn($instance->getKeyName(), $id)->get($columns);
-        }
         return $instance->newQuery()->find($id, $columns);
     }
     public static function findOrFail($id, $columns = array('*'))
@@ -5513,6 +5579,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         }
         $query = $this->newQuery()->with($relations);
         $query->eagerLoadRelations(array($this));
+        return $this;
     }
     public static function with($relations)
     {
@@ -5770,7 +5837,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             $this->touchOwners();
         }
     }
-    protected function performUpdate($query)
+    protected function performUpdate(Builder $query)
     {
         $dirty = $this->getDirty();
         if (count($dirty) > 0) {
@@ -5786,7 +5853,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         }
         return true;
     }
-    protected function performInsert($query)
+    protected function performInsert(Builder $query)
     {
         if ($this->fireModelEvent('creating') === false) {
             return false;
@@ -5804,7 +5871,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $this->fireModelEvent('created', false);
         return true;
     }
-    protected function insertAndSetId($query, $attributes)
+    protected function insertAndSetId(Builder $query, $attributes)
     {
         $id = $query->insertGetId($attributes, $keyName = $this->getKeyName());
         $this->setAttribute($keyName, $id);
@@ -5828,7 +5895,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $method = $halt ? 'until' : 'fire';
         return static::$dispatcher->{$method}($event, $this);
     }
-    protected function setKeysForSaveQuery($query)
+    protected function setKeysForSaveQuery(Builder $query)
     {
         $query->where($this->getKeyName(), '=', $this->getKey());
         return $query;
@@ -5916,6 +5983,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function newCollection(array $models = array())
     {
         return new Collection($models);
+    }
+    public function newPivot(Model $parent, array $attributes, $table, $exists)
+    {
+        return new Pivot($parent, $attributes, $table, $exists);
     }
     public function getTable()
     {
@@ -6185,7 +6256,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         } elseif (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
         } elseif (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/', $value)) {
-            $value = Carbon::createFromFormat('Y-m-d', $value);
+            $value = Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
         } elseif (!$value instanceof DateTime) {
             $value = Carbon::createFromFormat($format, $value);
         }
@@ -6336,7 +6407,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function __isset($key)
     {
-        return isset($this->attributes[$key]) or isset($this->relations[$key]);
+        return isset($this->attributes[$key]) or isset($this->relations[$key]) or $this->hasGetMutator($key) and !is_null($this->getAttributeValue($key));
     }
     public function __unset($key)
     {
@@ -6400,8 +6471,13 @@ class DatabaseManager implements ConnectionResolverInterface
     public function reconnect($name = null)
     {
         $name = $name ?: $this->getDefaultConnection();
-        unset($this->connections[$name]);
+        $this->disconnect($name);
         return $this->connection($name);
+    }
+    public function disconnect($name = null)
+    {
+        $name = $name ?: $this->getDefaultConnection();
+        unset($this->connections[$name]);
     }
     protected function makeConnection($name)
     {
@@ -6450,6 +6526,10 @@ class DatabaseManager implements ConnectionResolverInterface
     public function extend($name, $resolver)
     {
         $this->extensions[$name] = $resolver;
+    }
+    public function getConnections()
+    {
+        return $this->connections;
     }
     public function __call($method, $parameters)
     {
@@ -6597,11 +6677,11 @@ class Store extends SymfonySession
     }
     public function flashInput(array $value)
     {
-        return $this->flash('_old_input', $value);
+        $this->flash('_old_input', $value);
     }
     public function reflash()
     {
-        $this->mergeNewFlashes($this->get('flash.old'));
+        $this->mergeNewFlashes($this->get('flash.old', array()));
         $this->put('flash.old', array());
     }
     public function keep($keys = null)
@@ -6627,7 +6707,7 @@ class Store extends SymfonySession
     }
     public function flush()
     {
-        return $this->clear();
+        $this->clear();
     }
     public function regenerate()
     {
@@ -6640,7 +6720,6 @@ use Illuminate\Support\Manager;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 class SessionManager extends Manager
 {
@@ -6952,13 +7031,14 @@ class Log extends Facade
 }
 namespace Illuminate\Log;
 
+use Monolog\Logger;
 use Illuminate\Support\ServiceProvider;
 class LogServiceProvider extends ServiceProvider
 {
     protected $defer = true;
     public function register()
     {
-        $logger = new Writer(new \Monolog\Logger('log'), $this->app['events']);
+        $logger = new Writer(new Logger('log'), $this->app['events']);
         $this->app->instance('log', $logger);
         if (isset($this->app['log.setup'])) {
             call_user_func($this->app['log.setup'], $logger);
@@ -7357,7 +7437,7 @@ abstract class AbstractProcessingHandler extends AbstractHandler
 {
     public function handle(array $record)
     {
-        if ($record['level'] < $this->level) {
+        if (!$this->isHandling($record)) {
             return false;
         }
         $record = $this->processRecord($record);
@@ -7601,7 +7681,7 @@ class Handler
     {
         if (error_reporting() & $level) {
             $e = new ErrorException($message, $level, 0, $file, $line);
-            $this->handleException($e);
+            throw $e;
         }
     }
     public function handleException($exception)
@@ -7672,8 +7752,11 @@ class Handler
     }
     protected function formatException(\Exception $e)
     {
-        $location = $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
-        return 'Error in exception handler: ' . $location;
+        if ($this->debug) {
+            $location = $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine();
+            return 'Error in exception handler: ' . $location;
+        }
+        return 'Error in exception handler.';
     }
     public function error(Closure $callback)
     {
@@ -8161,6 +8244,7 @@ class FileViewFinder implements ViewFinderInterface
 {
     protected $files;
     protected $paths;
+    protected $views = array();
     protected $hints = array();
     protected $extensions = array('blade.php', 'php');
     public function __construct(Filesystem $files, array $paths, array $extensions = null)
@@ -8173,10 +8257,13 @@ class FileViewFinder implements ViewFinderInterface
     }
     public function find($name)
     {
-        if (strpos($name, '::') !== false) {
-            return $this->findNamedPathView($name);
+        if (isset($this->views[$name])) {
+            return $this->views[$name];
         }
-        return $this->findInPaths($name, $this->paths);
+        if (strpos($name, '::') !== false) {
+            return $this->views[$name] = $this->findNamedPathView($name);
+        }
+        return $this->views[$name] = $this->findInPaths($name, $this->paths);
     }
     protected function findNamedPathView($name)
     {
@@ -8499,6 +8586,10 @@ class Environment
     {
         $this->container = $container;
     }
+    public function shared($key, $default = null)
+    {
+        return array_get($this->shared, $key, $default);
+    }
     public function getShared()
     {
         return $this->shared;
@@ -8521,8 +8612,8 @@ interface MessageProviderInterface
 namespace Illuminate\Support;
 
 use Countable;
-use Illuminate\Support\Contracts\ArrayableInterface;
 use Illuminate\Support\Contracts\JsonableInterface;
+use Illuminate\Support\Contracts\ArrayableInterface;
 use Illuminate\Support\Contracts\MessageProviderInterface;
 class MessageBag implements ArrayableInterface, Countable, JsonableInterface, MessageProviderInterface
 {
@@ -9082,7 +9173,7 @@ class View implements ArrayAccess, Renderable
         $env = $this->environment;
         $env->incrementRender();
         $env->callComposer($this);
-        $contents = trim($this->getContents());
+        $contents = $this->getContents();
         $env->decrementRender();
         if ($env->doneRendering()) {
             $env->flushSections();
@@ -9171,6 +9262,13 @@ class View implements ArrayAccess, Renderable
     public function __unset($key)
     {
         unset($this->data[$key]);
+    }
+    public function __call($method, $parameters)
+    {
+        if (starts_with($method, 'with')) {
+            return $this->with(snake_case(substr($method, 4)), $parameters[0]);
+        }
+        throw new \BadMethodCallException("Method [{$method}] does not exist on view.");
     }
     public function __toString()
     {
@@ -9661,6 +9759,7 @@ class Response
 }
 namespace Illuminate\Http;
 
+use ArrayObject;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Support\Contracts\JsonableInterface;
 use Illuminate\Support\Contracts\RenderableInterface;
@@ -9697,7 +9796,7 @@ class Response extends \Symfony\Component\HttpFoundation\Response
     }
     protected function shouldBeJson($content)
     {
-        return $content instanceof JsonableInterface or is_array($content);
+        return $content instanceof JsonableInterface or $content instanceof ArrayObject or is_array($content);
     }
     public function getOriginalContent()
     {

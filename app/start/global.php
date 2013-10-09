@@ -91,7 +91,7 @@ Auth::extend('stickynotesdb', function()
 
 	return new Illuminate\Auth\Guard(
 		new StickyNotes\Auth\StickyNotesDBUserProvider($model, $crypt),
-		App::make('session')
+		App::make('session.store')
 	);
 });
 
@@ -102,7 +102,7 @@ Auth::extend('stickynotesldap', function()
 
 	return new Illuminate\Auth\Guard(
 		new StickyNotes\Auth\StickyNotesLDAPUserProvider($model, $auth),
-		App::make('session')
+		App::make('session.store')
 	);
 });
 
