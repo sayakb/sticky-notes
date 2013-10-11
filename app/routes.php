@@ -35,6 +35,8 @@ Route::get('all', 'ListController@getAll');
 Route::get('trending/{age?}', 'ListController@getTrending');
 
 // API routes
+Route::get('api/{mode}/parameter/{param}', 'ApiController@getParameter');
+
 Route::get('api/{mode}/show/{urlkey}/{hash?}/{password?}', 'ApiController@getShow');
 
 Route::get('api/{mode}/list/{page?}', 'ApiController@getList');

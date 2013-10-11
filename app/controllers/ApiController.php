@@ -48,6 +48,47 @@ class ApiController extends BaseController {
 	}
 
 	/**
+	 * Fetches allowed values for a certain parameter
+	 *
+	 * @param  string  $mode
+	 * @param  string  $param
+	 * @return void
+	 */
+	public function getParameter($mode, $param)
+	{
+		$api = API::make($mode);
+
+		switch ($param)
+		{
+			case 'language':
+				$languages = Highlighter::make()->languages();
+
+				$values = array_keys($languages);
+
+				break;
+
+			case 'expire':
+				$expire = Paste::getExpiration();
+
+				$values = array_keys($expire);
+
+				break;
+
+			default:
+				return $api->error('invalid_param', 404);
+		}
+
+		// Build the API data
+		$data = array(
+			'param'     => $param,
+			'values'    => $values,
+			'iterator'  => 0,
+		);
+
+		return $api->out('param', $data);
+	}
+
+	/**
 	 * Show a paste by its ID or key
 	 *
 	 * @access public
