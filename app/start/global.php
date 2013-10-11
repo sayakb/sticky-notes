@@ -173,7 +173,7 @@ App::error(function($exception, $code)
 				{
 					Cache::flush();
 
-					return Redirect::to('?e=1');
+					return Redirect::to(Request::url().'?e=1');
 				}
 
 				$data['errCode'] = 'default';
