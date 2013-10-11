@@ -1,9 +1,9 @@
 {{ '<?xml version="1.0" encoding="UTF-8"?>' }}
 
 <result>
-	<{{ $param }}>
+	<values>
 		@foreach ($values as $value)
 			<value>{{ $value }}</value>
 		@endforeach
-	</{{ $param }}>
+	</values>
 </result>

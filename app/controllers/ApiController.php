@@ -82,7 +82,6 @@ class ApiController extends BaseController {
 		$data = array(
 			'param'     => $param,
 			'values'    => $values,
-			'iterator'  => 0,
 		);
 
 		return $api->out('param', $data);

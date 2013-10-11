@@ -80,6 +80,12 @@ class API {
 		//  - For JSON, PHP's inbuild json_encode is called
 		array_walk_recursive($data, $callback);
 
+		// Add an iterator to the data
+		if ( ! isset($data['iterator']))
+		{
+			$data['iterator'] = 0;
+		}
+
 		// Now we create a custom response
 		$response = Response::view("templates/{$this->mode}/{$view}", $data, $code);
 

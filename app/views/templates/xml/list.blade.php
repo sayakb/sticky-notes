@@ -2,9 +2,9 @@
 
 <result>
 	<pastes>
-		@for ($idx = 1; $idx <= count($pastes); $idx++)
-			<paste_{{ $idx }}>{{ $pastes[$idx - 1]['urlkey'] }}</paste_{{ $idx }}>
-		@endfor
+		@foreach ($pastes as $paste)
+			<paste>{{ $paste['urlkey'] }}</paste>
+		@endforeach
 	</pastes>
 	<count>{{ $count }}</count>
 	<pages>{{ $pages }}</pages>

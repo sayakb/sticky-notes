@@ -1,12 +1,11 @@
 {
 	"result":
 	{
-		"pastes":
-		{
-			@for ($idx = 1; $idx <= count($pastes); $idx++)
-				"paste_{{ $idx }}": {{ $pastes[$idx - 1]['urlkey'] }}{{ $idx < count($pastes) ? ',' : NULL }}
-			@endfor
-		},
+		"pastes": [
+			@foreach ($pastes as $paste)
+				{{ $paste['urlkey'] }}{{ $iterator++ < count($pastes) - 1 ? ',' : NULL }}
+			@endforeach
+		],
 		"count": {{ $count }},
 		"pages": {{ $pages }}
 	}

@@ -1,13 +1,9 @@
 {
 	"result":
 	{
-		{{ $param }}: [
+		"values": [
 			@foreach ($values as $value)
-				{{ $value }}
-
-				@if ($iterator++ < count($values) - 1)
-					,
-				@endif
+				{{ $value }}{{ $iterator++ < count($values) - 1 ? ',' : NULL }}
 			@endforeach
 		]
 	}
