@@ -96,6 +96,15 @@
 						<li><a href="#list-return-values-on-error">Return values on error</a></li>
 					</ul>
 				</li>
+
+				<li>
+					<a href="#param-values">Parameter values</a>
+
+					<ul>
+						<li><a href="#param-return-values-on-success">Return values on success</a></li>
+						<li><a href="#param-return-values-on-error">Return values on error</a></li>
+					</ul>
+				</li>
 			</ul>
 		</div>
 
@@ -382,8 +391,7 @@
 		<ul>
 			<li>
 				<code>pastes</code>:
-				Contains sub-elements like <code>paste_1</code>, <code>paste_2</code> etc.
-				each of which have a paste ID
+				Contains sub-elements containing paste IDs
 			</li>
 
 			<li>
@@ -403,6 +411,67 @@
 			<li>
 				<code>err_no_pastes</code>:
 				No pastes found
+			</li>
+		</ul>
+
+		<h3 id="param-values">Parameter values</h3>
+
+		<p>
+			The <code>parameter</code> endpoint will provide you a list of values
+			that a specific parameter accepts when creating a new paste.
+		</p>
+
+		<ul>
+			<li>
+				Service URL:
+				<code>http://yoursite.com/api/&lt;format&gt;/parameter/&lt;param&gt;</code>
+
+				<ul>
+					<li>
+						<code>format</code>:
+						Can be <code>json</code> or <code>xml</code>
+					</li>
+
+					<li>
+						<code>param</code>:
+						The parameter whose values are to be listed. Currently supports the following parameters:
+
+						<ul>
+							<li>
+								<code>expire</code>:
+								The paste expire timestamps
+							</li>
+
+							<li>
+								<code>language</code>:
+								The paste language parameter
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+
+			<li>
+				HTTP method:
+				<code>GET</code>
+			</li>
+		</ul>
+
+		<h4 id="param-return-values-on-success">Return values on success</h4>
+
+		<ul>
+			<li>
+				<code>values</code>:
+				Contains a list of accepted parameter values
+			</li>
+		</ul>
+
+		<h4 id="param-return-values-on-error">Return values on error</h4>
+
+		<ul>
+			<li>
+				<code>err_invalid_param</code>:
+				Value list not available for specified parameter
 			</li>
 		</ul>
 	</div>
