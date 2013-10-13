@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "46a7ac83dca06166814d2fad753bae51",
+    "hash": "de91743ffd7a7e957aa85730b35582e2",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -662,17 +662,61 @@
             "time": "2013-10-09 04:20:00"
         },
         {
+            "name": "kenmoini/akismet",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kenmoini/akismet.git",
+                "reference": "bfb07f83b2d7bda26fb1528637b34ac20b60fe45"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kenmoini/akismet/zipball/bfb07f83b2d7bda26fb1528637b34ac20b60fe45",
+                "reference": "bfb07f83b2d7bda26fb1528637b34ac20b60fe45",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "4.0.x",
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Kenmoini\\Akismet": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ken Moini",
+                    "email": "ken@kenmoini.com",
+                    "homepage": "http://kenmoini.com"
+                }
+            ],
+            "description": "Laravel 4 Akismet SPAM Processing Engine",
+            "homepage": "https://github.com/kenmoini/akismet",
+            "keywords": [
+                "Akismet",
+                "laravel",
+                "spam"
+            ],
+            "time": "2013-08-09 07:16:09"
+        },
+        {
             "name": "laravel/framework",
             "version": "4.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "ca479b70564e503e1044dc2591a749bbee6e29f6"
+                "reference": "ff7feea50a741b5ccc8deda44c874af4555f4ca6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/ca479b70564e503e1044dc2591a749bbee6e29f6",
-                "reference": "ca479b70564e503e1044dc2591a749bbee6e29f6",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ff7feea50a741b5ccc8deda44c874af4555f4ca6",
+                "reference": "ff7feea50a741b5ccc8deda44c874af4555f4ca6",
                 "shasum": ""
             },
             "require": {
@@ -772,7 +816,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-10-08 21:32:37"
+            "time": "2013-10-12 18:57:01"
         },
         {
             "name": "mews/captcha",
@@ -827,12 +871,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b5fa119527f25b787fbb20e75593e0671b0ea079"
+                "reference": "8e5a671eef6e1096d764e6f3524e6f732afa53b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b5fa119527f25b787fbb20e75593e0671b0ea079",
-                "reference": "b5fa119527f25b787fbb20e75593e0671b0ea079",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/8e5a671eef6e1096d764e6f3524e6f732afa53b4",
+                "reference": "8e5a671eef6e1096d764e6f3524e6f732afa53b4",
                 "shasum": ""
             },
             "require": {
@@ -882,7 +926,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2013-10-03 15:23:01"
+            "time": "2013-10-11 16:18:40"
         },
         {
             "name": "nesbot/carbon",
@@ -974,16 +1018,16 @@
         },
         {
             "name": "patchwork/utf8",
-            "version": "v1.1.12",
+            "version": "v1.1.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nicolas-grekas/Patchwork-UTF8.git",
-                "reference": "bf556062f69380066dacd03b4bcc6727c5b8e97e"
+                "reference": "92376c92e7edc281a2ca4e3384f3da9237415db6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/bf556062f69380066dacd03b4bcc6727c5b8e97e",
-                "reference": "bf556062f69380066dacd03b4bcc6727c5b8e97e",
+                "url": "https://api.github.com/repos/nicolas-grekas/Patchwork-UTF8/zipball/92376c92e7edc281a2ca4e3384f3da9237415db6",
+                "reference": "92376c92e7edc281a2ca4e3384f3da9237415db6",
                 "shasum": ""
             },
             "require": {
@@ -1013,7 +1057,7 @@
                     "role": "Developer"
                 }
             ],
-            "description": "UTF-8 strings handling for PHP 5.3: portable, performant and extended",
+            "description": "Extensive, portable and performant handling of UTF-8 and grapheme clusters for PHP",
             "homepage": "https://github.com/nicolas-grekas/Patchwork-UTF8",
             "keywords": [
                 "i18n",
@@ -1021,7 +1065,7 @@
                 "utf-8",
                 "utf8"
             ],
-            "time": "2013-10-04 09:47:08"
+            "time": "2013-10-12 09:48:20"
         },
         {
             "name": "predis/predis",
@@ -1580,12 +1624,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpFoundation.git",
-                "reference": "59e712338cd05463ebcb8da6422a01b1291871e3"
+                "reference": "1217d740a61f2317ef7e5e49e807ae2fc7f0c44e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/59e712338cd05463ebcb8da6422a01b1291871e3",
-                "reference": "59e712338cd05463ebcb8da6422a01b1291871e3",
+                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/1217d740a61f2317ef7e5e49e807ae2fc7f0c44e",
+                "reference": "1217d740a61f2317ef7e5e49e807ae2fc7f0c44e",
                 "shasum": ""
             },
             "require": {
@@ -1621,7 +1665,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-29 19:41:41"
+            "time": "2013-10-11 11:59:44"
         },
         {
             "name": "symfony/http-kernel",
@@ -1630,12 +1674,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "4ccb97ee5a5e2b761375fd33101198dd2a85f5df"
+                "reference": "cc1dab5ef88e9bdaa6e5e0b4df921ab0d793f68d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/4ccb97ee5a5e2b761375fd33101198dd2a85f5df",
-                "reference": "4ccb97ee5a5e2b761375fd33101198dd2a85f5df",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/cc1dab5ef88e9bdaa6e5e0b4df921ab0d793f68d",
+                "reference": "cc1dab5ef88e9bdaa6e5e0b4df921ab0d793f68d",
                 "shasum": ""
             },
             "require": {
@@ -1692,7 +1736,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-30 09:54:26"
+            "time": "2013-10-10 14:16:40"
         },
         {
             "name": "symfony/process",
@@ -1701,12 +1745,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "e35e3cea61c851ece0967d8d26b926633e65535a"
+                "reference": "81191e354fe9dad0451036ccf0fdf283649d3f1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/e35e3cea61c851ece0967d8d26b926633e65535a",
-                "reference": "e35e3cea61c851ece0967d8d26b926633e65535a",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/81191e354fe9dad0451036ccf0fdf283649d3f1e",
+                "reference": "81191e354fe9dad0451036ccf0fdf283649d3f1e",
                 "shasum": ""
             },
             "require": {
@@ -1739,7 +1783,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-19 09:45:20"
+            "time": "2013-10-09 21:17:57"
         },
         {
             "name": "symfony/routing",
@@ -1806,12 +1850,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Translation.git",
-                "reference": "609dbde849d6a02be3f4a7ae29841d1d3db64d87"
+                "reference": "6aedcff5ea623316dbf2112b78f2f63a257aab01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Translation/zipball/609dbde849d6a02be3f4a7ae29841d1d3db64d87",
-                "reference": "609dbde849d6a02be3f4a7ae29841d1d3db64d87",
+                "url": "https://api.github.com/repos/symfony/Translation/zipball/6aedcff5ea623316dbf2112b78f2f63a257aab01",
+                "reference": "6aedcff5ea623316dbf2112b78f2f63a257aab01",
                 "shasum": ""
             },
             "require": {
@@ -1852,7 +1896,7 @@
             ],
             "description": "Symfony Translation Component",
             "homepage": "http://symfony.com",
-            "time": "2013-09-19 09:45:20"
+            "time": "2013-10-10 13:12:30"
         }
     ],
     "packages-dev": [
@@ -1863,7 +1907,8 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mews/captcha": 20
+        "mews/captcha": 20,
+        "kenmoini/akismet": 20
     },
     "platform": [
 

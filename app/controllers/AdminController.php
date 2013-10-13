@@ -44,19 +44,12 @@ class AdminController extends BaseController {
 	 */
 	public function getDashboard()
 	{
-		// Get the application configuration
-		$app = Config::get('app');
-
-		// Get the database configuration
-		$db = Config::get('database');
-
-		// Collect view data
 		$data = array(
 			'users'         => User::count(),
 			'pastes'        => Paste::count(),
 			'php_version'   => phpversion(),
-			'sn_version'    => $app['version'],
-			'db_driver'     => $db['default'],
+			'sn_version'    => Config::get('app.version'),
+			'db_driver'     => Config::get('database.default'),
 		);
 
 		return View::make('admin/dashboard', $data);

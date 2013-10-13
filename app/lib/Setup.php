@@ -61,10 +61,10 @@ class Setup {
 	public static function install($action)
 	{
 		// Fetch the installer schema
-		$schema = Config::get('schema');
+		$schema = Config::get('schema.install');
 
 		// Define the tables data
-		$tables = $schema['install']['tables'];
+		$tables = $schema['tables'];
 
 		$tableNames = array_keys($tables);
 
@@ -84,7 +84,7 @@ class Setup {
 		else if ($action == '~complete')
 		{
 			// Run the post-install closure
-			call_user_func($schema['install']['closure']);
+			call_user_func($schema['closure']);
 
 			// Mark completion of this stage
 			Session::put('setup.stage', 4);
@@ -135,11 +135,8 @@ class Setup {
 	 */
 	public static function update($action)
 	{
-		// Fetch the updater schema
-		$schema = Config::get('schema');
-
 		// Get the update versions and current scope
-		$versions = $schema['update'];
+		$versions = Config::get('schema.update');
 
 		$versionNames = array_keys($versions);
 
@@ -312,9 +309,7 @@ class Setup {
 	{
 		$versions = array();
 
-		$config = Config::get('schema');
-
-		foreach ($config['update'] as $version => $schema)
+		foreach (Config::get('schema.update') as $version => $schema)
 		{
 			$versions[$version] = $version;
 		}

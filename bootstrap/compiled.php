@@ -1147,7 +1147,6 @@ class Request
         foreach ($clientIps as $key => $clientIp) {
             if (IpUtils::checkIp($clientIp, $trustedProxies)) {
                 unset($clientIps[$key]);
-                continue;
             }
         }
         return $clientIps ? array_reverse($clientIps) : array($ip);
@@ -5500,7 +5499,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     protected function fillableFromArray(array $attributes)
     {
-        if (count($this->fillable) > 0) {
+        if (count($this->fillable) > 0 and !static::$unguarded) {
             return array_intersect_key($attributes, array_flip($this->fillable));
         }
         return $attributes;
@@ -7463,6 +7462,7 @@ class StreamHandler extends AbstractProcessingHandler
 {
     protected $stream;
     protected $url;
+    private $errorMessage;
     public function __construct($stream, $level = Logger::DEBUG, $bubble = true)
     {
         parent::__construct($level, $bubble);
@@ -7485,18 +7485,20 @@ class StreamHandler extends AbstractProcessingHandler
             if (!$this->url) {
                 throw new \LogicException('Missing stream url, the stream can not be opened. This may be caused by a premature call to close().');
             }
-            $errorMessage = null;
-            set_error_handler(function ($code, $msg) use(&$errorMessage) {
-                $errorMessage = preg_replace('{^fopen\\(.*?\\): }', '', $msg);
-            });
+            $this->errorMessage = null;
+            set_error_handler(array($this, 'customErrorHandler'));
             $this->stream = fopen($this->url, 'a');
             restore_error_handler();
             if (!is_resource($this->stream)) {
                 $this->stream = null;
-                throw new \UnexpectedValueException(sprintf('The stream or file "%s" could not be opened: ' . $errorMessage, $this->url));
+                throw new \UnexpectedValueException(sprintf('The stream or file "%s" could not be opened: ' . $this->errorMessage, $this->url));
             }
         }
         fwrite($this->stream, (string) $record['formatted']);
+    }
+    private function customErrorHandler($code, $msg)
+    {
+        $this->errorMessage = preg_replace('{^fopen\\(.*?\\): }', '', $msg);
     }
 }
 namespace Monolog\Handler;

@@ -16,9 +16,6 @@ use Patchwork\Utf8 as u;
 
 class Bootup
 {
-    const DEFAULT_NORMALIZATION_FORM = 4; // n::NFC;
-    const DEFAULT_LEADING_COMBINING_CHAR = '◌';
-
     static function initAll()
     {
         self::initUtf8Encode();
@@ -185,7 +182,7 @@ class Bootup
         }
     }
 
-    static function filterRequestInputs($normalization_form = self::DEFAULT_NORMALIZATION_FORM, $leading_combining = self::DEFAULT_LEADING_COMBINING_CHAR)
+    static function filterRequestInputs($normalization_form = 4 /* n::NFC */, $leading_combining = '◌')
     {
         // Ensures inputs are well formed UTF-8
         // When not, assumes Windows-1252 and converts to UTF-8
@@ -226,7 +223,7 @@ class Bootup
         }
     }
 
-    static function filterString($s, $normalization_form = self::DEFAULT_NORMALIZATION_FORM, $leading_combining = self::DEFAULT_LEADING_COMBINING_CHAR)
+    static function filterString($s, $normalization_form = 4 /* n::NFC */, $leading_combining = '◌')
     {
         if (false !== strpos($s, "\r"))
         {

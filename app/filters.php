@@ -187,9 +187,7 @@ Route::filter('installed', function()
 
 	// Now we get the app and DB versions
 	// If there is no version data in the DB, the function will return 0
-	$app = Config::get('app');
-
-	$appVersion = System::version($app['version']);
+	$appVersion = System::version(Config::get('app.version'));
 
 	$dbVersion = System::version(Site::config('general')->version);
 

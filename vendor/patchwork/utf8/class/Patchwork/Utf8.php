@@ -52,6 +52,49 @@ class Utf8
         return $s;
     }
 
+    static function filter($var, $normalization_form = 4 /* n::NFC */, $leading_combining = '◌')
+    {
+        switch (gettype($var))
+        {
+        case 'array':
+            foreach ($var as $k => $v) $var[$k] = static::filter($v, $normalization_form, $leading_combining);
+            break;
+
+        case 'object':
+            foreach ($var as $k => $v) $var->$k = static::filter($v, $normalization_form, $leading_combining);
+            break;
+
+        case 'string':
+            if (false !== strpos($var, "\r"))
+            {
+                // Workaround https://bugs.php.net/65732
+                $var = str_replace("\r\n", "\n", $var);
+                $var = strtr($var, "\r", "\n");
+            }
+
+            if (preg_match('/[\x80-\xFF]/', $var))
+            {
+                if (n::isNormalized($var, $normalization_form)) $n = '';
+                else
+                {
+                    $n = n::normalize($var, $normalization_form);
+                    if (false === $n) $var = static::utf8_encode($var);
+                    else $var = $n;
+                }
+
+                if ($var[0] >= "\x80" && false !== $n && isset($leading_combining[0]) && preg_match('/^\p{Mn}/u', $var))
+                {
+                    // Prevent leading combining chars
+                    // for NFC-safe concatenations.
+                    $var = $leading_combining . $var;
+                }
+            }
+            break;
+        }
+
+        return $var;
+    }
+
     // Unicode transformation for caseless matching
     // see http://unicode.org/reports/tr21/tr21-5.html
 
@@ -79,6 +122,36 @@ class Utf8
     }
 
     // PHP string functions that need UTF-8 awareness
+
+    static function filter_input($type, $var, $filter = FILTER_DEFAULT, $option = null)
+    {
+        if (4 > func_num_args()) $var = filter_input($type, $var, $filter);
+        else $var = filter_input($type, $var, $filter, $option);
+
+        return static::filter($var);
+    }
+
+    static function filter_input_array($type, $def = null, $add_empty = true)
+    {
+        if (2 > func_num_args()) $a = filter_input_array($type);
+        else $a = filter_input_array($type, $def, $add_empty);
+
+        return static::filter($a);
+    }
+
+    static function json_decode($json, $assoc = false, $depth = 512, $options = 0)
+    {
+/**/    if (PHP_VERSION_ID < 50400)
+/**/    {
+            $json = json_decode($json, $assoc, $depth);
+/**/    }
+/**/    else
+/**/    {
+            $json = json_decode($json, $assoc, $depth, $options);
+/**/    }
+
+        return static::filter($json);
+    }
 
     static function substr($s, $start, $len = 2147483647)
     {

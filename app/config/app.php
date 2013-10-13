@@ -126,6 +126,9 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
+		// Kenmoini
+		'Kenmoini\Akismet\AkismetServiceProvider',
+
 		// Mews
 		'Mews\Captcha\CaptchaServiceProvider',
 

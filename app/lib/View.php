@@ -131,9 +131,7 @@ class View extends \Illuminate\Support\Facades\View {
 		$project = System::project();
 
 		// Grab and parse all the menus
-		$menus = Config::get('menus');
-
-		$group = $menus[$menu];
+		$group = Config::get("menus.{$menu}");
 
 		// The cache key is not only menu and path specific but also
 		// unique for a user and a project

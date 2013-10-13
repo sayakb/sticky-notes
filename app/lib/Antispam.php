@@ -143,12 +143,7 @@ class Antispam {
 			// set explicitly from the admin panel. These services ideally
 			// require no configuration and therefore, do not appear in the
 			// antispam section of the admin panel
-			$config = Config::get('antispam');
-
-			$immutable = $config['immutable'];
-
-			// Add immutable services to the queue
-			$services = array_merge($services, $immutable);
+			$services = array_merge($services, Config::get('antispam.immutable'));
 
 			// Run the spam filters
 			foreach ($services as $service)

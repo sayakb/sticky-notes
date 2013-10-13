@@ -87,6 +87,7 @@ App::setLocale(Site::config('general')->lang);
 Auth::extend('stickynotesdb', function()
 {
 	$model = Config::get('auth.model');
+
 	$crypt = PHPass::make();
 
 	return new Illuminate\Auth\Guard(
@@ -98,6 +99,7 @@ Auth::extend('stickynotesdb', function()
 Auth::extend('stickynotesldap', function()
 {
 	$model = Config::get('auth.model');
+
 	$auth = Site::config('auth');
 
 	return new Illuminate\Auth\Guard(
