@@ -111,6 +111,11 @@ return array(
 			"between"     => "The flood threshold must be between :min - :max.",
 		),
 
+		"akismet_key"     => array(
+			"required_if" => "The Akismet key field is required if Akismet filter is enabled.",
+			"akismet_key" => "The Akismet API key you entered is invalid.",
+		),
+
 		"ldap_server"     => array(
 			"required_if" => "The LDAP server field is required if LDAP method is used.",
 		),

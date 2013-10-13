@@ -38,6 +38,7 @@ return array(
 		'phpType'           => '2',
 		'censor'            => '',
 		'floodThreshold'    => '5',
+		'akismetKey'        => '',
 	),
 
 	'mail'                  => (object) array(

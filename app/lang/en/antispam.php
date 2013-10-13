@@ -17,5 +17,6 @@ return array(
 	"noflood"     => "Please keep an interval of 5 seconds between your pastes",
 	"censor"      => "Your paste contains a phrase that has been censored",
 	"token"       => "Invalid paste token, please submit your paste again",
+	"akismet"     => "Your paste triggered our spam filter and has been dropped",
 
 );

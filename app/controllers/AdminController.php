@@ -402,6 +402,14 @@ class AdminController extends BaseController {
 	 */
 	public function postAntispam()
 	{
+		// Define Akismet key validation logic
+		Validator::extend('akismet_key', function($attribute, $value, $parameters)
+		{
+			$akismet = new Akismet(Request::url(), $value);
+
+			return $akismet->isKeyValid();
+		});
+
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'php_key'           => 'required_if:flag_php,1',
@@ -409,12 +417,14 @@ class AdminController extends BaseController {
 			'php_score'         => 'required_if:flag_php,1|integer|between:0,255',
 			'php_type'          => 'required_if:flag_php,1|integer|between:0,255',
 			'flood_threshold'   => 'required_if:flag_noflood,1|integer|between:0,60',
+			'akismet_key'       => 'required_if:flag_akismet,1|akismet_key',
 		));
 
 		// Run the validator
 		if ($validator->passes())
 		{
 			$services = Antispam::services();
+
 			$flags = array();
 
 			// Convert the service flags to CSV

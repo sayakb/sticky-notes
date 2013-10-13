@@ -14,6 +14,8 @@
  * @filesource
  */
 
+use Akismet;
+use Auth;
 use Config;
 use Input;
 use IPBan;
@@ -198,7 +200,6 @@ class Antispam {
 	 * This plugin checks if specific words are contained within the POSTed
 	 * paste body
 	 *
-	 * @static
 	 * @access private
 	 * @return bool
 	 */
@@ -227,7 +228,6 @@ class Antispam {
 	 * This plugin checks if the current user has been banned from creating
 	 * new pastes.
 	 *
-	 * @static
 	 * @access private
 	 * @return bool
 	 */
@@ -241,7 +241,6 @@ class Antispam {
 	/**
 	 * Sticky Notes' in-build HTML filter.
 	 *
-	 * @static
 	 * @access private
 	 * @return bool
 	 */
@@ -258,7 +257,6 @@ class Antispam {
 	 * Flood control for Sticky Notes.
 	 * This disallowes a user to create pastes in less than 5 second intervals.
 	 *
-	 * @static
 	 * @access private
 	 * @return bool
 	 */
@@ -284,7 +282,6 @@ class Antispam {
 	 *
 	 * For details, see: http://www.projecthoneypot.org/
 	 *
-	 * @static
 	 * @access private
 	 * @return bool
 	 */
@@ -347,6 +344,34 @@ class Antispam {
 		{
 			return TRUE;
 		}
+	}
+
+	/**
+	 * Akismet automatic spam filter. See http://akismet.com
+	 *
+	 * @access private
+	 * @return void
+	 */
+	private function runAkismet()
+	{
+		// Create the Akismet instance
+		$akismet = new Akismet(Request::url(), $this->config->akismetKey);
+
+		// Set the author info if the user is logged in
+		if (Auth::check())
+		{
+			$user = Auth::user();
+
+			$akismet->setCommentAuthor($user->username);
+
+			$akismet->setCommentAuthorEmail($user->email);
+		}
+
+		// Set the content to validate
+		$akismet->setCommentContent(Input::get('data'));
+
+		// Return the Akismet analysis
+		return $akismet->isCommentSpam();
 	}
 
 }

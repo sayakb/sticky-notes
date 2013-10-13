@@ -101,6 +101,11 @@ return array(
 	"threshold"             => "Threshold",
 	"threshold_exp"         => "Users will have to wait these many seconds between each paste.",
 	"seconds"               => "seconds",
+	"akismet"               => "Akismet",
+	"akismet_exp"           => "Akismet is an automated spam filter that analyzes pastes and filters out ".
+	                           "potential spam entries.",
+	"akismet_key"           => "Akismet key",
+	"akismet_key_exp"       => "You can get an Akismet API key from",
 	"honeypot"              => "Honeypot",
 	"honeypot_exp"          => "Project Honey Pot is a web based honeypot network which uses software ".
 	                           "embedded in web sites to collect information about IP addresses used when ".
