@@ -30,6 +30,10 @@
 						<li>
 							<a href="#service-noflood" data-toggle="tab">{{ Lang::get('admin.noflood') }}</a>
 						</li>
+
+						<li>
+							<a href="#service-akismet" data-toggle="tab">{{ Lang::get('admin.akismet') }}</a>
+						</li>
 					</ul>
 
 					<div class="tab-content form-horizontal">
@@ -229,6 +233,44 @@
 
 									<div class="help-block">
 										{{ Lang::get('admin.threshold_exp') }}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="service-akismet" class="tab-pane fade">
+							<div class="row-fluid">
+								<div class="span12">
+									<div class="alert alert-info">
+										<p>{{ Lang::get('admin.akismet_exp') }}</p>
+
+										<div class="checkbox">
+											<label>
+												{{ Form::checkbox('flag_akismet', 1, $flags->akismet) }}
+												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
+											</label>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('akismet_key', Lang::get('admin.akismet_key'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::text('akismet_key', $site->antispam->akismetKey, array(
+											'class' => 'input-xxlarge',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.akismet_key_exp') }}
+										{{ link_to('http://akismet.com') }}
 									</div>
 								</div>
 							</div>
