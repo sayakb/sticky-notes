@@ -34,6 +34,67 @@
 						</div>
 					</div>
 
+					<div class="form-group">
+						{{
+							Form::label('method', Lang::get('admin.banner_text'), array(
+								'class' => 'control-label col-sm-3 col-lg-2'
+							))
+						}}
+
+						<div class="col-sm-9 col-lg-10">
+							{{
+								Form::textarea('banner_text', $site->auth->bannerText, array(
+									'class' => 'form-control',
+									'rows'  => 2,
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.banner_text_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						{{
+							Form::label('info_url', Lang::get('admin.info_url'), array(
+								'class' => 'control-label col-sm-3 col-lg-2'
+							))
+						}}
+
+						<div class="col-sm-9 col-lg-10">
+							{{
+								Form::text('info_url', $site->auth->infoUrl, array(
+									'class' => 'form-control',
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.info_url_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						{{
+							Form::label('info_url_text', Lang::get('admin.info_url_text'), array(
+								'class' => 'control-label col-sm-3 col-lg-2'
+							))
+						}}
+
+						<div class="col-sm-9 col-lg-10">
+							{{
+								Form::text('info_url_text', $site->auth->infoUrlText, array(
+									'class' => 'form-control',
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.info_url_text_exp') }}
+							</div>
+						</div>
+					</div>
+
 					<ul id="tabs-auth" class="nav nav-tabs">
 						<li class="active">
 							<a href="#auth-ldap" data-toggle="tab">{{ Lang::get('admin.ldap') }}</a>
