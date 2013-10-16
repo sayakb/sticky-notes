@@ -438,7 +438,7 @@ class AdminController extends BaseController {
 
 			// Inject flag data to the configuration
 			$config = array_merge(Input::all(), array(
-				'services' => implode(',', $flags)
+				'services' => implode('|', $flags)
 			));
 
 			Site::config('antispam', $config);

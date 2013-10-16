@@ -228,7 +228,7 @@ class ApiController extends BaseController {
 		);
 
 		// Instantiate the antispam module
-		$antispam = Antispam::make($custom);
+		$antispam = Antispam::make($custom, 'censor|noflood');
 
 		// Run the anti-spam modules
 		if ($antispam->fails())

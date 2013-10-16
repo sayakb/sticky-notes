@@ -60,17 +60,29 @@ class Antispam {
 	private $customMessages;
 
 	/**
+	 * If set, only these services will be executed
+	 *
+	 * @var array
+	 */
+	private $customServices;
+
+	/**
 	 * Creates a new instance of antispam class
 	 *
 	 * @static
-	 * @param  array  $messages
+	 * @param  array   $messages
+	 * @param  string  $services
 	 * @return void
 	 */
-	public static function make($messages = array())
+	public static function make($messages = array(), $services = NULL)
 	{
 		$antispam = new Antispam();
 
+		$antispam->config = Site::config('antispam');
+
 		$antispam->customMessages = $messages;
+
+		$antispam->customServices = $services;
 
 		return $antispam;
 	}
@@ -90,7 +102,7 @@ class Antispam {
 
 		// Fetching all enabled filters. This value can be defined
 		// from the antispam screen in the admin panel
-		$enabled = explode(',', Site::config('antispam')->services);
+		$enabled = preg_split('/\||,/', Site::config('antispam')->services);
 
 		foreach ($services as $service)
 		{
@@ -131,21 +143,28 @@ class Antispam {
 	 */
 	public function passes()
 	{
-		$this->config = Site::config('antispam');
-
-		// Run only if data was POSTed
 		if (Input::has('data'))
 		{
 			// We get the enabled services
 			// Then we iterate through each of them to see if there is a
 			// handler available for the service. If found, we run the handler
-			$services = explode(',', $this->config->services);
+			if (empty($this->customServices))
+			{
+				$services = preg_split('/\||,/', $this->config->services);
+			}
+			else
+			{
+				$services = preg_split('/\||,/', $this->customServices);
+			}
 
 			// Immutable services are always executed even if they are not
 			// set explicitly from the admin panel. These services ideally
 			// require no configuration and therefore, do not appear in the
 			// antispam section of the admin panel
 			$services = array_merge($services, Config::get('antispam.immutable'));
+
+			// Remove leading/trailing spaces from service names
+			$services = array_map('trim', $services);
 
 			// Run the spam filters
 			foreach ($services as $service)

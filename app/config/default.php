@@ -31,7 +31,7 @@ return array(
 	),
 
 	'antispam'              => (object) array(
-		'services'          => 'censor,stealth,noflood',
+		'services'          => 'censor|noflood',
 		'phpKey'            => '',
 		'phpDays'           => '90',
 		'phpScore'          => '50',
