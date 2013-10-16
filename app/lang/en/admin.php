@@ -124,7 +124,7 @@ return array(
 	"antispam_updated"      => "Spam filter settings have been updated successfully",
 	"auth_method"           => "Auth method",
 	"banner_text"           => "Banner text",
-	"banner_text_exp"       => "This text will be displayed above the login form",
+	"banner_text_exp"       => "This text will be displayed above the login form.",
 	"db"                    => "Database",
 	"ldap"                  => "LDAP",
 	"ldap_server"           => "LDAP server",
