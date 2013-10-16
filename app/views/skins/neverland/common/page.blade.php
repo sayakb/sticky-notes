@@ -56,7 +56,7 @@
 			<!-- Please retain the following copyright notice. See http://opensource.org/licenses/BSD-3-Clause for details -->
 			<p><a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2013 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.</p>
 
-			@if (in_array('php', explode(',', $site->antispam->services)))
+			@if (Antispam::flags()->php)
 				<!-- Honeypot, do not click! -->
 				<a href="http://www.ssdfreaks.com/household.php?to=857"><!-- agreement --></a>
 			@endif
