@@ -123,6 +123,8 @@ return array(
 	"enable_filter"         => "Enable this filter",
 	"antispam_updated"      => "Spam filter settings have been updated successfully",
 	"auth_method"           => "Auth method",
+	"banner_text"           => "Banner text",
+	"banner_text_exp"       => "This text will be displayed above the login form",
 	"db"                    => "Database",
 	"ldap"                  => "LDAP",
 	"ldap_server"           => "LDAP server",
@@ -156,6 +158,12 @@ return array(
 	"user_reg_exp"          => "Set this to disabled to stop new user account registrations.",
 	"reg_captcha"           => "Captcha module",
 	"reg_captcha_exp"       => "Enable or disable display of a visual verification field on the registration screen.",
+	"info_url"              => "Info URL",
+	"info_url_exp"          => "This link will be displayed next to the <b>Login</b> button on the user login form. ".
+	                           "You may use this link to point to a manual page or an external registration page when ".
+	                           "using a non-DB authentication method.",
+	"info_url_text"         => "Info URL text",
+	"info_url_text_exp"     => "Text for above link (eg. Identity Registration Page).",
 	"enabled"               => "Enabled",
 	"disabled"              => "Disabled",
 	"auth_updated"          => "User authentication settings have been updated successfully",

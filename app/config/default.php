@@ -56,6 +56,9 @@ return array(
 
 	'auth'                  => (object) array(
 		'method'            => 'db',
+		'bannerText'        => '',
+		'infoUrl'           => '',
+		'infoUrlText'       => '',
 		'dbAllowReg'        => '1',
 		'dbShowCaptcha'     => '1',
 		'ldapServer'        => '127.0.0.1',
