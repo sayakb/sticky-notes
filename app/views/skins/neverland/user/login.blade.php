@@ -14,6 +14,12 @@
 				<fieldset>
 					<legend>{{ sprintf(Lang::get('user.login_to'), $site->general->title) }}</legend>
 
+					@if ( ! empty($site->auth->bannerText))
+						<div class="alert alert-info">
+							{{ $site->auth->bannerText }}
+						</div>
+					@endif
+
 					@include('skins.neverland.common.alerts')
 
 					<div class="form-group">
@@ -68,6 +74,14 @@
 
 							{{
 								link_to('user/forgot', Lang::get('user.forgot_password'), array(
+									'class'   => 'btn btn-link',
+								))
+							}}
+						@endif
+
+						@if ( ! empty($site->auth->infoUrl) AND ! empty($site->auth->infoUrlText))
+							{{
+								link_to($site->auth->infoUrl, $site->auth->infoUrlText, array(
 									'class'   => 'btn btn-link',
 								))
 							}}

@@ -6,6 +6,7 @@
 			Form::open(array(
 				'autocomplete'   => 'off',
 				'role'           => 'form',
+				'class'          => 'form-horizontal',
 			))
 		}}
 
@@ -14,7 +15,7 @@
 				<fieldset>
 					<legend>{{ Lang::get('admin.auth_settings') }}</legend>
 
-					<div class="form-horizontal">
+					<div class="control-group">
 						{{
 							Form::label('method', Lang::get('admin.auth_method'), array(
 								'class' => 'control-label span2'
@@ -33,8 +34,66 @@
 						</div>
 					</div>
 
-					<br clear="all" />
-					<hr />
+					<div class="control-group">
+						{{
+							Form::label('method', Lang::get('admin.banner_text'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::textarea('banner_text', $site->auth->bannerText, array(
+									'class' => 'input-xxlarge',
+									'rows'  => 2,
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.banner_text_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						{{
+							Form::label('info_url', Lang::get('admin.info_url'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::text('info_url', $site->auth->infoUrl, array(
+									'class' => 'input-xxlarge',
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.info_url_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						{{
+							Form::label('info_url_text', Lang::get('admin.info_url_text'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::text('info_url_text', $site->auth->infoUrlText, array(
+									'class' => 'input-xxlarge',
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.info_url_text_exp') }}
+							</div>
+						</div>
+					</div>
 
 					<ul id="tabs-auth" class="nav nav-tabs">
 						<li class="active">
@@ -46,7 +105,7 @@
 						</li>
 					</ul>
 
-					<div class="tab-content form-horizontal">
+					<div class="tab-content">
 						<div id="auth-ldap" class="tab-pane fade in active">
 							<div class="control-group">
 								{{
