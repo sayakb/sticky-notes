@@ -22,7 +22,7 @@
 				<link>{{ url($paste['urlkey']) }}</link>
 				<description><![CDATA[{{ Paste::getAbstract($paste['data']) }}]]></description>
 				<pubDate>{{ date(DATE_RSS, $paste['timestamp']) }}</pubDate>
-				<guid>{{ $paste['id'].$paste['timestamp'] }}</guid>
+				<guid>{{ url($paste['urlkey']) }}</guid>
 			</item>
 		@endforeach
 	</channel>
