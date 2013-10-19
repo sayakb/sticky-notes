@@ -76,7 +76,9 @@ class Feed {
 	 */
 	private function sanitizeFeed(&$data)
 	{
-		$data = htmlspecialchars($data);
+		$data = htmlspecialchars($data, ENT_COMPAT, 'utf-8');
+
+		$data = utf8_encode($data);
 
 		$data = nl2br($data);
 	}
