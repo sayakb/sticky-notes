@@ -58,7 +58,7 @@ use ReflectionClass;
 use ReflectionParameter;
 class BindingResolutionException extends \Exception
 {
-
+    
 }
 class Container implements ArrayAccess
 {
@@ -352,7 +352,7 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     }
     public static function getBootstrapFile()
     {
-        return __DIR__.'/../vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
+        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
     }
     public function startExceptionHandling()
     {
@@ -361,7 +361,11 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     }
     public function environment()
     {
-        return $this['env'];
+        if (count(func_get_args()) > 0) {
+            return in_array($this['env'], func_get_args());
+        } else {
+            return $this['env'];
+        }
     }
     public function detectEnvironment($environments)
     {
@@ -1591,7 +1595,7 @@ class Request
                 \Locale::setDefault($locale);
             }
         } catch (\Exception $e) {
-
+            
         }
     }
     private function getUrlencodedPrefix($string, $prefix)
@@ -2268,6 +2272,7 @@ class NativeSessionStorage implements SessionStorageInterface
             $this->saveHandler->setActive(false);
         }
         $this->closed = true;
+        $this->started = false;
     }
     public function clear()
     {
@@ -2649,7 +2654,7 @@ class MetadataBag implements SessionBagInterface
     }
     public function clear()
     {
-
+        
     }
     public function getName()
     {
@@ -2671,12 +2676,12 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 if (version_compare(phpversion(), '5.4.0', '>=')) {
     class NativeSessionHandler extends \SessionHandler
     {
-
+        
     }
 } else {
     class NativeSessionHandler
     {
-
+        
     }
 }
 namespace Symfony\Component\HttpFoundation\Session\Storage\Proxy;
@@ -3140,7 +3145,7 @@ abstract class ServiceProvider
     }
     public function boot()
     {
-
+        
     }
     public abstract function register();
     public function package($package, $namespace = null, $path = null)
@@ -3291,7 +3296,7 @@ class ExceptionServiceProvider extends ServiceProvider
     }
     protected function getResourcePath()
     {
-        return __DIR__.'/../vendor/laravel/framework/src/Illuminate/Exception' . '/resources';
+        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Exception' . '/resources';
     }
 }
 namespace Illuminate\Routing;
@@ -3651,7 +3656,7 @@ class ErrorHandler
         }
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+                require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
             }
             throw new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
         }
@@ -3675,7 +3680,7 @@ class ErrorHandler
             return;
         }
         $exceptionHandler = set_exception_handler(function () {
-
+            
         });
         restore_exception_handler();
         if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
@@ -3691,7 +3696,7 @@ namespace Symfony\Component\HttpKernel\Debug;
 use Symfony\Component\Debug\ErrorHandler as DebugErrorHandler;
 class ErrorHandler extends DebugErrorHandler
 {
-
+    
 }
 namespace Illuminate\Config;
 
@@ -3990,7 +3995,7 @@ use FilesystemIterator;
 use Symfony\Component\Finder\Finder;
 class FileNotFoundException extends \Exception
 {
-
+    
 }
 class Filesystem
 {
@@ -4293,6 +4298,15 @@ namespace Illuminate\Cookie;
 use Illuminate\Support\ServiceProvider;
 class CookieServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        $app = $this->app;
+        $this->app->after(function ($request, $response) use($app) {
+            foreach ($app['cookie']->getQueuedCookies() as $cookie) {
+                $response->headers->setCookie($cookie);
+            }
+        });
+    }
     public function register()
     {
         $this->app['cookie'] = $this->app->share(function ($app) {
@@ -6251,7 +6265,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         $format = $this->getDateFormat();
         if ($value instanceof DateTime) {
-
+            
         } elseif (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
         } elseif (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/', $value)) {
@@ -6856,6 +6870,7 @@ class CookieJar
     protected $encrypter;
     protected $path = '/';
     protected $domain = null;
+    protected $queued = array();
     public function __construct(Request $request, Encrypter $encrypter)
     {
         $this->request = $request;
@@ -6913,12 +6928,29 @@ class CookieJar
     {
         return $this->encrypter;
     }
+    public function queue()
+    {
+        if (head(func_get_args()) instanceof Cookie) {
+            $cookie = head(func_get_args());
+        } else {
+            $cookie = call_user_func_array(array($this, 'make'), func_get_args());
+        }
+        $this->queued[$cookie->getName()] = $cookie;
+    }
+    public function unqueue($name)
+    {
+        unset($this->queued[$name]);
+    }
+    public function getQueuedCookies()
+    {
+        return $this->queued;
+    }
 }
 namespace Illuminate\Encryption;
 
 class DecryptException extends \RuntimeException
 {
-
+    
 }
 class Encrypter
 {
@@ -7370,7 +7402,7 @@ abstract class AbstractHandler implements HandlerInterface
     }
     public function close()
     {
-
+        
     }
     public function pushProcessor($callback)
     {
@@ -7422,7 +7454,7 @@ abstract class AbstractHandler implements HandlerInterface
         try {
             $this->close();
         } catch (\Exception $e) {
-
+            
         }
     }
     protected function getDefaultFormatter()
@@ -9302,7 +9334,7 @@ class PhpEngine implements EngineInterface
         } catch (\Exception $e) {
             $this->handleViewException($e);
         }
-        return ob_get_clean();
+        return ltrim(ob_get_clean());
     }
     protected function handleViewException($e)
     {
@@ -10244,7 +10276,7 @@ class PrettyPageHandler extends Handler
             return Handler::DONE;
         }
         if (!($resources = $this->getResourcesPath())) {
-            $resources = __DIR__.'/../vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+            $resources = '/media/sayakb/storage/Apache/sticky-notes-src/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
         }
         $templateFile = "{$resources}/pretty-template.php";
         $cssFile = "{$resources}/pretty-page.css";
