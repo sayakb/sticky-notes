@@ -6,6 +6,8 @@
 	<meta charset="utf-8">
 	<title>{{ $site->general->title }}</title>
 
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="{{ url('feed') }}" />
+
 	<link href="{{ View::asset('img/favicon.png') }}" rel="shortcut icon" />
 	<link href="{{ View::asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 	<link href="{{ View::asset('css/stickynotes.css') }}" rel="stylesheet" />
