@@ -43,6 +43,9 @@ Route::get('api/{mode}/list/{page?}', 'ApiController@getList');
 
 Route::post('api/{mode}/create', 'ApiController@postCreate');
 
+// Feed routes
+Route::get('feed/{type?}', 'FeedController@getFeed')->where('type', 'rss');
+
 // AJAX routes
 Route::controller('ajax', 'AjaxController');
 

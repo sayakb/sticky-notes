@@ -87,7 +87,7 @@ class API {
 		}
 
 		// Now we create a custom response
-		$response = Response::view("templates/{$this->mode}/{$view}", $data, $code);
+		$response = Response::view("templates/api/{$this->mode}/{$view}", $data, $code);
 
 		// We set the header based on mode
 		switch ($this->mode)

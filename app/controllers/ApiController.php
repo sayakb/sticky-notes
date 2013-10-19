@@ -169,9 +169,7 @@ class ApiController extends BaseController {
 		// Get the key for each paste item
 		foreach ($pastes as $paste)
 		{
-			$data = $paste->toArray();
-
-			$list[] = $data;
+			$list[] = $paste->toArray();
 		}
 
 		// Build the API data and make the output

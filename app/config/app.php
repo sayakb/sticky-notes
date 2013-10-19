@@ -206,6 +206,7 @@ return array(
 		'API'             => 'StickyNotes\API',
 		'Antispam'        => 'StickyNotes\Antispam',
 		'Cron'            => 'StickyNotes\Cron',
+		'Feed'            => 'StickyNotes\Feed',
 		'GoogleSvc'       => 'StickyNotes\GoogleSvc',
 		'Highlighter'     => 'StickyNotes\Highlighter',
 		'PHPass'          => 'StickyNotes\PHPass',
