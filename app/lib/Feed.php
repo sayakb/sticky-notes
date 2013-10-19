@@ -14,9 +14,6 @@
  * @filesource
  */
 
-use Response;
-use View;
-
 /**
  * Feed class
  *

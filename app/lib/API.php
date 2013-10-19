@@ -14,8 +14,6 @@
  * @filesource
  */
 
-use Response;
-
 /**
  * API class
  *
