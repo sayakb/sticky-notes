@@ -63,16 +63,18 @@
 						}}
 					</div>
 
-					<label class="checkbox">
-						{{
-							Form::checkbox('private', NULL, NULL, array(
-								'id'       => 'private',
-								'disabled' => $disabled
-							))
-						}}
+					@if ( ! $site->general->privateSite)
+						<label class="checkbox">
+							{{
+								Form::checkbox('private', NULL, NULL, array(
+									'id'       => 'private',
+									'disabled' => $disabled
+								))
+							}}
 
-						{{ Lang::get('create.mark_private') }}
-					</label>
+							{{ Lang::get('create.mark_private') }}
+						</label>
+					@endif
 				</div>
 			</div>
 
