@@ -154,15 +154,40 @@
 						}}
 
 						<div class="span9">
-							<div class="checkbox">
-								<label>
-									{{ Form::checkbox('proxy', 1, $site->general->proxy) }}
-									{{ Lang::get('admin.trust_proxy') }}
-								</label>
-							</div>
+							{{
+								Form::select('proxy', array(
+									'0' => Lang::get('admin.ignore_proxy'),
+									'1' => Lang::get('admin.trust_proxy'),
+								), $site->general->proxy, array(
+									'class' => 'input-xxlarge'
+								))
+							}}
 
 							<div class="help-block">
-								{{ Lang::get('admin.trust_proxy_exp') }}
+								{{ Lang::get('admin.ip_tracking_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						{{
+							Form::label('private_site', Lang::get('admin.private_site'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::select('private_site', array(
+									'0' => Lang::get('admin.allow_public'),
+									'1' => Lang::get('admin.enforce_private'),
+								), $site->general->privateSite, array(
+									'class' => 'input-xxlarge'
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.private_site_exp') }}
 							</div>
 						</div>
 					</div>
