@@ -28,6 +28,7 @@ return array(
 		'pasteAge'          => '1800',
 		'skin'              => 'bootstrap',
 		'proxy'             => '0',
+		'privateSite'       => '0',
 	),
 
 	'antispam'              => (object) array(

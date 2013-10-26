@@ -150,10 +150,48 @@ class View extends \Illuminate\Support\Facades\View {
 
 					$current = FALSE;
 
-					// Check if a role restriction is set
-					if (isset($item['role']) AND ! User::getRoles()->$item['role'])
+					// Check if visibility of the item is bound
+					if (isset($item['visible']))
 					{
-						continue;
+						$bindings = explode('.', $item['visible']);
+
+						// Check for the invert flag
+						if (starts_with($bindings[0], '!'))
+						{
+							$bindings[0] = substr($bindings[0], 1);
+
+							$invert = TRUE;
+						}
+						else
+						{
+							$invert = FALSE;
+						}
+
+						// Get the binding flags
+						switch ($bindings[0])
+						{
+							case 'role':
+								$flags = User::getRoles();
+								break;
+
+							case 'config':
+								$flags = Site::config('general');
+								break;
+
+							default:
+								$flags = NULL;
+								break;
+						}
+
+						// Do not parse the menu item if the flag does not
+						// evaluate to true
+						if ($flags != NULL)
+						{
+							if ( ! $flags->$bindings[1] XOR $invert)
+							{
+								continue;
+							}
+						}
 					}
 
 					// Determine whether this is the active link

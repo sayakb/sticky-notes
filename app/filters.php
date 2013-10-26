@@ -134,6 +134,24 @@ Route::filter('admin', function()
 
 /*
 |--------------------------------------------------------------------------
+| Private site filter
+|--------------------------------------------------------------------------
+|
+| This filter validates whether the site is set as private (i.e. disallows
+| public pastes) and if so, it throws a 401 for the list routes
+|
+*/
+
+Route::filter('private', function()
+{
+	if (Site::config('general')->privateSite)
+	{
+		App::abort(401);
+	}
+});
+
+/*
+|--------------------------------------------------------------------------
 | Numeric paste ID filter
 |--------------------------------------------------------------------------
 |

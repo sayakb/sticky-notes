@@ -22,8 +22,9 @@ return array(
 	|
 	| Optional properties in each item:
 	|  * icon       : Determines the glyphicon for that item
-	|  * role       : If set as 'user' or 'admin', the item will not be showed
-	|                 if the user does not belong to that role
+	|  * visible    : This can be used to bind the visibility of an item to a 
+	|                 user role or a site config. You can use ! to invert a 
+	|                 flag.
 	|
 	*/
 
@@ -35,12 +36,14 @@ return array(
 
 		'all'               => array(
 			'label'         => 'global.archives',
-			'icon'          => 'list'
+			'icon'          => 'list',
+			'visible'       => '!config.privateSite'
 		),
 
 		'trending'          => array(
 			'label'         => 'global.trending',
-			'icon'          => 'fire'
+			'icon'          => 'fire',
+			'visible'       => '!config.privateSite'
 		),
 
 		'docs'              => array(
@@ -51,13 +54,13 @@ return array(
 		'user/profile'      => array(
 			'label'         => 'global.my_profile',
 			'icon'          => 'flag',
-			'role'          => 'user'
+			'visible'       => 'role.user'
 		),
 
 		'admin'             => array(
 			'label'         => 'global.siteadmin',
 			'icon'          => 'cog',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 	),
@@ -69,23 +72,28 @@ return array(
 		'_exact'            => TRUE,
 
 		'trending'          => array(
-			'label'         => 'list.filter_now'
+			'label'         => 'list.filter_now',
+			'visible'       => '!config.privateSite'
 		),
 
 		'trending/week'     => array(
-			'label'         => 'list.filter_week'
+			'label'         => 'list.filter_week',
+			'visible'       => '!config.privateSite'
 		),
 
 		'trending/month'    => array(
-			'label'         => 'list.filter_month'
+			'label'         => 'list.filter_month',
+			'visible'       => '!config.privateSite'
 		),
 
 		'trending/year'     => array(
-			'label'         => 'list.filter_year'
+			'label'         => 'list.filter_year',
+			'visible'       => '!config.privateSite'
 		),
 
 		'trending/all'      => array(
-			'label'         => 'list.filter_all'
+			'label'         => 'list.filter_all',
+			'visible'       => '!config.privateSite'
 		),
 
 	),
@@ -99,55 +107,55 @@ return array(
 		'admin/dashboard'   => array(
 			'label'         => 'admin.dashboard',
 			'icon'          => 'home',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/paste'       => array(
 			'label'         => 'admin.manage_pastes',
 			'icon'          => 'file',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/user'        => array(
 			'label'         => 'admin.manage_users',
 			'icon'          => 'user',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/ban'         => array(
 			'label'         => 'admin.ban_an_ip',
 			'icon'          => 'ban-circle',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/mail'        => array(
 			'label'         => 'admin.mail_settings',
 			'icon'          => 'envelope',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/auth'        => array(
 			'label'         => 'admin.authentication',
 			'icon'          => 'lock',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/antispam'    => array(
 			'label'         => 'admin.spam_filters',
 			'icon'          => 'screenshot',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/site'        => array(
 			'label'         => 'admin.site_settings',
 			'icon'          => 'wrench',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 		'admin/skin'        => array(
 			'label'         => 'admin.skin_chooser',
 			'icon'          => 'picture',
-			'role'          => 'admin'
+			'visible'       => 'role.admin'
 		),
 
 	),

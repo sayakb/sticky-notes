@@ -76,11 +76,9 @@ class Feed {
 	 */
 	private function sanitizeFeed(&$data)
 	{
-		$data = htmlspecialchars($data, ENT_COMPAT, 'utf-8');
+		$data = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $data);
 
-		$data = utf8_encode($data);
-
-		$data = nl2br($data);
+		$data = htmlspecialchars($data, ENT_COMPAT, 'UTF-8');
 	}
 
 }

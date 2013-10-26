@@ -83,9 +83,15 @@ return array(
 	"google_api_exp"        => "You can generate an API key at the",
 	"google_api_console"    => "Google API Console",
 	"ip_tracking"           => "IP tracking",
+	"ip_tracking_exp"       => "Set this option to trust proxy headers if your site is behind a proxy ".
+	                           "intermediary (such as a load balancer) to get the actual client IP address.",
 	"trust_proxy"           => "Trust proxy headers",
-	"trust_proxy_exp"       => "Set this option if your site is behind a proxy intermediary (such as a ".
-	                           "load balancer) to get the actual client IP address.",
+	"ignore_proxy"          => "Ignore proxy headers",
+	"private_site"          => "Private site",
+	"private_site_exp"      => "If set to enforce private pastes, all pastes will be created as private and ".
+	                           "the archives section will be disabled.",
+	"allow_public"          => "Allow public pastes",
+	"enforce_private"       => "Enforce private pastes",
 	"site_updated"          => "Site settings updated successfully",
 	"word_censor"           => "Word censor",
 	"word_censor_exp"       => "This module allows you to block pastes that contain specific words. ".

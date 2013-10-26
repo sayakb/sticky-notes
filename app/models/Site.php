@@ -129,7 +129,7 @@ class Site extends Eloquent {
 				}
 			}
 
-			Cache::forget('site.config');
+			Cache::flush();
 
 			static::$config = FALSE;
 

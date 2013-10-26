@@ -30,9 +30,12 @@ Route::get('diff/{oldkey}/{newkey}', 'ShowController@getDiff');
 Route::post('{urlkey}/{hash?}', 'ShowController@postPassword')->where('urlkey', 'p[a-zA-Z0-9]+');
 
 // List paste routes
-Route::get('all', 'ListController@getAll');
+Route::group(array('before' => 'private'), function()
+{
+	Route::get('all', 'ListController@getAll');
 
-Route::get('trending/{age?}', 'ListController@getTrending');
+	Route::get('trending/{age?}', 'ListController@getTrending');
+});
 
 // API routes
 Route::get('api/{mode}/parameter/{param}', 'ApiController@getParameter');

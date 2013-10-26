@@ -102,6 +102,12 @@ class Paste extends Eloquent {
 		// for private pastes
 		$hash = static::getHash();
 
+		// If the site is set as a private site, default $private to true
+		if (Site::config('general')->privateSite)
+		{
+			$private = TRUE;
+		}
+
 		// Set the paste author
 		if (Auth::check())
 		{
