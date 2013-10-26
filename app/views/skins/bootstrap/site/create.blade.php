@@ -74,20 +74,22 @@
 			</div>
 
 			<div class="col-sm-4">
-				<div class="form-group">
-					<div class="checkbox">
-						<label>
-							{{
-								Form::checkbox('private', NULL, NULL, array(
-									'id'       => 'private',
-									'disabled' => $disabled
-								))
-							}}
+				@if ( ! $site->general->privateSite)
+					<div class="form-group">
+						<div class="checkbox">
+							<label>
+								{{
+									Form::checkbox('private', NULL, NULL, array(
+										'id'       => 'private',
+										'disabled' => $disabled
+									))
+								}}
 
-							{{ Lang::get('create.mark_private') }}
-						</label>
+								{{ Lang::get('create.mark_private') }}
+							</label>
+						</div>
 					</div>
-				</div>
+				@endif
 			</div>
 
 			<div class="col-sm-4">
