@@ -563,6 +563,20 @@ return array(
 
 		), // 0.4
 
+		'1.0' => array(
+
+			'closure' => function()
+			{
+
+				// Update the database version number
+				Site::config('general', array(
+					'version' => Config::get('app.version'),
+				));
+
+			}, // closure
+
+		), // 1.0
+
 	), // update
 
 );
