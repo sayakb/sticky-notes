@@ -1,4 +1,4 @@
-# Sticky Notes v1.0 [![Build Status](https://travis-ci.org/sayakb/sticky-notes.png)](http://goo.gl/DRaaX0)
+# Sticky Notes v1.1 [![Build Status](https://travis-ci.org/sayakb/sticky-notes.png)](http://goo.gl/DRaaX0)
 
 Sticky notes is a powerful open-source pastebin application.
 
