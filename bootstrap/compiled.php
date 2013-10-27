@@ -306,7 +306,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 class Application extends Container implements HttpKernelInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.0.8';
+    const VERSION = '4.0.9';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -318,8 +318,24 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     public function __construct(Request $request = null)
     {
         $this['request'] = $this->createRequest($request);
+        $this->registerBaseServiceProviders();
+    }
+    protected function registerBaseServiceProviders()
+    {
+        foreach (array('Exception', 'Routing', 'Event') as $name) {
+            $this->{"register{$name}Provider"}();
+        }
+    }
+    protected function registerExceptionProvider()
+    {
         $this->register(new ExceptionServiceProvider($this));
+    }
+    protected function registerRoutingProvider()
+    {
         $this->register(new RoutingServiceProvider($this));
+    }
+    protected function registerEventProvider()
+    {
         $this->register(new EventServiceProvider($this));
     }
     protected function createRequest(Request $request = null)
@@ -352,7 +368,7 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     }
     public static function getBootstrapFile()
     {
-        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
+        return __DIR__.'/../vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
     }
     public function startExceptionHandling()
     {
@@ -3296,7 +3312,8 @@ class ExceptionServiceProvider extends ServiceProvider
     }
     protected function getResourcePath()
     {
-        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Exception' . '/resources';
+        $base = $this->app['path.base'];
+        return $base . '/vendor/laravel/framework/src/Illuminate/Exception/resources';
     }
 }
 namespace Illuminate\Routing;
@@ -3656,7 +3673,7 @@ class ErrorHandler
         }
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
             }
             throw new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
         }
@@ -4034,7 +4051,7 @@ class Filesystem
         if ($this->exists($path)) {
             return $this->put($path, $data . $this->get($path));
         } else {
-            return $this->put($data);
+            return $this->put($path, $data);
         }
     }
     public function append($path, $data)
@@ -4107,9 +4124,13 @@ class Filesystem
         }
         return $directories;
     }
-    public function makeDirectory($path, $mode = 511, $recursive = false)
+    public function makeDirectory($path, $mode = 511, $recursive = false, $force = false)
     {
-        return mkdir($path, $mode, $recursive);
+        if ($force) {
+            return @mkdir($path, $mode, $recursive);
+        } else {
+            return mkdir($path, $mode, $recursive);
+        }
     }
     public function copyDirectory($directory, $destination, $options = null)
     {
@@ -10276,7 +10297,7 @@ class PrettyPageHandler extends Handler
             return Handler::DONE;
         }
         if (!($resources = $this->getResourcesPath())) {
-            $resources = '/media/sayakb/storage/Apache/sticky-notes-src/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+            $resources = __DIR__.'/../vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
         }
         $templateFile = "{$resources}/pretty-template.php";
         $cssFile = "{$resources}/pretty-page.css";
