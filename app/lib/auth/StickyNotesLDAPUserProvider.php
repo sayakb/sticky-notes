@@ -14,12 +14,15 @@
  * @filesource
  */
 
+use Cache;
+use Config;
+use Session;
+use Site;
+
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserProviderInterface;
 use Illuminate\Database\Connection;
 use Illuminate\Hashing\HasherInterface;
-use Cache;
-use Session;
 
 /**
  * StickyNotesLDAPUserProvider Class
@@ -56,15 +59,13 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	/**
 	 * Initializes the provider and sets the model instance
 	 *
-	 * @param  Illuminate\Database\Eloquent\Model  $model
-	 * @param  array                               $auth
 	 * @return void
 	 */
-	public function __construct($model, $auth)
+	public function __construct()
 	{
-		$this->model = $model;
+		$this->model = Config::get('auth.model');
 
-		$this->auth = $auth;
+		$this->auth = Site::config('auth');
 	}
 
 	/**
@@ -93,17 +94,20 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 
 		foreach ($credentials as $key => $value)
 		{
-			if ( ! str_contains($key, 'password')) $query->where($key, $value);
+			if ( ! str_contains($key, 'password'))
+			{
+				$query->where($key, $value);
+			}
 		}
 
 		// A filter for type=ldap is added to avoid getting users created by
 		// other auth methods
-		$count = $query->where('type', 'ldap')->count();
+		$query->where('type', 'ldap');
 
 		// We store it locally as we need to access the data later
 		// If a user is not found, we need to create one automagically
 		// Thats why even if count is 0, we return a new model instance
-		$this->user = $count > 0 ? $query->first() : $this->createModel();
+		$this->user = $query->count() > 0 ? $query->first() : $this->createModel();
 
 		return $this->user;
 	}
@@ -155,6 +159,9 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 
 		$key = "({$this->auth->ldapUid}={$username})";
 
+		// Get the user password
+		$password = $credentials['password'];
+
 		// Check if an additional filter is set
 		if ($this->auth->ldapFilter)
 		{
@@ -180,7 +187,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 			$dn = @ldap_get_dn($ldap, $entry);
 
 			// Validate credentials by binding with user's password
-			if (@ldap_bind($ldap, $dn, $credentials['password']))
+			if (@ldap_bind($ldap, $dn, $password))
 			{
 				// If the admin filter is not there, being a mandatory field,
 				// this can only mean that the site was updated from an older

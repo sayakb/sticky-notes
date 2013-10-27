@@ -86,24 +86,16 @@ App::setLocale(Site::config('general')->lang);
 
 Auth::extend('stickynotesdb', function()
 {
-	$model = Config::get('auth.model');
-
-	$crypt = PHPass::make();
-
-	return new Illuminate\Auth\Guard(
-		new StickyNotes\Auth\StickyNotesDBUserProvider($model, $crypt),
+	return new Guard(
+		new StickyNotesDBUserProvider(),
 		App::make('session.store')
 	);
 });
 
 Auth::extend('stickynotesldap', function()
 {
-	$model = Config::get('auth.model');
-
-	$auth = Site::config('auth');
-
-	return new Illuminate\Auth\Guard(
-		new StickyNotes\Auth\StickyNotesLDAPUserProvider($model, $auth),
+	return new Guard(
+		new StickyNotesLDAPUserProvider(),
 		App::make('session.store')
 	);
 });

@@ -14,12 +14,16 @@
  * @filesource
  */
 
+use App;
+use Config;
+use Session;
+
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\UserProviderInterface;
 use Illuminate\Database\Connection;
 use Illuminate\Hashing\HasherInterface;
-use App;
-use Session;
+
+use StickyNotes\PHPass;
 
 /**
  * StickyNotesDBUserProvider Class
@@ -40,13 +44,6 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	protected $model;
 
 	/**
-	 * The password hashing library instance
-	 *
-	 * @var PHPass
-	 */
-	protected $crypt;
-
-	/**
 	 * Contains the retrieved user details
 	 *
 	 * @var object
@@ -56,15 +53,11 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	/**
 	 * Initializes the provider and sets the model instance
 	 *
-	 * @param  Illuminate\Database\Eloquent\Model  $model
-	 * @param  PHPass                              $crypt
 	 * @return void
 	 */
-	public function __construct($model, $crypt)
+	public function __construct()
 	{
-		$this->model = $model;
-
-		$this->crypt = $crypt;
+		$this->model = Config::get('auth.model');
 	}
 
 	/**
@@ -93,7 +86,10 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 
 		foreach ($credentials as $key => $value)
 		{
-			if ( ! str_contains($key, 'password')) $query->where($key, $value);
+			if ( ! str_contains($key, 'password'))
+			{
+				$query->where($key, $value);
+			}
 		}
 
 		// We keep it locally as we need it later to get the user salt
@@ -126,7 +122,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 			App::abort(401);
 		}
 
-		return $this->crypt->check('User', $password, $salt, $hash);
+		return PHPass::make()->check('User', $password, $salt, $hash);
 	}
 
 	/**
