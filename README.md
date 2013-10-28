@@ -34,4 +34,4 @@ License: [BSD 2-clause license](http://www.opensource.org/licenses/bsd-license.p
 
 &copy; 2013 [Sayak Banerjee](http://sayakbanerjee.com). All rights reserved.
 
-[![](http://www.pledgie.com/campaigns/20549.png?skin_name=chrome)](http://goo.gl/oWyEG)
+[![](https://pledgie.com/campaigns/20549.png?skin_name=chrome)](http://goo.gl/oWyEG)
