@@ -44,9 +44,14 @@ class CreateController extends BaseController {
 		);
 
 		// Get the default language from cookie
-		if (Cookie::has('language'))
+		if (Cookie::has('languages'))
 		{
-			$data['language'] = Cookie::get('language');
+			$history = Cookie::get('languages');
+
+			if (is_array($history))
+			{
+				$data['language'] = end($history);
+			}
 		}
 
 		return View::make('site/create', $data);
@@ -76,10 +81,31 @@ class CreateController extends BaseController {
 		// Execute antispam services
 		$resultAntispam = $antispam->passes();
 
-		// Save the language as a cookie so that it is auto
-		// selected next time
-		$cookie = Cookie::forever('language', Input::get('language'));
+		// Get the paste language. We use it to store a language history
+		$language = Input::get('language');
 
+		$historyLangs = Cookie::has('languages') ? Cookie::get('languages') : array();
+
+		// No dulicates allowed in the history
+		if (in_array($language, $historyLangs))
+		{
+			$key = array_search($language, $historyLangs);
+
+			unset($historyLangs[$key]);
+		}
+
+		// Max. 10 history languages are allowed
+		else if (count($historyLangs) >= 10)
+		{
+			$historyLangs = array_slice($historyLangs, 1, count($historyLangs));
+		}
+
+		// Add current language to the history
+		array_push($historyLangs, $language);
+
+		$cookie = Cookie::forever('languages', $historyLangs);
+
+		// Evaluate validation results
 		if ($resultValidation AND $resultAntispam)
 		{
 			// We inject the project into the input so that
@@ -99,13 +125,11 @@ class CreateController extends BaseController {
 
 				Session::flash('messages.success', $message);
 			}
-			else if ($paste->private)
-			{
-				return Redirect::to("{$paste->urlkey}/{$paste->hash}")->withCookie($cookie);
-			}
 			else
 			{
-				return Redirect::to($paste->urlkey)->withCookie($cookie);
+				$url = $paste->private ? $paste->urlkey.'/'.$paste->hash : $paste->urlkey;
+
+				return Redirect::to($url)->withCookie($cookie);
 			}
 		}
 		else

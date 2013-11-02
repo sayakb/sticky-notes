@@ -15,6 +15,7 @@
  */
 
 use Cache;
+use Cookie;
 use GeSHi;
 
 /**
@@ -98,7 +99,7 @@ class Highlighter {
 		}
 		else
 		{
-			natcasesort($langs);
+			$langs = $this->sortLanguages($langs);
 		}
 
 		return $langs;
@@ -107,7 +108,6 @@ class Highlighter {
 	/**
 	 * Parses and outputs highlighted code
 	 *
-	 * @static
 	 * @param  string  $key
 	 * @param  string  $code
 	 * @param  string  $language
@@ -127,6 +127,36 @@ class Highlighter {
 		});
 
 		return $parsed ?: $code;
+	}
+
+	/**
+	 * Sorts the language list based on their name and history
+	 *
+	 * @param  array  $langs
+	 * @return array
+	 */
+	private function sortLanguages($langs)
+	{
+		// First, we do a natural case-insensitive sort
+		natcasesort($langs);
+
+		// Now, get the language list from the cookie
+		$historyLangs = Cookie::has('languages') ? Cookie::get('languages') : NULL;
+
+		if ($historyLangs != NULL)
+		{
+			foreach ($historyLangs as $lang)
+			{
+				$langText = $langs[$lang];
+
+				unset($langs[$lang]);
+
+				$langs = array_merge(array($lang => $langText), $langs);
+			}
+		}
+
+		// Return the language list
+		return $langs;
 	}
 
 }
