@@ -121,51 +121,51 @@
 								</div>
 							</div>
 
-							<div class="control-group">
-								{{
-									Form::label('active', Lang::get('admin.status'), array(
-										'class' => 'control-label span2'
-									))
-								}}
+							@if ( ! $founder)
+								<div class="control-group">
+									{{
+										Form::label('active', Lang::get('admin.status'), array(
+											'class' => 'control-label span2'
+										))
+									}}
 
-								<div class="span9">
-									<div class="checkbox">
-										<label>
-											{{
-												Form::checkbox('active', 1, $user->active, array(
-													'id'         => 'active',
-													'disabled'   => $founder ?: NULL
-												))
-											}}
+									<div class="span9">
+										<div class="checkbox">
+											<label>
+												{{
+													Form::checkbox('active', 1, $user->active, array(
+														'id' => 'active',
+													))
+												}}
 
-											{{ Lang::get('admin.active') }}
-										</label>
+												{{ Lang::get('admin.active') }}
+											</label>
+										</div>
 									</div>
 								</div>
-							</div>
 
-							<div class="control-group">
-								{{
-									Form::label('admin', Lang::get('admin.role'), array(
-										'class' => 'control-label span2'
-									))
-								}}
+								<div class="control-group">
+									{{
+										Form::label('admin', Lang::get('admin.role'), array(
+											'class' => 'control-label span2'
+										))
+									}}
 
-								<div class="span9">
-									<div class="checkbox">
-										<label>
-											{{
-												Form::checkbox('admin', 1, $user->admin, array(
-													'id'         => 'admin',
-													'disabled'   => $founder ?: NULL
-												))
-											}}
+									<div class="span9">
+										<div class="checkbox">
+											<label>
+												{{
+													Form::checkbox('admin', 1, $user->admin, array(
+														'id' => 'admin',
+													))
+												}}
 
-											{{ Lang::get('global.admin') }}
-										</label>
+												{{ Lang::get('global.admin') }}
+											</label>
+										</div>
 									</div>
 								</div>
-							</div>
+							@endif
 
 							<div class="form-actions">
 								{{ Form::hidden('id', $user->id) }}
