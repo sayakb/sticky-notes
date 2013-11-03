@@ -62,11 +62,13 @@
 				<div class="pre-info pre-footer">
 					<div class="row">
 						<div class="col-sm-6">
-							{{ sprintf(Lang::get('global.language'), $paste->language) }}
+							{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
 						</div>
 
 						<div class="col-sm-6 text-right">
-							{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
+							{{ sprintf(Lang::get('global.language'), $paste->language) }}
+							&bull;
+							{{ sprintf(Lang::get('global.views'), $paste->hits) }}
 						</div>
 					</div>
 				</div>
