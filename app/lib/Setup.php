@@ -15,11 +15,13 @@
  */
 
 use App;
+use Cache;
 use Config;
 use Lang;
 use Redirect;
 use Schema;
 use Session;
+use Site;
 
 /**
  * Setup class
@@ -153,8 +155,16 @@ class Setup {
 		// This is the last step, but needs to be called out first
 		else if ($action == '~complete')
 		{
+			// Set the final stage
 			Session::put('setup.stage', 3);
 
+			// Update the version number in the database
+			Site::config('general', array('version' => Config::get('app.version')));
+
+			// Flush the cache
+			Cache::flush();
+
+			// All done!
 			return "100||".Lang::get('setup.update_complete');
 		}
 

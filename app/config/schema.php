@@ -40,7 +40,7 @@ return array(
 					'nullable' => TRUE,
 				),
 
-			), // config
+			),
 
 			'ipbans' => array(
 
@@ -55,7 +55,7 @@ return array(
 					'type'     => 'primary',
 				),
 
-			), // ipbans
+			),
 
 			'main' => array(
 
@@ -180,7 +180,7 @@ return array(
 					'default'  => 0,
 				),
 
-			), // main
+			),
 
 			'revisions' => array(
 
@@ -213,7 +213,7 @@ return array(
 					'type'     => 'integer',
 				),
 
-			), // revisions
+			),
 
 			'users' => array(
 
@@ -278,9 +278,9 @@ return array(
 					'default'  => 1,
 				),
 
-			), // users
+			),
 
-		), // tables
+		),
 
 		'closure' => function()
 		{
@@ -315,9 +315,9 @@ return array(
 				'version'  => Config::get('app.version'),
 			));
 
-		}, // closure
+		},
 
-	), // install
+	),
 
 	'update' => array(
 
@@ -350,7 +350,7 @@ return array(
 						'nullable' => TRUE,
 					),
 
-				), // config
+				),
 
 				'revisions' => array(
 
@@ -383,9 +383,9 @@ return array(
 						'type'     => 'integer',
 					),
 
-				), // revisions
+				),
 
-			), // newTables
+			),
 
 			'modifyTables' => array(
 
@@ -398,7 +398,7 @@ return array(
 						'default'  => NULL,
 					),
 
-				), // main
+				),
 
 				'users' => array(
 
@@ -431,9 +431,9 @@ return array(
 						'type'     => 'dropColumn',
 					),
 
-				), // users
+				),
 
-			), // modifyTables
+			),
 
 			'closure' => function()
 			{
@@ -494,7 +494,6 @@ return array(
 				// This will be used to allow/deny access to old pastes by their IDs
 				Site::config('general', array(
 					'fqdn'        => $fqdn,
-					'version'     => Config::get('app.version'),
 					'preMigrate'  => Paste::max('id'),
 				));
 
@@ -556,27 +555,12 @@ return array(
 					File::delete($configFile);
 				}
 
-				// All done, flush the cache!
-				Cache::flush();
+			},
 
-			}, // closure
+		),
 
-		), // 0.4
+		'1.0' => array(),
 
-		'1.0' => array(
-
-			'closure' => function()
-			{
-
-				// Update the database version number
-				Site::config('general', array(
-					'version' => Config::get('app.version'),
-				));
-
-			}, // closure
-
-		), // 1.0
-
-	), // update
+	),
 
 );
