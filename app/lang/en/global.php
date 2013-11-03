@@ -39,6 +39,7 @@ return array(
 	"logout"            => "Logout",
 	"language"          => "Language: %s",
 	"posted_by"         => "Posted by %s at %s",
+	"views"             => "Views: %s",
 	"anonymous"         => "Anonymous",
 	"submit"            => "Submit",
 	"search"            => "Search",
