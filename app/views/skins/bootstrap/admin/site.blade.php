@@ -193,6 +193,29 @@
 					</div>
 
 					<div class="form-group">
+						{{
+							Form::label('paste_search', Lang::get('admin.paste_search'), array(
+								'class' => 'control-label col-sm-3 col-lg-2'
+							))
+						}}
+
+						<div class="col-sm-9 col-lg-10">
+							{{
+								Form::select('paste_search', array(
+									'1' => Lang::get('admin.enabled'),
+									'0' => Lang::get('admin.disabled'),
+								), $site->general->pasteSearch, array(
+									'class' => 'form-control'
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.paste_search_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
 						<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 							{{
 								Form::submit(Lang::get('global.save'), array(
