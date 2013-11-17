@@ -141,52 +141,56 @@ class ListController extends BaseController {
 	{
 		$term = Input::get('q');
 
+		$config = Site::config('general');
+
 		// Initialize the antispam filters
 		$antispam = Antispam::make('q');
 
-		// Run the antispam validation
-		if (strlen($term) >= 5 AND ($antispam->passes() OR Session::has('search.exempt')))
+		if ($config->pasteSearch AND strlen($term) >= 5)
 		{
-			// Show all pastes to admins
-			if (Auth::check() AND Auth::user()->admin)
+			if ($antispam->passes() OR Session::has('search.exempt'))
 			{
-				$query = Paste::query();
+				// Show all pastes to admins
+				if (Auth::check() AND Auth::user()->admin)
+				{
+					$query = Paste::query();
+				}
+				else
+				{
+					$query = Paste::where('private', '<>', 1);
+				}
+
+				// Append the search term
+				$query = $query->where('data', 'like', "%{$term}%");
+
+				// Filter by project
+				if ( ! empty($this->project))
+				{
+					$query = $query->where('project', $this->project);
+				}
+
+				// Get number of results to show per page
+				$perPage = $config->perPage;
+
+				// Query the search results
+				$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
+
+				// Append the search term to pagination URLs
+				$pastes->appends('q', $term);
+
+				// We will not run antispam if it passed once and there are
+				// multiple pages. But we exempt it only for the next request.
+				Session::flash('search.exempt', $perPage > $pastes->count());
+
+				return $this->getList($pastes, TRUE);
 			}
 			else
 			{
-				$query = Paste::where('private', '<>', 1);
+				Session::flash('messages.error', $antispam->message());
 			}
-
-			// Append the search term
-			$query = $query->where('data', 'like', "%{$term}%");
-
-			// Filter by project
-			if ( ! empty($this->project))
-			{
-				$query = $query->where('project', $this->project);
-			}
-
-			// Get number of results to show per page
-			$perPage = Site::config('general')->perPage;
-
-			// Query the search results
-			$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
-
-			// Append the search term to pagination URLs
-			$pastes->appends('q', $term);
-
-			// We will not run antispam if it passed once and there are
-			// multiple pages. But we exempt it only for the next request.
-			Session::flash('search.exempt', $perPage > $pastes->count());
-
-			return $this->getList($pastes, TRUE);
 		}
-		else
-		{
-			Session::flash('messages.error', $antispam->message());
 
-			return Redirect::to('all')->withInput();
-		}
+		return Redirect::to('all')->withInput();
 	}
 
 	/**
@@ -236,7 +240,7 @@ class ListController extends BaseController {
 			'pastes'   => $pastes,
 			'pages'    => $pastes->links(),
 			'filters'  => $showFilters,
-			'search'   => $showSearch,
+			'search'   => $showSearch AND Site::config('general')->pasteSearch,
 		);
 
 		return View::make('site/list', $data);

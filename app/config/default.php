@@ -29,6 +29,7 @@ return array(
 		'skin'              => 'bootstrap',
 		'proxy'             => '0',
 		'privateSite'       => '0',
+		'pasteSearch'       => '1',
 	),
 
 	'antispam'              => (object) array(

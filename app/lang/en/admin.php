@@ -92,6 +92,8 @@ return array(
 	                           "the archives section will be disabled.",
 	"allow_public"          => "Allow public pastes",
 	"enforce_private"       => "Enforce private pastes",
+	"paste_search"          => "Paste search",
+	"paste_search_exp"      => "Enable or disable paste search functionality on archives.",
 	"site_updated"          => "Site settings updated successfully",
 	"word_censor"           => "Word censor",
 	"word_censor_exp"       => "This module allows you to block pastes that contain specific words. ".
