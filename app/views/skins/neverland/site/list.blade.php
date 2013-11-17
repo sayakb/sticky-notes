@@ -1,7 +1,31 @@
 @extends('skins.neverland.common.page')
 
 @section('body')
+	@include('skins.neverland.common.alerts')
+
 	<section id="list">
+		@if ($search)
+			<div class="row">
+				<div class="span12 align-right">
+					{{
+						Form::open(array(
+							'class' => 'no-margin'
+						))
+					}}
+
+					{{
+						Form::text('search', Input::get('q'), array(
+							'class'         => 'input-xlarge',
+							'placeholder'   => Lang::get('list.search'),
+							'maxlength'     => 500
+						))
+					}}
+
+					{{ Form::close() }}
+				</div>
+			</div>
+		@endif
+
 		@if ($filters)
 			<div class="row-fluid">
 				<div class="span12">
