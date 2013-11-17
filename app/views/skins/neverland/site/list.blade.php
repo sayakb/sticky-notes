@@ -9,6 +9,7 @@
 				<div class="span12 align-right">
 					{{
 						Form::open(array(
+							'action' => 'ListController@postSearch',
 							'class' => 'no-margin'
 						))
 					}}
