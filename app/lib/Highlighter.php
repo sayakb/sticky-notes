@@ -55,12 +55,16 @@ class Highlighter {
 
 		$this->geshi = new GeSHi();
 
+		// Display fancy (bold) line numbers
 		$this->geshi->enable_line_numbers(GESHI_FANCY_LINE_NUMBERS);
 
+		// Use <div> wrapper for the code block
 		$this->geshi->set_header_type(GESHI_HEADER_DIV);
 
+		// Set the tab width for the highlighter
 		$this->geshi->set_tab_width(4);
 
+		// Set custom code styles
 		$this->geshi->set_code_style('vertical-align: middle', TRUE);
 	}
 

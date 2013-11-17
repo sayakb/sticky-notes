@@ -11,12 +11,12 @@ return array(
 	|
 	*/
 
-	"stealth"     => "Your paste triggered our spam filter and has been dropped",
+	"stealth"     => "Your post triggered our spam filter and has been dropped",
 	"php"         => "Your IP address is listed as a malicious IP",
 	"ipban"       => "Your IP address has been banned",
-	"noflood"     => "Please keep an interval of 5 seconds between your pastes",
-	"censor"      => "Your paste contains a phrase that has been censored",
-	"token"       => "Invalid paste token, please submit your paste again",
-	"akismet"     => "Your paste triggered our spam filter and has been dropped",
+	"noflood"     => "Please keep an interval of 5 seconds between your posts",
+	"censor"      => "Your post contains a phrase that has been censored",
+	"token"       => "Invalid form token, please submit your post again",
+	"akismet"     => "Your post triggered our spam filter and has been dropped",
 
 );

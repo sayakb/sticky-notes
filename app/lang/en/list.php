@@ -18,5 +18,6 @@ return array(
 	"filter_month"    => "Last 30 days",
 	"filter_year"     => "Last 365 days",
 	"filter_all"      => "All time",
+	"search"          => "Search",
 
 );

@@ -53,7 +53,7 @@ class ListController extends BaseController {
 
 		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
 
-		return $this->getList($pastes);
+		return $this->getList($pastes, TRUE);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class ListController extends BaseController {
 		// we are using here depends on it.
 		$pastes = $query->orderBy('hits', 'desc')->take($perPage)->paginate($perPage);
 
-		return $this->getList($pastes, TRUE);
+		return $this->getList($pastes, FALSE, TRUE);
 	}
 
 	/**
@@ -131,13 +131,99 @@ class ListController extends BaseController {
 	}
 
 	/**
+	 * Searches for a paste by its content
+	 *
+	 * @access public
+	 * @param  string  $term
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function getSearch()
+	{
+		$term = Input::get('q');
+
+		// Initialize the antispam filters
+		$antispam = Antispam::make('q');
+
+		// Run the antispam validation
+		if (strlen($term) >= 5 AND ($antispam->passes() OR Session::has('search.exempt')))
+		{
+			// Show all pastes to admins
+			if (Auth::check() AND Auth::user()->admin)
+			{
+				$query = Paste::query();
+			}
+			else
+			{
+				$query = Paste::where('private', '<>', 1);
+			}
+
+			// Append the search term
+			$query = $query->where('data', 'like', "%{$term}%");
+
+			// Filter by project
+			if ( ! empty($this->project))
+			{
+				$query = $query->where('project', $this->project);
+			}
+
+			// Get number of results to show per page
+			$perPage = Site::config('general')->perPage;
+
+			// Query the search results
+			$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
+
+			// Append the search term to pagination URLs
+			$pastes->appends('q', $term);
+
+			// We will not run antispam if it passed once and there are
+			// multiple pages. But we exempt it only for the next request.
+			Session::flash('search.exempt', $perPage > $pastes->count());
+
+			return $this->getList($pastes, TRUE);
+		}
+		else
+		{
+			Session::flash('messages.error', $antispam->message());
+
+			return Redirect::to('all')->withInput();
+		}
+	}
+
+	/**
+	 * Searches for a paste by its content
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function postSearch()
+	{
+		// Initialize the validator
+		$validator = Validator::make(Input::all(), array(
+			'search' => 'required|min:5|max:500'
+		));
+
+		// Run the validation rules
+		if ($validator->passes())
+		{
+			return Redirect::to('search?q='.Input::get('search'));
+		}
+		else
+		{
+			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+			return Redirect::to('all')->withInput();
+		}
+	}
+
+	/**
 	 * Parses and displays a list
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Model  $pastes
 	 * @param  bool                                 $showFilters
+	 * @param  bool                                 $showSearch
 	 * @return \Illuminate\Support\Facades\View
 	 */
-	private function getList($pastes, $showFilters = FALSE)
+	private function getList($pastes, $showSearch = FALSE, $showFilters = FALSE)
 	{
 		// Check if no pastes were found
 		if ($pastes->count() === 0)
@@ -150,6 +236,7 @@ class ListController extends BaseController {
 			'pastes'   => $pastes,
 			'pages'    => $pastes->links(),
 			'filters'  => $showFilters,
+			'search'   => $showSearch,
 		);
 
 		return View::make('site/list', $data);

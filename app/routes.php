@@ -35,6 +35,10 @@ Route::group(array('before' => 'private'), function()
 	Route::get('all', 'ListController@getAll');
 
 	Route::get('trending/{age?}', 'ListController@getTrending');
+
+	Route::get('search', 'ListController@getSearch');
+
+	Route::post('search', 'ListController@postSearch');
 });
 
 // API routes

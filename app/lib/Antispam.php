@@ -40,48 +40,61 @@ class Antispam {
 	/**
 	 * Antispam configuration
 	 *
-	 * @static
 	 * @var array
 	 */
-	private $config;
+	public $config;
+
+	/**
+	 * Data to run antispam validation on
+	 *
+	 * @var string
+	 */
+	public $data = NULL;
 
 	/**
 	 * Stores the antispam error message
 	 *
 	 * @var string
 	 */
-	private $message = NULL;
+	public $message = NULL;
 
 	/**
 	 * Custom messages to be displayed if validation fails
 	 *
 	 * @var array
 	 */
-	private $customMessages;
+	public $customMessages;
 
 	/**
 	 * If set, only these services will be executed
 	 *
 	 * @var array
 	 */
-	private $customServices;
+	public $customServices;
 
 	/**
 	 * Creates a new instance of antispam class
 	 *
 	 * @static
+	 * @param  string  $dataKey
 	 * @param  array   $messages
 	 * @param  string  $services
 	 * @return void
 	 */
-	public static function make($messages = array(), $services = NULL)
+	public static function make($dataKey = 'data', $messages = array(), $services = NULL)
 	{
 		$antispam = new Antispam();
 
+		// Set the validation scope (data)
+		$antispam->data = Input::get($dataKey);
+
+		// Set the current configuration
 		$antispam->config = Site::config('antispam');
 
+		// Set custom messages to return
 		$antispam->customMessages = $messages;
 
+		// Set services to run
 		$antispam->customServices = $services;
 
 		return $antispam;
@@ -143,7 +156,7 @@ class Antispam {
 	 */
 	public function passes()
 	{
-		if (Input::has('data'))
+		if ( ! empty($this->data))
 		{
 			// We get the enabled services
 			// Then we iterate through each of them to see if there is a
@@ -232,7 +245,7 @@ class Antispam {
 			// Traverse through all blocked words
 			foreach ($words as $word)
 			{
-				if (str_is($word, Input::get('data')))
+				if (str_is($word, $this->data))
 				{
 					return FALSE;
 				}
@@ -265,7 +278,7 @@ class Antispam {
 	 */
 	private function runStealth()
 	{
-		$data = strtolower(Input::get('data'));
+		$data = strtolower($this->data);
 
 		$language = Input::get('language');
 
@@ -281,13 +294,13 @@ class Antispam {
 	 */
 	private function runNoflood()
 	{
-		$posted = Session::get('paste.posted');
+		$posted = Session::get('form.posted');
 
 		$threshold = Site::config('antispam')->floodThreshold;
 
 		if (time() - $posted >= $threshold)
 		{
-			Session::put('paste.posted', time());
+			Session::put('form.posted', time());
 
 			return TRUE;
 		}
@@ -387,7 +400,7 @@ class Antispam {
 		}
 
 		// Set the content to validate
-		$akismet->setCommentContent(Input::get('data'));
+		$akismet->setCommentContent($this->data);
 
 		// Return the Akismet analysis
 		return $akismet->isCommentSpam();
