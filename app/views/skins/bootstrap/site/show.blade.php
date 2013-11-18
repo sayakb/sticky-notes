@@ -20,7 +20,7 @@
 						</div>
 
 						<div class="col-sm-7 text-right">
-							@if ( ! empty($site->general->googleApi))
+							@if ( ! empty($site->services->googleApiKey))
 								{{
 									link_to("#", Lang::get('show.short_url'), array(
 										'class'          => 'btn btn-success',
