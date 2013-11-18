@@ -127,27 +127,6 @@
 
 					<div class="control-group">
 						{{
-							Form::label('google_api', Lang::get('admin.google_api_key'), array(
-								'class' => 'control-label span2'
-							))
-						}}
-
-						<div class="span9">
-							{{
-								Form::text('google_api', $site->general->googleApi, array(
-									'class' => 'input-xxlarge',
-								))
-							}}
-
-							<div class="help-block">
-								{{ Lang::get('admin.google_api_exp') }}
-								{{ link_to('https://code.google.com/apis/console', Lang::get('admin.google_api_console')) }}.
-							</div>
-						</div>
-					</div>
-
-					<div class="control-group">
-						{{
 							Form::label('proxy', Lang::get('admin.ip_tracking'), array(
 								'class' => 'control-label span2'
 							))
