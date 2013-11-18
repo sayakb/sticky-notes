@@ -20,7 +20,7 @@
 						</div>
 
 						<div class="span7 align-right">
-							@if ( ! empty($site->general->googleApi))
+							@if ( ! empty($site->services->googleApiKey))
 								{{
 									link_to("#", Lang::get('show.short_url'), array(
 										'class'          => 'btn btn-success',
