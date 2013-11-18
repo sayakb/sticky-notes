@@ -16,7 +16,13 @@
 
 use Config;
 use Lang;
+use Request;
 use Site;
+
+use UnitedPrototype\GoogleAnalytics\Page;
+use UnitedPrototype\GoogleAnalytics\Session;
+use UnitedPrototype\GoogleAnalytics\Tracker;
+use UnitedPrototype\GoogleAnalytics\Visitor;
 
 /**
  * GoogleSvc class
@@ -77,6 +83,46 @@ class GoogleSvc {
 		}
 
 		return Lang::get('ajax.error');
+	}
+
+	/**
+	 * Google analytics tracker
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function analytics()
+	{
+		$site = Site::config('general');
+
+		$services = Site::config('services');
+
+		// Run analytics if a tracking code is set
+		if ( ! empty($services->googleAnalyticsId))
+		{
+			// Initilize GA Tracker
+			$tracker = new Tracker($services->googleAnalyticsId, $site->fqdn);
+
+			// Gather visitor information
+			$visitor = new Visitor();
+
+			$visitor->setIpAddress(Request::getClientIp());
+
+			$visitor->setUserAgent(Request::server('HTTP_USER_AGENT'));
+
+			// Gather session information
+			$session = new Session();
+
+			// Gather page information
+			$path = Request::path();
+
+			$page = new Page($path == '/' ? $path : "/{$path}");
+
+			$page->setTitle($site->title);
+
+			// Track page view
+			$tracker->trackPageview($page, $session, $visitor);
+		}
 	}
 
 	/**

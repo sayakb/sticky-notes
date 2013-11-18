@@ -17,7 +17,8 @@
 			"app/tests/TestCase.php",
 			"app/lib",
 			"app/lib/auth",
-			"app/lib/hashing"
+			"app/lib/hashing",
+			"vendor/googleanalytics"
 		]
 	},
 	"scripts": {
