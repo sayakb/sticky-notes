@@ -21,6 +21,7 @@ return array(
 	"auth_settings"         => "Authentication settings",
 	"spam_filters"          => "Spam filters",
 	"skin_chooser"          => "Skin chooser",
+	"services"              => "Services",
 	"field"                 => "Field",
 	"value"                 => "Value",
 	"save_all"              => "Save all",
@@ -79,9 +80,6 @@ return array(
 	"expire_1week"          => "1 week",
 	"expire_1month"         => "1 month",
 	"expire_forever"        => "Keep forever",
-	"google_api_key"        => "Google API Key",
-	"google_api_exp"        => "You can generate an API key at the",
-	"google_api_console"    => "Google API Console",
 	"ip_tracking"           => "IP tracking",
 	"ip_tracking_exp"       => "Set this option to trust proxy headers if your site is behind a proxy ".
 	                           "intermediary (such as a load balancer) to get the actual client IP address.",
@@ -192,5 +190,12 @@ return array(
 	"active"                => "Active",
 	"status"                => "Status",
 	"role"                  => "Role",
+	"google"                => "Google",
+	"google_api_key"        => "API Key",
+	"google_api_key_exp"    => "You can generate an Google API key at the",
+	"google_api_console"    => "Google API Console",
+	"google_analytics"      => "Analytics",
+	"google_analytics_exp"  => "Specify your Google Analytics tracking ID here.",
+	"services_updated"      => "Services settings updated successfully",
 
 );

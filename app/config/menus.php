@@ -22,8 +22,8 @@ return array(
 	|
 	| Optional properties in each item:
 	|  * icon       : Determines the glyphicon for that item
-	|  * visible    : This can be used to bind the visibility of an item to a 
-	|                 user role or a site config. You can use ! to invert a 
+	|  * visible    : This can be used to bind the visibility of an item to a
+	|                 user role or a site config. You can use ! to invert a
 	|                 flag.
 	|
 	*/
@@ -146,15 +146,21 @@ return array(
 			'visible'       => 'role.admin'
 		),
 
-		'admin/site'        => array(
-			'label'         => 'admin.site_settings',
-			'icon'          => 'wrench',
-			'visible'       => 'role.admin'
-		),
-
 		'admin/skin'        => array(
 			'label'         => 'admin.skin_chooser',
 			'icon'          => 'picture',
+			'visible'       => 'role.admin'
+		),
+
+		'admin/services'        => array(
+			'label'         => 'admin.services',
+			'icon'          => 'briefcase',
+			'visible'       => 'role.admin'
+		),
+
+		'admin/site'        => array(
+			'label'         => 'admin.site_settings',
+			'icon'          => 'wrench',
 			'visible'       => 'role.admin'
 		),
 

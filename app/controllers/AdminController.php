@@ -643,4 +643,30 @@ class AdminController extends BaseController {
 		}
 	}
 
+	/**
+	 * Displays services configuration screen
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function getServices()
+	{
+		return View::make('admin/services');
+	}
+
+	/**
+	 * Handles POST requests to the servics config form
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\Redirect
+	 */
+	public function postServices()
+	{
+		Site::config('services', Input::all());
+
+		Session::flash('messages.success', Lang::get('admin.services_updated'));
+
+		return Redirect::to('admin/services');
+	}
+
 }

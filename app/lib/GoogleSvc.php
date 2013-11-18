@@ -91,15 +91,12 @@ class GoogleSvc {
 		// Get the service URL
 		$urls = Config::get('googlesvc');
 
-		// Get the site configuration
-		$site = Site::config('general');
+		// Get the google API key from services config
+		$services = Site::config('services');
 
-		// Get the google API key
-		$apiKey = $site->googleApi;
-
-		if ( ! empty($apiKey))
+		if ( ! empty($services->googleApiKey))
 		{
-			return sprintf($urls[$service], $apiKey);
+			return sprintf($urls[$service], $services->googleApiKey);
 		}
 	}
 

@@ -21,7 +21,6 @@ return array(
 		'perPage'           => '15',
 		'copyright'         => '',
 		'lang'              => 'en',
-		'googleApi'         => '',
 		'version'           => '0.0',
 		'updateUrl'         => 'http://sayakb.github.io/sticky-notes/version/',
 		'preMigrate'        => '0',
@@ -71,6 +70,11 @@ return array(
 		'ldapAdmin'         => '',
 		'ldapUserDn'        => '',
 		'ldapPassword'      => '',
+	),
+
+	'services'              => (object) array(
+		'googleApiKey'      => '',
+		'googleAnalyticsId' => '',
 	),
 
 );

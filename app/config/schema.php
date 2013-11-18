@@ -561,6 +561,20 @@ return array(
 
 		'1.0' => array(),
 
+		'1.1' => array(
+
+			'closure' => function()
+			{
+
+				// Modify config values
+				Site::config('services', array_map('html_entity_decode', array(
+					'googleApiKey' => Site::config('general')->googleApi,
+				)));
+
+			},
+
+		),
+
 	),
 
 );
