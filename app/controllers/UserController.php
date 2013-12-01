@@ -33,7 +33,22 @@ class UserController extends BaseController {
 	 */
 	public function getLogin()
 	{
-		return View::make('user/login');
+		$auth = Site::config('auth');
+
+		// Directly attempt auth if a method is selected that does not support
+		// the login form
+		$noForm = preg_split('/\||,/', $auth->noForm);
+
+		if (in_array($auth->method, $noForm))
+		{
+			Auth::attempt();
+
+			return Redirect::to('/');
+		}
+		else
+		{
+			return View::make('user/login');
+		}
 	}
 
 	/**

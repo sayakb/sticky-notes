@@ -25,15 +25,15 @@ use UnitedPrototype\GoogleAnalytics\Tracker;
 use UnitedPrototype\GoogleAnalytics\Visitor;
 
 /**
- * GoogleSvc class
+ * Services class
  *
- * Layer for accessing Google APIs
+ * Layer for accessing third party services
  *
  * @package     StickyNotes
  * @subpackage  Libraries
  * @author      Sayak Banerjee
  */
-class GoogleSvc {
+class Service {
 
 	/**
 	 * goo.gl URL shortener service
@@ -42,16 +42,18 @@ class GoogleSvc {
 	 * @param  string  $longUrl
 	 * @return string
 	 */
-	public static function urlshortener($longUrl)
+	public static function urlShortener($longUrl)
 	{
-		$apiUrl = static::getServiceUrl('urlshortener');
+		$services = Site::config('services');
 
-		if ( ! is_null($apiUrl))
+		if ( ! empty($services->googleApiKey))
 		{
+			$url = sprintf($services->googleUrlShortener, $services->googleApiKey);
+
 			$ch = curl_init();
 
 			// Set the API url to connect to
-			curl_setopt($ch, CURLOPT_URL, $apiUrl);
+			curl_setopt($ch, CURLOPT_URL, $url);
 
 			// We will be making a POST request
 			curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -122,27 +124,6 @@ class GoogleSvc {
 
 			// Track page view
 			$tracker->trackPageview($page, $session, $visitor);
-		}
-	}
-
-	/**
-	 * Returns the service URL for a specific service
-	 *
-	 * @static
-	 * @param  string  $service
-	 * @return string
-	 */
-	private static function getServiceUrl($service)
-	{
-		// Get the service URL
-		$urls = Config::get('googlesvc');
-
-		// Get the google API key from services config
-		$services = Site::config('services');
-
-		if ( ! empty($services->googleApiKey))
-		{
-			return sprintf($urls[$service], $services->googleApiKey);
 		}
 	}
 

@@ -5,8 +5,7 @@
 	"require": {
 		"laravel/framework": "4.0.*",
 		"mews/captcha": "dev-master",
-		"kenmoini/akismet": "dev-master",
-		"lusitanian/oauth": "~0.2"
+		"kenmoini/akismet": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

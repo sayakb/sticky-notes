@@ -476,7 +476,7 @@ class AdminController extends BaseController {
 	{
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'method'          => 'required|in:db,ldap',
+			'method'          => 'required|in:db,ldap,oauth',
 			'db_allow_reg'    => 'required|in:0,1',
 			'ldap_server'     => 'required_if:method,ldap',
 			'ldap_base_dn'    => 'required_if:method,ldap',

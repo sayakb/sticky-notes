@@ -100,6 +100,14 @@ Auth::extend('stickynotesldap', function()
 	);
 });
 
+Auth::extend('stickynotesoauth', function()
+{
+	return new Guard(
+		new StickyNotesOAuthUserProvider(),
+		App::make('session.store')
+	);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Blade code tags
@@ -221,7 +229,7 @@ if (Site::config('general')->proxy)
 |
 */
 
-GoogleSvc::analytics();
+Service::analytics();
 
 /*
 |--------------------------------------------------------------------------

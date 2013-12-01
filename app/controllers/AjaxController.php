@@ -86,7 +86,7 @@ class AjaxController extends BaseController {
 		// Shorten and return the paste URL
 		$longUrl = url("{$urlkey}/{$hash}");
 
-		return GoogleSvc::urlshortener($longUrl);
+		return Service::urlShortener($longUrl);
 	}
 
 }

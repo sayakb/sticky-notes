@@ -24,8 +24,6 @@ return array(
     'Predis' => array($vendorDir . '/predis/predis/lib'),
     'Patchwork' => array($vendorDir . '/patchwork/utf8/class'),
     'PHPParser' => array($vendorDir . '/nikic/php-parser/lib'),
-    'OAuth\\Unit' => array($vendorDir . '/lusitanian/oauth/tests'),
-    'OAuth' => array($vendorDir . '/lusitanian/oauth/src'),
     'Normalizer' => array($vendorDir . '/patchwork/utf8/class'),
     'Monolog' => array($vendorDir . '/monolog/monolog/src'),
     'Mews\\Captcha' => array($vendorDir . '/mews/captcha/src'),

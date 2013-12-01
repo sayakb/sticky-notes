@@ -208,16 +208,18 @@ return array(
 		'Antispam'                      => 'StickyNotes\Antispam',
 		'Cron'                          => 'StickyNotes\Cron',
 		'Feed'                          => 'StickyNotes\Feed',
-		'GoogleSvc'                     => 'StickyNotes\GoogleSvc',
 		'Highlighter'                   => 'StickyNotes\Highlighter',
 		'PHPass'                        => 'StickyNotes\PHPass',
 		'PHPDiff'                       => 'StickyNotes\PHPDiff',
 		'Response'                      => 'StickyNotes\Response',
+		'Service'                       => 'StickyNotes\Service',
 		'Setup'                         => 'StickyNotes\Setup',
-		'StickyNotesDBUserProvider'     => 'StickyNotes\Auth\StickyNotesDBUserProvider',
-		'StickyNotesLDAPUserProvider'   => 'StickyNotes\Auth\StickyNotesLDAPUserProvider',
 		'System'                        => 'StickyNotes\System',
 		'View'                          => 'StickyNotes\View',
+
+		'StickyNotesDBUserProvider'     => 'StickyNotes\Auth\StickyNotesDBUserProvider',
+		'StickyNotesLDAPUserProvider'   => 'StickyNotes\Auth\StickyNotesLDAPUserProvider',
+		'StickyNotesOAuthUserProvider'   => 'StickyNotes\Auth\StickyNotesOAuthUserProvider',
 
 		// PHPDiff
 		'DiffRenderer'                  => 'Diff_Renderer_Html_SideBySide',
