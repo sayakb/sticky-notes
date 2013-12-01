@@ -38,7 +38,7 @@
 
 									<div class="help-block">
 										{{ Lang::get('admin.google_api_key_exp') }}
-										{{ link_to('https://code.google.com/apis/console', Lang::get('admin.google_api_console')) }}.
+										{{ link_to('https://cloud.google.com/console', Lang::get('admin.google_cloud_console')) }}.
 									</div>
 								</div>
 							</div>
