@@ -27,6 +27,7 @@
 								Form::select('method', array(
 									'db'      => Lang::get('admin.db'),
 									'ldap'    => Lang::get('admin.ldap'),
+									'oauth'   => Lang::get('admin.oauth'),
 								), $site->auth->method, array(
 									'class' => 'input-xxlarge'
 								))
@@ -97,16 +98,68 @@
 
 					<ul id="tabs-auth" class="nav nav-tabs">
 						<li class="active">
+							<a href="#auth-db" data-toggle="tab">{{ Lang::get('admin.db') }}</a>
+						</li>
+
+						<li>
 							<a href="#auth-ldap" data-toggle="tab">{{ Lang::get('admin.ldap') }}</a>
 						</li>
 
 						<li>
-							<a href="#auth-db" data-toggle="tab">{{ Lang::get('admin.db') }}</a>
+							<a href="#auth-oauth" data-toggle="tab">{{ Lang::get('admin.oauth') }}</a>
 						</li>
 					</ul>
 
 					<div class="tab-content">
-						<div id="auth-ldap" class="tab-pane fade in active">
+						<div id="auth-db" class="tab-pane fade in active">
+							<div class="control-group">
+								{{
+									Form::label('db_allow_reg', Lang::get('admin.user_reg'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::select('db_allow_reg', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->auth->dbAllowReg, array(
+											'class' => 'input-xxlarge'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.user_reg_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('db_show_captcha', Lang::get('admin.reg_captcha'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::select('db_show_captcha', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->auth->dbShowCaptcha, array(
+											'class' => 'input-xxlarge'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.reg_captcha_exp') }}
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="auth-ldap" class="tab-pane fade">
 							<div class="control-group">
 								{{
 									Form::label('ldap_server', Lang::get('admin.ldap_server'), array(
@@ -268,49 +321,60 @@
 							</div>
 						</div>
 
-						<div id="auth-db" class="tab-pane fade">
+						<div id="auth-oauth" class="tab-pane fade">
 							<div class="control-group">
 								{{
-									Form::label('db_allow_reg', Lang::get('admin.user_reg'), array(
+									Form::label('oauth_google_id', Lang::get('admin.client_id'), array(
 										'class' => 'control-label span2'
 									))
 								}}
 
 								<div class="span9">
 									{{
-										Form::select('db_allow_reg', array(
-											'1' => Lang::get('admin.enabled'),
-											'0' => Lang::get('admin.disabled'),
-										), $site->auth->dbAllowReg, array(
-											'class' => 'input-xxlarge'
+										Form::text('oauth_google_id', $site->auth->oauthGoogleId, array(
+											'class' => 'input-xxlarge',
+										))
+									}}
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('oauth_google_secret', Lang::get('admin.client_secret'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::text('oauth_google_secret', $site->auth->oauthGoogleSecret, array(
+											'class' => 'input-xxlarge',
 										))
 									}}
 
 									<div class="help-block">
-										{{ Lang::get('admin.user_reg_exp') }}
+										{{ Lang::get('admin.client_secret_exp') }}
 									</div>
 								</div>
 							</div>
 
 							<div class="control-group">
 								{{
-									Form::label('db_show_captcha', Lang::get('admin.reg_captcha'), array(
+									Form::label('oauth_google_admins', Lang::get('admin.admin_emails'), array(
 										'class' => 'control-label span2'
 									))
 								}}
 
 								<div class="span9">
 									{{
-										Form::select('db_show_captcha', array(
-											'1' => Lang::get('admin.enabled'),
-											'0' => Lang::get('admin.disabled'),
-										), $site->auth->dbShowCaptcha, array(
-											'class' => 'input-xxlarge'
+										Form::textarea('oauth_google_admins', $site->auth->oauthGoogleAdmins, array(
+											'class' => 'input-xxlarge',
+											'rows'  => 5,
 										))
 									}}
 
 									<div class="help-block">
-										{{ Lang::get('admin.reg_captcha_exp') }}
+										{{ Lang::get('admin.admin_emails_exp') }}
 									</div>
 								</div>
 							</div>
