@@ -1,3 +1,33 @@
+v0.8.5 (2013-xx-xx)
+===============================================================================
+
+- Added `2.8` in the server profiles aliases list for Redis 2.8. `2.6` is still
+  the default server profile and `dev` now targets Redis 3.0.
+
+- Added `SCAN`, `SSCAN`, `ZSCAN`, `HSCAN` to the server profile for Redis 2.8.
+
+- Implemented PHP iterators for incremental iterations over Redis collections:
+
+    - keyspace (cursor-based iterator using `SCAN`)
+    - sets (cursor-based iterator using `SSCAN`)
+    - sorted sets (cursor-based iterator using `ZSCAN`)
+    - hashes (cursor-based iterator using `HSCAN`)
+    - lists (plain iterator using `LRANGE`)
+
+- It is now possible to execute "raw commands" using `Predis\Command\RawCommand`
+  and a variable list of command arguments. Input arguments are not filtered and
+  responses are not parsed, which means arguments must follow the signature of
+  the command as defined by Redis and complex responses are left untouched.
+
+- List of deprecated methods:
+
+    - `Predis\Client::multiExec()`: superseded by `Predis\Client::transaction()`
+      and to be removed in the next major release.
+    - `Predis\Client::pubSub()`: superseded by `Predis\Client::pubSubLoop()` and
+      to be removed in the next major release. This change was needed due to the
+      recently introduced `PUBSUB` command in Redis 2.8.
+
+
 v0.8.4 (2013-07-27)
 ===============================================================================
 

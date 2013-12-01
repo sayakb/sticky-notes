@@ -193,7 +193,7 @@ return array(
 	"google"                => "Google",
 	"google_api_key"        => "API Key",
 	"google_api_key_exp"    => "You can generate an Google API key at the",
-	"google_api_console"    => "Google API Console",
+	"google_cloud_console"  => "Google Cloud Console",
 	"google_analytics"      => "Analytics",
 	"google_analytics_exp"  => "Specify your Google Analytics tracking ID here. To disable tracking, simply leave ".
 	                           "this field blank.",

@@ -66,6 +66,7 @@ class Container implements ArrayAccess
     protected $instances = array();
     protected $aliases = array();
     protected $resolvingCallbacks = array();
+    protected $globalResolvingCallbacks = array();
     public function bound($abstract)
     {
         return isset($this[$abstract]) or isset($this->instances[$abstract]);
@@ -149,7 +150,7 @@ class Container implements ArrayAccess
         if ($this->isShared($abstract)) {
             $this->instances[$abstract] = $object;
         }
-        $this->fireResolvingCallbacks($object);
+        $this->fireResolvingCallbacks($abstract, $object);
         return $object;
     }
     protected function getConcrete($abstract)
@@ -212,13 +213,24 @@ class Container implements ArrayAccess
             }
         }
     }
-    public function resolving(Closure $callback)
+    public function resolving($abstract, Closure $callback)
     {
-        $this->resolvingCallbacks[] = $callback;
+        $this->resolvingCallbacks[$abstract][] = $callback;
     }
-    protected function fireResolvingCallbacks($object)
+    public function resolvingAny(Closure $callback)
     {
-        foreach ($this->resolvingCallbacks as $callback) {
+        $this->globalResolvingCallbacks[] = $callback;
+    }
+    protected function fireResolvingCallbacks($abstract, $object)
+    {
+        if (isset($this->resolvingCallbacks[$abstract])) {
+            $this->fireCallbackArray($object, $this->resolvingCallbacks[$abstract]);
+        }
+        $this->fireCallbackArray($object, $this->globalResolvingCallbacks);
+    }
+    protected function fireCallbackArray($object, array $callbacks)
+    {
+        foreach ($callbacks as $callback) {
             call_user_func($callback, $object);
         }
     }
@@ -306,7 +318,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirect;
 class Application extends Container implements HttpKernelInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.0.9';
+    const VERSION = '4.0.10';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -368,7 +380,7 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     }
     public static function getBootstrapFile()
     {
-        return __DIR__.'/../vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
+        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
     }
     public function startExceptionHandling()
     {
@@ -439,6 +451,7 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
         }
         $this->serviceProviders[] = $provider;
         $this->loadedProviders[get_class($provider)] = true;
+        return $provider;
     }
     protected function resolveProviderClass($provider)
     {
@@ -727,7 +740,7 @@ class Request extends SymfonyRequest
     }
     public function all()
     {
-        return $this->input() + $this->files->all();
+        return array_merge_recursive($this->input(), $this->files->all());
     }
     public function input($key = null, $default = null)
     {
@@ -762,7 +775,10 @@ class Request extends SymfonyRequest
     }
     public function hasFile($key)
     {
-        return $this->file($key) instanceof \SplFileInfo;
+        if (is_array($file = $this->file($key))) {
+            $file = head($file);
+        }
+        return $file instanceof \SplFileInfo;
     }
     public function header($key = null, $default = null)
     {
@@ -1065,7 +1081,7 @@ class Request
             }
         }
         $request = array('g' => $_GET, 'p' => $_POST, 'c' => $_COOKIE);
-        $requestOrder = ini_get('request_order') ?: ini_get('variable_order');
+        $requestOrder = ini_get('request_order') ?: ini_get('variables_order');
         $requestOrder = preg_replace('#[^cgp]#', '', strtolower($requestOrder)) ?: 'gp';
         $_REQUEST = array();
         foreach (str_split($requestOrder) as $order) {
@@ -1162,10 +1178,9 @@ class Request
         }
         $clientIps = array_map('trim', explode(',', $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_IP])));
         $clientIps[] = $ip;
-        $trustedProxies = !self::$trustedProxies ? array($ip) : self::$trustedProxies;
         $ip = $clientIps[0];
         foreach ($clientIps as $key => $clientIp) {
-            if (IpUtils::checkIp($clientIp, $trustedProxies)) {
+            if (IpUtils::checkIp($clientIp, self::$trustedProxies)) {
                 unset($clientIps[$key]);
             }
         }
@@ -2242,7 +2257,7 @@ class NativeSessionStorage implements SessionStorageInterface
     }
     public function getId()
     {
-        if (!$this->started) {
+        if (!$this->started && !$this->closed) {
             return '';
         }
         return $this->saveHandler->getId();
@@ -3259,8 +3274,12 @@ class ExceptionServiceProvider extends ServiceProvider
     protected function registerPlainDisplayer()
     {
         $this->app['exception.plain'] = $this->app->share(function ($app) {
-            $handler = new KernelHandler($app['config']['app.debug']);
-            return new SymfonyDisplayer($handler);
+            if ($app->runningInConsole()) {
+                return $app['exception.debug'];
+            } else {
+                $handler = new KernelHandler($app['config']['app.debug']);
+                return new SymfonyDisplayer($handler);
+            }
         });
     }
     protected function registerDebugDisplayer()
@@ -3479,10 +3498,10 @@ class Str
     {
         return lcfirst(static::studly($value));
     }
-    public static function contains($haystack, $needle)
+    public static function contains($haystack, $needles)
     {
-        foreach ((array) $needle as $n) {
-            if (strpos($haystack, $n) !== false) {
+        foreach ((array) $needles as $needle) {
+            if ($needle != '' && strpos($haystack, $needle) !== false) {
                 return true;
             }
         }
@@ -3491,7 +3510,7 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle == substr($haystack, strlen($haystack) - strlen($needle))) {
+            if ($needle == substr($haystack, -strlen($needle))) {
                 return true;
             }
         }
@@ -3499,7 +3518,8 @@ class Str
     }
     public static function finish($value, $cap)
     {
-        return rtrim($value, $cap) . $cap;
+        $quoted = preg_quote($cap, '/');
+        return preg_replace('/(?:' . $quoted . ')+$/', '', $value) . $cap;
     }
     public static function is($pattern, $value)
     {
@@ -3507,11 +3527,7 @@ class Str
             return true;
         }
         $pattern = preg_quote($pattern, '#');
-        if ($pattern !== '/') {
-            $pattern = str_replace('\\*', '.*', $pattern) . '\\z';
-        } else {
-            $pattern = '/$';
-        }
+        $pattern = str_replace('\\*', '.*', $pattern) . '\\z';
         return (bool) preg_match('#^' . $pattern . '#', $value);
     }
     public static function length($value)
@@ -3593,7 +3609,7 @@ class Str
     public static function startsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if (strpos($haystack, $needle) === 0) {
+            if ($needle != '' && strpos($haystack, $needle) === 0) {
                 return true;
             }
         }
@@ -3620,6 +3636,7 @@ namespace Symfony\Component\Debug;
 
 use Symfony\Component\Debug\Exception\FatalErrorException;
 use Symfony\Component\Debug\Exception\ContextErrorException;
+use Symfony\Component\Debug\Exception\DummyException;
 use Psr\Log\LoggerInterface;
 class ErrorHandler
 {
@@ -3673,9 +3690,25 @@ class ErrorHandler
         }
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+                require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
             }
-            throw new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
+            $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
+            $exceptionHandler = set_exception_handler(function () {
+                
+            });
+            restore_exception_handler();
+            if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
+                $exceptionHandler[0]->handle($exception);
+                if (!class_exists('Symfony\\Component\\Debug\\Exception\\DummyException')) {
+                    require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
+                }
+                set_exception_handler(function (\Exception $e) use($exceptionHandler) {
+                    if (!$e instanceof DummyException) {
+                        call_user_func($exceptionHandler, $e);
+                    }
+                });
+                throw new DummyException();
+            }
         }
         return false;
     }
@@ -5931,8 +5964,16 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     protected function setKeysForSaveQuery(Builder $query)
     {
-        $query->where($this->getKeyName(), '=', $this->getKey());
+        $query->where($this->getKeyName(), '=', $this->getKeyForSaveQuery());
         return $query;
+    }
+    protected function getKeyForSaveQuery()
+    {
+        if (isset($this->original[$this->getKeyName()])) {
+            return $this->original[$this->getKeyName()];
+        } else {
+            return $this->getAttribute($this->getKeyName());
+        }
     }
     public function touch()
     {
@@ -6301,7 +6342,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         if (is_numeric($value)) {
             return Carbon::createFromTimestamp($value);
         } elseif (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/', $value)) {
-            return Carbon::createFromFormat('Y-m-d', $value);
+            return Carbon::createFromFormat('Y-m-d', $value)->startOfDay();
         } elseif (!$value instanceof DateTime) {
             $format = $this->getDateFormat();
             return Carbon::createFromFormat($format, $value);
@@ -6868,6 +6909,7 @@ abstract class Manager
     public function extend($driver, Closure $callback)
     {
         $this->customCreators[$driver] = $callback;
+        return $this;
     }
     public function getDrivers()
     {
@@ -7040,9 +7082,9 @@ class Encrypter
         $beforePad = strlen($value) - $pad;
         return substr($value, $beforePad) == str_repeat(substr($value, -1), $pad);
     }
-    protected function invalidPayload(array $data)
+    protected function invalidPayload($data)
     {
-        return !isset($data['iv']) or !isset($data['value']) or !isset($data['mac']);
+        return !is_array($data) or !isset($data['iv']) or !isset($data['value']) or !isset($data['mac']);
     }
     protected function getIvSize()
     {
@@ -7563,11 +7605,15 @@ class RotatingFileHandler extends StreamHandler
     protected $maxFiles;
     protected $mustRotate;
     protected $nextRotation;
+    protected $filenameFormat;
+    protected $dateFormat;
     public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = true)
     {
         $this->filename = $filename;
         $this->maxFiles = (int) $maxFiles;
         $this->nextRotation = new \DateTime('tomorrow');
+        $this->filenameFormat = '{filename}-{date}';
+        $this->dateFormat = 'Y-m-d';
         parent::__construct($this->getTimedFilename(), $level, $bubble);
     }
     public function close()
@@ -7576,6 +7622,11 @@ class RotatingFileHandler extends StreamHandler
         if (true === $this->mustRotate) {
             $this->rotate();
         }
+    }
+    public function setFilenameFormat($filenameFormat, $dateFormat)
+    {
+        $this->filenameFormat = $filenameFormat;
+        $this->dateFormat = $dateFormat;
     }
     protected function write(array $record)
     {
@@ -7595,12 +7646,7 @@ class RotatingFileHandler extends StreamHandler
         if (0 === $this->maxFiles) {
             return;
         }
-        $fileInfo = pathinfo($this->filename);
-        $glob = $fileInfo['dirname'] . '/' . $fileInfo['filename'] . '-*';
-        if (!empty($fileInfo['extension'])) {
-            $glob .= '.' . $fileInfo['extension'];
-        }
-        $logFiles = glob($glob);
+        $logFiles = glob($this->getGlobPattern());
         if ($this->maxFiles >= count($logFiles)) {
             return;
         }
@@ -7616,11 +7662,20 @@ class RotatingFileHandler extends StreamHandler
     protected function getTimedFilename()
     {
         $fileInfo = pathinfo($this->filename);
-        $timedFilename = $fileInfo['dirname'] . '/' . $fileInfo['filename'] . '-' . date('Y-m-d');
+        $timedFilename = str_replace(array('{filename}', '{date}'), array($fileInfo['filename'], date($this->dateFormat)), $fileInfo['dirname'] . '/' . $this->filenameFormat);
         if (!empty($fileInfo['extension'])) {
             $timedFilename .= '.' . $fileInfo['extension'];
         }
         return $timedFilename;
+    }
+    protected function getGlobPattern()
+    {
+        $fileInfo = pathinfo($this->filename);
+        $glob = str_replace(array('{filename}', '{date}'), array($fileInfo['filename'], '*'), $fileInfo['dirname'] . '/' . $this->filenameFormat);
+        if (!empty($fileInfo['extension'])) {
+            $glob .= '.' . $fileInfo['extension'];
+        }
+        return $glob;
     }
 }
 namespace Monolog\Handler;
@@ -9413,7 +9468,7 @@ class Response
         $charset = $this->charset ?: 'UTF-8';
         if (!$headers->has('Content-Type')) {
             $headers->set('Content-Type', 'text/html; charset=' . $charset);
-        } elseif (0 === strpos($headers->get('Content-Type'), 'text/') && false === strpos($headers->get('Content-Type'), 'charset')) {
+        } elseif (0 === stripos($headers->get('Content-Type'), 'text/') && false === stripos($headers->get('Content-Type'), 'charset')) {
             $headers->set('Content-Type', $headers->get('Content-Type') . '; charset=' . $charset);
         }
         if ($headers->has('Transfer-Encoding')) {
@@ -10297,7 +10352,7 @@ class PrettyPageHandler extends Handler
             return Handler::DONE;
         }
         if (!($resources = $this->getResourcesPath())) {
-            $resources = __DIR__.'/../vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+            $resources = '/media/sayakb/storage/Apache/sticky-notes-src/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
         }
         $templateFile = "{$resources}/pretty-template.php";
         $cssFile = "{$resources}/pretty-page.css";
