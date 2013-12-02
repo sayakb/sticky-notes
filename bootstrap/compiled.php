@@ -58,7 +58,7 @@ use ReflectionClass;
 use ReflectionParameter;
 class BindingResolutionException extends \Exception
 {
-    
+
 }
 class Container implements ArrayAccess
 {
@@ -380,7 +380,7 @@ class Application extends Container implements HttpKernelInterface, ResponsePrep
     }
     public static function getBootstrapFile()
     {
-        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
+        return __DIR__.'/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
     }
     public function startExceptionHandling()
     {
@@ -1626,7 +1626,7 @@ class Request
                 \Locale::setDefault($locale);
             }
         } catch (\Exception $e) {
-            
+
         }
     }
     private function getUrlencodedPrefix($string, $prefix)
@@ -2685,7 +2685,7 @@ class MetadataBag implements SessionBagInterface
     }
     public function clear()
     {
-        
+
     }
     public function getName()
     {
@@ -2707,12 +2707,12 @@ namespace Symfony\Component\HttpFoundation\Session\Storage\Handler;
 if (version_compare(phpversion(), '5.4.0', '>=')) {
     class NativeSessionHandler extends \SessionHandler
     {
-        
+
     }
 } else {
     class NativeSessionHandler
     {
-        
+
     }
 }
 namespace Symfony\Component\HttpFoundation\Session\Storage\Proxy;
@@ -3176,7 +3176,7 @@ abstract class ServiceProvider
     }
     public function boot()
     {
-        
+
     }
     public abstract function register();
     public function package($package, $namespace = null, $path = null)
@@ -3690,17 +3690,17 @@ class ErrorHandler
         }
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+                require __DIR__.'/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
             }
             $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
             $exceptionHandler = set_exception_handler(function () {
-                
+
             });
             restore_exception_handler();
             if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
                 $exceptionHandler[0]->handle($exception);
                 if (!class_exists('Symfony\\Component\\Debug\\Exception\\DummyException')) {
-                    require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
+                    require __DIR__.'/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
                 }
                 set_exception_handler(function (\Exception $e) use($exceptionHandler) {
                     if (!$e instanceof DummyException) {
@@ -3730,7 +3730,7 @@ class ErrorHandler
             return;
         }
         $exceptionHandler = set_exception_handler(function () {
-            
+
         });
         restore_exception_handler();
         if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
@@ -3746,7 +3746,7 @@ namespace Symfony\Component\HttpKernel\Debug;
 use Symfony\Component\Debug\ErrorHandler as DebugErrorHandler;
 class ErrorHandler extends DebugErrorHandler
 {
-    
+
 }
 namespace Illuminate\Config;
 
@@ -4045,7 +4045,7 @@ use FilesystemIterator;
 use Symfony\Component\Finder\Finder;
 class FileNotFoundException extends \Exception
 {
-    
+
 }
 class Filesystem
 {
@@ -6327,7 +6327,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         $format = $this->getDateFormat();
         if ($value instanceof DateTime) {
-            
+
         } elseif (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
         } elseif (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/', $value)) {
@@ -7013,7 +7013,7 @@ namespace Illuminate\Encryption;
 
 class DecryptException extends \RuntimeException
 {
-    
+
 }
 class Encrypter
 {
@@ -7465,7 +7465,7 @@ abstract class AbstractHandler implements HandlerInterface
     }
     public function close()
     {
-        
+
     }
     public function pushProcessor($callback)
     {
@@ -7517,7 +7517,7 @@ abstract class AbstractHandler implements HandlerInterface
         try {
             $this->close();
         } catch (\Exception $e) {
-            
+
         }
     }
     protected function getDefaultFormatter()
@@ -10075,7 +10075,7 @@ class Cookie
     protected $httpOnly;
     public function __construct($name, $value = null, $expire = 0, $path = '/', $domain = null, $secure = false, $httpOnly = true)
     {
-        if (preg_match('/[=,; 	
+        if (preg_match('/[=,;
 ]/', $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
         }
@@ -10352,7 +10352,7 @@ class PrettyPageHandler extends Handler
             return Handler::DONE;
         }
         if (!($resources = $this->getResourcesPath())) {
-            $resources = '/media/sayakb/storage/Apache/sticky-notes-src/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+            $resources = __DIR__.'/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
         }
         $templateFile = "{$resources}/pretty-template.php";
         $cssFile = "{$resources}/pretty-page.css";
