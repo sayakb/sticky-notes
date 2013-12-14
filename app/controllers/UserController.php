@@ -61,7 +61,7 @@ class UserController extends BaseController {
 	{
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'username'   => 'required|alpha_dash|max:50',
+			'username'   => 'required',
 			'password'   => 'required'
 		));
 
