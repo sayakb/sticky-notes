@@ -240,7 +240,7 @@ Route::filter('installed', function()
 		{
 			// Only admins can access this page
 			// We check for dbVersion as 0.4 will not support the Auth functions
-			if ($dbVersion > 0 AND Auth::guest() OR ! Auth::user()->admin)
+			if ($dbVersion > 0 AND (Auth::guest() OR ! Auth::user()->admin))
 			{
 				App::abort(503);
 			}
