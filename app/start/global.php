@@ -160,6 +160,7 @@ App::error(function($exception, $code)
 		case 404:
 		case 405:
 		case 418:
+		case 503:
 			$data['errCode'] = $code;
 			break;
 

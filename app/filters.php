@@ -229,13 +229,20 @@ Route::filter('installed', function()
 
 		Session::forget('setup.version');
 
+		// Redirect to the installer
 		if ( ! $installed)
 		{
 			return Redirect::to('setup/install');
 		}
-		else if ($appVersion > $dbVersion)
+
+		// Redirect to the updater, with the exception of the login page
+		else if ($appVersion > $dbVersion AND Request::segment(2) != 'login')
 		{
-			Auth::logout();
+			// Only admins can access this page
+			if (Auth::guest() OR ! Auth::user()->admin)
+			{
+				App::abort(503);
+			}
 
 			return Redirect::to('setup/update');
 		}

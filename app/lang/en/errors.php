@@ -16,6 +16,7 @@ return array(
 	"404"       => "The page you are looking for does not exist.",
 	"405"       => "This HTTP request method is not allowed.",
 	"418"       => "The list does not contain any items",
+	"503"       => "The site is undergoing maintenance",
 	"default"   => "An error has occurred. Please try again later.",
 
 );
