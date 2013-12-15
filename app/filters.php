@@ -239,7 +239,8 @@ Route::filter('installed', function()
 		else if ($appVersion > $dbVersion AND Request::segment(2) != 'login')
 		{
 			// Only admins can access this page
-			if (Auth::guest() OR ! Auth::user()->admin)
+			// We check for dbVersion as 0.4 will not support the Auth functions
+			if ($dbVersion > 0 AND Auth::guest() OR ! Auth::user()->admin)
 			{
 				App::abort(503);
 			}
