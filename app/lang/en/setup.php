@@ -15,10 +15,10 @@ return array(
 	"welcome"           => "Thank you for choosing Sticky Notes. The installer will guide you throughout ".
 	                       "the install process. Follow the simple steps for a hassle free installation!",
 	"i_stage1_title"    => "Stage 1: Database configuration",
-	"i_stage1_exp"      => "Open your database configuration file located at %s and fill up your DB details. ".
-	                       "Sticky Notes uses one active connection only, so make sure you change the 'default' ".
-	                       "database driver accordingly. See <a href='http://codebright.daylerees.com/database'>".
-	                       "this guide</a> for more information on DB configuration.",
+	"i_stage1_exp"      => "Open your database configuration file located at <code>app/config/database.php</code> ".
+	                       "and fill up your DB details. Sticky Notes uses one active connection only, so make ".
+	                       "sure you change the 'default' database driver accordingly. See <a href='http://codebright".
+	                       ".daylerees.com/database'>this guide</a> for more information on DB configuration.",
 	"i_stage2_title"    => "Stage 2: Ready to install",
 	"i_stage2_exp"      => "Your database settings look good. Whenever you are ready, click on the <code>Start ".
 	                       "installation</code> button to begin the automated installed process.",
