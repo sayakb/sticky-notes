@@ -144,7 +144,7 @@ class ListController extends BaseController {
 		$config = Site::config('general');
 
 		// Initialize the antispam filters
-		$antispam = Antispam::make('q');
+		$antispam = Antispam::make('search', 'q');
 
 		if ($config->pasteSearch AND strlen($term) >= 5)
 		{

@@ -70,7 +70,7 @@ class CreateController extends BaseController {
 		));
 
 		// Generate anti-spam modules
-		$antispam = Antispam::make();
+		$antispam = Antispam::make('paste', 'data');
 
 		// Run validations
 		$resultValidation = $validator->passes();
@@ -212,7 +212,7 @@ class CreateController extends BaseController {
 		));
 
 		// Generate anti-spam modules
-		$antispam = Antispam::make();
+		$antispam = Antispam::make('paste', 'data');
 
 		// Run validations
 		$resultValidation = $validator->passes();

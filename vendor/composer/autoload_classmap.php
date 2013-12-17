@@ -27,6 +27,7 @@ return array(
     'StickyNotes\\Auth\\StickyNotesDBUserProvider' => $baseDir . '/app/lib/auth/StickyNotesDBUserProvider.php',
     'StickyNotes\\Auth\\StickyNotesLDAPUserProvider' => $baseDir . '/app/lib/auth/StickyNotesLDAPUserProvider.php',
     'StickyNotes\\Auth\\StickyNotesOAuthUserProvider' => $baseDir . '/app/lib/auth/StickyNotesOAuthUserProvider.php',
+    'StickyNotes\\Config' => $baseDir . '/app/lib/Config.php',
     'StickyNotes\\Cron' => $baseDir . '/app/lib/Cron.php',
     'StickyNotes\\Feed' => $baseDir . '/app/lib/Feed.php',
     'StickyNotes\\Hashing\\HashServiceProvider' => $baseDir . '/app/lib/hashing/HashServiceProvider.php',

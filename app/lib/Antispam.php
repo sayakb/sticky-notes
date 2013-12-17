@@ -38,11 +38,18 @@ use stdClass;
 class Antispam {
 
 	/**
-	 * Antispam configuration
+	 * Site's antispam configuration
 	 *
 	 * @var array
 	 */
 	public $config;
+
+	/**
+	 * Scope of the antispam operation
+	 *
+	 * @var string
+	 */
+	public $scope = NULL;
 
 	/**
 	 * Data to run antispam validation on
@@ -76,16 +83,20 @@ class Antispam {
 	 * Creates a new instance of antispam class
 	 *
 	 * @static
+	 * @param  string  $scope
 	 * @param  string  $dataKey
 	 * @param  array   $messages
 	 * @param  string  $services
 	 * @return void
 	 */
-	public static function make($dataKey = 'data', $messages = array(), $services = NULL)
+	public static function make($scope, $dataKey, $messages = array(), $services = NULL)
 	{
 		$antispam = new Antispam();
 
-		// Set the validation scope (data)
+		// Set the scope of operation
+		$antispam->scope = $scope;
+
+		// Set the data to be validated
 		$antispam->data = Input::get($dataKey);
 
 		// Set the current configuration
@@ -135,7 +146,7 @@ class Antispam {
 	{
 		$services = array();
 
-		$methods = get_class_methods(static::make());
+		$methods = get_class_methods(static::make(null, null));
 
 		foreach ($methods as $method)
 		{
@@ -149,6 +160,34 @@ class Antispam {
 	}
 
 	/**
+	 * Returns the scopes for a specific service
+	 *
+	 * @static
+	 * @param  string  $service
+	 * @return string
+	 */
+	public static function scopes($service)
+	{
+		$scopes = Config::get('antispam.scopes');
+
+		$inScopes = array();
+
+		// Iterate through each scope and check if this service is
+		// in that scope
+		foreach ($scopes as $scope => $services)
+		{
+			if (in_array($service, $services))
+			{
+				$inScopes[] = studly_case(str_plural($scope));
+			}
+		}
+
+		// Now that we collected all scopes, return a merged list of
+		// scope names wherein the service exists
+		return implode(', ', $inScopes);
+	}
+
+	/**
 	 * Processes antispam filters
 	 *
 	 * @access public
@@ -158,6 +197,10 @@ class Antispam {
 	{
 		if ( ! empty($this->data))
 		{
+			// Load the antispam configuration
+			// This is not same as the site configuration
+			$antispam = Config::get('antispam');
+
 			// We get the enabled services
 			// Then we iterate through each of them to see if there is a
 			// handler available for the service. If found, we run the handler
@@ -174,7 +217,7 @@ class Antispam {
 			// set explicitly from the admin panel. These services ideally
 			// require no configuration and therefore, do not appear in the
 			// antispam section of the admin panel
-			$services = array_merge($services, Config::get('antispam.immutable'));
+			$services = array_merge($services, $antispam['immutable']);
 
 			// Remove leading/trailing spaces from service names
 			$services = array_map('trim', $services);
@@ -182,22 +225,27 @@ class Antispam {
 			// Run the spam filters
 			foreach ($services as $service)
 			{
-				$handler = array($this, 'run'.studly_case($service));
-
-				if (is_callable($handler))
+				// Check if this service is available for the current scope
+				// This helps us decide whether or not to run this service
+				if (in_array($service, $antispam['scopes'][$this->scope]))
 				{
-					if ( ! call_user_func($handler))
-					{
-						if (isset($this->customMessages[$service]))
-						{
-							$this->message = $this->customMessages[$service];
-						}
-						else
-						{
-							$this->message = Lang::get('antispam.'.$service);
-						}
+					$handler = array($this, 'run'.studly_case($service));
 
-						return FALSE;
+					if (is_callable($handler))
+					{
+						if ( ! call_user_func($handler))
+						{
+							if (isset($this->customMessages[$service]))
+							{
+								$this->message = $this->customMessages[$service];
+							}
+							else
+							{
+								$this->message = Lang::get('antispam.'.$service);
+							}
+
+							return FALSE;
+						}
 					}
 				}
 			}

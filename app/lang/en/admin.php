@@ -127,6 +127,7 @@ return array(
 	"visitor_filter"        => "Visitor filter",
 	"visitor_filter_exp"    => "Visitor type greater than or equal to this will be disallowed.",
 	"enable_filter"         => "Enable this filter",
+	"runs_on"               => "<b>Runs on:</b> %s",
 	"antispam_updated"      => "Spam filter settings have been updated successfully",
 	"auth_method"           => "Auth method",
 	"banner_text"           => "Banner text",

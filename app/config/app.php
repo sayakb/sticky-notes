@@ -184,7 +184,6 @@ return array(
 		'Redirect'                      => 'Illuminate\Support\Facades\Redirect',
 		'Redis'                         => 'Illuminate\Support\Facades\Redis',
 		'Request'                       => 'Illuminate\Support\Facades\Request',
-		'Response'                      => 'Illuminate\Support\Facades\Response',
 		'Route'                         => 'Illuminate\Support\Facades\Route',
 		'Schema'                        => 'Illuminate\Support\Facades\Schema',
 		'Seeder'                        => 'Illuminate\Database\Seeder',
@@ -193,7 +192,6 @@ return array(
 		'Str'                           => 'Illuminate\Support\Str',
 		'URL'                           => 'Illuminate\Support\Facades\URL',
 		'Validator'                     => 'Illuminate\Support\Facades\Validator',
-		'View'                          => 'Illuminate\Support\Facades\View',
 
 		// Sayakb
 		'Captcha'                       => 'Sayakb\Captcha\Facades\Captcha',
@@ -201,6 +199,7 @@ return array(
 		// StickyNotes
 		'API'                           => 'StickyNotes\API',
 		'Antispam'                      => 'StickyNotes\Antispam',
+		'Config'                        => 'StickyNotes\Config',
 		'Cron'                          => 'StickyNotes\Cron',
 		'Feed'                          => 'StickyNotes\Feed',
 		'Highlighter'                   => 'StickyNotes\Highlighter',
