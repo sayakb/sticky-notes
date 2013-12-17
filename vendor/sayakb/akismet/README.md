@@ -8,28 +8,28 @@ Most of the ground work was done by Alex Potsides, [http://www.achingbrain.net](
 If you're using Laravel 4, you can skip the download proceedure and simply add the following line to your app's composer.json file in the require block
 
 	"require": {
-		"kenmoini/akismet": "dev-master",
+		"sayakb/akismet": "dev-master",
 	},
 and then run from your Laravel 4 application directory:
 	php composer.phar install
 
 Or check out the git repository:
 
-	git clone git@github.com:kenmoini/akismet.git
+	git clone git@github.com:sayakb/akismet.git
 
 Or alternatively, download from Packagist:
 
-	https://packagist.org/packages/kenmoini/akismet
+	https://packagist.org/packages/sayakb/akismet
 
 # Installation
 
 Once you have the package loaded into your application's file system, open the app/config/app.php file and add the following line to the 'providers' array:
-	
-	'Kenmoini\Akismet\AkismetServiceProvider',
+
+	'Sayakb\Akismet\AkismetServiceProvider',
 
 Then, in that same file, add a new key such as the following:
 
-	/* 
+	/*
 	 * Akismet API Key
 	 */
 	'akismet_api_key' => 'YOUR_KEY_HERE',
@@ -60,7 +60,7 @@ So let's submit that data to check for spammy-ness with Akismet:
 	$akismet->setCommentAuthorURL($url);
 	$akismet->setCommentContent($comment);
 	$akismet->setPermalink('http://www.example.com/contact-form/');
-	
+
 	if($akismet->isCommentSpam())
 	  // store the comment but mark it as spam (in case of a mis-diagnosis)
 	else
@@ -75,13 +75,3 @@ and
 	$akismet->submitHam();
 
 to submit mis-diagnosed spam and ham, which improves the system for everybody.
-
-## Changelog
-
-### Version 0.6
-
-* Cleaned up README.md.  I know, a big change.  Tests coming next update.
-
-### Version 0.5
-
-* Internal testing version found operational. Deployed to GitHub

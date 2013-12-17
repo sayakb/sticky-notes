@@ -1,6 +1,6 @@
 # Captcha for Laravel 4
 
-A simple [Laravel 4](http://four.laravel.com/) service provider for including the [Captcha for Laravel 4](https://github.com/mewebstudio/captcha).
+A simple [Laravel 4](http://four.laravel.com/) service provider for including the [Captcha for Laravel 4](https://github.com/sayakb/captcha).
 
 ## Preview
 ![Preview](http://i.imgur.com/kfXYhlk.jpg?1)
@@ -8,14 +8,14 @@ A simple [Laravel 4](http://four.laravel.com/) service provider for including th
 ## Installation
 
 The Captcha Service Provider can be installed via [Composer](http://getcomposer.org) by requiring the
-`mews/captcha` package and setting the `minimum-stability` to `dev` (required for Laravel 4) in your
+`sayakb/captcha` package and setting the `minimum-stability` to `dev` (required for Laravel 4) in your
 project's `composer.json`.
 
 ```json
 {
     "require": {
-        "laravel/framework": "4.0.*",
-        "mews/captcha": "dev-master"
+        "laravel/framework": "4.1.*",
+        "sayakb/captcha": "dev-master"
     },
     "minimum-stability": "dev"
 }
@@ -33,7 +33,7 @@ Find the `providers` key in `app/config/app.php` and register the Captcha Servic
 ```php
     'providers' => array(
         // ...
-        'Mews\Captcha\CaptchaServiceProvider',
+        'Sayakb\Captcha\CaptchaServiceProvider',
     )
 ```
 
@@ -42,7 +42,7 @@ Find the `aliases` key in `app/config/app.php`.
 ```php
     'aliases' => array(
         // ...
-        'Captcha' => 'Mews\Captcha\Facades\Captcha',
+        'Captcha' => 'Sayakb\Captcha\Facades\Captcha',
     )
 ```
 
@@ -50,7 +50,7 @@ Find the `aliases` key in `app/config/app.php`.
 
 To use your own settings, publish config.
 
-```$ php artisan config:publish mews/captcha```
+```$ php artisan config:publish sayakb/captcha```
 
 ## Example Usage
 
@@ -65,6 +65,7 @@ To use your own settings, publish config.
         {
             $rules =  array('captcha' => array('required', 'captcha'));
             $validator = Validator::make(Input::all(), $rules);
+
             if ($validator->fails())
             {
                 echo '<p style="color: #ff0000;">Incorrect!</p>';
@@ -89,10 +90,8 @@ To use your own settings, publish config.
 
 ## Links
 
-* [L4 Captcha on Github](https://github.com/mewebstudio/captcha)
-* [L4 Captcha on Packagist](https://packagist.org/packages/mews/captcha)
-* [For L3 on Github](https://github.com/mewebstudio/mecaptcha)
+* [L4.1 Captcha on Github](https://github.com/sayakb/captcha)
+* [L4.1 Captcha on Packagist](https://packagist.org/packages/sayakb/captcha)
+* [Original L4 Captcha on Github](https://github.com/mewebstudio/captcha)
 * [License](http://www.opensource.org/licenses/mit-license.php)
 * [Laravel website](http://laravel.com)
-* [Laravel Turkiye website](http://www.laravel.gen.tr)
-* [MeWebStudio website](http://www.mewebstudio.com)

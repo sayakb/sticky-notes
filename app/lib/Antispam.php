@@ -403,7 +403,7 @@ class Antispam {
 		$akismet->setCommentContent($this->data);
 
 		// Return the Akismet analysis
-		return $akismet->isCommentSpam();
+		return ! $akismet->isCommentSpam();
 	}
 
 }

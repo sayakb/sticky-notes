@@ -1,8 +1,9 @@
-<?php namespace Mews\Captcha;
+<?php namespace Sayakb\Captcha;
 
 use Illuminate\Support\ServiceProvider;
 
-class CaptchaServiceProvider extends ServiceProvider {
+class CaptchaServiceProvider extends ServiceProvider
+{
 
 	/**
 	 * Indicates if loading of the provider is deferred.
@@ -18,17 +19,14 @@ class CaptchaServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('mews/captcha');
+		$this->package('sayakb/captcha');
 
 		require __DIR__ . '/../../routes.php';
 		require __DIR__ . '/../../validation.php';
 
 		$app = $this->app;
 
-	    $this->app->finish(function() use ($app)
-	    {
-
-	    });
+		$this->app->finish(function() use ($app) { });
 	}
 
 	/**
@@ -38,10 +36,10 @@ class CaptchaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-	    $this->app['captcha'] = $this->app->share(function($app)
-	    {
-	        return Captcha::instance();
-	    });
+		$this->app['captcha'] = $this->app->share(function($app)
+		{
+			return Captcha::instance();
+		});
 	}
 
 	/**

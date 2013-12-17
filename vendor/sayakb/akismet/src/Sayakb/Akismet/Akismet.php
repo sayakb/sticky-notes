@@ -1,4 +1,4 @@
-<?php namespace Kenmoini\Akismet;
+<?php namespace Sayakb\Akismet;
 
 /**
  * Akismet anti-comment spam service
@@ -17,8 +17,10 @@
  *
  * @package		akismet
  * @author		Ken Moini, {@link http://www.kenmoini.com http://www.kenmoini.com}
+ * @author		Sayak Banerjee, {@link http://sayakbanerjee.com http://sayakbanerjee.com}
  * @version		0.5
  * @copyright	Ken Moini, {@link http://www.kenmoini.com http://www.kenmoini.com}
+ * @copyright	Sayak Banerjee, {@link http://sayakbanerjee.com http://sayakbanerjee.com}
  * @license		http://www.opensource.org/licenses/bsd-license.php BSD License
  */
 

@@ -4,8 +4,8 @@
 	"keywords": ["framework", "laravel"],
 	"require": {
 		"laravel/framework": "4.0.*",
-		"mews/captcha": "dev-master",
-		"kenmoini/akismet": "dev-master"
+		"sayakb/akismet": "dev-master",
+		"sayakb/captcha": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

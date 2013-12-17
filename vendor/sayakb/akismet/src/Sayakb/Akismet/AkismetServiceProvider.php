@@ -1,4 +1,4 @@
-<?php namespace Kenmoini\Akismet;
+<?php namespace Sayakb\Akismet;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -18,9 +18,9 @@ class AkismetServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('kenmoini/akismet');
+		$this->package('sayakb/akismet');
 	}
-	
+
 	/**
 	 * Register the service provider.
 	 *
@@ -35,7 +35,7 @@ class AkismetServiceProvider extends ServiceProvider {
 		$this->app->booting(function()
 		{
 			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
-			$loader->alias('Akismet', 'Kenmoini\Akismet\Akismet');
+			$loader->alias('Akismet', 'Sayakb\Akismet\Akismet');
 		});
 	}
 

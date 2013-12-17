@@ -1,0 +1,27 @@
+{
+	"name": "sayakb/captcha",
+	"description": "Captcha Package for Laravel 4, Fork of mewebstudio/captcha",
+	"keywords": ["L4", "Laravel 4", "Laravel", "Captcha", "security", "captcha image", "mecaptcha"],
+	"homepage": "https://github.com/sayakb/captcha",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Muharrem ERIN",
+			"email": "me@mewebstudio.com"
+		},
+		{
+			"name": "Sayak Banerjee",
+			"email": "mail@sayakbanerjee.com"
+		}
+	],
+	"require": {
+		"php": ">=5.3.0",
+		"illuminate/support": ">=4.0.0"
+	},
+	"autoload": {
+		"psr-0": {
+			"Sayakb\\Captcha": "src/"
+		}
+	},
+	"minimum-stability": "dev"
+}

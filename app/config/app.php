@@ -126,11 +126,9 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		// Kenmoini
-		'Kenmoini\Akismet\AkismetServiceProvider',
-
-		// Mews
-		'Mews\Captcha\CaptchaServiceProvider',
+		// Sayakb
+		'Sayakb\Akismet\AkismetServiceProvider',
+		'Sayakb\Captcha\CaptchaServiceProvider',
 
 		// StickyNotes
 		'StickyNotes\Hashing\HashServiceProvider',
@@ -200,8 +198,8 @@ return array(
 		'URL'                           => 'Illuminate\Support\Facades\URL',
 		'Validator'                     => 'Illuminate\Support\Facades\Validator',
 
-		// Mews
-		'Captcha'                       => 'Mews\Captcha\Facades\Captcha',
+		// Sayakb
+		'Captcha'                       => 'Sayakb\Captcha\Facades\Captcha',
 
 		// StickyNotes
 		'API'                           => 'StickyNotes\API',
@@ -219,7 +217,7 @@ return array(
 
 		'StickyNotesDBUserProvider'     => 'StickyNotes\Auth\StickyNotesDBUserProvider',
 		'StickyNotesLDAPUserProvider'   => 'StickyNotes\Auth\StickyNotesLDAPUserProvider',
-		'StickyNotesOAuthUserProvider'   => 'StickyNotes\Auth\StickyNotesOAuthUserProvider',
+		'StickyNotesOAuthUserProvider'  => 'StickyNotes\Auth\StickyNotesOAuthUserProvider',
 
 		// PHPDiff
 		'DiffRenderer'                  => 'Diff_Renderer_Html_SideBySide',
