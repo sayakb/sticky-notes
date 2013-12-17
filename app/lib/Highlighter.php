@@ -15,8 +15,8 @@
  */
 
 use Cache;
-use Cookie;
 use GeSHi;
+use Input;
 
 /**
  * Highlighter class
@@ -145,7 +145,7 @@ class Highlighter {
 		natcasesort($langs);
 
 		// Now, get the language list from the cookie
-		$historyLangs = Cookie::has('languages') ? Cookie::get('languages') : NULL;
+		$historyLangs = Input::cookie('languages');
 
 		if ($historyLangs != NULL)
 		{

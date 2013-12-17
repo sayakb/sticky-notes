@@ -44,14 +44,11 @@ class CreateController extends BaseController {
 		);
 
 		// Get the default language from cookie
-		if (Cookie::has('languages'))
-		{
-			$history = Cookie::get('languages');
+		$history = Input::cookie('languages');
 
-			if (is_array($history))
-			{
-				$data['language'] = end($history);
-			}
+		if (is_array($history))
+		{
+			$data['language'] = end($history);
 		}
 
 		return View::make('site/create', $data);
@@ -84,10 +81,10 @@ class CreateController extends BaseController {
 		// Get the paste language. We use it to store a language history
 		$language = Input::get('language');
 
-		$historyLangs = Cookie::has('languages') ? Cookie::get('languages') : array();
+		$historyLangs = Input::cookie('languages');
 
 		// No dulicates allowed in the history
-		if (in_array($language, $historyLangs))
+		if (is_array($historyLangs) AND in_array($language, $historyLangs))
 		{
 			$key = array_search($language, $historyLangs);
 
