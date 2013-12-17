@@ -14,7 +14,6 @@
  * @filesource
  */
 
-use Config;
 use Lang;
 use Request;
 use Site;

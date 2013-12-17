@@ -16,7 +16,6 @@
 
 use Akismet;
 use Auth;
-use Config;
 use Input;
 use IPBan;
 use Lang;

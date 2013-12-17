@@ -16,7 +16,6 @@
 
 use Auth;
 use Cache;
-use Config;
 use Lang;
 use Request;
 use Schema;
