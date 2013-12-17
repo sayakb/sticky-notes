@@ -52,6 +52,10 @@
 										</div>
 									</div>
 
+									<div class="alert alert-success">
+										{{ sprintf(Lang::get('admin.runs_on'), Antispam::scopes('php')) }}
+									</div>
+
 									<div class="alert alert-warning">
 										{{ Lang::get('admin.honeypot_more') }}
 										{{ link_to('http://www.projecthoneypot.org/httpbl_api.php') }}
@@ -154,6 +158,10 @@
 											</label>
 										</div>
 									</div>
+
+									<div class="alert alert-success">
+										{{ sprintf(Lang::get('admin.runs_on'), Antispam::scopes('censor')) }}
+									</div>
 								</div>
 							</div>
 
@@ -192,6 +200,10 @@
 											</label>
 										</div>
 									</div>
+
+									<div class="alert alert-success">
+										{{ sprintf(Lang::get('admin.runs_on'), Antispam::scopes('stealth')) }}
+									</div>
 								</div>
 							</div>
 						</div>
@@ -208,6 +220,10 @@
 												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
 											</label>
 										</div>
+									</div>
+
+									<div class="alert alert-success">
+										{{ sprintf(Lang::get('admin.runs_on'), Antispam::scopes('noflood')) }}
 									</div>
 								</div>
 							</div>
@@ -251,6 +267,10 @@
 												<strong>{{ Lang::get('admin.enable_filter') }}</strong>
 											</label>
 										</div>
+									</div>
+
+									<div class="alert alert-success">
+										{{ sprintf(Lang::get('admin.runs_on'), Antispam::scopes('akismet')) }}
 									</div>
 								</div>
 							</div>
