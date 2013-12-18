@@ -129,7 +129,7 @@ return array(
 
 				(object) array(
 					'name'     => 'data',
-					'type'     => 'text',
+					'type'     => 'longText',
 				),
 
 				(object) array(
@@ -469,7 +469,7 @@ return array(
 				// out of memory.
 				while (TRUE)
 				{
-					$pastes = Paste::where('urlkey', '')->take(1000)->get(array('id','urlkey'));
+					$pastes = Paste::where('urlkey', '')->take(1000)->get(array('id', 'urlkey'));
 
 					if ($pastes->count() > 0)
 					{
@@ -566,10 +566,15 @@ return array(
 			'closure' => function()
 			{
 
+				$config = Site::config('general');
+
 				// Modify config values
-				Site::config('services', array_map('html_entity_decode', array(
-					'googleApiKey' => Site::config('general')->googleApi,
-				)));
+				if (isset($config->googleApi))
+				{
+					Site::config('services', array_map('html_entity_decode', array(
+						'googleApiKey' => $config->googleApi,
+					)));
+				}
 
 			},
 

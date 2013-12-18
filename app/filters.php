@@ -220,7 +220,7 @@ Route::filter('installed', function()
 		$dbVersion = System::version(Site::config('general')->version);
 	}
 
-	// Now down to business: do the checks
+	// Redirect to setup pages based on version checks
 	if (Request::segment(1) != 'setup')
 	{
 		Session::forget('setup.stage');
@@ -238,16 +238,18 @@ Route::filter('installed', function()
 		// Redirect to the updater, with the exception of the login page
 		else if ($appVersion > $dbVersion AND Request::segment(2) != 'login')
 		{
-			// Only admins can access this page
-			// We check for dbVersion as 0.4 will not support the Auth functions
-			if ($dbVersion > 0 AND (Auth::guest() OR ! Auth::user()->admin))
-			{
-				App::abort(503);
-			}
-
 			return Redirect::to('setup/update');
 		}
 	}
+
+	// Only admins can access this page
+	// We check for dbVersion as 0.4 will not support the Auth functions
+	else if (Request::segment(2) == 'update' AND $dbVersion > 0 AND (Auth::guest() OR ! Auth::user()->admin))
+	{
+		App::abort(503);
+	}
+
+	// You should not be here!
 	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('setup.stage'))
 	{
 		return Redirect::to('/');
