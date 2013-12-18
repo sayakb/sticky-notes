@@ -72,6 +72,7 @@
 				<li><a href="#url-shortener">URL shortener</a></li>
 				<li><a href="#google-analytics">Google Analytics</a></li>
 				<li><a href="#google-oauth">Google oAuth 2.0</a></li>
+				<li><a href="#akismet">Akismet</a></li>
 				<li><a href="#project-pastebins">Project pastebins</a></li>
 				<li><a href="#other-services">Other services</a></li>
 			</ul>
@@ -82,7 +83,7 @@
 		<hr />
 
 		<p>
-			This document highlights the services offered by Sticky Notes v1 and the configuration
+			This document highlights the services offered by Sticky Notes 1.x and the configuration
 			involved in enabling those features.
 		</p>
 
@@ -110,18 +111,29 @@
 		<p>
 			<a href="http://goo.gl/5QHJ3t">Google Analytics</a> helps track visitors to your site.
 			Sticky Notes comes with out of the box support for Analytics. You can get your Google
-			Analytics tracking ID from the Google Analytics website and set it in <code>Admin &rarr; 
+			Analytics tracking ID from the Google Analytics website and set it in <code>Admin &rarr;
 			Services</code> to enable visitor tracking.
 		</p>
-		
+
 		<h3 id="google-oauth">Google oAuth 2.0</h3>
-		
+
 		<p>
 			Sticky Notes supports oAuth 2.0 authentication with your Google Identity. For setting up
-			oAuth 2.0 with Google, you'll need to generate a client ID and client secret at the 
+			oAuth 2.0 with Google, you'll need to generate a client ID and client secret at the
 			<a href="http://goo.gl/xHDvhj">Google Cloud Console</a> and set it up in <code>Admin &rarr;
 			Authentication &rarr; oAuth</code> . Please refer to the <a href="http://goo.gl/jU21by">
 			Cloud Console Help</a> page for instructions on how to obtain your client ID and secret.
+		</p>
+
+		<h3 id="akismet">Akismet</h3>
+
+		<p>
+			Akismet is a powerful spam protection service that filters out comment and track-back
+			spam. Sticky Notes has been designed to seamlessly integrate with Akismet involving a
+			quick and easy setup. First, you need to obtain your Akismet API key from their
+			<a href="http://goo.gl/K7aySp">signup page</a>. Once you have your key, enter your key
+			in the <code>Admin &rarr; Spam filters &rarr; Akismet</code> section and enable Akismet
+			by checking the <code>Enable this filter</code> box.
 		</p>
 
 		<h3 id="project-pastebins">Project pastebins</h3>
