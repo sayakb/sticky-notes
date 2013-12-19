@@ -191,3 +191,6 @@ select.input-xxlarge {
 .form-horizontal div.checkbox {
   margin-top: 5px;
 }
+.muted {
+  color: #888;
+}
