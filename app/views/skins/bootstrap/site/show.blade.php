@@ -4,75 +4,73 @@
 	@include('skins.bootstrap.common.alerts')
 
 	<section id="show">
+		@include('skins.bootstrap.site.paste')
+
+		<div class="row">
+			<div class="col-sm12">
+				<h4>
+					<span class="glyphicon glyphicon-comment"></span>
+					{{ Lang::get('show.comments') }}
+				</h4>
+
+				{{
+					Form::open(array(
+						'action'  => 'ShowController@postComment',
+						'role'    => 'form'
+					))
+				}}
+
+				<div class="form-group">
+					{{
+						Form::textarea('comment', NULL, array(
+							'class'  => 'form-control',
+							'rows'   => 2
+						))
+					}}
+				</div>
+
+				<div class="form-group">
+					{{
+						Form::submit(Lang::get('global.submit'), array(
+							'name'   => '_submit',
+							'class'  => 'btn btn-primary'
+						))
+					}}
+				</div>
+
+				{{ Form::hidden('id', $paste->id) }}
+				{{ Form::close() }}
+
+				@if (count($paste->comments) > 0)
+					@foreach ($paste->comments as $comment)
+						<div class="well well-sm well-white">
+							<p>
+								{{{ $comment->data }}}
+							</p>
+
+							<div class="small">
+								<div class="pull-right">
+									@if ($role->admin OR ($role->user AND $auth->username == $comment->author))
+										{{
+											link_to("{$paste->urlkey}/{$paste->hash}/delete/{$comment->id}", Lang::get('global.delete'), array(
+												'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
+											))
+										}}
+									@endif
+								</div>
+
+								<div class="text-muted">
+									{{{ sprintf(Lang::get('global.posted_by'), $comment->author, date('d M Y, H:i:s e', $comment->timestamp)) }}}
+								</div>
+							</div>
+						</div>
+					@endforeach
+				@endif
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="pre-info pre-header">
-					<div class="row">
-						<div class="col-sm-5">
-							<h4>
-								@if (empty($paste->title))
-									{{ Lang::get('global.paste') }}
-									#{{ $paste->urlkey }}
-								@else
-									{{{ $paste->title }}}
-								@endif
-							</h4>
-						</div>
-
-						<div class="col-sm-7 text-right">
-							@if ( ! empty($site->services->googleApiKey))
-								{{
-									link_to("#", Lang::get('show.short_url'), array(
-										'class'          => 'btn btn-success',
-										'data-toggle'    => 'ajax',
-										'data-component' => 'shorten',
-										'data-extra'     => $paste->urlkey.($paste->private ? '/'.$paste->hash : ''),
-									))
-								}}
-							@endif
-
-							{{
-								link_to("#", Lang::get('show.wrap'), array(
-									'class'        => 'btn btn-success',
-									'data-toggle'  => 'wrap',
-								))
-							}}
-
-							{{
-								link_to("{$paste->urlkey}/{$paste->hash}/raw", Lang::get('show.raw'), array(
-									'class' => 'btn btn-success'
-								))
-							}}
-
-							{{
-								link_to("rev/{$paste->urlkey}", Lang::get('show.revise'), array(
-									'class' => 'btn btn-success'
-								))
-							}}
-
-							@include('skins.bootstrap.site.actions')
-						</div>
-					</div>
-				</div>
-
-				<div class="well well-sm well-white pre">
-					{{ Highlighter::make()->parse($paste->id.'show', $paste->data, $paste->language) }}
-				</div>
-
-				<div class="pre-info pre-footer">
-					<div class="row">
-						<div class="col-sm-6">
-							{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
-						</div>
-
-						<div class="col-sm-6 text-right">
-							{{ sprintf(Lang::get('global.language'), $paste->language) }}
-							&bull;
-							{{ sprintf(Lang::get('global.views'), $paste->hits) }}
-						</div>
-					</div>
-				</div>
-
 				@if (count($paste->revisions) > 0)
 					<fieldset class="well well-sm well-white well-history">
 						<h4>
