@@ -87,7 +87,7 @@
 			</div>
 		</div>
 
-		<div class="well well-sm well-white pre">
+		<div class="well well-small well-white pre">
 			{{ Highlighter::make()->parse($paste->id.'show', $paste->data, $paste->language) }}
 		</div>
 
@@ -104,3 +104,5 @@
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
