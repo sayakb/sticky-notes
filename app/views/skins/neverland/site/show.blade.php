@@ -4,82 +4,80 @@
 	@include('skins.neverland.common.alerts')
 
 	<section id="show">
+		@include('skins.neverland.site.paste')
+
 		<div class="row-fluid">
 			<div class="span12">
-				<div class="pre-info pre-header">
-					<div class="row-fluid">
-						<div class="span5">
-							<h4>
-								@if (empty($paste->title))
-									{{ Lang::get('global.paste') }}
-									#{{ $paste->urlkey }}
-								@else
-									{{{ $paste->title }}}
-								@endif
-							</h4>
-						</div>
+				<h4>
+					<i class="icon-comment icon-blue"></i>
+					{{ Lang::get('show.comments') }}
+				</h4>
 
-						<div class="span7 align-right">
-							@if ( ! empty($site->services->googleApiKey))
-								{{
-									link_to("#", Lang::get('show.short_url'), array(
-										'class'          => 'btn btn-success',
-										'data-toggle'    => 'ajax',
-										'data-component' => 'shorten',
-										'data-extra'     => $paste->urlkey.($paste->private ? '/'.$paste->hash : ''),
-									))
-								}}
-							@endif
+				{{
+					Form::open(array(
+						'action'  => 'ShowController@postComment',
+						'role'    => 'form'
+					))
+				}}
 
-							{{
-								link_to("#", Lang::get('show.wrap'), array(
-									'class'        => 'btn btn-success',
-									'data-toggle'  => 'wrap',
-								))
-							}}
-
-							{{
-								link_to("{$paste->urlkey}/{$paste->hash}/raw", Lang::get('show.raw'), array(
-									'class' => 'btn btn-success'
-								))
-							}}
-
-							{{
-								link_to("rev/{$paste->urlkey}", Lang::get('show.revise'), array(
-									'class' => 'btn btn-success'
-								))
-							}}
-
-							@include('skins.neverland.site.actions')
-						</div>
-					</div>
+				<div class="control-group">
+					{{
+						Form::textarea('comment', NULL, array(
+							'class'  => 'input-stretch',
+							'rows'   => 2
+						))
+					}}
 				</div>
 
-				<div class="well well-sm well-white pre">
-					{{ Highlighter::make()->parse($paste->id.'show', $paste->data, $paste->language) }}
+				<div class="control-group">
+					{{
+						Form::submit(Lang::get('global.submit'), array(
+							'name'   => '_submit',
+							'class'  => 'btn btn-primary'
+						))
+					}}
 				</div>
 
-				<div class="pre-info pre-footer">
-					<div class="row-fluid">
-						<div class="span6">
-							{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
-						</div>
+				{{ Form::hidden('id', $paste->id) }}
+				{{ Form::close() }}
 
-						<div class="span6 align-right">
-							{{ sprintf(Lang::get('global.language'), $paste->language) }}
-							&bull;
-							{{ sprintf(Lang::get('global.views'), $paste->hits) }}
-						</div>
-					</div>
-				</div>
+				@if (count($paste->comments) > 0)
+					@foreach ($paste->comments as $comment)
+						<div class="well well-small well-white">
+							<p>
+								{{{ $comment->data }}}
+							</p>
 
+							<small>
+								<div class="pull-right">
+									@if ($role->admin OR ($role->user AND $auth->username == $comment->author))
+										{{
+											link_to("{$paste->urlkey}/{$paste->hash}/delete/{$comment->id}", Lang::get('global.delete'), array(
+												'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
+											))
+										}}
+									@endif
+								</div>
+
+								<div class="muted">
+									{{{ sprintf(Lang::get('global.posted_by'), $comment->author, date('d M Y, H:i:s e', $comment->timestamp)) }}}
+								</div>
+							</small>
+						</div>
+					@endforeach
+				@endif
+			</div>
+		</div>
+
+		<div class="row-fluid">
+			<div class="span12">
 				@if (count($paste->revisions) > 0)
-					<fieldset class="well well-small well-white well-history">
-						<h4>
-							<i class="icon-time"></i>
-							{{ Lang::get('show.version_history') }}
-						</h4>
+					<h4>
+						<i class="icon-time icon-blue"></i>
+						{{ Lang::get('show.version_history') }}
+					</h4>
 
+					<fieldset class="well well-small well-white well-history">
 						<div class="viewport">
 							<table class="table table-striped table-responsive">
 								<colgroup>
