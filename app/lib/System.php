@@ -16,6 +16,7 @@
 
 use File;
 use Lang;
+use Route;
 use Session;
 use Site;
 
@@ -29,6 +30,13 @@ use Site;
  * @author      Sayak Banerjee
  */
 class System {
+
+	/**
+	 * Caches the current route
+	 *
+	 * @var string
+	 */
+	private static $route = NULL;
 
 	/**
 	 * Retrieves a list of directory names from a given path
@@ -154,6 +162,24 @@ class System {
 	public static function installed()
 	{
 		return php_sapi_name() != 'cli' AND Session::get('global.installed') === TRUE;
+	}
+
+	/**
+	 * Gets the name of the current action
+	 *
+	 * @static
+	 * @return string
+	 */
+	public static function action()
+	{
+		if (static::$route == NULL)
+		{
+			$action = Route::currentRouteAction();
+
+			static::$route = head(explode('@', $action));
+		}
+
+		return static::$route;
 	}
 
 }

@@ -65,7 +65,7 @@ class Paste extends Eloquent {
 
 	/**
 	 * One paste will have many revisions. This relationship will be
-	 * used to fetch all revisions associated with one paste. The key
+	 * used to fetch all revisions associated with this paste. The key
 	 * column that we use is paste_id
 	 *
 	 * @return Illuminate\Database\Eloquent\Relations\HasMany
@@ -73,6 +73,18 @@ class Paste extends Eloquent {
 	public function revisions()
 	{
 		return $this->hasMany('Revision', 'paste_id');
+	}
+
+	/**
+	 * One paste will have many comments. This relationship will be
+	 * used to fetch all comments associated with this paste. The key
+	 * column that we use is paste_id
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function comments()
+	{
+		return $this->hasMany('Comment', 'paste_id')->orderBy('id', 'desc');
 	}
 
 	/**

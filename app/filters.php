@@ -246,7 +246,7 @@ Route::filter('installed', function()
 	// We check for dbVersion as 0.4 will not support the Auth functions
 	else if (Request::segment(2) == 'update' AND $dbVersion > 0 AND (Auth::guest() OR ! Auth::user()->admin))
 	{
-		App::abort(503);
+		App::abort(503); // Service unavailable
 	}
 
 	// You should not be here!

@@ -22,12 +22,14 @@ Route::post('revise', 'CreateController@postRevision');
 // Show paste routes
 Route::group(array('before' => 'numeric'), function()
 {
-	Route::get('{urlkey}/{hash?}/{action?}', 'ShowController@getPaste')->where('urlkey', 'p[a-zA-Z0-9]+|[0-9]+');
+	Route::get('{urlkey}/{hash?}/{action?}/{extra?}', 'ShowController@getPaste')->where('urlkey', 'p[a-zA-Z0-9]+|[0-9]+');
 });
 
 Route::get('diff/{oldkey}/{newkey}', 'ShowController@getDiff');
 
 Route::post('{urlkey}/{hash?}', 'ShowController@postPassword')->where('urlkey', 'p[a-zA-Z0-9]+');
+
+Route::post('comment', 'ShowController@postComment');
 
 // List paste routes
 Route::group(array('before' => 'private'), function()

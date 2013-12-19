@@ -32,9 +32,10 @@ class ShowController extends BaseController {
 	 * @param  string  $urlkey
 	 * @param  string  $hash
 	 * @param  string  $action
+	 * @param  string  $extra
 	 * @return \Illuminate\Support\Facades\View|\Illuminate\Support\Facades\Redirect|null
 	 */
-	public function getPaste($urlkey, $hash = '', $action = '')
+	public function getPaste($urlkey, $hash = '', $action = '', $extra = '')
 	{
 		$paste = Paste::where('urlkey', $urlkey)->first();
 
@@ -90,9 +91,6 @@ class ShowController extends BaseController {
 
 				break;
 
-			case 'shorten':
-				die("Short url here");
-
 			case 'raw':
 				$response = Response::make($paste->data);
 
@@ -100,11 +98,28 @@ class ShowController extends BaseController {
 
 				return $response;
 
+			case 'delete':
+				if (is_numeric($extra))
+				{
+					$comment = Comment::findOrFail($extra);
+
+					if ($owner OR Auth::user()->username == $comment->author)
+					{
+						$comment->delete();
+					}
+					else
+					{
+						App::abort(401); // Unauthorized
+					}
+				}
+
+				break;
+
 			default:
 				return View::make('site/show', array('paste' => $paste));
 		}
 
-		// If we are here, we should get outta here quickly!
+		// Redirect user to previous page
 		return Redirect::to(URL::previous());
 	}
 
@@ -155,6 +170,46 @@ class ShowController extends BaseController {
 		);
 
 		return View::make('site/diff', $data);
+	}
+
+	/**
+	 * Handles the paste password submission
+	 *
+	 * @param  string  $urlkey
+	 * @param  string  $hash
+	 * @return \Illuminate\Support\Facades\Redirect|null
+	 */
+	public function postComment()
+	{
+		// Run an antispam check first, before doing anything
+		$antispam = Antispam::make('comment', 'comment');
+
+		if ($antispam->passes())
+		{
+			// Get the associated paste
+			$paste = Paste::findOrFail(Input::get('id'));
+
+			// Insert the new comment
+			if ($paste != NULL)
+			{
+				$comment = new Comment;
+
+				$comment->paste_id = $paste->id;
+				$comment->data = Input::get('comment');
+				$comment->author = Auth::check() ? Auth::user()->username : Lang::get('global.anonymous');
+				$comment->timestamp = time();
+
+				$comment->save();
+			}
+
+			return Redirect::to(URL::previous());
+		}
+		else
+		{
+			Session::flash('messages.error', $antispam->message());
+
+			return Redirect::to(URL::previous())->withInput();
+		}
 	}
 
 }

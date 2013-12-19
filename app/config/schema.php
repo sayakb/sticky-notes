@@ -215,6 +215,38 @@ return array(
 
 			),
 
+			'comments' => array(
+
+				(object) array(
+					'name'     => 'id',
+					'type'     => 'increments',
+				),
+
+				(object) array(
+					'name'     => 'paste_id',
+					'type'     => 'integer',
+				),
+
+				(object) array(
+					'name'     => 'data',
+					'type'     => 'text',
+				),
+
+				(object) array(
+					'name'     => 'author',
+					'type'     => 'string',
+					'length'   => 50,
+					'nullable' => TRUE,
+					'default'  => NULL,
+				),
+
+				(object) array(
+					'name'     => 'timestamp',
+					'type'     => 'integer',
+				),
+
+			),
+
 			'users' => array(
 
 				(object) array(
@@ -580,7 +612,45 @@ return array(
 
 		),
 
-		'1.2' => array(),
+		'1.2' => array(
+
+			'newTables' => array(
+
+				'comments' => array(
+
+					(object) array(
+						'name'     => 'id',
+						'type'     => 'increments',
+					),
+
+					(object) array(
+						'name'     => 'paste_id',
+						'type'     => 'integer',
+					),
+
+					(object) array(
+						'name'     => 'data',
+						'type'     => 'text',
+					),
+
+					(object) array(
+						'name'     => 'author',
+						'type'     => 'string',
+						'length'   => 50,
+						'nullable' => TRUE,
+						'default'  => NULL,
+					),
+
+					(object) array(
+						'name'     => 'timestamp',
+						'type'     => 'integer',
+					),
+
+				),
+
+			),
+
+		),
 
 	),
 

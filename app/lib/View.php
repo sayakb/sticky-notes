@@ -21,6 +21,7 @@ use Request;
 use Schema;
 use Session;
 use Site;
+use System;
 use User;
 
 /**
@@ -48,6 +49,7 @@ class View extends \Illuminate\Support\Facades\View {
 			'site'       => Site::config(),
 			'error'      => Session::get('messages.error'),
 			'success'    => Session::get('messages.success'),
+			'context'    => System::action(),
 		);
 
 		// View can be called even before tables are available.

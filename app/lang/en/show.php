@@ -23,5 +23,6 @@ return array(
 	"new_rev"            => "New revision %s",
 	"revision_diff"      => "Revision differences",
 	"return_paste"       => "Return to paste",
+	"comments"           => "Comments",
 
 );

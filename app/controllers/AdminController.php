@@ -248,7 +248,7 @@ class AdminController extends BaseController {
 
 				$user->save();
 
-				// Username is cached in the main and revision tables, update them too
+				// Username is cached in the main, comment and revision tables, update them too
 				if ( ! empty($id))
 				{
 					Paste::where('author_id', $id)->update(array(
@@ -256,6 +256,10 @@ class AdminController extends BaseController {
 					));
 
 					Revision::where('author', $origUsername)->update(array(
+						'author' => $user->username,
+					));
+
+					Comment::where('author', $origUsername)->update(array(
 						'author' => $user->username,
 					));
 				}
