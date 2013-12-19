@@ -7,7 +7,7 @@
 		@include('skins.bootstrap.site.paste')
 
 		<div class="row">
-			<div class="col-sm12">
+			<div class="col-sm-12">
 				<h4>
 					<span class="glyphicon glyphicon-comment"></span>
 					{{ Lang::get('show.comments') }}
