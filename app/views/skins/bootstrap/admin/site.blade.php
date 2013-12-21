@@ -195,6 +195,29 @@
 					</div>
 
 					<div class="form-group">
+						{{
+							Form::label('comments', Lang::get('global.comments'), array(
+								'class' => 'control-label col-sm-3 col-lg-2'
+							))
+						}}
+
+						<div class="col-sm-9 col-lg-10">
+							{{
+								Form::select('comments', array(
+									'1' => Lang::get('admin.enabled'),
+									'0' => Lang::get('admin.disabled'),
+								), $site->general->comments, array(
+									'class' => 'form-control'
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.comments_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
 						<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
 							{{
 								Form::submit(Lang::get('global.save'), array(
