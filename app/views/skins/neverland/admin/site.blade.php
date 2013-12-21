@@ -194,6 +194,29 @@
 						</div>
 					</div>
 
+					<div class="control-group">
+						{{
+							Form::label('comments', Lang::get('global.comments'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::select('comments', array(
+									'1' => Lang::get('admin.enabled'),
+									'0' => Lang::get('admin.disabled'),
+								), $site->general->comments, array(
+									'class' => 'input-xxlarge'
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.comments_exp') }}
+							</div>
+						</div>
+					</div>
+
 					<div class="form-actions">
 						{{
 							Form::submit(Lang::get('global.save'), array(

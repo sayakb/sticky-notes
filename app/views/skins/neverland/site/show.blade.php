@@ -6,70 +6,72 @@
 	<section id="show">
 		@include('skins.neverland.site.paste')
 
-		<div class="row-fluid">
-			<div class="span12">
-				<h4>
-					<i class="icon-comment icon-blue"></i>
-					{{ Lang::get('show.comments') }}
-				</h4>
+		@if ($site->general->comments)
+			<div class="row-fluid">
+				<div class="span12">
+					<h4>
+						<i class="icon-comment icon-blue"></i>
+						{{ Lang::get('global.comments') }}
+					</h4>
 
-				{{
-					Form::open(array(
-						'action'  => 'ShowController@postComment',
-						'role'    => 'form'
-					))
-				}}
-
-				<div class="control-group">
 					{{
-						Form::textarea('comment', NULL, array(
-							'class'  => 'input-stretch',
-							'rows'   => 2
+						Form::open(array(
+							'action'  => 'ShowController@postComment',
+							'role'    => 'form'
 						))
 					}}
+
+					<div class="control-group">
+						{{
+							Form::textarea('comment', NULL, array(
+								'class'  => 'input-stretch',
+								'rows'   => 2
+							))
+						}}
+					</div>
+
+					<div class="control-group">
+						{{
+							Form::submit(Lang::get('global.submit'), array(
+								'name'   => '_submit',
+								'class'  => 'btn btn-primary'
+							))
+						}}
+					</div>
+
+					{{ Form::hidden('id', $paste->id) }}
+					{{ Form::close() }}
+
+					@if (count($paste->comments) > 0)
+						@foreach ($paste->comments as $comment)
+							<div class="well well-small well-white">
+								<p>
+									{{{ $comment->data }}}
+								</p>
+
+								<small>
+									<div class="pull-right">
+										@if ($role->admin OR ($role->user AND $auth->username == $comment->author))
+											{{
+												link_to("{$paste->urlkey}/{$paste->hash}/delete/{$comment->id}", Lang::get('global.delete'), array(
+													'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
+												))
+											}}
+										@endif
+									</div>
+
+									<div class="muted">
+										{{{ $comment->author }}}
+										&bull;
+										{{{ date('d M Y, H:i:s e', $comment->timestamp) }}}
+									</div>
+								</small>
+							</div>
+						@endforeach
+					@endif
 				</div>
-
-				<div class="control-group">
-					{{
-						Form::submit(Lang::get('global.submit'), array(
-							'name'   => '_submit',
-							'class'  => 'btn btn-primary'
-						))
-					}}
-				</div>
-
-				{{ Form::hidden('id', $paste->id) }}
-				{{ Form::close() }}
-
-				@if (count($paste->comments) > 0)
-					@foreach ($paste->comments as $comment)
-						<div class="well well-small well-white">
-							<p>
-								{{{ $comment->data }}}
-							</p>
-
-							<small>
-								<div class="pull-right">
-									@if ($role->admin OR ($role->user AND $auth->username == $comment->author))
-										{{
-											link_to("{$paste->urlkey}/{$paste->hash}/delete/{$comment->id}", Lang::get('global.delete'), array(
-												'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
-											))
-										}}
-									@endif
-								</div>
-
-								<div class="muted">
-									{{{ $comment->author }}}
-									&bull;
-									{{{ date('d M Y, H:i:s e', $comment->timestamp) }}}
-								</div>
-							</small>
-						</div>
-					@endforeach
-				@endif
 			</div>
-		</div>
+		@endif
 
 		<div class="row-fluid">
 			<div class="span12">
