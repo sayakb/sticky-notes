@@ -62,7 +62,7 @@
 								<div class="muted">
 									{{{ $comment->author }}}
 									&bull;
-									{{{ date('d M Y, H:i:s e', $comment->timestamp)) }}}
+									{{{ date('d M Y, H:i:s e', $comment->timestamp) }}}
 								</div>
 							</small>
 						</div>
