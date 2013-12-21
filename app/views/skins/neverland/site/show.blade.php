@@ -60,7 +60,9 @@
 								</div>
 
 								<div class="muted">
-									{{{ sprintf(Lang::get('global.posted_by'), $comment->author, date('d M Y, H:i:s e', $comment->timestamp)) }}}
+									{{{ $comment->author }}}
+									&bull;
+									{{{ date('d M Y, H:i:s e', $comment->timestamp)) }}}
 								</div>
 							</small>
 						</div>
