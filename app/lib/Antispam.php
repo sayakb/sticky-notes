@@ -72,23 +72,15 @@ class Antispam {
 	public $customMessages;
 
 	/**
-	 * If set, only these services will be executed
-	 *
-	 * @var array
-	 */
-	public $customServices;
-
-	/**
 	 * Creates a new instance of antispam class
 	 *
 	 * @static
 	 * @param  string  $scope
 	 * @param  string  $dataKey
 	 * @param  array   $messages
-	 * @param  string  $services
 	 * @return void
 	 */
-	public static function make($scope, $dataKey, $messages = array(), $services = NULL)
+	public static function make($scope, $dataKey, $messages = array())
 	{
 		$antispam = new Antispam();
 
@@ -103,9 +95,6 @@ class Antispam {
 
 		// Set custom messages to return
 		$antispam->customMessages = $messages;
-
-		// Set services to run
-		$antispam->customServices = $services;
 
 		return $antispam;
 	}
@@ -203,14 +192,7 @@ class Antispam {
 			// We get the enabled services
 			// Then we iterate through each of them to see if there is a
 			// handler available for the service. If found, we run the handler
-			if (empty($this->customServices))
-			{
-				$services = preg_split('/\||,/', $this->config->services);
-			}
-			else
-			{
-				$services = preg_split('/\||,/', $this->customServices);
-			}
+			$services = preg_split('/\||,/', $this->config->services);
 
 			// Immutable services are always executed even if they are not
 			// set explicitly from the admin panel. These services ideally

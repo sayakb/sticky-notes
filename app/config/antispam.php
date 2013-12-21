@@ -28,11 +28,13 @@ return array(
 
 	'scopes'  => array(
 
-		'paste'   => array('censor', 'ipban', 'stealth', 'noflood', 'php'),
+		'paste'    => array('ipban', 'censor', 'noflood', 'php', 'stealth'),
 
-		'comment' => array('censor', 'ipban', 'noflood', 'php', 'akismet'),
+		'comment'  => array('ipban', 'censor', 'noflood', 'php', 'akismet'),
 
-		'search'  => array('ipban', 'noflood'),
+		'search'   => array('ipban', 'noflood'),
+
+		'api_call' => array('ipban', 'censor', 'noflood', 'php'),
 
 	),
 
