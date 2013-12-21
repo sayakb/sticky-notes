@@ -87,26 +87,6 @@
 
 					<div class="control-group">
 						{{
-							Form::label('paste_age', Lang::get('admin.paste_age'), array(
-								'class' => 'control-label span2'
-							))
-						}}
-
-						<div class="span9">
-							{{
-								Form::select('paste_age', Paste::getExpiration('admin'), $site->general->pasteAge, array(
-									'class' => 'input-xxlarge'
-								))
-							}}
-
-							<div class="help-block">
-								{{ Lang::get('admin.paste_age_exp') }}
-							</div>
-						</div>
-					</div>
-
-					<div class="control-group">
-						{{
 							Form::label('per_page', Lang::get('admin.list_length'), array(
 								'class' => 'control-label span2'
 							))
@@ -167,6 +147,26 @@
 
 							<div class="help-block">
 								{{ Lang::get('admin.private_site_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						{{
+							Form::label('paste_age', Lang::get('admin.paste_age'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::select('paste_age', Paste::getExpiration('admin'), $site->general->pasteAge, array(
+									'class' => 'input-xxlarge'
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.paste_age_exp') }}
 							</div>
 						</div>
 					</div>
