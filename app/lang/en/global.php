@@ -53,5 +53,6 @@ return array(
 	"action_confirm"    => "Are you sure you want to perform this action?",
 	"not_available"     => "N/A",
 	"feed"              => "Feed",
+	"comments"          => "Comments",
 
 );

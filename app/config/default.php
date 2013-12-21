@@ -29,6 +29,7 @@ return array(
 		'proxy'               => '0',
 		'privateSite'         => '0',
 		'pasteSearch'         => '1',
+		'comments'            => '1',
 	),
 
 	'antispam'                => (object) array(

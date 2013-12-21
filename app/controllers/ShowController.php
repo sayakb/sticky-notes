@@ -181,34 +181,41 @@ class ShowController extends BaseController {
 	 */
 	public function postComment()
 	{
-		// Run an antispam check first, before doing anything
-		$antispam = Antispam::make('comment', 'comment');
-
-		if ($antispam->passes())
+		if (Site::config('general')->comments)
 		{
-			// Get the associated paste
-			$paste = Paste::findOrFail(Input::get('id'));
+			// Run an antispam check first, before doing anything
+			$antispam = Antispam::make('comment', 'comment');
 
-			// Insert the new comment
-			if ($paste != NULL)
+			if ($antispam->passes())
 			{
-				$comment = new Comment;
+				// Get the associated paste
+				$paste = Paste::findOrFail(Input::get('id'));
 
-				$comment->paste_id = $paste->id;
-				$comment->data = Input::get('comment');
-				$comment->author = Auth::check() ? Auth::user()->username : Lang::get('global.anonymous');
-				$comment->timestamp = time();
+				// Insert the new comment
+				if ($paste != NULL)
+				{
+					$comment = new Comment;
 
-				$comment->save();
+					$comment->paste_id = $paste->id;
+					$comment->data = Input::get('comment');
+					$comment->author = Auth::check() ? Auth::user()->username : Lang::get('global.anonymous');
+					$comment->timestamp = time();
+
+					$comment->save();
+				}
+
+				return Redirect::to(URL::previous());
 			}
+			else
+			{
+				Session::flash('messages.error', $antispam->message());
 
-			return Redirect::to(URL::previous());
+				return Redirect::to(URL::previous())->withInput();
+			}
 		}
 		else
 		{
-			Session::flash('messages.error', $antispam->message());
-
-			return Redirect::to(URL::previous())->withInput();
+			App::abort(401); // Unauthorized
 		}
 	}
 
