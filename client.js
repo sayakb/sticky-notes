@@ -89,7 +89,7 @@ function showPaste()
 
 				if (result.error === undefined)
 				{
-					$('#data').html(result.data);
+					$('#data').text(result.data);
 					prettyPrint();
 
 					if (result.title == null)
@@ -193,7 +193,7 @@ function parseError(error)
 		'err_lang_required': 'Paste language was not specified',
 		'err_lang_invalid': 'An invalid language was used',
 		'err_expire_integer': 'The paste expiration value must be an integer',
-		'err_expire_min_zero': 'The expire field cannot be less than zero',
+		'err_expire_invalid': 'An invalid expiration time was used',
 		'err_not_found': 'Paste not found',
 		'err_invalid_hash': 'Invalid hash code for a private paste',
 		'err_password_required': 'Password required to view the paste',
