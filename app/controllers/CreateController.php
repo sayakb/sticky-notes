@@ -66,7 +66,7 @@ class CreateController extends BaseController {
 			'title'     => 'max:30',
 			'data'      => 'required',
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
-			'expire'    => 'in:'.implode(',', array_keys(Config::get('expire')))
+			'expire'    => 'in:'.Paste::getExpiration('create', TRUE),
 		));
 
 		// Generate anti-spam modules
@@ -208,7 +208,7 @@ class CreateController extends BaseController {
 		// will use the data from the old paste
 		$validator = Validator::make(Input::all(), array(
 			'data'    => 'required',
-			'expire'  => 'in:'.implode(',', array_keys(Config::get('expire')))
+			'expire'  => 'in:'.Paste::getExpiration('create', TRUE),
 		));
 
 		// Generate anti-spam modules

@@ -79,7 +79,12 @@ return array(
 	"expire_1day"           => "1 day",
 	"expire_1week"          => "1 week",
 	"expire_1month"         => "1 month",
+	"expire_1year"          => "1 year",
 	"expire_forever"        => "Keep forever",
+	"expiration"            => "Expiration",
+	"expiration_exp"        => "This setting determines the maximum age for pastes created on this site.",
+	"pastes_expire"         => "Users must set a finite expiration time",
+	"pastes_donot_expire"   => "Users can create pastes that do not expire",
 	"ip_tracking"           => "IP tracking",
 	"ip_tracking_exp"       => "Set this option to trust proxy headers if your site is behind a proxy ".
 	                           "intermediary (such as a load balancer) to get the actual client IP address.",

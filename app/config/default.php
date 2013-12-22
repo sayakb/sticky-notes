@@ -30,6 +30,7 @@ return array(
 		'privateSite'         => '0',
 		'pasteSearch'         => '1',
 		'comments'            => '1',
+		'noExpire'            => '1',
 	),
 
 	'antispam'                => (object) array(

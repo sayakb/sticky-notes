@@ -96,6 +96,9 @@ class Paste extends Eloquent {
 	 */
 	public static function createNew($data)
 	{
+		// Get the site's configuration
+		$config = Site::config('general');
+
 		// Set the paste protected flag
 		$protected = ! empty($data['password']);
 
@@ -115,7 +118,7 @@ class Paste extends Eloquent {
 		$hash = static::getHash();
 
 		// If the site is set as a private site, default $private to true
-		if (Site::config('general')->privateSite)
+		if ($config->privateSite)
 		{
 			$private = TRUE;
 		}
@@ -147,9 +150,9 @@ class Paste extends Eloquent {
 		}
 
 		// Set the paste expiration time default
-		if ( ! isset($data['expire']))
+		if ( ! isset($data['expire']) OR $data['expire'] < 0)
 		{
-			$data['expire'] = 0;
+			$data['expire'] = $config->pasteAge;
 		}
 
 		// Insert the new paste
@@ -167,7 +170,7 @@ class Paste extends Eloquent {
 		$paste->author    = $author;
 		$paste->author_id = $authorId;
 		$paste->timestamp = time();
-		$paste->expire    = $data['expire'] > 0 ? $data['expire'] + time() : 0;
+		$paste->expire    = $data['expire'];
 		$paste->ip        = Request::getClientIp();
 		$paste->hits      = 0;
 
@@ -238,19 +241,41 @@ class Paste extends Eloquent {
 	 * Fetches available expiration times for a paste
 	 *
 	 * @static
-	 * @param  string  $langKey
+	 * @param  string  $category
+	 * @param  bool    $csv
 	 * @return array
 	 */
-	public static function getExpiration($langKey = 'create')
+	public static function getExpiration($category = 'create', $csv = FALSE)
 	{
-		$times = Config::get('expire');
-
-		foreach ($times as $time => $label)
+		return Cache::rememberForever("expire.{$category}.{$csv}", function() use ($category, $csv)
 		{
-			$times[$time] = Lang::get("{$langKey}.{$label}");
-		}
+			$times = array();
 
-		return $times;
+			// Populate the expiration times
+			foreach (Config::get('expire') as $time => $properties)
+			{
+				// First property represents the label
+				$label = $properties[0];
+
+				// Second property represents whether the expire time
+				// is enabled or not
+				$condition = $properties[1];
+
+				// Add the expire time if condition evaluates to true
+				if ($condition)
+				{
+					$times[$time] = Lang::get("{$category}.{$label}");
+				}
+			}
+
+			// Do we just want CSV?
+			if ($csv)
+			{
+				$times = implode(',', array_keys($times));
+			}
+
+			return $times;
+		});
 	}
 
 }

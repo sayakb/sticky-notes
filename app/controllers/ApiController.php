@@ -199,7 +199,7 @@ class ApiController extends BaseController {
 			'language.required'   => 'lang_required',
 			'language.in'         => 'lang_invalid',
 			'expire.integer'      => 'expire_integer',
-			'expire.min'          => 'expire_min_zero',
+			'expire.in'           => 'expire_invalid',
 		);
 
 		// Define validation rules
@@ -207,7 +207,7 @@ class ApiController extends BaseController {
 			'title'     => 'max:30',
 			'data'      => 'required',
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
-			'expire'    => 'integer|min:0',
+			'expire'    => 'integer|in:'.Paste::getExpiration('create', TRUE),
 		), $custom);
 
 		// Run validations
