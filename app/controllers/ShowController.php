@@ -118,7 +118,7 @@ class ShowController extends BaseController {
 			default:
 				$data = array(
 					'paste'      => $paste,
-					'revisions'  => $paste->revisions(),
+					'revisions'  => $paste->revisions,
 					'comments'   => $paste->comments()->paginate(Site::config('general')->perPage),
 				);
 
