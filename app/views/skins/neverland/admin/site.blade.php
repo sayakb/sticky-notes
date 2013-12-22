@@ -173,6 +173,29 @@
 
 					<div class="control-group">
 						{{
+							Form::label('no_expire', Lang::get('admin.expiration'), array(
+								'class' => 'control-label span2'
+							))
+						}}
+
+						<div class="span9">
+							{{
+								Form::select('no_expire', array(
+									'0' => Lang::get('admin.pastes_expire'),
+									'1' => Lang::get('admin.pastes_donot_expire'),
+								), $site->general->noExpire, array(
+									'class' => 'input-xxlarge'
+								))
+							}}
+
+							<div class="help-block">
+								{{ Lang::get('admin.expiration_exp') }}
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						{{
 							Form::label('paste_search', Lang::get('admin.paste_search'), array(
 								'class' => 'control-label span2'
 							))
