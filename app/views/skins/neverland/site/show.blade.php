@@ -6,9 +6,9 @@
 	<section id="show">
 		@include('skins.neverland.site.paste')
 
-		<div class="row-fluid">
-			<div class="span12">
-				@if ($revisions->count() > 0)
+		@if ($revisions->count() > 0)
+			<div class="row-fluid">
+				<div class="span12">
 					<h4>
 						<i class="icon-time icon-blue"></i>
 						{{ Lang::get('show.version_history') }}
@@ -67,9 +67,9 @@
 							</table>
 						</div>
 					</fieldset>
-				@endif
+				</div>
 			</div>
-		</div>
+		@endif
 
 		@if ($site->general->comments)
 			<div class="row-fluid">
