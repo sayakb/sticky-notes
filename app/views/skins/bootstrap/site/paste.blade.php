@@ -88,7 +88,11 @@
 		</div>
 
 		<div class="well well-sm well-white pre">
-			{{ Highlighter::make()->parse($paste->id.'show', $paste->data, $paste->language) }}
+			@if ($context == 'ShowController')
+				{{ Highlighter::make()->parse($paste->id.'show', $paste->data, $paste->language) }}
+			@elseif ($context == 'ListController')
+				{{ Highlighter::make()->parse($paste->id.'show', Paste::getAbstract($paste->data), $paste->language) }}
+			@endif
 		</div>
 
 		<div class="pre-info pre-footer">
