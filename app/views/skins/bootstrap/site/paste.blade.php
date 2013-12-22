@@ -91,7 +91,7 @@
 			@if ($context == 'ShowController')
 				{{ Highlighter::make()->parse($paste->id.'show', $paste->data, $paste->language) }}
 			@elseif ($context == 'ListController')
-				{{ Highlighter::make()->parse($paste->id.'show', Paste::getAbstract($paste->data), $paste->language) }}
+				{{ Highlighter::make()->parse($paste->id.'list', Paste::getAbstract($paste->data), $paste->language) }}
 			@endif
 		</div>
 
