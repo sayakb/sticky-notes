@@ -42,8 +42,8 @@
 					{{ Form::hidden('id', $paste->id) }}
 					{{ Form::close() }}
 
-					@if (count($paste->comments) > 0)
-						@foreach ($paste->comments as $comment)
+					@if ($comments->count() > 0)
+						@foreach ($comments as $comment)
 							<div class="well well-sm well-white">
 								<p>
 									{{{ $comment->data }}}
@@ -68,6 +68,8 @@
 								</div>
 							</div>
 						@endforeach
+
+						{{ $comments->links() }}
 					@endif
 				</div>
 			</div>
@@ -75,7 +77,7 @@
 
 		<div class="row">
 			<div class="col-sm-12">
-				@if (count($paste->revisions) > 0)
+				@if ($revisions->count() > 0)
 					<fieldset class="well well-sm well-white well-history">
 						<h4>
 							<span class="glyphicon glyphicon-time"></span>
@@ -101,7 +103,7 @@
 								</thead>
 
 								<tbody>
-									@foreach ($paste->revisions as $revision)
+									@foreach ($revisions as $revision)
 										<tr>
 											<td>
 												{{

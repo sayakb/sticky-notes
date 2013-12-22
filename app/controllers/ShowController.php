@@ -116,7 +116,13 @@ class ShowController extends BaseController {
 				break;
 
 			default:
-				return View::make('site/show', array('paste' => $paste));
+				$data = array(
+					'paste'      => $paste,
+					'revisions'  => $paste->revisions(),
+					'comments'   => $paste->comments()->paginate(Site::config('general')->perPage),
+				);
+
+				return View::make('site/show', $data);
 		}
 
 		// Redirect user to previous page
