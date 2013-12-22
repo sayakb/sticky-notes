@@ -6,9 +6,9 @@
 	<section id="show">
 		@include('skins.bootstrap.site.paste')
 
-		<div class="row">
-			<div class="col-sm-12">
-				@if ($revisions->count() > 0)
+		@if ($revisions->count() > 0)
+			<div class="row">
+				<div class="col-sm-12">
 					<h4>
 						<span class="glyphicon glyphicon-time"></span>
 						{{ Lang::get('show.version_history') }}
@@ -67,9 +67,9 @@
 							</table>
 						</div>
 					</fieldset>
-				@endif
+				</div>
 			</div>
-		</div>
+		@endif
 
 		@if ($site->general->comments)
 			<div class="row">
