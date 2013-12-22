@@ -6,6 +6,71 @@
 	<section id="show">
 		@include('skins.bootstrap.site.paste')
 
+		<div class="row">
+			<div class="col-sm-12">
+				@if ($revisions->count() > 0)
+					<h4>
+						<span class="glyphicon glyphicon-time"></span>
+						{{ Lang::get('show.version_history') }}
+					</h4>
+
+					<fieldset class="well well-sm well-white well-history">
+						<div class="viewport">
+							<table class="table table-striped table-responsive">
+								<colgroup>
+									<col class="col-xs-3" />
+									<col class="col-xs-3" />
+									<col class="col-xs-5" />
+									<col class="col-xs-1" />
+								</colgroup>
+
+								<thead>
+									<tr>
+										<th>{{ Lang::get('show.revision_id') }}</th>
+										<th>{{ Lang::get('global.author') }}</th>
+										<th>{{ Lang::get('show.created_at') }}</th>
+										<th></th>
+									</tr>
+								</thead>
+
+								<tbody>
+									@foreach ($revisions as $revision)
+										<tr>
+											<td>
+												{{
+													link_to($revision->urlkey, $revision->urlkey)
+												}}
+											</td>
+
+											<td>
+												{{{
+													$paste->author ?: Lang::get('global.anonymous')
+												}}}
+											</td>
+
+											<td>
+												{{
+													date('d M Y, H:i:s e', $revision->timestamp)
+												}}
+											</td>
+
+											<td class="text-right">
+												{{
+													link_to("diff/{$revision->urlkey}/{$paste->urlkey}", Lang::get('show.diff'), array(
+														'class' => 'btn btn-xs btn-default'
+													))
+												}}
+											</td>
+										</tr>
+									@endforeach
+								</tbody>
+							</table>
+						</div>
+					</fieldset>
+				@endif
+			</div>
+		</div>
+
 		@if ($site->general->comments)
 			<div class="row">
 				<div class="col-sm-12">
@@ -74,70 +139,5 @@
 				</div>
 			</div>
 		@endif
-
-		<div class="row">
-			<div class="col-sm-12">
-				@if ($revisions->count() > 0)
-					<fieldset class="well well-sm well-white well-history">
-						<h4>
-							<span class="glyphicon glyphicon-time"></span>
-							{{ Lang::get('show.version_history') }}
-						</h4>
-
-						<div class="viewport">
-							<table class="table table-striped table-responsive">
-								<colgroup>
-									<col class="col-xs-3" />
-									<col class="col-xs-3" />
-									<col class="col-xs-5" />
-									<col class="col-xs-1" />
-								</colgroup>
-
-								<thead>
-									<tr>
-										<th>{{ Lang::get('show.revision_id') }}</th>
-										<th>{{ Lang::get('global.author') }}</th>
-										<th>{{ Lang::get('show.created_at') }}</th>
-										<th></th>
-									</tr>
-								</thead>
-
-								<tbody>
-									@foreach ($revisions as $revision)
-										<tr>
-											<td>
-												{{
-													link_to($revision->urlkey, $revision->urlkey)
-												}}
-											</td>
-
-											<td>
-												{{{
-													$paste->author ?: Lang::get('global.anonymous')
-												}}}
-											</td>
-
-											<td>
-												{{
-													date('d M Y, H:i:s e', $revision->timestamp)
-												}}
-											</td>
-
-											<td class="text-right">
-												{{
-													link_to("diff/{$revision->urlkey}/{$paste->urlkey}", Lang::get('show.diff'), array(
-														'class' => 'btn btn-xs btn-default'
-													))
-												}}
-											</td>
-										</tr>
-									@endforeach
-								</tbody>
-							</table>
-						</div>
-					</fieldset>
-				@endif
-			</div>
-		</div>
 	</section>
 @stop
