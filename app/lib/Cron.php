@@ -61,13 +61,16 @@ class Cron {
 				if ($pastes->count() > 0)
 				{
 					// Build the expired pastes array
+					// Also delete associated comments
 					foreach($pastes as $paste)
 					{
 						$expired[] = $paste->urlkey;
+
+						$paste->comments()->delete();
 					}
 
 					// Remove expired pastes
-					Paste::whereIn('urlkey', $expired)->delete();
+					$pastes->delete();
 
 					// Remove expired revisions
 					Revision::whereIn('urlkey', $expired)->delete();

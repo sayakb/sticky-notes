@@ -100,6 +100,8 @@ class AdminController extends BaseController {
 				case 'delete':
 					Revision::where('urlkey', $paste->urlkey)->delete();
 
+					$paste->comments()->delete();
+
 					$paste->delete();
 
 					Session::flash('messages.success', Lang::get('admin.paste_deleted'));

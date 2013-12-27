@@ -287,6 +287,11 @@ class UserController extends BaseController {
 				'author' => $user->username,
 			));
 
+			// Update cached username in the comments table
+			Comment::where('author', $origUsername)->update(array(
+				'author' => $user->username,
+			));
+
 			Session::flash('messages.success', Lang::get('user.profile_saved'));
 
 			return Redirect::to('user/profile');
