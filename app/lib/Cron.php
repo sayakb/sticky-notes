@@ -15,7 +15,6 @@
  */
 
 use Cache;
-use DB;
 use Paste;
 use Revision;
 use Schema;
@@ -57,12 +56,9 @@ class Cron {
 				$expired = array();
 
 				// Retrieve expired pastes
-				$pastes = DB::table('main')->select('urlkey')
-				                           ->where('expire', '>', 0)
-				                           ->where('expire', '<', time())
-				                           ->get();
+				$pastes = Paste::where('expire', '>', 0)->where('expire', '<', time())->get();
 
-				if (count($pastes) > 0)
+				if ($pastes->count() > 0)
 				{
 					// Build the expired pastes array
 					foreach($pastes as $paste)
