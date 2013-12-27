@@ -203,7 +203,7 @@ class ShowController extends BaseController {
 					$comment = new Comment;
 
 					$comment->paste_id = $paste->id;
-					$comment->data = Input::get('comment');
+					$comment->data = nl2br(strip_tags(Input::get('comment')));
 					$comment->author = Auth::check() ? Auth::user()->username : Lang::get('global.anonymous');
 					$comment->timestamp = time();
 
