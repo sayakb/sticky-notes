@@ -189,10 +189,21 @@ class ShowController extends BaseController {
 	{
 		if (Site::config('general')->comments)
 		{
-			// Run an antispam check first, before doing anything
+			// Define validation rules
+			$validator = Validator::make(Input::all(), array(
+				'comment' => 'required|min:5',
+			));
+
+			// Generate anti-spam modules
 			$antispam = Antispam::make('comment', 'comment');
 
-			if ($antispam->passes())
+			// Run validations
+			$resultValidation = $validator->passes();
+
+			// Execute antispam services
+			$resultAntispam = $antispam->passes();
+
+			if ($resultValidation AND $resultAntispam)
 			{
 				// Get the associated paste
 				$paste = Paste::findOrFail(Input::get('id'));
@@ -214,7 +225,15 @@ class ShowController extends BaseController {
 			}
 			else
 			{
-				Session::flash('messages.error', $antispam->message());
+				// Set the error message as flashdata
+				if ( ! $resultValidation)
+				{
+					Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+				}
+				else if ( ! $resultAntispam)
+				{
+					Session::flash('messages.error', $antispam->message());
+				}
 
 				return Redirect::to(URL::previous())->withInput();
 			}
