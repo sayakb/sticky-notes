@@ -111,7 +111,7 @@
 						@foreach ($comments as $comment)
 							<div class="well well-small well-white">
 								<p>
-									{{{ $comment->data }}}
+									{{ $comment->data }}
 								</p>
 
 								<small>
