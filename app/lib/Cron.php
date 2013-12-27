@@ -15,7 +15,9 @@
  */
 
 use Cache;
+use DB;
 use Paste;
+use Revision;
 use Schema;
 use Site;
 
@@ -52,10 +54,28 @@ class Cron {
 		{
 			if (System::installed())
 			{
-				// Remove expired pastes
-				Paste::where('expire', '>', 0)->where('expire', '<', time())->delete();
+				$expired = array();
 
-				// Add more cron tasks here..
+				// Retrieve expired pastes
+				$pastes = DB::table('main')->select('urlkey')
+				                           ->where('expire', '>', 0)
+				                           ->where('expire', '<', time())
+				                           ->get();
+
+				if (count($pastes) > 0)
+				{
+					// Build the expired pastes array
+					foreach($pastes as $paste)
+					{
+						$expired[] = $paste->urlkey;
+					}
+
+					// Remove expired pastes
+					Paste::whereIn('urlkey', $expired)->delete();
+
+					// Remove expired revisions
+					Revision::whereIn('urlkey', $expired)->delete();
+				}
 
 				// Crun run successfully
 				return TRUE;
