@@ -15,8 +15,8 @@
  */
 
 use Cache;
+use Cookie;
 use GeSHi;
-use Input;
 
 /**
  * Highlighter class
@@ -145,17 +145,23 @@ class Highlighter {
 		natcasesort($langs);
 
 		// Now, get the language list from the cookie
-		$historyLangs = Input::cookie('languages');
+		$historyLangs = Cookie::get('languages');
 
 		if ($historyLangs != NULL)
 		{
 			foreach ($historyLangs as $lang)
 			{
-				$langText = $langs[$lang];
+				if (isset($langs[$lang]))
+				{
+					// Get the language description
+					$langText = $langs[$lang];
 
-				unset($langs[$lang]);
+					// Remove the language from the array
+					unset($langs[$lang]);
 
-				$langs = array_merge(array($lang => $langText), $langs);
+					// Add the language to the top of the array
+					$langs = array_merge(array($lang => $langText), $langs);
+				}
 			}
 		}
 

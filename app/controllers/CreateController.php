@@ -44,7 +44,7 @@ class CreateController extends BaseController {
 		);
 
 		// Get the default language from cookie
-		$history = Input::cookie('languages');
+		$history = Cookie::get('languages');
 
 		if (is_array($history))
 		{
@@ -81,10 +81,13 @@ class CreateController extends BaseController {
 		// Get the paste language. We use it to store a language history
 		$language = Input::get('language');
 
-		$historyLangs = Input::cookie('languages');
+		$historyLangs = Cookie::get('languages');
+
+		// History languages must always be an array
+		$historyLangs = is_array($historyLangs) ? $historyLangs : array();
 
 		// No dulicates allowed in the history
-		if (is_array($historyLangs) AND in_array($language, $historyLangs))
+		if (in_array($language, $historyLangs))
 		{
 			$key = array_search($language, $historyLangs);
 
