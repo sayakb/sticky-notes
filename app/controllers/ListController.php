@@ -75,19 +75,27 @@ class ListController extends BaseController {
 		switch ($age)
 		{
 			case 'week':
+
 				$filter = $time - 1814400;
+
 				break;
 
 			case 'month':
+
 				$filter = $time - 7776000;
+
 				break;
 
 			case 'year':
+
 				$filter = $time - 94608000;
+
 				break;
 
 			case 'all':
+
 				$filter = 0;
+
 				break;
 		}
 

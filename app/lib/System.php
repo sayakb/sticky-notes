@@ -15,6 +15,7 @@
  */
 
 use File;
+use Input;
 use Lang;
 use Route;
 use Session;
@@ -165,14 +166,15 @@ class System {
 	}
 
 	/**
-	 * Gets the name of the current action
+	 * Gets the name of the current action.
+	 * We don't return anything if we are in an error flow
 	 *
 	 * @static
 	 * @return string
 	 */
 	public static function action()
 	{
-		if (static::$route == NULL)
+		if (static::$route == NULL AND ! Input::has('e'))
 		{
 			$action = Route::currentRouteAction();
 

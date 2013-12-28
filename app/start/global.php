@@ -143,12 +143,16 @@ App::error(function($exception, $code)
 	switch ($type)
 	{
 		case 'Illuminate\Session\TokenMismatchException':
+
 			$code = 403;
+
 			break;
 
 		case 'Illuminate\Database\Eloquent\ModelNotFoundException':
 		case 'InvalidArgumentException':
+
 			$code = 404;
+
 			break;
 	}
 
@@ -161,10 +165,13 @@ App::error(function($exception, $code)
 		case 405:
 		case 418:
 		case 503:
+
 			$data['errCode'] = $code;
+
 			break;
 
 		default:
+
 			if (Config::get('app.debug'))
 			{
 				return;
@@ -176,11 +183,12 @@ App::error(function($exception, $code)
 				{
 					Cache::flush();
 
-					return Redirect::to(Request::url().'?e=1');
+					return Redirect::to(URL::current().'?e=1');
 				}
 
 				$data['errCode'] = 'default';
 			}
+
 			break;
 	}
 

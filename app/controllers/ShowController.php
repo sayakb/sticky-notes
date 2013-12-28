@@ -78,6 +78,7 @@ class ShowController extends BaseController {
 		switch ($action)
 		{
 			case 'toggle':
+
 				if ($owner)
 				{
 					Revision::where('urlkey', $paste->urlkey)->delete();
@@ -92,6 +93,7 @@ class ShowController extends BaseController {
 				break;
 
 			case 'raw':
+
 				$response = Response::make($paste->data);
 
 				$response->header('Content-Type', 'text/plain');
@@ -99,6 +101,7 @@ class ShowController extends BaseController {
 				return $response;
 
 			case 'delete':
+
 				if (is_numeric($extra))
 				{
 					$comment = Comment::findOrFail($extra);
@@ -116,6 +119,7 @@ class ShowController extends BaseController {
 				break;
 
 			default:
+
 				$data = array(
 					'paste'      => $paste,
 					'revisions'  => $paste->revisions,

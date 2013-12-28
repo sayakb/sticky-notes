@@ -369,6 +369,7 @@ class Setup {
 			switch ($category)
 			{
 				case 'dbTest':
+
 					$error = sprintf(Lang::get('setup.test_fail'), $e->getMessage());
 
 					Session::flash('messages.error', $error);
@@ -376,6 +377,7 @@ class Setup {
 					return Redirect::to('setup/install');
 
 				case 'mainProcess':
+
 					Session::put('setup.error', $e->getMessage());
 
 					return '-1||'.Lang::get('setup.error_occurred');

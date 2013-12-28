@@ -80,6 +80,7 @@ class AdminController extends BaseController {
 			switch ($action)
 			{
 				case 'rempass':
+
 					$paste->password = NULL;
 
 					$paste->save();
@@ -87,6 +88,7 @@ class AdminController extends BaseController {
 					return Redirect::to(URL::previous());
 
 				case 'toggle':
+
 					Revision::where('urlkey', $paste->urlkey)->delete();
 
 					$paste->private = $paste->private ? 0 : 1;
@@ -98,6 +100,7 @@ class AdminController extends BaseController {
 					return Redirect::to(URL::previous());
 
 				case 'delete':
+
 					Revision::where('urlkey', $paste->urlkey)->delete();
 
 					$paste->comments()->delete();
@@ -161,6 +164,7 @@ class AdminController extends BaseController {
 		switch ($action)
 		{
 			case 'create':
+
 				$data = array(
 					'user'     => new User,
 					'founder'  => FALSE,
@@ -169,6 +173,7 @@ class AdminController extends BaseController {
 				return View::make('admin/user', $data);
 
 			case 'delete':
+
 				// Cannot delete founder user or own account
 				if ($user->id != 1 AND $user->id != Auth::user()->id)
 				{
@@ -571,6 +576,7 @@ class AdminController extends BaseController {
 		switch ($action)
 		{
 			case 'list':
+
 				foreach ($skins as $skin)
 				{
 					if (File::exists(app_path()."/views/skins/{$skin}/{$skin}.info"))
@@ -604,6 +610,7 @@ class AdminController extends BaseController {
 				return View::make('admin/skin', array('skins' => $list));
 
 			case 'set':
+
 				if (File::exists(app_path()."/views/skins/{$skin}/{$skin}.info"))
 				{
 					$info = @json_decode(File::get(app_path()."/views/skins/{$skin}/{$skin}.info"), TRUE);
@@ -632,6 +639,7 @@ class AdminController extends BaseController {
 				return Redirect::to('admin/skin');
 
 			case 'preview':
+
 				if (File::exists(app_path()."/views/skins/{$skin}/{$skin}.png"))
 				{
 					$preview = File::get(app_path()."/views/skins/{$skin}/{$skin}.png");

@@ -39,10 +39,13 @@ class ApiController extends BaseController {
 		{
 			case 'xml':
 			case 'json':
+
 				break;
 
 			default:
+
 				header('HTTP/1.1 400 Bad Request', TRUE, 400);
+
 				exit;
 		}
 	}
@@ -61,6 +64,7 @@ class ApiController extends BaseController {
 		switch ($param)
 		{
 			case 'language':
+
 				$languages = Highlighter::make()->languages();
 
 				$values = array_keys($languages);
@@ -68,6 +72,7 @@ class ApiController extends BaseController {
 				break;
 
 			case 'expire':
+
 				$expire = Paste::getExpiration();
 
 				$values = array_keys($expire);
@@ -75,6 +80,7 @@ class ApiController extends BaseController {
 				break;
 
 			default:
+
 				return $api->error('invalid_param', 404);
 		}
 

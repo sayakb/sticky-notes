@@ -91,11 +91,15 @@ class API {
 		switch ($this->mode)
 		{
 			case 'xml':
+
 				$response->header('Content-Type', 'text/xml');
+
 				break;
 
 			case 'json':
+
 				$response->header('Content-Type', 'application/json');
+
 				break;
 		}
 

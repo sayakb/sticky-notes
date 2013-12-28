@@ -171,15 +171,21 @@ class View extends \Illuminate\Support\Facades\View {
 						switch ($bindings[0])
 						{
 							case 'role':
+
 								$flags = User::getRoles();
+
 								break;
 
 							case 'config':
+
 								$flags = Site::config('general');
+
 								break;
 
 							default:
+
 								$flags = NULL;
+
 								break;
 						}
 

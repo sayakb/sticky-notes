@@ -55,6 +55,7 @@ class SetupController extends BaseController {
 		switch ($method)
 		{
 			case 'web':
+
 				$data = array(
 					'error'       => Session::get('messages.error'),
 					'success'     => Session::get('messages.success'),
@@ -63,12 +64,15 @@ class SetupController extends BaseController {
 				return View::make("setup/install/stage{$stage}", $data);
 
 			case 'ajax':
+
 				return Setup::install($action);
 
 			case 'error':
+
 				return View::make('setup/error');
 
 			default:
+
 				App::abort(404); // Not found
 		}
 	}
