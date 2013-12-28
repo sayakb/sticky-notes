@@ -70,7 +70,7 @@ class Cron {
 					}
 
 					// Remove expired pastes
-					$pastes->delete();
+					Paste::whereIn('urlkey', $expired)->delete();
 
 					// Remove expired revisions
 					Revision::whereIn('urlkey', $expired)->delete();
