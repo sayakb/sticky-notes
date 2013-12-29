@@ -195,7 +195,7 @@ class View extends \Illuminate\Support\Facades\View {
 
 						// Do not parse the menu item if the flag does not
 						// evaluate to true
-						if ($flags != NULL)
+						if ( ! is_null($flags))
 						{
 							if ( ! $flags->$bindings[1] XOR $invert)
 							{

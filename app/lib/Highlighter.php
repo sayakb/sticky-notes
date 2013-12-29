@@ -147,7 +147,7 @@ class Highlighter {
 		// Now, get the language list from the cookie
 		$historyLangs = Cookie::get('languages');
 
-		if ($historyLangs != NULL)
+		if ( ! is_null($historyLangs))
 		{
 			foreach ($historyLangs as $lang)
 			{

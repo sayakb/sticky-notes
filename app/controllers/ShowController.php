@@ -214,7 +214,7 @@ class ShowController extends BaseController {
 				$paste = Paste::findOrFail(Input::get('id'));
 
 				// Insert the new comment
-				if ($paste != NULL)
+				if ( ! is_null($paste))
 				{
 					$comment = new Comment;
 

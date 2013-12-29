@@ -174,7 +174,7 @@ class System {
 	 */
 	public static function action()
 	{
-		if (static::$route == NULL AND ! Input::has('e'))
+		if (is_null(static::$route) AND ! Input::has('e'))
 		{
 			$action = Route::currentRouteAction();
 
