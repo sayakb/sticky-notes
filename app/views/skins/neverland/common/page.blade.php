@@ -58,6 +58,10 @@
 			<!-- Please retain the following copyright notice. See http://opensource.org/licenses/BSD-3-Clause for details -->
 			<p><a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2013 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.</p>
 
+			@if ($active AND $role->admin)
+				<small>{{ sprintf(Lang::get('global.statistics'), microtime(true) - LARAVEL_START, count(DB::getQueryLog())) }}</small>
+			@endif
+
 			@if (Antispam::flags()->php)
 				<!-- Honeypot, do not click! -->
 				<a href="http://www.ssdfreaks.com/household.php?to=857"><!-- agreement --></a>
