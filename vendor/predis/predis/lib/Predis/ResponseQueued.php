@@ -32,7 +32,7 @@ class ResponseQueued implements ResponseObjectInterface
     /**
      * Returns the value of the specified property.
      *
-     * @param string $property Name of the property.
+     * @param  string $property Name of the property.
      * @return mixed
      */
     public function __get($property)
@@ -43,8 +43,8 @@ class ResponseQueued implements ResponseObjectInterface
     /**
      * Checks if the specified property is set.
      *
-     * @param string $property Name of the property.
-     * @return Boolean
+     * @param  string $property Name of the property.
+     * @return bool
      */
     public function __isset($property)
     {

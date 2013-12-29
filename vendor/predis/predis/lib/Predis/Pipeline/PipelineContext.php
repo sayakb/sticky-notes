@@ -34,7 +34,7 @@ class PipelineContext implements BasicClientInterface, ExecutableContextInterfac
     private $running = false;
 
     /**
-     * @param ClientInterface $client Client instance used by the context.
+     * @param ClientInterface           $client   Client instance used by the context.
      * @param PipelineExecutorInterface $executor Pipeline executor instace.
      */
     public function __construct(ClientInterface $client, PipelineExecutorInterface $executor = null)
@@ -48,7 +48,7 @@ class PipelineContext implements BasicClientInterface, ExecutableContextInterfac
      * Returns a pipeline executor depending on the kind of the underlying
      * connection and the passed options.
      *
-     * @param ClientInterface $client Client instance used by the context.
+     * @param  ClientInterface           $client Client instance used by the context.
      * @return PipelineExecutorInterface
      */
     protected function createExecutor(ClientInterface $client)
@@ -65,9 +65,9 @@ class PipelineContext implements BasicClientInterface, ExecutableContextInterfac
     /**
      * Queues a command into the pipeline buffer.
      *
-     * @param string $method Command ID.
-     * @param array $arguments Arguments for the command.
-     * @return PipelineContext
+     * @param string $method    Command ID.
+     * @param array  $arguments Arguments for the command.
+     * @return $this
      */
     public function __call($method, $arguments)
     {
@@ -91,16 +91,19 @@ class PipelineContext implements BasicClientInterface, ExecutableContextInterfac
      * Queues a command instance into the pipeline buffer.
      *
      * @param CommandInterface $command Command to queue in the buffer.
+     * @return $this
      */
     public function executeCommand(CommandInterface $command)
     {
         $this->recordCommand($command);
+
+        return $this;
     }
 
     /**
      * Flushes the buffer that holds the queued commands.
      *
-     * @param Boolean $send Specifies if the commands in the buffer should be sent to Redis.
+     * @param  bool            $send Specifies if the commands in the buffer should be sent to Redis.
      * @return PipelineContext
      */
     public function flushPipeline($send = true)
@@ -119,8 +122,8 @@ class PipelineContext implements BasicClientInterface, ExecutableContextInterfac
     /**
      * Marks the running status of the pipeline.
      *
-     * @param Boolean $bool True if the pipeline is running.
-     *                      False if the pipeline is not running.
+     * @param bool $bool True if the pipeline is running.
+     *                   False if the pipeline is not running.
      */
     private function setRunning($bool)
     {
@@ -134,7 +137,7 @@ class PipelineContext implements BasicClientInterface, ExecutableContextInterfac
     /**
      * Handles the actual execution of the whole pipeline.
      *
-     * @param mixed $callable Optional callback for execution.
+     * @param  mixed $callable Optional callback for execution.
      * @return array
      */
     public function execute($callable = null)

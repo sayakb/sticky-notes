@@ -398,7 +398,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.8';
+    const VERSION = '4.1.11';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -523,10 +523,10 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public function registerDeferredProvider($provider, $service = null)
     {
-        $this->register($instance = new $provider($this));
         if ($service) {
             unset($this->deferredServices[$service]);
         }
+        $this->register($instance = new $provider($this));
         if (!$this->booted) {
             $this->booting(function () use($instance) {
                 $instance->boot();
@@ -3717,9 +3717,13 @@ class Filesystem
     public function delete($paths)
     {
         $paths = is_array($paths) ? $paths : func_get_args();
+        $success = true;
         foreach ($paths as $path) {
-            @unlink($path);
+            if (!@unlink($path)) {
+                $success = false;
+            }
         }
+        return $success;
     }
     public function move($path, $target)
     {
@@ -4190,6 +4194,9 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         $this->events = $events;
         $this->routes = new RouteCollection();
         $this->container = $container ?: new Container();
+        $this->bind('_missing', function ($v) {
+            return explode('/', $v);
+        });
     }
     public function get($uri, $action)
     {
@@ -4674,17 +4681,21 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     {
         return $this->current()->parameter($key, $default);
     }
+    public function getCurrentRoute()
+    {
+        return $this->current();
+    }
     public function current()
     {
         return $this->current;
     }
     public function currentRouteName()
     {
-        return $this->current()->getName();
+        return $this->current() ? $this->current()->getName() : null;
     }
     public function currentRouteNamed($name)
     {
-        return $this->current()->getName() == $name;
+        return $this->current() ? $this->current()->getName() == $name : false;
     }
     public function currentRouteAction()
     {
@@ -4833,6 +4844,10 @@ class Route
         list($name, $parameters) = explode(':', $filter, 2);
         return array($name, explode(',', $parameters));
     }
+    public function getParameter($name, $default = null)
+    {
+        return $this->parameter($name, $default);
+    }
     public function parameter($name, $default = null)
     {
         return array_get($this->parameters(), $name) ?: $default;
@@ -4975,9 +4990,17 @@ class Route
         $this->uri = trim($prefix, '/') . '/' . trim($this->uri, '/');
         return $this;
     }
+    public function getPath()
+    {
+        return $this->uri();
+    }
     public function uri()
     {
         return $this->uri;
+    }
+    public function getMethods()
+    {
+        return $this->methods();
     }
     public function methods()
     {
@@ -4994,6 +5017,11 @@ class Route
     public function getUri()
     {
         return $this->uri;
+    }
+    public function setUri($uri)
+    {
+        $this->uri = $uri;
+        return $this;
     }
     public function getName()
     {
@@ -5272,20 +5300,25 @@ class UrlGenerator
             return $secure ? 'https://' : 'http://';
         }
     }
-    public function route($name, $parameters = array(), $route = null)
+    public function route($name, $parameters = array(), $absolute = true, $route = null)
     {
         $route = $route ?: $this->routes->getByName($name);
         $parameters = (array) $parameters;
         if (!is_null($route)) {
-            return $this->toRoute($route, $parameters);
+            return $this->toRoute($route, $parameters, $absolute);
         } else {
             throw new InvalidArgumentException("Route [{$name}] not defined.");
         }
     }
-    protected function toRoute($route, array $parameters)
+    protected function toRoute($route, array $parameters, $absolute)
     {
         $domain = $this->getRouteDomain($route, $parameters);
-        return strtr(rawurlencode($this->replaceRouteParameters($this->trimUrl($this->getRouteRoot($route, $domain), $route->uri()), $parameters)), $this->dontEncode) . $this->getRouteQueryString($parameters);
+        $uri = strtr(rawurlencode($this->trimUrl($root = $this->replaceRoot($route, $domain, $parameters), $this->replaceRouteParameters($route->uri(), $parameters))), $this->dontEncode) . $this->getRouteQueryString($parameters);
+        return $absolute ? $uri : '/' . ltrim(str_replace($root, '', $uri), '/');
+    }
+    protected function replaceRoot($route, $domain, &$parameters)
+    {
+        return $this->replaceRouteParameters($this->getRouteRoot($route, $domain), $parameters);
     }
     protected function replaceRouteParameters($path, array &$parameters)
     {
@@ -5352,7 +5385,7 @@ class UrlGenerator
     }
     public function action($action, $parameters = array(), $absolute = true)
     {
-        return $this->route($action, $parameters, $this->routes->getByAction($action));
+        return $this->route($action, $parameters, $absolute, $this->routes->getByAction($action));
     }
     protected function getRootUrl($scheme, $root = null)
     {
@@ -6186,7 +6219,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function newQuery($excludeDeleted = true)
     {
-        $builder = new Builder($this->newBaseQueryBuilder());
+        $builder = $this->newEloquentBuilder($this->newBaseQueryBuilder());
         $builder->setModel($this)->with($this->with);
         if ($excludeDeleted && $this->softDelete) {
             $builder->whereNull($this->getQualifiedDeletedAtColumn());
@@ -6196,6 +6229,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function newQueryWithDeleted()
     {
         return $this->newQuery(false);
+    }
+    public function newEloquentBuilder($query)
+    {
+        return new Builder($query);
     }
     public function trashed()
     {
@@ -7295,9 +7332,13 @@ class SessionManager extends Manager
     {
         return $this->app['config']['session'];
     }
-    protected function getDefaultDriver()
+    public function getDefaultDriver()
     {
         return $this->app['config']['session.driver'];
+    }
+    public function setDefaultDriver($name)
+    {
+        $this->app['config']['session.driver'] = $name;
     }
 }
 namespace Illuminate\Support;
@@ -10066,14 +10107,26 @@ class Run
                     return true;
                 }
             }
-            throw new ErrorException($message, $level, 0, $file, $line);
+            $exception = new ErrorException($message, $level, 0, $file, $line);
+            if ($this->canThrowExceptions) {
+                throw $exception;
+            } else {
+                $this->handleException($exception);
+            }
         }
     }
     public function handleShutdown()
     {
-        if ($error = error_get_last()) {
+        $this->canThrowExceptions = false;
+        $error = error_get_last();
+        if ($error && $this->isLevelFatal($error['type'])) {
             $this->handleError($error['type'], $error['message'], $error['file'], $error['line']);
         }
+    }
+    private $canThrowExceptions = true;
+    private static function isLevelFatal($level)
+    {
+        return in_array($level, array(E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING));
     }
 }
 namespace Whoops\Handler;

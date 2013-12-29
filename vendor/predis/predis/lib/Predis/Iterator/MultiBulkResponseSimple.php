@@ -24,7 +24,7 @@ class MultiBulkResponseSimple extends MultiBulkResponse
 
     /**
      * @param SingleConnectionInterface $connection Connection to Redis.
-     * @param int $size Number of elements of the multibulk reply.
+     * @param int                       $size       Number of elements of the multibulk reply.
      */
     public function __construct(SingleConnectionInterface $connection, $size)
     {
@@ -49,8 +49,8 @@ class MultiBulkResponseSimple extends MultiBulkResponse
      * read from the connection by consuming the rest of the multibulk reply,
      * or simply by dropping the connection.
      *
-     * @param Boolean $drop True to synchronize the client by dropping the connection.
-     *                      False to synchronize the client by consuming the multibulk reply.
+     * @param bool $drop True to synchronize the client by dropping the connection.
+     *                   False to synchronize the client by consuming the multibulk reply.
      */
     public function sync($drop = false)
     {

@@ -23,10 +23,10 @@ abstract class CommunicationException extends PredisException
     private $connection;
 
     /**
-     * @param SingleConnectionInterface $connection Connection that generated the exception.
-     * @param string $message Error message.
-     * @param int $code Error code.
-     * @param \Exception $innerException Inner exception for wrapping the original error.
+     * @param SingleConnectionInterface $connection     Connection that generated the exception.
+     * @param string                    $message        Error message.
+     * @param int                       $code           Error code.
+     * @param \Exception                $innerException Inner exception for wrapping the original error.
      */
     public function __construct(
         SingleConnectionInterface $connection, $message = null, $code = null, \Exception $innerException = null
@@ -48,7 +48,7 @@ abstract class CommunicationException extends PredisException
     /**
      * Indicates if the receiver should reset the underlying connection.
      *
-     * @return Boolean
+     * @return bool
      */
     public function shouldResetConnection()
     {

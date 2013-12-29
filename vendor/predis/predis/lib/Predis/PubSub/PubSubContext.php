@@ -28,8 +28,8 @@ class PubSubContext extends AbstractPubSubContext
     private $options;
 
     /**
-     * @param ClientInterface $client Client instance used by the context.
-     * @param array $options Options for the context initialization.
+     * @param ClientInterface $client  Client instance used by the context.
+     * @param array           $options Options for the context initialization.
      */
     public function __construct(ClientInterface $client, Array $options = null)
     {
@@ -115,6 +115,8 @@ class PubSubContext extends AbstractPubSubContext
                 if ($response[2] === 0) {
                     $this->invalidate();
                 }
+                // The missing break here is intentional as we must process
+                // subscriptions and unsubscriptions as standard messages.
 
             case self::MESSAGE:
                 return (object) array(

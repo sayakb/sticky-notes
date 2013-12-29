@@ -24,8 +24,8 @@ interface DistributionStrategyInterface
     /**
      * Adds a node to the distributor with an optional weight.
      *
-     * @param mixed $node Node object.
-     * @param int $weight Weight for the node.
+     * @param mixed $node   Node object.
+     * @param int   $weight Weight for the node.
      */
     public function add($node, $weight = null);
 
@@ -39,6 +39,7 @@ interface DistributionStrategyInterface
     /**
      * Gets a node from the distributor using the computed hash of a key.
      *
+     * @param  mixed $key
      * @return mixed
      */
     public function get($key);
