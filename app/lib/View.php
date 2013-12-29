@@ -42,10 +42,10 @@ class View extends \Illuminate\Support\Facades\View {
 	 */
 	public static function defaults()
 	{
-		$site = Site::config('general');
+		$site = Site::config();
 
 		$defaults = array(
-			'site'       => Site::config(),
+			'site'       => $site,
 			'error'      => Session::get('messages.error'),
 			'success'    => Session::get('messages.success'),
 			'context'    => System::action(),
@@ -54,7 +54,7 @@ class View extends \Illuminate\Support\Facades\View {
 		// View can be called even before tables are available.
 		// So we check if a valid version number is available before
 		// injecting user data.
-		if (System::version($site->version) > 0)
+		if (System::version($site->general->version) > 0)
 		{
 			$defaults = array_merge($defaults, array(
 				'auth'   => Auth::user(),
