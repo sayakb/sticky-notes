@@ -54,5 +54,6 @@ return array(
 	"not_available"     => "N/A",
 	"feed"              => "Feed",
 	"comments"          => "Comments",
+	"statistics"        => "Rendered in: %.5f seconds &bull; No. of queries: %d",
 
 );

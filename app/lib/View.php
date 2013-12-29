@@ -42,19 +42,23 @@ class View extends \Illuminate\Support\Facades\View {
 	 */
 	public static function defaults()
 	{
+		// Get all site configuration
 		$site = Site::config();
+
+		// Get system active status. This is done in order to ensure
+		// that 1.x features are available
+		$active = System::version($site->general->version) > 0;
 
 		$defaults = array(
 			'site'       => $site,
+			'active'     => $active,
 			'error'      => Session::get('messages.error'),
 			'success'    => Session::get('messages.success'),
 			'context'    => System::action(),
 		);
 
-		// View can be called even before tables are available.
-		// So we check if a valid version number is available before
-		// injecting user data.
-		if (System::version($site->general->version) > 0)
+		// Inject user and role information on active systems
+		if ($active)
 		{
 			$defaults = array_merge($defaults, array(
 				'auth'   => Auth::user(),
