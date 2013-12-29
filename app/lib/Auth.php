@@ -44,7 +44,9 @@ class Auth extends \Illuminate\Support\Facades\Auth {
 	 */
 	public static function access($id)
 	{
-		return static::roles()->admin OR static::user()->id == $id;
+		$roles = static::roles();
+
+		return ! $roles->guest AND ($roles->admin OR static::user()->id == $id);
 	}
 
 	/**
