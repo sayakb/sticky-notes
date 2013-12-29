@@ -46,3 +46,6 @@ h4 {
 .jumbotron .glyphicon {
   font-size: 1.7em;
 }
+.jumbotron .img-thumbnail {
+  margin-left: 60px;
+}
