@@ -14,9 +14,11 @@
  * @filesource
  */
 
+use Client;
 use File;
 use Input;
 use Lang;
+use Request;
 use Route;
 use Session;
 use Site;
@@ -182,6 +184,29 @@ class System {
 		}
 
 		return static::$route;
+	}
+
+	/**
+	 * Submits statistics to Sticky Notes server
+	 *
+	 * @return void
+	 */
+	public static function submitStats()
+	{
+		try
+		{
+			$client = new Client();
+
+			$request = $client->post(Site::config('services')->statsUrl, NULL, array(
+				'fqdn'     => Site::config('general')->fqdn,
+				'action'   => Request::segment(2),
+				'version'  => Config::get('app.version'),
+			));
+		}
+		catch (Exception $e)
+		{
+			// Suppress the exception
+		}
 	}
 
 }

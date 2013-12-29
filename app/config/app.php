@@ -192,6 +192,12 @@ return array(
 		'URL'                           => 'Illuminate\Support\Facades\URL',
 		'Validator'                     => 'Illuminate\Support\Facades\Validator',
 
+		// PHPDiff
+		'DiffRenderer'                  => 'Diff_Renderer_Html_SideBySide',
+
+		// Guzzle
+		'Client'                        => 'Guzzle\Http\Client',
+
 		// Sayakb
 		'Captcha'                       => 'Sayakb\Captcha\Facades\Captcha',
 
@@ -214,9 +220,6 @@ return array(
 		'StickyNotesDBUserProvider'     => 'StickyNotes\Auth\StickyNotesDBUserProvider',
 		'StickyNotesLDAPUserProvider'   => 'StickyNotes\Auth\StickyNotesLDAPUserProvider',
 		'StickyNotesOAuthUserProvider'  => 'StickyNotes\Auth\StickyNotesOAuthUserProvider',
-
-		// PHPDiff
-		'DiffRenderer'                  => 'Diff_Renderer_Html_SideBySide',
 
 	),
 

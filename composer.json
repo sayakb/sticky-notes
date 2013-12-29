@@ -5,7 +5,8 @@
 	"require": {
 		"laravel/framework": "4.1.*",
 		"sayakb/akismet": "dev-master",
-		"sayakb/captcha": "dev-master"
+		"sayakb/captcha": "dev-master",
+		"guzzle/guzzle": "~3.7"
 	},
 	"autoload": {
 		"classmap": [

@@ -83,6 +83,7 @@ return array(
 		'googleAnalyticsId'   => '',
 		'googleUrlShortener'  => 'https://www.googleapis.com/urlshortener/v1/url?key=%s',
 		'googleUrlOAuth'      => 'https://www.googleapis.com/oauth2/v1/userinfo',
+		'statsUrl'            => 'http://sites.sayakbanerjee.com/sn-stats/?a=submit',
 	),
 
 );
