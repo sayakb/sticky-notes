@@ -79,6 +79,18 @@ class ApiController extends BaseController {
 
 				break;
 
+			case 'version':
+
+				$values = array(Config::get('app.version'));
+
+				break;
+
+			case 'theme':
+
+				$values = array(studly_case(Site::config('general')->skin));
+
+				break;
+
 			default:
 
 				return $api->error('invalid_param', 404);
