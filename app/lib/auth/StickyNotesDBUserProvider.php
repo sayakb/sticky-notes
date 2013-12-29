@@ -119,7 +119,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 		// Check if user is banned
 		if ( ! $this->user->active)
 		{
-			App::abort(401);
+			App::abort(403); // Forbidden
 		}
 
 		return PHPass::make()->check('User', $password, $salt, $hash);

@@ -63,12 +63,12 @@ Route::filter('auth.config', function()
 
 	if ($auth->method != 'db')
 	{
-		App::abort(401);
+		App::abort(403); // Forbidden
 	}
 
 	if (Request::segment(2) == 'register' AND ! $auth->dbAllowReg)
 	{
-		App::abort(401);
+		App::abort(403); // Forbidden
 	}
 });
 
@@ -128,7 +128,7 @@ Route::filter('admin', function()
 {
 	if (Auth::roles()->guest)
 	{
-		App::abort(401);
+		App::abort(401); // Unauthorized
 	}
 });
 
@@ -146,7 +146,7 @@ Route::filter('private', function()
 {
 	if (Site::config('general')->privateSite)
 	{
-		App::abort(401);
+		App::abort(401); // Unauthorized
 	}
 });
 

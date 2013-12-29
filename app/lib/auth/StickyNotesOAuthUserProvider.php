@@ -196,8 +196,7 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 					}
 				}
 
-				// Deny access to user
-				App::abort(403);
+				App::abort(401); // Unauthorized
 			}
 
 			// We redirect the user to Google
