@@ -202,6 +202,8 @@ class System {
 				'action'   => Request::segment(2),
 				'version'  => Config::get('app.version'),
 			));
+
+			$request->send();
 		}
 		catch (Exception $e)
 		{

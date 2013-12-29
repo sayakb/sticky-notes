@@ -104,6 +104,19 @@ class SetupController extends BaseController {
 
 			return Redirect::to('setup/install');
 		}
+
+		// Setup complete
+		if (Input::has('_finish'))
+		{
+			// Submit statistics if user acknowledged
+			if (Input::has('consent'))
+			{
+				System::submitStats();
+			}
+
+			// Redirect to login page
+			return Redirect::to('user/login');
+		}
 	}
 
 	/**
@@ -154,25 +167,42 @@ class SetupController extends BaseController {
 	 */
 	public function postUpdate()
 	{
-		// Define validation rules
-		$validator = Validator::make(Input::all(), array(
-			'version' => 'required|in:'.Setup::updateVersions(TRUE),
-		));
-
-		// Run the validator
-		if ($validator->passes())
+		// Stage 1 submitted
+		if (Input::has('_update'))
 		{
-			Session::put('setup.version', Input::get('version'));
+			// Define validation rules
+			$validator = Validator::make(Input::all(), array(
+				'version' => 'required|in:'.Setup::updateVersions(TRUE),
+			));
 
-			Session::put('setup.stage', 2);
+			// Run the validator
+			if ($validator->passes())
+			{
+				Session::put('setup.version', Input::get('version'));
 
-			return Redirect::to('setup/update');
+				Session::put('setup.stage', 2);
+
+				return Redirect::to('setup/update');
+			}
+			else
+			{
+				Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
+
+				return Redirect::to('setup/update')->withInput();
+			}
 		}
-		else
-		{
-			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
 
-			return Redirect::to('setup/update')->withInput();
+		// Setup complete
+		if (Input::has('_finish'))
+		{
+			// Submit statistics if user acknowledged
+			if (Input::has('consent'))
+			{
+				System::submitStats();
+			}
+
+			// Redirect to home page
+			return Redirect::to('/');
 		}
 	}
 
