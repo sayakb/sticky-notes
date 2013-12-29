@@ -36,7 +36,7 @@ class ListController extends BaseController {
 		$perPage = Site::config('general')->perPage;
 
 		// Show all pastes to admins
-		if (Auth::check() AND Auth::user()->admin)
+		if (Auth::roles()->admin)
 		{
 			$query = Paste::query();
 		}
@@ -103,7 +103,7 @@ class ListController extends BaseController {
 		$query = Paste::where('timestamp', '>=', $filter);
 
 		// Hide private pastes from non-admins
-		if (Auth::guest() OR ! Auth::user()->admin)
+		if (Auth::roles()->guest)
 		{
 			$query = $query->where('private', '<>', 1);
 		}
@@ -159,7 +159,7 @@ class ListController extends BaseController {
 			if ($antispam->passes() OR Session::has('search.exempt'))
 			{
 				// Show all pastes to admins
-				if (Auth::check() AND Auth::user()->admin)
+				if (Auth::roles()->admin)
 				{
 					$query = Paste::query();
 				}

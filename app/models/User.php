@@ -55,13 +55,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	);
 
 	/**
-	 * Defines the roles for the logged in user
-	 *
-	 * @var array
-	 */
-	private static $roles;
-
-	/**
 	 * Get the unique identifier for the user.
 	 *
 	 * @return int
@@ -89,36 +82,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function getReminderEmail()
 	{
 		return $this->email;
-	}
-
-	/**
-	 * Fetches the roles for the currently logged in user
-	 *
-	 * @return object
-	 */
-	public static function getRoles()
-	{
-		if ( ! isset(static::$roles))
-		{
-			static::$roles = new stdClass();
-
-			static::$roles->guest = FALSE;
-			static::$roles->user  = FALSE;
-			static::$roles->admin = FALSE;
-
-			if (Auth::guest())
-			{
-				static::$roles->guest = TRUE;
-			}
-			else
-			{
-				static::$roles->user = TRUE;
-
-				static::$roles->admin = Auth::user()->admin;
-			}
-		}
-
-		return static::$roles;
 	}
 
 }

@@ -62,7 +62,7 @@ class View extends \Illuminate\Support\Facades\View {
 		{
 			$defaults = array_merge($defaults, array(
 				'auth'   => Auth::user(),
-				'role'   => User::getRoles(),
+				'role'   => Auth::roles(),
 			));
 		}
 
@@ -176,7 +176,7 @@ class View extends \Illuminate\Support\Facades\View {
 						{
 							case 'role':
 
-								$flags = User::getRoles();
+								$flags = Auth::roles();
 
 								break;
 

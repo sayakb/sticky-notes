@@ -158,7 +158,6 @@ return array(
 		// Illuminate
 		'App'                           => 'Illuminate\Support\Facades\App',
 		'Artisan'                       => 'Illuminate\Support\Facades\Artisan',
-		'Auth'                          => 'Illuminate\Support\Facades\Auth',
 		'Blade'                         => 'Illuminate\Support\Facades\Blade',
 		'Cache'                         => 'Illuminate\Support\Facades\Cache',
 		'ClassLoader'                   => 'Illuminate\Support\ClassLoader',
@@ -199,6 +198,7 @@ return array(
 		// StickyNotes
 		'API'                           => 'StickyNotes\API',
 		'Antispam'                      => 'StickyNotes\Antispam',
+		'Auth'                          => 'StickyNotes\Auth',
 		'Config'                        => 'StickyNotes\Config',
 		'Cron'                          => 'StickyNotes\Cron',
 		'Feed'                          => 'StickyNotes\Feed',

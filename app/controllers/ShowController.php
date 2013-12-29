@@ -39,7 +39,8 @@ class ShowController extends BaseController {
 	{
 		$paste = Paste::where('urlkey', $urlkey)->first();
 
-		$owner = Auth::check() AND (Auth::user()->admin OR Auth::user()->id == $paste->authorid);
+		// Check if the logged in user is the owner of the paste
+		$owner = Auth::access($paste->authorid);
 
 		// Paste was not found
 		if (is_null($paste))

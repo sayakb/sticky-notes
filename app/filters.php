@@ -126,7 +126,7 @@ Route::filter('csrf', function()
 
 Route::filter('admin', function()
 {
-	if (Auth::guest() OR ! Auth::user()->admin)
+	if (Auth::roles()->guest)
 	{
 		App::abort(401);
 	}
@@ -244,7 +244,7 @@ Route::filter('installed', function()
 
 	// Only admins can access this page
 	// We check for dbVersion as 0.4 will not support the Auth functions
-	else if (Request::segment(2) == 'update' AND $dbVersion > 0 AND (Auth::guest() OR ! Auth::user()->admin))
+	else if (Request::segment(2) == 'update' AND $dbVersion > 0 AND Auth::roles()->guest)
 	{
 		App::abort(503); // Service unavailable
 	}
