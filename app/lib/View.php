@@ -14,7 +14,6 @@
  * @filesource
  */
 
-use Auth;
 use Cache;
 use Lang;
 use Request;
