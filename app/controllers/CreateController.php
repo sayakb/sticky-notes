@@ -33,7 +33,7 @@ class CreateController extends BaseController {
 	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getCreate()
-	{
+	{System::submitStats();
 		// Build the view data
 		$data = array(
 			'languages'  => Highlighter::make()->languages(),

@@ -6,7 +6,7 @@
 		"laravel/framework": "4.1.*",
 		"sayakb/akismet": "dev-master",
 		"sayakb/captcha": "dev-master",
-		"guzzle/guzzle": "~3.7"
+		"rmccue/requests": ">=1.0"
 	},
 	"autoload": {
 		"classmap": [

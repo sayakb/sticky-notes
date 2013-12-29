@@ -195,9 +195,6 @@ return array(
 		// PHPDiff
 		'DiffRenderer'                  => 'Diff_Renderer_Html_SideBySide',
 
-		// Guzzle
-		'Client'                        => 'Guzzle\Http\Client',
-
 		// Sayakb
 		'Captcha'                       => 'Sayakb\Captcha\Facades\Captcha',
 

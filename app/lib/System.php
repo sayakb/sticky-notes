@@ -14,11 +14,11 @@
  * @filesource
  */
 
-use Client;
 use File;
 use Input;
 use Lang;
 use Request;
+use Requests;
 use Route;
 use Session;
 use Site;
@@ -193,22 +193,13 @@ class System {
 	 */
 	public static function submitStats()
 	{
-		try
-		{
-			$client = new Client();
+		$data =  array(
+			'fqdn'     => Site::config('general')->fqdn,
+			'action'   => Request::segment(2),
+			'version'  => Config::get('app.version'),
+		);
 
-			$request = $client->post(Site::config('services')->statsUrl, NULL, array(
-				'fqdn'     => Site::config('general')->fqdn,
-				'action'   => Request::segment(2),
-				'version'  => Config::get('app.version'),
-			));
-
-			$request->send();
-		}
-		catch (Exception $e)
-		{
-			// Suppress the exception
-		}
+		Requests::post(Site::config('services')->statsUrl, array(), $data);
 	}
 
 }

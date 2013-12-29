@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "12369c434a8178ee48c462a8161ae633",
+    "hash": "309694a81ac74082df56b119a6ff8602",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -138,98 +138,6 @@
             "time": "2013-12-04 14:19:30"
         },
         {
-            "name": "guzzle/guzzle",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "e0df12243ee08a4d6fca3241142212428dfd632e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/e0df12243ee08a4d6fca3241142212428dfd632e",
-                "reference": "e0df12243ee08a4d6fca3241142212428dfd632e",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">=5.3.3",
-                "symfony/event-dispatcher": ">=2.1"
-            },
-            "replace": {
-                "guzzle/batch": "self.version",
-                "guzzle/cache": "self.version",
-                "guzzle/common": "self.version",
-                "guzzle/http": "self.version",
-                "guzzle/inflection": "self.version",
-                "guzzle/iterator": "self.version",
-                "guzzle/log": "self.version",
-                "guzzle/parser": "self.version",
-                "guzzle/plugin": "self.version",
-                "guzzle/plugin-async": "self.version",
-                "guzzle/plugin-backoff": "self.version",
-                "guzzle/plugin-cache": "self.version",
-                "guzzle/plugin-cookie": "self.version",
-                "guzzle/plugin-curlauth": "self.version",
-                "guzzle/plugin-error-response": "self.version",
-                "guzzle/plugin-history": "self.version",
-                "guzzle/plugin-log": "self.version",
-                "guzzle/plugin-md5": "self.version",
-                "guzzle/plugin-mock": "self.version",
-                "guzzle/plugin-oauth": "self.version",
-                "guzzle/service": "self.version",
-                "guzzle/stream": "self.version"
-            },
-            "require-dev": {
-                "doctrine/cache": "*",
-                "monolog/monolog": "1.*",
-                "phpunit/phpunit": "3.7.*",
-                "psr/log": "1.0.*",
-                "symfony/class-loader": "*",
-                "zendframework/zend-cache": "2.0.*",
-                "zendframework/zend-log": "2.0.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Guzzle": "src/",
-                    "Guzzle\\Tests": "tests/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Michael Dowling",
-                    "email": "mtdowling@gmail.com",
-                    "homepage": "https://github.com/mtdowling"
-                },
-                {
-                    "name": "Guzzle Community",
-                    "homepage": "https://github.com/guzzle/guzzle/contributors"
-                }
-            ],
-            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
-            "homepage": "http://guzzlephp.org/",
-            "keywords": [
-                "client",
-                "curl",
-                "framework",
-                "http",
-                "http client",
-                "rest",
-                "web service"
-            ],
-            "time": "2013-12-22 22:25:34"
-        },
-        {
             "name": "ircmaxell/password-compat",
             "version": "1.0.x-dev",
             "source": {
@@ -322,12 +230,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "5affe2d77f48facd7802b3d469e73880348395e9"
+                "reference": "9e91bfdaa26100b4ab9ced3aa29c85549f5f15eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/5affe2d77f48facd7802b3d469e73880348395e9",
-                "reference": "5affe2d77f48facd7802b3d469e73880348395e9",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/9e91bfdaa26100b4ab9ced3aa29c85549f5f15eb",
+                "reference": "9e91bfdaa26100b4ab9ced3aa29c85549f5f15eb",
                 "shasum": ""
             },
             "require": {
@@ -431,7 +339,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2013-12-29 04:40:46"
+            "time": "2013-12-29 21:04:25"
         },
         {
             "name": "monolog/monolog",
@@ -827,6 +735,55 @@
             "time": "2013-12-25 11:17:50"
         },
         {
+            "name": "rmccue/requests",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rmccue/Requests.git",
+                "reference": "14b5f32d654736a8de72b07cd82d1af7dfb620e4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rmccue/Requests/zipball/14b5f32d654736a8de72b07cd82d1af7dfb620e4",
+                "reference": "14b5f32d654736a8de72b07cd82d1af7dfb620e4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.2"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Requests": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "ISC"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan McCue",
+                    "homepage": "http://ryanmccue.info"
+                }
+            ],
+            "description": "A HTTP library written in PHP, for human beings.",
+            "homepage": "http://github.com/rmccue/Requests",
+            "keywords": [
+                "curl",
+                "fsockopen",
+                "http",
+                "idna",
+                "ipv6",
+                "iri",
+                "sockets"
+            ],
+            "time": "2013-12-24 01:36:04"
+        },
+        {
             "name": "sayakb/akismet",
             "version": "dev-master",
             "source": {
@@ -1087,12 +1044,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "4f7c45b1713aa2286c68f51d8816950acadd6225"
+                "reference": "d3fce380216e533b02fbcea6d8543d1da270aed3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/4f7c45b1713aa2286c68f51d8816950acadd6225",
-                "reference": "4f7c45b1713aa2286c68f51d8816950acadd6225",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/d3fce380216e533b02fbcea6d8543d1da270aed3",
+                "reference": "d3fce380216e533b02fbcea6d8543d1da270aed3",
                 "shasum": ""
             },
             "require": {
@@ -1131,7 +1088,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2013-12-28 10:23:21"
+            "time": "2013-12-29 20:33:52"
         },
         {
             "name": "symfony/css-selector",
@@ -1246,12 +1203,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/DomCrawler.git",
-                "reference": "34ae881791b5efd8fd44fdc2b0e2ad1da20aa86b"
+                "reference": "ea4e3be8d036627e1bc67129173f3f9c780776a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/34ae881791b5efd8fd44fdc2b0e2ad1da20aa86b",
-                "reference": "34ae881791b5efd8fd44fdc2b0e2ad1da20aa86b",
+                "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/ea4e3be8d036627e1bc67129173f3f9c780776a0",
+                "reference": "ea4e3be8d036627e1bc67129173f3f9c780776a0",
                 "shasum": ""
             },
             "require": {
@@ -1290,7 +1247,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "http://symfony.com",
-            "time": "2013-12-17 13:01:50"
+            "time": "2013-12-29 14:43:38"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -1570,12 +1527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process.git",
-                "reference": "d33234eed72468136f17a57db76a30eaca34626b"
+                "reference": "5223ec2578e7ecd0192915434a6e33a689e329d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Process/zipball/d33234eed72468136f17a57db76a30eaca34626b",
-                "reference": "d33234eed72468136f17a57db76a30eaca34626b",
+                "url": "https://api.github.com/repos/symfony/Process/zipball/5223ec2578e7ecd0192915434a6e33a689e329d6",
+                "reference": "5223ec2578e7ecd0192915434a6e33a689e329d6",
                 "shasum": ""
             },
             "require": {
@@ -1608,7 +1565,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "http://symfony.com",
-            "time": "2013-12-28 21:39:51"
+            "time": "2013-12-29 14:43:38"
         },
         {
             "name": "symfony/routing",
