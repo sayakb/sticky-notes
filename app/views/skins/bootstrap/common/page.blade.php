@@ -23,7 +23,7 @@
 </head>
 
 <body>
-	<header class="navbar navbar-default navbar-static-top" role="navigation">
+	<nav class="navbar navbar-default navbar-static-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -41,7 +41,7 @@
 				</ul>
 			</nav>
 		</div>
-	</header>
+	</nav>
 
 	<div class="container">
 		@yield('body')
