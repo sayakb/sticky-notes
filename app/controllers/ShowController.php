@@ -39,14 +39,14 @@ class ShowController extends BaseController {
 	{
 		$paste = Paste::where('urlkey', $urlkey)->first();
 
-		// Check if the logged in user is the owner of the paste
-		$owner = Auth::access($paste->authorid);
-
 		// Paste was not found
 		if (is_null($paste))
 		{
 			App::abort(404);
 		}
+
+		// Check if the logged in user is the owner of the paste
+		$owner = Auth::access($paste->authorid);
 
 		// We do not make password prompt mandatory for owners
 		if ( ! $owner)
