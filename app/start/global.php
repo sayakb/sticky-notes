@@ -136,9 +136,6 @@ App::error(function($exception, $code)
 {
 	$type = get_class($exception);
 
-	// Firstly, log the error
-	Log::error($exception);
-
 	// Set code based on exception
 	switch ($type)
 	{
@@ -186,7 +183,11 @@ App::error(function($exception, $code)
 					return Redirect::to(URL::current().'?e=1');
 				}
 
+				// Unknown error, assign default code
 				$data['errCode'] = 'default';
+
+				// Log the exception details
+				Log::error($exception);
 			}
 
 			break;
