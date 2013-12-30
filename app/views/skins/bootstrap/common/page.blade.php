@@ -35,11 +35,11 @@
 				<a class="navbar-brand" href="{{ url() }}">{{ $site->general->title }}</a>
 			</div>
 
-			<nav class="collapse navbar-collapse navbar-ex1-collapse">
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					{{ View::menu('navigation') }}
 				</ul>
-			</nav>
+			</div>
 		</div>
 	</nav>
 
