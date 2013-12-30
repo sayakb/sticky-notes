@@ -33,13 +33,13 @@ class AjaxController extends BaseController {
 	public function getVersion()
 	{
 		// Get the site configuration
-		$site = Site::config('general');
+		$config = Site::config();
 
 		// Get the local (installed) version number
-		$localVersion = System::version($site->version);
+		$localVersion = System::version($config->general->version);
 
 		// Get the remote version number
-		$remoteVersion = File::getRemote($site->updateUrl);
+		$remoteVersion = File::getRemote($config->services->updateUrl);
 
 		$remoteVersion = System::version($remoteVersion);
 

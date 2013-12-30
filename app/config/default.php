@@ -22,7 +22,6 @@ return array(
 		'copyright'           => '',
 		'lang'                => 'en',
 		'version'             => '0.0',
-		'updateUrl'           => 'http://sayakb.github.io/sticky-notes/version/',
 		'preMigrate'          => '0',
 		'pasteAge'            => '1800',
 		'skin'                => 'bootstrap',
@@ -84,6 +83,8 @@ return array(
 		'googleUrlShortener'  => 'https://www.googleapis.com/urlshortener/v1/url?key=%s',
 		'googleUrlOAuth'      => 'https://www.googleapis.com/oauth2/v1/userinfo',
 		'statsUrl'            => 'http://sites.sayakbanerjee.com/sn-stats/?a=submit',
+		'docsUrl'             => 'http://sayakbanerjee.com/sticky-notes',
+		'updateUrl'           => 'http://sayakb.github.io/sticky-notes/version/',
 	),
 
 );
