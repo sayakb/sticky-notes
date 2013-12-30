@@ -16,13 +16,13 @@
 </head>
 
 <body>
-	<header class="navbar navbar-default navbar-static-top" role="navigation">
+	<nav class="navbar navbar-default navbar-static-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="{{ url() }}">{{ Lang::get('setup.installer') }}</a>
 			</div>
 		</div>
-	</header>
+	</nav>
 
 	<div class="container">
 		{{
