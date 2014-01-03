@@ -64,7 +64,7 @@ class CreateController extends BaseController {
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'title'     => 'max:30',
-			'data'      => 'required',
+			'data'      => 'required|auth',
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
 			'expire'    => 'in:'.Paste::getExpiration('create', TRUE),
 		));
@@ -210,7 +210,7 @@ class CreateController extends BaseController {
 		// here as we don't allow to change that for a revision. Instead, we
 		// will use the data from the old paste
 		$validator = Validator::make(Input::all(), array(
-			'data'    => 'required',
+			'data'    => 'required|auth',
 			'expire'  => 'in:'.Paste::getExpiration('create', TRUE),
 		));
 

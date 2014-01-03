@@ -27,6 +27,7 @@ return array(
 		'skin'                => 'bootstrap',
 		'proxy'               => '0',
 		'privateSite'         => '0',
+		'guestPosts'          => '1',
 		'pasteSearch'         => '1',
 		'comments'            => '1',
 		'noExpire'            => '1',

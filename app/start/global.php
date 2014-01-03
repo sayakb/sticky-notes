@@ -209,6 +209,21 @@ App::error(function($exception, $code)
 
 /*
 |--------------------------------------------------------------------------
+| Authenticated validator
+|--------------------------------------------------------------------------
+|
+| This rule checks whether the site allows guest posts. If it does not,
+| it throws an error asking the user to log in before posting.
+|
+*/
+
+Validator::extend('auth', function($attribute, $value, $parameters)
+{
+	return ! (Auth::roles()->guest AND ! Site::config('general')->guestPosts);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Trust proxy headers
 |--------------------------------------------------------------------------
 |

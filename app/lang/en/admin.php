@@ -93,6 +93,9 @@ return array(
 	"private_site"          => "Private site",
 	"private_site_exp"      => "If set to enforce private pastes, all pastes will be created as private and ".
 	                           "the archives section will be disabled.",
+	"guest_posts"           => "Guest posts",
+	"guest_posts_exp"       => "If set to enabled, unregistered users will be able to create pastes and add ".
+	                           "comments to pastes.",
 	"allow_public"          => "Allow public pastes",
 	"enforce_private"       => "Enforce private pastes",
 	"paste_search"          => "Paste search",
@@ -192,6 +195,8 @@ return array(
 	"versions"              => "Versions",
 	"users"                 => "Users",
 	"pastes"                => "Pastes",
+	"general"               => "General",
+	"content"               => "Content",
 	"system_load"           => "System load",
 	"db_driver"             => "DB driver",
 	"php_version"           => "PHP version",

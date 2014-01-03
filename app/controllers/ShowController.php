@@ -196,7 +196,7 @@ class ShowController extends BaseController {
 		{
 			// Define validation rules
 			$validator = Validator::make(Input::all(), array(
-				'comment' => 'required|min:5|max:1024',
+				'comment' => 'required|auth|min:5|max:1024',
 			));
 
 			// Generate anti-spam modules

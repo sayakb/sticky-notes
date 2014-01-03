@@ -20,6 +20,7 @@ return array(
 	"alpha_dash"       => "The :attribute may only contain letters, numbers, and dashes.",
 	"alpha_num"        => "The :attribute may only contain letters and numbers.",
 	"array"            => "The :attribute must be an array.",
+	"auth"             => "You must be logged in to complete this action.",
 	"before"           => "The :attribute must be a date before :date.",
 	"between"          => array(
 		"numeric" => "The :attribute must be between :min - :max.",
@@ -27,6 +28,7 @@ return array(
 		"string"  => "The :attribute must be between :min - :max characters.",
 		"array"   => "The :attribute must have between :min - :max items.",
 	),
+	"captcha"          => "The human verification failed.",
 	"confirmed"        => "The :attribute confirmation does not match.",
 	"date"             => "The :attribute is not a valid date.",
 	"date_format"      => "The :attribute does not match the format :format.",
@@ -68,7 +70,6 @@ return array(
 	),
 	"unique"           => "The :attribute has already been taken.",
 	"url"              => "The :attribute format is invalid.",
-	"captcha"          => "The human verification failed",
 
 	/*
 	|--------------------------------------------------------------------------

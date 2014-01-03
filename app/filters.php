@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest())
+	if (Auth::roles()->guest)
 	{
 		return Redirect::guest('user/login');
 	}
@@ -85,7 +85,7 @@ Route::filter('auth.config', function()
 
 Route::filter('guest', function()
 {
-	if (Auth::check())
+	if (Auth::roles()->user)
 	{
 		return Redirect::to('/');
 	}
@@ -126,9 +126,9 @@ Route::filter('csrf', function()
 
 Route::filter('admin', function()
 {
-	if (Auth::roles()->guest)
+	if ( ! Auth::roles()->admin)
 	{
-		App::abort(401); // Unauthorized
+		App::abort(403); // Forbidden
 	}
 });
 
@@ -146,7 +146,7 @@ Route::filter('private', function()
 {
 	if (Site::config('general')->privateSite)
 	{
-		App::abort(401); // Unauthorized
+		App::abort(403); // Forbidden
 	}
 });
 

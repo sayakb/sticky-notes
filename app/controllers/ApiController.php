@@ -214,6 +214,7 @@ class ApiController extends BaseController {
 		$custom = array(
 			'title.max'           => 'title_max_30',
 			'data.required'       => 'data_required',
+			'data.auth'           => 'cannot_post',
 			'language.required'   => 'lang_required',
 			'language.in'         => 'lang_invalid',
 			'expire.integer'      => 'expire_integer',
@@ -223,7 +224,7 @@ class ApiController extends BaseController {
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'title'     => 'max:30',
-			'data'      => 'required',
+			'data'      => 'required|auth',
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
 			'expire'    => 'integer|in:'.Paste::getExpiration('create', TRUE),
 		), $custom);
