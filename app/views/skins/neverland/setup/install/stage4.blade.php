@@ -15,17 +15,6 @@
 				<dd>{{ Session::get('install.password') }}</dd>
 			</dl>
 
-			<div class="alert alert-success">
-				<p>{{ Lang::get('setup.stats_consent') }}</p>
-
-				<p>
-					<label class="checkbox">
-						{{ Form::checkbox('consent', 'consent', TRUE) }}
-						{{ Lang::get('setup.allow_stats') }}
-					</label>
-				</p>
-			</div>
-
 			{{
 				Form::submit(Lang::get('setup.proceed_login'), array(
 					'name'    => '_finish',

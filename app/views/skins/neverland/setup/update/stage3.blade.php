@@ -23,17 +23,6 @@
 				@endforeach
 			@endif
 
-			<div class="alert alert-success">
-				<p>{{ Lang::get('setup.stats_consent') }}</p>
-
-				<p>
-					<label class="checkbox">
-						{{ Form::checkbox('consent', 'consent', TRUE) }}
-						{{ Lang::get('setup.allow_stats') }}
-					</label>
-				</p>
-			</div>
-
 			{{
 				Form::submit(Lang::get('setup.return_sn'), array(
 					'name'    => '_finish',
