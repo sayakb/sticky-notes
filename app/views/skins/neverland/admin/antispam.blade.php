@@ -16,28 +16,28 @@
 
 					<ul id="tabs-antispam" class="nav nav-tabs">
 						<li class="active">
-							<a href="#service-honeypot" data-toggle="tab">{{ Lang::get('admin.honeypot') }}</a>
+							<a href="#antispam-honeypot" data-toggle="tab">{{ Lang::get('admin.honeypot') }}</a>
 						</li>
 
 						<li>
-							<a href="#service-censor" data-toggle="tab">{{ Lang::get('admin.word_censor') }}</a>
+							<a href="#antispam-censor" data-toggle="tab">{{ Lang::get('admin.word_censor') }}</a>
 						</li>
 
 						<li>
-							<a href="#service-stealth" data-toggle="tab">{{ Lang::get('admin.stealth') }}</a>
+							<a href="#antispam-stealth" data-toggle="tab">{{ Lang::get('admin.stealth') }}</a>
 						</li>
 
 						<li>
-							<a href="#service-noflood" data-toggle="tab">{{ Lang::get('admin.noflood') }}</a>
+							<a href="#antispam-noflood" data-toggle="tab">{{ Lang::get('admin.noflood') }}</a>
 						</li>
 
 						<li>
-							<a href="#service-akismet" data-toggle="tab">{{ Lang::get('admin.akismet') }}</a>
+							<a href="#antispam-akismet" data-toggle="tab">{{ Lang::get('admin.akismet') }}</a>
 						</li>
 					</ul>
 
 					<div class="tab-content form-horizontal">
-						<div id="service-honeypot" class="tab-pane fade in active">
+						<div id="antispam-honeypot" class="tab-pane fade in active">
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="alert alert-info">
@@ -144,7 +144,7 @@
 							</div>
 						</div>
 
-						<div id="service-censor" class="tab-pane fade">
+						<div id="antispam-censor" class="tab-pane fade">
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="alert alert-info">
@@ -186,7 +186,7 @@
 							</div>
 						</div>
 
-						<div id="service-stealth" class="tab-pane fade">
+						<div id="antispam-stealth" class="tab-pane fade">
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="alert alert-info">
@@ -207,7 +207,7 @@
 							</div>
 						</div>
 
-						<div id="service-noflood" class="tab-pane fade">
+						<div id="antispam-noflood" class="tab-pane fade">
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="alert alert-info">
@@ -254,7 +254,7 @@
 							</div>
 						</div>
 
-						<div id="service-akismet" class="tab-pane fade">
+						<div id="antispam-akismet" class="tab-pane fade">
 							<div class="row-fluid">
 								<div class="span12">
 									<div class="alert alert-info">
