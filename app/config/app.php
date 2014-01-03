@@ -81,6 +81,22 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Stats collector Configuration
+	|--------------------------------------------------------------------------
+	|
+	| This flag is used to determine if your site's URL will be included
+	| in the statistics report. See PRIVACY.md for details on the information
+	| that is sent over to the statistics server.
+	|
+	| Note: As a note of thanks to the developer, please keep this as true.
+	| Your site's URL will NEVER be published and is kept secure.
+	|
+	*/
+
+	'fullStats' => TRUE,
+
+	/*
+	|--------------------------------------------------------------------------
 	| Autoloaded Service Providers
 	|--------------------------------------------------------------------------
 	|

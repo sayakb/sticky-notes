@@ -108,11 +108,8 @@ class SetupController extends BaseController {
 		// Setup complete
 		if (Input::has('_finish'))
 		{
-			// Submit statistics if user acknowledged
-			if (Input::has('consent'))
-			{
-				System::submitStats();
-			}
+			// Submit site statistics
+			System::submitStats();
 
 			// Redirect to login page
 			return Redirect::to('user/login');
@@ -195,11 +192,8 @@ class SetupController extends BaseController {
 		// Setup complete
 		if (Input::has('_finish'))
 		{
-			// Submit statistics if user acknowledged
-			if (Input::has('consent'))
-			{
-				System::submitStats();
-			}
+			// Submit site statistics
+			System::submitStats();
 
 			// Redirect to home page
 			return Redirect::to('/');

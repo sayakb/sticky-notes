@@ -70,8 +70,5 @@ return array(
 	                       "of the update process. These messages can contain important security warning, so it is strongly ".
 	                       "recommended that you read them and take the suggested measures.",
 	"notify_version"    => "Version %s updater",
-	"stats_consent"     => "Sticky Notes will now send your site's URL and pastebin version over to the statistics server ".
-	                       "(no other information is sent). Your site's URL will never be published at any point.",
-	"allow_stats"       => "Allow sending statistics",
 
 );

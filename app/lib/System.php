@@ -193,12 +193,17 @@ class System {
 	 */
 	public static function submitStats()
 	{
+		// Send / mask the site's URL
+		$fqdn = Config::get('app.fullStats') ? Site::config('general')->fqdn : Lang::get('global.anonymous');
+
+		// Populate the data to be send
 		$data =  array(
-			'fqdn'     => Site::config('general')->fqdn,
+			'fqdn'     => $fqdn,
 			'action'   => Request::segment(2),
 			'version'  => Config::get('app.version'),
 		);
 
+		// Send the stats to the REST stats service
 		Requests::post(Site::config('services')->statsUrl, array(), $data);
 	}
 
