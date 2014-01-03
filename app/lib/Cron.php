@@ -60,13 +60,19 @@ class Cron {
 
 				if ($pastes->count() > 0)
 				{
+					// Check if the comments table exists
+					$hasComments = Schema::hasTable('comments');
+
 					// Build the expired pastes array
 					// Also delete associated comments
 					foreach($pastes as $paste)
 					{
 						$expired[] = $paste->urlkey;
 
-						$paste->comments()->delete();
+						if ($hasComments)
+						{
+							$paste->comments()->delete();
+						}
 					}
 
 					// Remove expired pastes
