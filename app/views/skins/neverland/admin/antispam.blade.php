@@ -205,6 +205,26 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('stealth_count', Lang::get('admin.max_links'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::text('stealth_count', $site->antispam->stealthCount, array(
+											'class' => 'input-xxlarge',
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.max_links_exp') }}
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<div id="antispam-noflood" class="tab-pane fade">
