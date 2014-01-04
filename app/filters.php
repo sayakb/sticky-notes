@@ -191,17 +191,8 @@ Route::filter('numeric', function()
 
 Route::filter('installed', function()
 {
-	try
-	{
-		$installed = Schema::hasTable('main');
-	}
-	catch (Exception $e)
-	{
-		$installed = FALSE;
-	}
-
-	// Set the installed flag so it is accessible everywhere
-	Session::set('global.installed', $installed);
+	// Determine if the system is installed
+	$installed = System::installed();
 
 	// Now we get the app and DB versions
 	// If there is no version data in the DB, the function will return 0
@@ -253,5 +244,15 @@ Route::filter('installed', function()
 	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('setup.stage'))
 	{
 		return Redirect::to('/');
+	}
+
+	// At this stage, it is safe to run version dependent modules
+	else if (php_sapi_name() != 'cli')
+	{
+		// Run Google Analytics visitor tracking
+		Service::analytics();
+
+		// Run cron tasks
+		Cron::run();
 	}
 });

@@ -14,7 +14,6 @@
  * @filesource
  */
 
-use Cache;
 use Lang;
 use Request;
 use Schema;

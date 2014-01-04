@@ -20,6 +20,7 @@ use Lang;
 use Request;
 use Requests;
 use Route;
+use Schema;
 use Session;
 use Site;
 
@@ -164,7 +165,10 @@ class System {
 	 */
 	public static function installed()
 	{
-		return php_sapi_name() != 'cli' AND Session::get('global.installed') === TRUE;
+		return Cache::rememberForever('site.installed', function()
+		{
+			return Schema::hasTable('main');
+		});
 	}
 
 	/**

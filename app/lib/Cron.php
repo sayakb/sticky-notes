@@ -14,7 +14,6 @@
  * @filesource
  */
 
-use Cache;
 use Paste;
 use Revision;
 use Schema;
@@ -51,40 +50,34 @@ class Cron {
 		// We run the cron tasks once every 5 minutes
 		Cache::remember('site.cron', 5, function()
 		{
-			if (System::installed())
+			$expired = array();
+
+			// Retrieve expired pastes
+			$pastes = Paste::where('expire', '>', 0)->where('expire', '<', time())->get();
+
+			if ($pastes->count() > 0)
 			{
-				$expired = array();
+				// Check if the comments table exists
+				$hasComments = Schema::hasTable('comments');
 
-				// Retrieve expired pastes
-				$pastes = Paste::where('expire', '>', 0)->where('expire', '<', time())->get();
-
-				if ($pastes->count() > 0)
+				// Build the expired pastes array
+				// Also delete associated comments
+				foreach($pastes as $paste)
 				{
-					// Check if the comments table exists
-					$hasComments = Schema::hasTable('comments');
+					$expired[] = $paste->urlkey;
 
-					// Build the expired pastes array
-					// Also delete associated comments
-					foreach($pastes as $paste)
-					{
-						$expired[] = $paste->urlkey;
-
-						if ($hasComments)
-						{
-							$paste->comments()->delete();
-						}
-					}
-
-					// Remove expired pastes
-					Paste::whereIn('urlkey', $expired)->delete();
-
-					// Remove expired revisions
-					Revision::whereIn('urlkey', $expired)->delete();
+					$paste->comments()->delete();
 				}
 
-				// Crun run successfully
-				return TRUE;
+				// Remove expired pastes
+				Paste::whereIn('urlkey', $expired)->delete();
+
+				// Remove expired revisions
+				Revision::whereIn('urlkey', $expired)->delete();
 			}
+
+			// Crun run successfully
+			return TRUE;
 		});
 	}
 

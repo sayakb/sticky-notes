@@ -15,7 +15,6 @@
  */
 
 use App;
-use Cache;
 use Lang;
 use Redirect;
 use Schema;

@@ -124,6 +124,44 @@ Blade::extend(function($value)
 
 /*
 |--------------------------------------------------------------------------
+| Authenticated validator
+|--------------------------------------------------------------------------
+|
+| This rule checks whether the site allows guest posts. If it does not,
+| it throws an error asking the user to log in before posting.
+|
+*/
+
+Validator::extend('auth', function($attribute, $value, $parameters)
+{
+	return ! (Auth::roles()->guest AND ! Site::config('general')->guestPosts);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Trust proxy headers
+|--------------------------------------------------------------------------
+|
+| Checks if the site is behind a proxy server (or a load balancer) and
+| set whether to trust the client IP sent in the request that comes via
+| the proxy intermediary.
+|
+*/
+
+if (Site::config('general')->proxy)
+{
+	// Trust the client proxy address
+	Request::setTrustedProxies(array(Request::getClientIp()));
+
+	// Trust the client IP header
+	Request::setTrustedHeaderName(\Symfony\Component\HttpFoundation\Request::HEADER_CLIENT_IP, 'X-Forwarded-For');
+
+	// Trust the client protocol header
+	Request::setTrustedHeaderName(\Symfony\Component\HttpFoundation\Request::HEADER_CLIENT_PROTO, 'X-Forwarded-Proto');
+}
+
+/*
+|--------------------------------------------------------------------------
 | Handle application errors
 |--------------------------------------------------------------------------
 |
@@ -206,63 +244,3 @@ App::error(function($exception, $code)
 		return Response::view('common/error', $data, $code);
 	}
 });
-
-/*
-|--------------------------------------------------------------------------
-| Authenticated validator
-|--------------------------------------------------------------------------
-|
-| This rule checks whether the site allows guest posts. If it does not,
-| it throws an error asking the user to log in before posting.
-|
-*/
-
-Validator::extend('auth', function($attribute, $value, $parameters)
-{
-	return ! (Auth::roles()->guest AND ! Site::config('general')->guestPosts);
-});
-
-/*
-|--------------------------------------------------------------------------
-| Trust proxy headers
-|--------------------------------------------------------------------------
-|
-| Checks if the site is behind a proxy server (or a load balancer) and
-| set whether to trust the client IP sent in the request that comes via
-| the proxy intermediary.
-|
-*/
-
-if (Site::config('general')->proxy)
-{
-	// Trust the client proxy address
-	Request::setTrustedProxies(array(Request::getClientIp()));
-
-	// Trust the client IP header
-	Request::setTrustedHeaderName(\Symfony\Component\HttpFoundation\Request::HEADER_CLIENT_IP, 'X-Forwarded-For');
-
-	// Trust the client protocol header
-	Request::setTrustedHeaderName(\Symfony\Component\HttpFoundation\Request::HEADER_CLIENT_PROTO, 'X-Forwarded-Proto');
-}
-
-/*
-|--------------------------------------------------------------------------
-| Google Analytics
-|--------------------------------------------------------------------------
-|
-| Initialize and run Google Analytics visitor tracking
-|
-*/
-
-Service::analytics();
-
-/*
-|--------------------------------------------------------------------------
-| Run cron tasks
-|--------------------------------------------------------------------------
-|
-| Trigger cron jobs that will run every N minutes.
-|
-*/
-
-Cron::run();
