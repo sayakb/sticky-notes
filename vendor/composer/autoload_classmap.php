@@ -40,6 +40,7 @@ return array(
     'StickyNotes\\PHPass' => $baseDir . '/app/lib/PHPass.php',
     'StickyNotes\\Response' => $baseDir . '/app/lib/Response.php',
     'StickyNotes\\Service' => $baseDir . '/app/lib/Service.php',
+    'StickyNotes\\Session' => $baseDir . '/app/lib/Session.php',
     'StickyNotes\\Setup' => $baseDir . '/app/lib/Setup.php',
     'StickyNotes\\System' => $baseDir . '/app/lib/System.php',
     'StickyNotes\\View' => $baseDir . '/app/lib/View.php',

@@ -21,7 +21,6 @@ use Request;
 use Requests;
 use Route;
 use Schema;
-use Session;
 use Site;
 
 /**

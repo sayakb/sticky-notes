@@ -20,7 +20,6 @@ use IPBan;
 use Lang;
 use Object;
 use Request;
-use Session;
 use Site;
 use stdClass;
 

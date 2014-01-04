@@ -17,7 +17,6 @@
 use Lang;
 use Request;
 use Schema;
-use Session;
 use Site;
 use User;
 
