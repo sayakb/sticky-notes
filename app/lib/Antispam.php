@@ -310,7 +310,11 @@ class Antispam {
 
 		$language = Input::get('language');
 
-		return ! (preg_match('/https?:\/\//', $data) AND $language == 'text');
+		// Get the number of links in the paste
+		preg_match_all('/https?:\/\//', $data, $matches);
+
+		// Disallow if number of links are more than configured threshold
+		return ! (isset($matches[0]) AND count($matches[0]) > $this->config->stealthCount AND $language == 'text');
 	}
 
 	/**

@@ -108,8 +108,8 @@ return array(
 	"phrases"               => "Phrases",
 	"phrases_exp"           => "Enter each censored phrase in a new line.",
 	"stealth"               => "Stealth",
-	"stealth_exp"           => "Stealth is an in-built spam filter that blocks HTML pastes when the ".
-	                           "user tries to paste it as language 'text'.",
+	"stealth_exp"           => "Stealth is an spam filter that limits the number of hyperlinks in a paste ".
+	                           "when the language is selected as 'text'.",
 	"noflood"               => "Flood control",
 	"noflood_exp"           => "Drops pastes originating from the same user if it is posted before a ".
 	                           "defined threshold duration.",
@@ -137,6 +137,10 @@ return array(
 	"visitor_filter_exp"    => "Visitor type greater than or equal to this will be disallowed.",
 	"enable_filter"         => "Enable this filter",
 	"runs_on"               => "<b>Runs on:</b> %s",
+	"max_links"             => "Max. links",
+	"max_links_exp"         => "This defines the maximum number of hyperlinks allowed in a paste. A user ".
+	                           "who submits more number of links than this will be required to choose a ".
+	                           "paste language other than 'text'.",
 	"antispam_updated"      => "Spam filter settings have been updated successfully",
 	"auth_method"           => "Auth method",
 	"banner_text"           => "Banner text",

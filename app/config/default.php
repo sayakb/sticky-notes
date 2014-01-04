@@ -39,6 +39,7 @@ return array(
 		'phpDays'             => '90',
 		'phpScore'            => '50',
 		'phpType'             => '2',
+		'stealthCount'        => '3',
 		'censor'              => '',
 		'floodThreshold'      => '5',
 		'akismetKey'          => '',
