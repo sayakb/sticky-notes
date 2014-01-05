@@ -42,7 +42,7 @@ class Cache extends \Illuminate\Support\Facades\Cache {
 	{
 		if ( ! isset(static::$cache[$key]))
 		{
-			static::$cache[$key] = parent::get($key, $closure);
+			static::$cache[$key] = parent::get($key);
 		}
 
 		return static::$cache[$key];
