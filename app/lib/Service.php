@@ -18,10 +18,7 @@ use Lang;
 use Request;
 use Site;
 
-use UnitedPrototype\GoogleAnalytics\Page;
-use UnitedPrototype\GoogleAnalytics\Session;
-use UnitedPrototype\GoogleAnalytics\Tracker;
-use UnitedPrototype\GoogleAnalytics\Visitor;
+use UnitedPrototype\GoogleAnalytics;
 
 /**
  * Services class
@@ -102,22 +99,22 @@ class Service {
 		if ( ! empty($services->googleAnalyticsId))
 		{
 			// Initilize GA Tracker
-			$tracker = new Tracker($services->googleAnalyticsId, $site->fqdn);
+			$tracker = new GoogleAnalytics\Tracker($services->googleAnalyticsId, $site->fqdn);
 
 			// Gather visitor information
-			$visitor = new Visitor();
+			$visitor = new GoogleAnalytics\Visitor();
 
 			$visitor->setIpAddress(Request::getClientIp());
 
 			$visitor->setUserAgent(Request::server('HTTP_USER_AGENT'));
 
 			// Gather session information
-			$session = new Session();
+			$session = new GoogleAnalytics\Session();
 
 			// Gather page information
 			$path = Request::path();
 
-			$page = new Page($path == '/' ? $path : "/{$path}");
+			$page = new GoogleAnalytics\Page($path == '/' ? $path : "/{$path}");
 
 			$page->setTitle($site->title);
 

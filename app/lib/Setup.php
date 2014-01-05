@@ -47,6 +47,21 @@ class Setup {
 	}
 
 	/**
+	 * Starts up the Sticky Notes setup module
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function start()
+	{
+		Session::forget('setup.stage');
+
+		Session::forget('setup.updating');
+
+		Session::forget('setup.version');
+	}
+
+	/**
 	 * Processes AJAX requests for installation.
 	 * The installer processes one table per action.
 	 *

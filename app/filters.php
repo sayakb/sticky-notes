@@ -214,21 +214,19 @@ Route::filter('installed', function()
 	// Redirect to setup pages based on version checks
 	if (Request::segment(1) != 'setup')
 	{
-		Session::forget('setup.stage');
-
-		Session::forget('setup.updating');
-
-		Session::forget('setup.version');
-
 		// Redirect to the installer
 		if ( ! $installed)
 		{
+			Setup::start();
+
 			return Redirect::to('setup/install');
 		}
 
 		// Redirect to the updater, with the exception of the login page
 		else if ($appVersion > $dbVersion AND Request::segment(2) != 'login')
 		{
+			Setup::start();
+
 			return Redirect::to('setup/update');
 		}
 	}
@@ -247,7 +245,7 @@ Route::filter('installed', function()
 	}
 
 	// At this stage, it is safe to run version dependent modules
-	else if (php_sapi_name() != 'cli')
+	if (php_sapi_name() != 'cli')
 	{
 		// Run Google Analytics visitor tracking
 		Service::analytics();
