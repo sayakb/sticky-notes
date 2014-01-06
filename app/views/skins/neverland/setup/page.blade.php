@@ -45,7 +45,8 @@
 		{{ Form::close() }}
 
 		<footer class="align-center">
-			<!-- Please retain the following copyright notice. See http://opensource.org/licenses/BSD-3-Clause for details -->
+			<!-- Do not the following copyright notice to avoid copyright violation. See http://opensource.org/licenses/BSD-2-Clause for details -->
+			<!-- You may however choose to remove the hyperlinks and retain the copyright as plain text -->
 			<p><a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2013 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.</p>
 		</footer>
 	</div>
