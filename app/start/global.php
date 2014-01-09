@@ -172,6 +172,10 @@ if (Site::config('general')->proxy)
 
 App::error(function($exception, $code)
 {
+	// Set system in error state
+	System::error(TRUE);
+
+	// Get the exception instance
 	$type = get_class($exception);
 
 	// Set code based on exception
@@ -214,11 +218,13 @@ App::error(function($exception, $code)
 			else
 			{
 				// We check if flushing the cache will solve the problem
-				if ( ! Input::has('e'))
+				if ( ! Session::has('global.error'))
 				{
 					Cache::flush();
 
-					return Redirect::to(URL::current().'?e=1');
+					Session::flash('global.error', TRUE);
+
+					return Redirect::to(URL::current());
 				}
 
 				// Unknown error, assign default code

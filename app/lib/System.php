@@ -15,7 +15,6 @@
  */
 
 use File;
-use Input;
 use Lang;
 use Request;
 use Requests;
@@ -40,6 +39,13 @@ class System {
 	 * @var string
 	 */
 	private static $route = NULL;
+
+	/**
+	 * Defines whether the system is in an error state
+	 *
+	 * @var bool
+	 */
+	private static $errorState = FALSE;
 
 	/**
 	 * Retrieves a list of directory names from a given path
@@ -179,7 +185,7 @@ class System {
 	 */
 	public static function action()
 	{
-		if (is_null(static::$route) AND ! Input::has('e'))
+		if (is_null(static::$route) AND ! static::error())
 		{
 			$action = Route::currentRouteAction();
 
@@ -208,6 +214,24 @@ class System {
 
 		// Send the stats to the REST stats service
 		Requests::post(Site::config('services')->statsUrl, array(), $data);
+	}
+
+	/**
+	 * Sets the system in an error state
+	 *
+	 * @param  mixed  $state
+	 * @return bool
+	 */
+	public static function error($state = NULL)
+	{
+		if (is_bool($state))
+		{
+			static::$errorState = $state;
+		}
+		else
+		{
+			return static::$errorState;
+		}
 	}
 
 }
