@@ -93,6 +93,8 @@ return array(
 	"private_site"          => "Private site",
 	"private_site_exp"      => "If set to enforce private pastes, all pastes will be created as private and ".
 	                           "the archives section will be disabled.",
+	"csrf_token"            => "CSRF token",
+	"csrf_token_exp"        => "Validate form tokens across the site to prevent cross-site request forgery.",
 	"guest_posts"           => "Guest posts",
 	"guest_posts_exp"       => "If set to enabled, unregistered users will be able to create pastes and add ".
 	                           "comments to pastes.",

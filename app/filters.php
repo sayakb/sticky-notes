@@ -106,7 +106,7 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Request::segment(1) != 'api')
+	if (Site::config('general')->csrf AND Request::segment(1) != 'api')
 	{
 		if (Session::token() != Input::get('_token'))
 		{

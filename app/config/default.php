@@ -31,6 +31,7 @@ return array(
 		'pasteSearch'         => '1',
 		'comments'            => '1',
 		'noExpire'            => '1',
+		'csrf'                => '1',
 	),
 
 	'antispam'                => (object) array(
