@@ -139,6 +139,29 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('csrf', Lang::get('admin.csrf_token'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::select('csrf', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->general->csrf, array(
+											'class' => 'form-control'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.csrf_token_exp') }}
+									</div>
+								</div>
+							</div>
 						</div>
 
 						<div id="site-content" class="tab-pane fade">
