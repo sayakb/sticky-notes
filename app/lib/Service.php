@@ -98,28 +98,35 @@ class Service {
 		// Run analytics if a tracking code is set
 		if ( ! empty($services->googleAnalyticsId))
 		{
-			// Initilize GA Tracker
-			$tracker = new GoogleAnalytics\Tracker($services->googleAnalyticsId, $site->fqdn);
+			try
+			{
+				// Initilize GA Tracker
+				$tracker = new GoogleAnalytics\Tracker($services->googleAnalyticsId, $site->fqdn);
 
-			// Gather visitor information
-			$visitor = new GoogleAnalytics\Visitor();
+				// Gather visitor information
+				$visitor = new GoogleAnalytics\Visitor();
 
-			$visitor->setIpAddress(Request::getClientIp());
+				$visitor->setIpAddress(Request::getClientIp());
 
-			$visitor->setUserAgent(Request::server('HTTP_USER_AGENT'));
+				$visitor->setUserAgent(Request::server('HTTP_USER_AGENT'));
 
-			// Gather session information
-			$session = new GoogleAnalytics\Session();
+				// Gather session information
+				$session = new GoogleAnalytics\Session();
 
-			// Gather page information
-			$path = Request::path();
+				// Gather page information
+				$path = Request::path();
 
-			$page = new GoogleAnalytics\Page($path == '/' ? $path : "/{$path}");
+				$page = new GoogleAnalytics\Page($path == '/' ? $path : "/{$path}");
 
-			$page->setTitle($site->title);
+				$page->setTitle($site->title);
 
-			// Track page view
-			$tracker->trackPageview($page, $session, $visitor);
+				// Track page view
+				$tracker->trackPageview($page, $session, $visitor);
+			}
+			catch (GoogleAnalytics\Exception $e)
+			{
+				// Suppress this error
+			}
 		}
 	}
 

@@ -218,13 +218,13 @@ App::error(function($exception, $code)
 			else
 			{
 				// We check if flushing the cache will solve the problem
-				if ( ! Session::has('global.error'))
+				if ( ! Input::has('e'))
 				{
 					Cache::flush();
 
-					Session::flash('global.error', TRUE);
+					Session::put('global.error', TRUE);
 
-					return Redirect::to(URL::current());
+					return Redirect::to(URL::current().'?e=1');
 				}
 
 				// Unknown error, assign default code
