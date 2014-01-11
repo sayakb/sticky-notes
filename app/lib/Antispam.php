@@ -267,7 +267,7 @@ class Antispam {
 		if ( ! empty($this->config->censor))
 		{
 			// Get array of blocked words
-			$words = explode("\n", $this->config->censor);
+			$words = array_map('trim', explode("\n", $this->config->censor));
 
 			// Traverse through all blocked words
 			foreach ($words as $word)
