@@ -9,7 +9,7 @@ return array(
 	|
 	| This file defines the default site configuration. These are the values
 	| that are used as a fallback if the database configuration provider is
-	| unavailable.
+	| unavailable. We also define some immutable configuration options here.
 	|
 	| IMPORTANT: Please do not modify this file!!
 	|
@@ -32,6 +32,7 @@ return array(
 		'comments'            => '1',
 		'noExpire'            => '1',
 		'csrf'                => '1',
+		'statsTTL'            => '-6 months',
 	),
 
 	'antispam'                => (object) array(

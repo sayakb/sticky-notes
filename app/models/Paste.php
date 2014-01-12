@@ -91,10 +91,11 @@ class Paste extends Eloquent {
 	 * Creates a new paste with the data supplied
 	 *
 	 * @static
-	 * @param  array  $data
+	 * @param  string  $source
+	 * @param  array   $data
 	 * @return Paste
 	 */
-	public static function createNew($data)
+	public static function createNew($source, $data)
 	{
 		// Get the site's configuration
 		$config = Site::config('general');
@@ -176,6 +177,14 @@ class Paste extends Eloquent {
 
 		$paste->save();
 
+		// Insert paste count to the statistics table
+		$stat = Statistics::firstOrNew(array('date' => date('Y-m-d')));
+
+		$stat->$source++;
+
+		$stat->save();
+
+		// Return the created paste
 		return $paste;
 	}
 

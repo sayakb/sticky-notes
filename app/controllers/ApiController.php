@@ -254,7 +254,7 @@ class ApiController extends BaseController {
 		}
 
 		// Create the paste like a boss!
-		$paste = Paste::createNew(Input::all());
+		$paste = Paste::createNew('api', Input::all());
 
 		// All done! Now we need to output the urlkey and hash
 		$data = array(

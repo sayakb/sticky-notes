@@ -113,7 +113,7 @@ class CreateController extends BaseController {
 			Input::merge(array('project' => $this->project));
 
 			// All OK! Create the paste already!!
-			$paste = Paste::createNew(Input::all());
+			$paste = Paste::createNew('web', Input::all());
 
 			// Redirect to paste if there's no password
 			// Otherwise, just show a link
@@ -248,7 +248,7 @@ class CreateController extends BaseController {
 			Input::merge($data);
 
 			// All set, create the new revision
-			$newPaste = Paste::createNew(Input::all());
+			$newPaste = Paste::createNew('web', Input::all());
 
 			// We now need to update the revisions table. One entry will be
 			// created for this revision. We will also create entries for

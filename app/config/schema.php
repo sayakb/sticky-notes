@@ -312,6 +312,32 @@ return array(
 
 			),
 
+			'statistics' => array(
+
+				(object) array(
+					'name'     => 'id',
+					'type'     => 'increments',
+				),
+
+				(object) array(
+					'name'     => 'date',
+					'type'     => 'date',
+				),
+
+				(object) array(
+					'name'     => 'web',
+					'type'     => 'integer',
+					'default'  => 0,
+				),
+
+				(object) array(
+					'name'     => 'api',
+					'type'     => 'integer',
+					'default'  => 0,
+				),
+
+			),
+
 		),
 
 		'closure' => function()
@@ -644,6 +670,40 @@ return array(
 					(object) array(
 						'name'     => 'timestamp',
 						'type'     => 'integer',
+					),
+
+				),
+
+			),
+
+		),
+
+		'1.3' => array(
+
+			'newTables' => array(
+
+				'statistics' => array(
+
+					(object) array(
+						'name'     => 'id',
+						'type'     => 'increments',
+					),
+
+					(object) array(
+						'name'     => 'date',
+						'type'     => 'date',
+					),
+
+					(object) array(
+						'name'     => 'web',
+						'type'     => 'integer',
+						'default'  => 0,
+					),
+
+					(object) array(
+						'name'     => 'api',
+						'type'     => 'integer',
+						'default'  => 0,
 					),
 
 				),

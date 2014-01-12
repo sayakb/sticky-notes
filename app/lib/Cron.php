@@ -18,6 +18,7 @@ use Paste;
 use Revision;
 use Schema;
 use Site;
+use Statistics;
 
 /**
  * Cron class
@@ -75,6 +76,13 @@ class Cron {
 				// Remove expired revisions
 				Revision::whereIn('urlkey', $expired)->delete();
 			}
+
+			// Delete paste statistics older than configured age
+			$ttl = Site::config('general')->statsTTL;
+
+			$date = date('Y-m-d', strtotime($ttl));
+
+			Statistics::where('date', '<', $date)->delete();
 
 			// Crun run successfully
 			return TRUE;
