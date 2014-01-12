@@ -67,7 +67,9 @@ class Diff
 		'context' => 3,
 		'ignoreNewLines' => false,
 		'ignoreWhitespace' => false,
-		'ignoreCase' => false
+		'ignoreCase' => false,
+		'oldHead' => 'Old version',
+		'newHead' => 'New version'
 	);
 
 	/**
