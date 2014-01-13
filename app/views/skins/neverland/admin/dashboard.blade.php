@@ -30,8 +30,8 @@
 				</div>
 
 				<h5>
-					<i class="icon-signal"></i>
-					{{ Lang::get('admin.statistics') }}
+					<i class="icon-hdd"></i>
+					{{ Lang::get('admin.data') }}
 				</h5>
 
 				<div class="row-fluid">
@@ -71,6 +71,45 @@
 								<i class="icon-refresh"></i>
 							</span>
 						</div>
+					</div>
+				</div>
+
+				<h5>
+					<i class="icon-signal"></i>
+					{{ Lang::get('admin.paste_stats') }}
+				</h5>
+
+				<div class="row-fluid">
+					<div class="span12">
+						<div id="dashboard-stats" class="well well-small well-white"></div>
+
+						<script type="text/javascript">
+							// Load the Visualization API and the piechart package.
+							google.load('visualization', '1.0', { packages: ['corechart'], language: '{{ Config::get('app.locale') }}' });
+
+							// Set a callback to run when the Google Visualization API is loaded.
+							google.setOnLoadCallback(function()
+							{
+								// Create the data table.
+								chartData = new google.visualization.DataTable();
+
+								// Add columns
+								chartData.addColumn('date', '{{ Lang::get('admin.date') }}');
+								chartData.addColumn('number', '{{ Lang::get('admin.web') }}');
+								chartData.addColumn('number', '{{ Lang::get('admin.api') }}');
+
+								// Add rows
+								@foreach ($stats as $stat)
+									chartData.addRow([ new Date('{{ $stat['date'] }}'), {{ $stat['web'] }}, {{ $stat['api'] }} ]);
+								@endforeach
+
+								// Define the chart container
+								chartContainer = document.getElementById('dashboard-stats');
+
+								// Draw the chart
+								initAreaChart();
+							});
+						</script>
 					</div>
 				</div>
 			</div>

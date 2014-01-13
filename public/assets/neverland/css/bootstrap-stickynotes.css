@@ -69,6 +69,9 @@ section#admin-skin .thumbnail {
 section#admin-skin .row-fluid {
   margin-bottom: 20px;
 }
+section#admin-dashboard #dashboard-stats {
+  height: 280px;
+}
 select.input-xxlarge {
   width: 543px;
 }

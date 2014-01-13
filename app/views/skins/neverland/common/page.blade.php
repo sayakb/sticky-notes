@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="//cdn.kde.org/js/jquery.js"></script>
 	<script type="text/javascript" src="//cdn.kde.org/js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="//cdn.kde.org/js/bootstrap.js"></script>
+	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 	<script type="text/javascript" src="{{ View::asset('js/stickynotes.js') }}"></script>
 
 	<script type="text/javascript">
