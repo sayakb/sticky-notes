@@ -81,7 +81,12 @@
 
 				<div class="row-fluid">
 					<div class="span12">
-						<div id="dashboard-stats" class="well well-small well-white"></div>
+						<div id="dashboard-stats" class="well well-small well-white">
+							<button class="btn" disabled="disabled">
+								<i class="icon-time"></i>
+								{{ Lang::get('global.loading') }}
+							</button>
+						</div>
 
 						<script type="text/javascript">
 							// Load the Visualization API and the piechart package.
