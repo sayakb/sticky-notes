@@ -270,7 +270,7 @@ function initLineReference()
  */
 function initAreaChart()
 {
-	if (typeof(chartData) !== undefined && typeof(chartContainer) !== undefined)
+	if (typeof(chartData) != 'undefined' && typeof(chartContainer) != 'undefined')
 	{
 		// Create an instance of line chart
 		var chart = new google.visualization.AreaChart(chartContainer);
