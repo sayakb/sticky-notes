@@ -49,7 +49,7 @@ class AdminController extends BaseController {
 
 		$date = date('Y-m-d', strtotime($duration));
 
-		$stats = Statistics::where('date', '>', $date)->get()->toArray();
+		$stats = Statistics::where('date', '>', $date)->orderBy('date')->get()->toArray();
 
 		// Build the view data
 		$data = array(

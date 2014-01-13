@@ -199,6 +199,7 @@ return array(
 	"system"                => "System",
 	"data"                  => "Data",
 	"paste_stats"           => "Paste statistics",
+	"stat_no_data"          => "Not enough data has been collected to display paste statistics.",
 	"versions"              => "Versions",
 	"users"                 => "Users",
 	"pastes"                => "Pastes",
