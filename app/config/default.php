@@ -33,6 +33,7 @@ return array(
 		'noExpire'            => '1',
 		'csrf'                => '1',
 		'statsTTL'            => '-6 months',
+		'statsDisplay'        => '-1 month',
 	),
 
 	'antispam'                => (object) array(

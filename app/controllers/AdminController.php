@@ -44,12 +44,21 @@ class AdminController extends BaseController {
 	 */
 	public function getDashboard()
 	{
+		// Get all stats for the last 1 month
+		$duration = Site::config('general')->statsDisplay;
+
+		$date = date('Y-m-d', strtotime($duration));
+
+		$stats = Statistics::where('date', '>', $date)->get()->toArray();
+
+		// Build the view data
 		$data = array(
 			'users'         => User::count(),
 			'pastes'        => Paste::count(),
 			'php_version'   => phpversion(),
 			'sn_version'    => Config::get('app.version'),
 			'db_driver'     => Config::get('database.default'),
+			'stats'         => $stats,
 		);
 
 		return View::make('admin/dashboard', $data);
