@@ -56,6 +56,9 @@ section#update .form-control {
 section#admin-skin h3 {
   margin-top: 0;
 }
+section#admin-dashboard #dashboard-stats {
+  height: 280px;
+}
 .navbar {
   background: #f2f2f2;
 }
