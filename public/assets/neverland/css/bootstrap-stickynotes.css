@@ -71,6 +71,10 @@ section#admin-skin .row-fluid {
 }
 section#admin-dashboard #dashboard-stats {
   height: 280px;
+  text-align: center;
+}
+section#admin-dashboard #dashboard-stats .btn {
+  margin-top: 110px;
 }
 select.input-xxlarge {
   width: 543px;
