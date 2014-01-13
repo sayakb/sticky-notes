@@ -229,6 +229,16 @@ Route::filter('installed', function()
 
 			return Redirect::to('setup/update');
 		}
+
+		// At this stage, it is safe to run version dependent modules
+		else if (php_sapi_name() != 'cli')
+		{
+			// Run Google Analytics visitor tracking
+			Service::analytics();
+
+			// Run cron tasks
+			Cron::run();
+		}
 	}
 
 	// Only admins can access this page
@@ -242,15 +252,5 @@ Route::filter('installed', function()
 	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('setup.stage'))
 	{
 		return Redirect::to('/');
-	}
-
-	// At this stage, it is safe to run version dependent modules
-	if (php_sapi_name() != 'cli')
-	{
-		// Run Google Analytics visitor tracking
-		Service::analytics();
-
-		// Run cron tasks
-		Cron::run();
 	}
 });
