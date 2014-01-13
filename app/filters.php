@@ -223,21 +223,24 @@ Route::filter('installed', function()
 		}
 
 		// Redirect to the updater, with the exception of the login page
-		else if ($appVersion > $dbVersion AND Request::segment(2) != 'login')
+		else if (Request::segment(2) != 'login')
 		{
-			Setup::start();
+			if ($appVersion > $dbVersion)
+			{
+				Setup::start();
 
-			return Redirect::to('setup/update');
-		}
+				return Redirect::to('setup/update');
+			}
 
-		// At this stage, it is safe to run version dependent modules
-		else if (php_sapi_name() != 'cli')
-		{
-			// Run Google Analytics visitor tracking
-			Service::analytics();
+			// At this stage, it is safe to run version dependent modules
+			else if (php_sapi_name() != 'cli')
+			{
+				// Run Google Analytics visitor tracking
+				Service::analytics();
 
-			// Run cron tasks
-			Cron::run();
+				// Run cron tasks
+				Cron::run();
+			}
 		}
 	}
 
