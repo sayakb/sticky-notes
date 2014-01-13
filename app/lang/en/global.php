@@ -30,6 +30,7 @@ return array(
 	"no"                => "No",
 	"edit"              => "Edit",
 	"delete"            => "Delete",
+	"loading"           => "Loading",
 	"edit_paste"        => "Edit paste",
 	"make_private"      => "Make private",
 	"make_public"       => "Make public",
