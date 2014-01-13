@@ -81,40 +81,46 @@
 
 				<div class="row">
 					<div class="col-sm-12">
-						<div id="dashboard-stats" class="well well-sm well-white">
-							<button class="btn" disabled="disabled">
-								<span class="glyphicon glyphicon-time"></span>
-								{{ Lang::get('global.loading') }}
-							</button>
-						</div>
+						@if (count($stats) > 1)
+							<div id="dashboard-stats" class="well well-sm well-white">
+								<button class="btn" disabled="disabled">
+									<span class="glyphicon glyphicon-time"></span>
+									{{ Lang::get('global.loading') }}
+								</button>
+							</div>
 
-						<script type="text/javascript">
-							// Load the Visualization API and the piechart package.
-							google.load('visualization', '1.0', { packages: ['corechart'], language: '{{ Config::get('app.locale') }}' });
+							<script type="text/javascript">
+								// Load the Visualization API and the piechart package.
+								google.load('visualization', '1.0', { packages: ['corechart'], language: '{{ Config::get('app.locale') }}' });
 
-							// Set a callback to run when the Google Visualization API is loaded.
-							google.setOnLoadCallback(function()
-							{
-								// Create the data table.
-								chartData = new google.visualization.DataTable();
+								// Set a callback to run when the Google Visualization API is loaded.
+								google.setOnLoadCallback(function()
+								{
+									// Create the data table.
+									chartData = new google.visualization.DataTable();
 
-								// Add columns
-								chartData.addColumn('date', '{{ Lang::get('admin.date') }}');
-								chartData.addColumn('number', '{{ Lang::get('admin.web') }}');
-								chartData.addColumn('number', '{{ Lang::get('admin.api') }}');
+									// Add columns
+									chartData.addColumn('date', '{{ Lang::get('admin.date') }}');
+									chartData.addColumn('number', '{{ Lang::get('admin.web') }}');
+									chartData.addColumn('number', '{{ Lang::get('admin.api') }}');
 
-								// Add rows
-								@foreach ($stats as $stat)
-									chartData.addRow([ new Date('{{ $stat['date'] }}'), {{ $stat['web'] }}, {{ $stat['api'] }} ]);
-								@endforeach
+									// Add rows
+									@foreach ($stats as $stat)
+										chartData.addRow([ new Date('{{ $stat['date'] }}'), {{ $stat['web'] }}, {{ $stat['api'] }} ]);
+									@endforeach
 
-								// Define the chart container
-								chartContainer = document.getElementById('dashboard-stats');
+									// Define the chart container
+									chartContainer = document.getElementById('dashboard-stats');
 
-								// Draw the chart
-								initAreaChart();
-							});
-						</script>
+									// Draw the chart
+									initAreaChart();
+								});
+							</script>
+						@else
+							<div class="alert alert-info">
+								{{ Lang::get('admin.stat_no_data') }}
+							</div>
+						@endif
 					</div>
 				</div>
 			</div>
