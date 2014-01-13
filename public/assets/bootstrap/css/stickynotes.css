@@ -58,6 +58,10 @@ section#admin-skin h3 {
 }
 section#admin-dashboard #dashboard-stats {
   height: 280px;
+  text-align: center;
+}
+section#admin-dashboard #dashboard-stats .btn {
+  margin-top: 110px;
 }
 .navbar {
   background: #f2f2f2;

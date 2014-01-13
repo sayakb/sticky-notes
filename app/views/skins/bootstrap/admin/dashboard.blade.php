@@ -81,7 +81,12 @@
 
 				<div class="row">
 					<div class="col-sm-12">
-						<div id="dashboard-stats" class="well well-sm well-white"></div>
+						<div id="dashboard-stats" class="well well-sm well-white">
+							<button class="btn" disabled="disabled">
+								<span class="glyphicon glyphicon-time"></span>
+								{{ Lang::get('global.loading') }}
+							</button>
+						</div>
 
 						<script type="text/javascript">
 							// Load the Visualization API and the piechart package.
