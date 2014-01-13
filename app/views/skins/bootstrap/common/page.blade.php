@@ -16,6 +16,7 @@
 	<script type="text/javascript" src="{{ View::asset('js/jquery.cookie.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/stickynotes.js') }}"></script>
+	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 
 	<script type="text/javascript">
 		var ajaxUrl = "{{ url('ajax') }}";

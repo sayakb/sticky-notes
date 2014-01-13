@@ -264,6 +264,63 @@ function initLineReference()
 }
 
 /**
+ * Draws a Google chart in a container
+ *
+ * @return void
+ */
+function initAreaChart()
+{
+	if (typeof(chartData) !== undefined && typeof(chartContainer) !== undefined)
+	{
+		// Create an instance of line chart
+		var chart = new google.visualization.AreaChart(chartContainer);
+
+		// Define chart options
+		var options = {
+			colors: [ '#428bca', '#d9534f' ],
+			areaOpacity: 0.1,
+			lineWidth: 4,
+			pointSize: 8,
+			hAxis: {
+				textStyle: {
+					color: '#666'
+				},
+				gridlines: {
+					color: 'transparent'
+				},
+				baselineColor: '#eeeeee',
+				format:'MMM d'
+			},
+			vAxis: {
+				textStyle: {
+					color: '#666'
+				},
+				gridlines: {
+					color: '#eee'
+				}
+			},
+			chartArea: {
+				left: 50,
+				top: 10,
+				width: '100%',
+				height: 210
+			},
+			legend: {
+				position: 'bottom'
+			}
+		};
+
+		// Draw the line chart
+		chart.draw(chartData, options);
+	}
+}
+
+/**
  * Invoke the entry point on DOM ready
  */
 $(stickyNotes);
+
+/**
+ * Draw google chart on window resize
+ */
+$(window).resize(initAreaChart);
