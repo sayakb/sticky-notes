@@ -171,7 +171,7 @@ class Paste extends Eloquent {
 		$paste->author    = $author;
 		$paste->author_id = $authorId;
 		$paste->timestamp = time();
-		$paste->expire    = time() + $data['expire'];
+		$paste->expire    = $data['expire'] > 0 ? time() + $data['expire'] : 0;
 		$paste->ip        = Request::getClientIp();
 		$paste->hits      = 0;
 
