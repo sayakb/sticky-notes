@@ -23,6 +23,7 @@ return array(
     'SetupController' => $baseDir . '/app/controllers/SetupController.php',
     'ShowController' => $baseDir . '/app/controllers/ShowController.php',
     'Site' => $baseDir . '/app/models/Site.php',
+    'Statistics' => $baseDir . '/app/models/Statistics.php',
     'StickyNotes\\API' => $baseDir . '/app/lib/API.php',
     'StickyNotes\\Antispam' => $baseDir . '/app/lib/Antispam.php',
     'StickyNotes\\Auth' => $baseDir . '/app/lib/Auth.php',

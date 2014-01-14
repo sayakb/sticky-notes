@@ -26,7 +26,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	 *
 	 * @var string
 	 */
-	const VERSION = '4.1.11';
+	const VERSION = '4.1.16';
 
 	/**
 	 * Indicates if the application has "booted".
@@ -282,14 +282,30 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	}
 
 	/**
-	 * Register a service provider with the application.
+	 * Force register a service provider with the application.
 	 *
 	 * @param  \Illuminate\Support\ServiceProvider|string  $provider
 	 * @param  array  $options
 	 * @return \Illuminate\Support\ServiceProvider
 	 */
-	public function register($provider, $options = array())
+	public function forgeRegister($provider, $options = array())
 	{
+		return $this->register($provider, $options, true);
+	}
+
+	/**
+	 * Register a service provider with the application.
+	 *
+	 * @param  \Illuminate\Support\ServiceProvider|string  $provider
+	 * @param  array  $options
+	 * @param  bool   $force
+	 * @return \Illuminate\Support\ServiceProvider
+	 */
+	public function register($provider, $options = array(), $force = false)
+	{
+		if ($registered = $this->getRegistered($provider) && ! $force)
+                                     return $registered;
+
 		// If the given "provider" is a string, we will resolve it, passing in the
 		// application instance automatically for the developer. This is simply
 		// a more convenient way of specifying your service provider classes.
@@ -319,12 +335,31 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	}
 
 	/**
+	 * Get the registered service provider instnace if it exists.
+	 *
+	 * @param  \Illuminate\Support\ServiceProvider|string  $provider
+	 * @return \Illuminate\Support\ServiceProvider|null
+	 */
+	public function getRegistered($provider)
+	{
+		$name = is_string($provider) ? $provider : get_class($provider);
+
+		if (array_key_exists($name, $this->loadedProviders))
+		{
+			return array_first($this->serviceProviders, function($key, $value) use ($name)
+			{
+				return get_class($value) == $name;
+			});
+		}
+	}
+
+	/**
 	 * Resolve a service provider instance from the class name.
 	 *
 	 * @param  string  $provider
 	 * @return \Illuminate\Support\ServiceProvider
 	 */
-	protected function resolveProviderClass($provider)
+	public function resolveProviderClass($provider)
 	{
 		return new $provider($this);
 	}
@@ -970,6 +1005,52 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	public static function onRequest($method, $parameters = array())
 	{
 		return forward_static_call_array(array(static::requestClass(), $method), $parameters);
+	}
+
+	/**
+	 * Register the core class aliases in the container.
+	 *
+	 * @return void
+	 */
+	public function registerCoreContainerAliases()
+	{
+		$aliases = array(
+			'app'            => 'Illuminate\Foundation\Application',
+			'artisan'        => 'Illuminate\Console\Application',
+			'auth'           => 'Illuminate\Auth\AuthManager',
+			'blade.compiler' => 'Illuminate\View\Compilers\BladeCompiler',
+			'cache'          => 'Illuminate\Cache\Repository',
+			'config'         => 'Illuminate\Config\Repository',
+			'cookie'         => 'Illuminate\Cookie\CookieJar',
+			'encrypter'      => 'Illuminate\Encryption\Encrypter',
+			'db'             => 'Illuminate\Database\DatabaseManager',
+			'events'         => 'Illuminate\Events\Dispatacher',
+			'files'          => 'Illuminate\Filesystem\Filesystem',
+			'form'           => 'Illuminate\Html\FormBuilder',
+			'hash'           => 'Illuminate\Hashing\HasherInterface',
+			'html'           => 'Illuminate\Html\HtmlBuilder',
+			'translator'     => 'Illuminate\Translation\Translator',
+			'log'            => 'Illuminate\Log\Writer',
+			'mailer'         => 'Illuminate\Mail\Mailer',
+			'paginator'      => 'Illuminate\Pagination\Environment',
+			'auth.reminder'  => 'Illuminate\Auth\Reminders\PasswordBroker',
+			'queue'          => 'Illuminate\Queue\QueueManager',
+			'redirect'       => 'Illuminate\Routing\Redirector',
+			'redis'          => 'Illuminate\Redis\Database',
+			'request'        => 'Illuminate\Http\Request',
+			'router'         => 'Illuminate\Routing\Router',
+			'session'        => 'Illuminate\Session\SessionManager',
+			'session.store'  => 'Illuminate\Session\Store',
+			'remote'         => 'Illuminate\Remote\RemoteManager',
+			'url'            => 'Illuminate\Routing\UrlGenerator',
+			'validator'      => 'Illuminate\Validation\Factory',
+			'view'           => 'Illuminate\View\Environment',
+		);
+
+		foreach ($aliases as $key => $alias)
+		{
+			$this->alias($key, $alias);
+		}
 	}
 
 	/**

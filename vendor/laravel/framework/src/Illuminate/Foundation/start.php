@@ -43,7 +43,6 @@ if ( ! extension_loaded('mcrypt'))
 */
 
 use Illuminate\Http\Request;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Config\Repository as Config;
@@ -91,6 +90,19 @@ if (isset($unitTesting))
 Facade::clearResolvedInstances();
 
 Facade::setFacadeApplication($app);
+
+/*
+|--------------------------------------------------------------------------
+| Register Facade Aliases To Full Classes
+|--------------------------------------------------------------------------
+|
+| By default, we use short keys in the container for each of the core
+| pieces of the framework. Here we will register the aliases for a
+| list of all of the fully qualified class names making DI easy.
+|
+*/
+
+$app->registerCoreContainerAliases();
 
 /*
 |--------------------------------------------------------------------------

@@ -57,7 +57,7 @@ use ReflectionClass;
 use ReflectionParameter;
 class BindingResolutionException extends \Exception
 {
-
+    
 }
 class Container implements ArrayAccess
 {
@@ -398,7 +398,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.11';
+    const VERSION = '4.1.16';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -451,7 +451,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public static function getBootstrapFile()
     {
-        return __DIR__.'/../vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
+        return '/media/sayakb/storage/Apache/sticky-notes-src/vendor/laravel/framework/src/Illuminate/Foundation' . '/start.php';
     }
     public function startExceptionHandling()
     {
@@ -483,8 +483,15 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         return $this['env'] == 'testing';
     }
-    public function register($provider, $options = array())
+    public function forgeRegister($provider, $options = array())
     {
+        return $this->register($provider, $options, true);
+    }
+    public function register($provider, $options = array(), $force = false)
+    {
+        if ($registered = $this->getRegistered($provider) && !$force) {
+            return $registered;
+        }
         if (is_string($provider)) {
             $provider = $this->resolveProviderClass($provider);
         }
@@ -498,7 +505,16 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         }
         return $provider;
     }
-    protected function resolveProviderClass($provider)
+    public function getRegistered($provider)
+    {
+        $name = is_string($provider) ? $provider : get_class($provider);
+        if (array_key_exists($name, $this->loadedProviders)) {
+            return array_first($this->serviceProviders, function ($key, $value) use($name) {
+                return get_class($value) == $name;
+            });
+        }
+    }
+    public function resolveProviderClass($provider)
     {
         return new $provider($this);
     }
@@ -769,6 +785,13 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     public static function onRequest($method, $parameters = array())
     {
         return forward_static_call_array(array(static::requestClass(), $method), $parameters);
+    }
+    public function registerCoreContainerAliases()
+    {
+        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatacher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Environment', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Environment');
+        foreach ($aliases as $key => $alias) {
+            $this->alias($key, $alias);
+        }
     }
     public function __get($key)
     {
@@ -1833,7 +1856,7 @@ class Request
                 \Locale::setDefault($locale);
             }
         } catch (\Exception $e) {
-
+            
         }
     }
     private function getUrlencodedPrefix($string, $prefix)
@@ -2410,7 +2433,7 @@ class MetadataBag implements SessionBagInterface
     }
     public function clear()
     {
-
+        
     }
     public function getName()
     {
@@ -2791,7 +2814,7 @@ abstract class ServiceProvider
     }
     public function boot()
     {
-
+        
     }
     public abstract function register();
     public function package($package, $namespace = null, $path = null)
@@ -2854,7 +2877,6 @@ use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Debug\ExceptionHandler as KernelHandler;
 class ExceptionServiceProvider extends ServiceProvider
 {
     public function register()
@@ -3300,17 +3322,17 @@ class ErrorHandler
         }
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+                require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
             }
             $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
             $exceptionHandler = set_exception_handler(function () {
-
+                
             });
             restore_exception_handler();
             if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
                 $exceptionHandler[0]->handle($exception);
                 if (!class_exists('Symfony\\Component\\Debug\\Exception\\DummyException')) {
-                    require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
+                    require '/media/sayakb/storage/Apache/sticky-notes-src/vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
                 }
                 set_exception_handler(function (\Exception $e) use($exceptionHandler) {
                     if (!$e instanceof DummyException) {
@@ -3340,7 +3362,7 @@ class ErrorHandler
             return;
         }
         $exceptionHandler = set_exception_handler(function () {
-
+            
         });
         restore_exception_handler();
         if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
@@ -3369,7 +3391,7 @@ namespace Symfony\Component\HttpKernel\Debug;
 use Symfony\Component\Debug\ErrorHandler as DebugErrorHandler;
 class ErrorHandler extends DebugErrorHandler
 {
-
+    
 }
 namespace Illuminate\Config;
 
@@ -3668,7 +3690,7 @@ use FilesystemIterator;
 use Symfony\Component\Finder\Finder;
 class FileNotFoundException extends \Exception
 {
-
+    
 }
 class Filesystem
 {
@@ -4076,7 +4098,6 @@ namespace Illuminate\View;
 use Illuminate\Support\MessageBag;
 use Illuminate\View\Engines\PhpEngine;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\Engines\BladeEngine;
 use Illuminate\View\Engines\CompilerEngine;
 use Illuminate\View\Engines\EngineResolver;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -5080,6 +5101,12 @@ class RouteCollection implements Countable, IteratorAggregate
             $this->nameList[$action['as']] = $route;
         }
         if (isset($action['controller'])) {
+            $this->addToActionList($action, $route);
+        }
+    }
+    protected function addToActionList($action, $route)
+    {
+        if (!isset($this->actionList[$action['controller']])) {
             $this->actionList[$action['controller']] = $route;
         }
     }
@@ -5146,6 +5173,7 @@ class RouteCollection implements Countable, IteratorAggregate
 }
 namespace Illuminate\Routing;
 
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 class ControllerDispatcher
@@ -5192,9 +5220,13 @@ class ControllerDispatcher
     {
         foreach ($instance->getAfterFilters() as $filter) {
             if ($this->filterApplies($filter, $request, $method)) {
-                $route->after($filter['filter']);
+                $route->after($this->getAssignableAfter($filter));
             }
         }
+    }
+    protected function getAssignableAfter($filter)
+    {
+        return $filter['original'] instanceof Closure ? $filter['filter'] : $filter['original'];
     }
     protected function filterApplies($filter, $request, $method)
     {
@@ -5626,7 +5658,6 @@ class Dispatcher
 }
 namespace Illuminate\Database\Eloquent;
 
-use Closure;
 use DateTime;
 use ArrayAccess;
 use Carbon\Carbon;
@@ -5714,11 +5745,12 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function fill(array $attributes)
     {
+        $totallyGuarded = $this->totallyGuarded();
         foreach ($this->fillableFromArray($attributes) as $key => $value) {
             $key = $this->removeTableFromKey($key);
             if ($this->isFillable($key)) {
                 $this->setAttribute($key, $value);
-            } elseif ($this->totallyGuarded()) {
+            } elseif ($totallyGuarded) {
                 throw new MassAssignmentException($key);
             }
         }
@@ -6534,7 +6566,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         $format = $this->getDateFormat();
         if ($value instanceof DateTime) {
-
+            
         } elseif (is_numeric($value)) {
             $value = Carbon::createFromTimestamp($value);
         } elseif (preg_match('/^(\\d{4})-(\\d{2})-(\\d{2})$/', $value)) {
@@ -7468,12 +7500,24 @@ class Guard implements HttpKernelInterface
     {
         foreach ($request->cookies as $key => $c) {
             try {
-                $request->cookies->set($key, $this->encrypter->decrypt($c));
+                $request->cookies->set($key, $this->decryptCookie($c));
             } catch (DecryptException $e) {
                 $request->cookies->set($key, null);
             }
         }
         return $request;
+    }
+    protected function decryptCookie($cookie)
+    {
+        return is_array($cookie) ? $this->decryptArray($cookie) : $this->encrypter->decrypt($cookie);
+    }
+    protected function decryptArray(array $cookie)
+    {
+        $decrypted = array();
+        foreach ($cookie as $key => $value) {
+            $decrypted[$key] = $this->encrypter->decrypt($value);
+        }
+        return $decrypted;
     }
     protected function encrypt(Response $response)
     {
@@ -7514,7 +7558,7 @@ namespace Illuminate\Encryption;
 
 class DecryptException extends \RuntimeException
 {
-
+    
 }
 class Encrypter
 {
@@ -7973,7 +8017,7 @@ abstract class AbstractHandler implements HandlerInterface
     }
     public function close()
     {
-
+        
     }
     public function pushProcessor($callback)
     {
@@ -8025,7 +8069,7 @@ abstract class AbstractHandler implements HandlerInterface
         try {
             $this->close();
         } catch (\Exception $e) {
-
+            
         }
     }
     protected function getDefaultFormatter()
@@ -8517,6 +8561,14 @@ class FileViewFinder implements ViewFinderInterface
         }
         $this->hints[$namespace] = $hints;
     }
+    public function prependNamespace($namespace, $hints)
+    {
+        $hints = (array) $hints;
+        if (isset($this->hints[$namespace])) {
+            $hints = array_merge($hints, $this->hints[$namespace]);
+        }
+        $this->hints[$namespace] = $hints;
+    }
     public function addExtension($extension)
     {
         if (($index = array_search($extension, $this->extensions)) !== false) {
@@ -8641,6 +8693,14 @@ class Environment
             $creators[] = $this->addViewEvent($view, $callback, 'creating: ');
         }
         return $creators;
+    }
+    public function composers(array $composers)
+    {
+        $registered = array();
+        foreach ($composers as $callback => $views) {
+            $registered += $this->composer($views, $callback);
+        }
+        return $registered;
     }
     public function composer($views, $callback, $priority = null)
     {
@@ -8779,6 +8839,10 @@ class Environment
     public function addNamespace($namespace, $hints)
     {
         $this->finder->addNamespace($namespace, $hints);
+    }
+    public function prependNamespace($namespace, $hints)
+    {
+        $this->finder->prependNamespace($namespace, $hints);
     }
     public function addExtension($extension, $engine, $resolver = null)
     {
@@ -9872,7 +9936,7 @@ class Cookie
     protected $httpOnly;
     public function __construct($name, $value = null, $expire = 0, $path = '/', $domain = null, $secure = false, $httpOnly = true)
     {
-        if (preg_match('/[=,;
+        if (preg_match('/[=,; 	
 ]/', $name)) {
             throw new \InvalidArgumentException(sprintf('The cookie name "%s" contains invalid characters.', $name));
         }
@@ -10206,7 +10270,7 @@ class PrettyPageHandler extends Handler
             return Handler::DONE;
         }
         if (!($resources = $this->getResourcesPath())) {
-            $resources = __DIR__.'/../vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+            $resources = '/media/sayakb/storage/Apache/sticky-notes-src/vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
         }
         $templateFile = "{$resources}/pretty-template.php";
         $cssFile = "{$resources}/pretty-page.css";
