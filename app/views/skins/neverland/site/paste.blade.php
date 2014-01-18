@@ -46,7 +46,7 @@
 						}}
 					@elseif ($context == 'ListController')
 						{{
-							link_to($paste->urlkey, Lang::get('list.show_paste'), array(
+							link_to($paste->urlkey.($paste->private ? '/'.$paste->hash : NULL), Lang::get('list.show_paste'), array(
 								'class' => 'btn btn-success'
 							))
 						}}
