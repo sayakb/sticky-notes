@@ -78,29 +78,6 @@ class ShowController extends BaseController {
 		// Let's do some action!
 		switch ($action)
 		{
-			case 'toggle':
-
-				if ($owner)
-				{
-					Revision::where('urlkey', $paste->urlkey)->delete();
-
-					$paste->private = $paste->private ? 0 : 1;
-
-					$paste->password = NULL;
-
-					$paste->save();
-				}
-
-				break;
-
-			case 'raw':
-
-				$response = Response::make($paste->data);
-
-				$response->header('Content-Type', 'text/plain');
-
-				return $response;
-
 			case 'delete':
 
 				if (is_numeric($extra))
@@ -118,6 +95,29 @@ class ShowController extends BaseController {
 				}
 
 				break;
+
+			case 'raw':
+
+				$response = Response::make($paste->data);
+
+				$response->header('Content-Type', 'text/plain');
+
+				return $response;
+
+			case 'toggle':
+
+				if ($owner)
+				{
+					Revision::where('urlkey', $paste->urlkey)->delete();
+
+					$paste->private = $paste->private ? 0 : 1;
+
+					$paste->password = NULL;
+
+					$paste->save();
+				}
+
+				return Redirect::to(Paste::getUrl($paste));
 
 			default:
 

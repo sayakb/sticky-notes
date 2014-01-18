@@ -247,6 +247,25 @@ class Paste extends Eloquent {
 	}
 
 	/**
+	 * Returns the URL for a paste
+	 *
+	 * @static
+	 * @param  Paste  $paste
+	 * @return string
+	 */
+	public static function getUrl($paste)
+	{
+		$url = $paste->urlkey;
+
+		if ($paste->private)
+		{
+			$url .= '/'.$paste->hash;
+		}
+
+		return $url;
+	}
+
+	/**
 	 * Fetches available expiration times for a paste
 	 *
 	 * @static
