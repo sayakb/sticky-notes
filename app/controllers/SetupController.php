@@ -59,6 +59,7 @@ class SetupController extends BaseController {
 				$data = array(
 					'error'       => Session::get('messages.error'),
 					'success'     => Session::get('messages.success'),
+					'unstable'    => System::updated() > 0,
 				);
 
 				return View::make("setup/install/stage{$stage}", $data);
@@ -139,6 +140,7 @@ class SetupController extends BaseController {
 					'version'     => Session::get('setup.version'),
 					'versions'    => Setup::updateVersions(),
 					'messages'    => Setup::messages(),
+					'unstable'    => System::updated() > 0,
 				);
 
 				return View::make("setup/update/stage{$stage}", $data);

@@ -4,7 +4,7 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Sticky Notes core version
+	| Sticky Notes Core Version
 	|--------------------------------------------------------------------------
 	|
 	| This is the sticky notes core version number. Please do not change

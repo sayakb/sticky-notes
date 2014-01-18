@@ -14,6 +14,9 @@ return array(
 	"installer"         => "Sticky Notes Installer",
 	"welcome"           => "Thank you for choosing Sticky Notes. The installer will guide you throughout ".
 	                       "the install process. Follow the simple steps for a hassle free installation!",
+	"develop_warn"      => "<b>Important:</b> You are attempting to set up a pre-release version. It is ".
+	                       "strongly recommended that you do not install development versions on production ".
+	                       "servers. To download the latest stable release instead, <a href='%s'>click here</a>.",
 	"i_stage1_title"    => "Stage 1: Database configuration",
 	"i_stage1_exp"      => "Open your database configuration file located at <code>app/config/database.php</code> ".
 	                       "and fill up your DB details. Sticky Notes uses one active connection only, so make ".

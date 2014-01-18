@@ -177,6 +177,31 @@ class System {
 	}
 
 	/**
+	 * Determines whether the latest version of Sticky Notes
+	 * is installed.
+	 *
+	 *  - If local version is same as remote, return 0
+	 *  - If remove version is newer, return negative integer
+	 *  - If local version is newer, return positive integer
+	 *
+	 * @static
+	 * @return int
+	 */
+	public static function updated()
+	{
+		// Get the local (installed) version number
+		$localVersion = static::version(Site::config('general')->version);
+
+		// Get the remote version number
+		$remoteVersion = File::getRemote(Site::config('services')->updateUrl);
+
+		$remoteVersion = static::version($remoteVersion);
+
+		// Return the version difference
+		return $localVersion - $remoteVersion;
+	}
+
+	/**
 	 * Gets the name of the current action.
 	 * We don't return anything if we are in an error flow
 	 *

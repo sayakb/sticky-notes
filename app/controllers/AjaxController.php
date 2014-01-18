@@ -35,16 +35,8 @@ class AjaxController extends BaseController {
 		// Get the site configuration
 		$config = Site::config();
 
-		// Get the local (installed) version number
-		$localVersion = System::version($config->general->version);
-
-		// Get the remote version number
-		$remoteVersion = File::getRemote($config->services->updateUrl);
-
-		$remoteVersion = System::version($remoteVersion);
-
-		// Compare the versions and return the appropriate response
-		$view = $remoteVersion > $localVersion ? 'old' : 'ok';
+		// Determine the state of the system based on the update status
+		$view = System::updated() >= 0 ? 'ok' : 'old';
 
 		return View::make("ajax/version/{$view}");
 	}

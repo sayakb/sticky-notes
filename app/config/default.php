@@ -90,6 +90,7 @@ return array(
 		'statsUrl'            => 'http://sites.sayakbanerjee.com/sn-stats/?a=submit',
 		'docsUrl'             => 'http://sayakbanerjee.com/sticky-notes',
 		'updateUrl'           => 'http://sayakb.github.io/sticky-notes/version/',
+		'downloadUrl'         => 'http://sayakb.github.io/sticky-notes/download/',
 	),
 
 );
