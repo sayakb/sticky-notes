@@ -127,9 +127,7 @@ class CreateController extends BaseController {
 			}
 			else
 			{
-				$url = $paste->private ? $paste->urlkey.'/'.$paste->hash : $paste->urlkey;
-
-				return Redirect::to($url)->withCookie($cookie);
+				return Redirect::to(Paste::getUrl($paste))->withCookie($cookie);
 			}
 		}
 		else
