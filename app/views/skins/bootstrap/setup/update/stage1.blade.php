@@ -2,6 +2,12 @@
 
 @section('body')
 	<section id="update">
+		@if ($unstable)
+			<div class="alert alert-danger">
+				{{ sprintf(Lang::get('setup.develop_warn'), $site->services->downloadUrl) }}
+			</div>
+		@endif
+
 		<fieldset>
 			<legend>{{ Lang::get('setup.u_stage1_title') }}</legend>
 
