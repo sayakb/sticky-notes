@@ -94,7 +94,7 @@ class ShowController extends BaseController {
 					}
 				}
 
-				break;
+				return Redirect::to(URL::previous());
 
 			case 'raw':
 
@@ -118,20 +118,18 @@ class ShowController extends BaseController {
 				}
 
 				return Redirect::to(Paste::getUrl($paste));
-
-			default:
-
-				$data = array(
-					'paste'      => $paste,
-					'revisions'  => $paste->revisions,
-					'comments'   => $paste->comments()->paginate(Site::config('general')->perPage),
-				);
-
-				return View::make('site/show', $data);
 		}
 
-		// Redirect user to previous page
-		return Redirect::to(URL::previous());
+		// Build data for show paste page
+		$data = array(
+			'paste'      => $paste,
+			'revisions'  => $paste->revisions,
+			'comments'   => $paste->comments()->paginate(Site::config('general')->perPage),
+		);
+
+		// Display the show paste view
+		return View::make('site/show', $data);
+
 	}
 
 	/**
