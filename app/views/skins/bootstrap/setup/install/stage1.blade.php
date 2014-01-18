@@ -6,6 +6,12 @@
 			<div class="alert alert-info">
 				{{ Lang::get('setup.welcome') }}
 			</div>
+
+			@if ($unstable)
+				<div class="alert alert-danger">
+					{{ sprintf(Lang::get('setup.develop_warn'), $site->services->downloadUrl) }}
+				</div>
+			@endif
 		@endif
 
 		<fieldset>
