@@ -21,7 +21,7 @@
 									'class'          => 'btn btn-success',
 									'data-toggle'    => 'ajax',
 									'data-component' => 'shorten',
-									'data-extra'     => $paste->urlkey.($paste->private ? '/'.$paste->hash : ''),
+									'data-extra'     => Paste::getUrl($paste),
 								))
 							}}
 						@endif
