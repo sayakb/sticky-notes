@@ -190,7 +190,7 @@ class System {
 	public static function updated()
 	{
 		// Get the local (installed) version number
-		$localVersion = static::version(Site::config('general')->version);
+		$localVersion = static::version(Config::get('app.version'));
 
 		// Get the remote version number
 		$remoteVersion = File::getRemote(Site::config('services')->updateUrl);
