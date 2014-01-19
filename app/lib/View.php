@@ -20,6 +20,7 @@ use Lang;
 use Request;
 use Schema;
 use Site;
+use URL;
 use User;
 
 /**
@@ -80,7 +81,13 @@ class View extends \Illuminate\Support\Facades\View {
 	 */
 	public static function make($view, $data = array())
 	{
-		return parent::make(static::skin($view), $data, static::defaults());
+		$view = parent::make(static::skin($view), $data, static::defaults());
+
+		$response = Response::make($view, 200);
+
+		$response->header('StickyNotes-Url', URL::current());
+
+		return $response;
 	}
 
 	/**
@@ -258,7 +265,7 @@ class View extends \Illuminate\Support\Facades\View {
 					// Set the entry icon
 					if (isset($item['icon']))
 					{
-						$icon = View::make('common/icon', array('icon' => $item['icon']));
+						$icon = parent::make(static::skin('common/icon'), array('icon' => $item['icon']));
 					}
 					else
 					{
@@ -289,7 +296,7 @@ class View extends \Illuminate\Support\Facades\View {
 				// Are we on the login screen?
 				$active = $path == 'user/login' ? 'class="active"' : '';
 
-				$icon = View::make('common/icon', array('icon' => 'user'));;
+				$icon = parent::make(static::skin('common/icon'), array('icon' => 'user'));;
 
 				// Generate the markup
 				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
