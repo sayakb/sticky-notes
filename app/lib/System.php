@@ -193,9 +193,9 @@ class System {
 		$localVersion = static::version(Config::get('app.version'));
 
 		// Get the remote version number
-		$remoteVersion = File::getRemote(Site::config('services')->updateUrl);
+		$response = Requests::get(Site::config('services')->updateUrl);
 
-		$remoteVersion = static::version($remoteVersion);
+		$remoteVersion = static::version($response->body);
 
 		// Return the version difference
 		return $localVersion - $remoteVersion;
