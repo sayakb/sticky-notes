@@ -15,6 +15,7 @@
 
 	<script type="text/javascript" src="//cdn.kde.org/js/jquery.js"></script>
 	<script type="text/javascript" src="//cdn.kde.org/js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="//cdn.kde.org/js/jquery.scrollto.js"></script>
 	<script type="text/javascript" src="//cdn.kde.org/js/bootstrap.js"></script>
 	<script type="text/javascript" src="//www.google.com/jsapi"></script>
 	<script type="text/javascript" src="{{ View::asset('js/stickynotes.js') }}"></script>
@@ -24,7 +25,11 @@
 	</script>
 </head>
 
-<body>
+<body data-toggle="ajax">
+	<div class="loader">
+		@include('skins.neverland.common.loader')
+	</div>
+
 	<header class="navbar navbar-static-top Neverland" role="navigation">
 		<div class="navbar-inner">
 			<div class="container">
@@ -42,7 +47,7 @@
 				</div>
 
 				<div class="nav-collapse">
-					<ul class="nav pull-right">
+					<ul class="nav nav-navbar pull-right">
 						{{ View::menu('navigation') }}
 					</ul>
 				</div>

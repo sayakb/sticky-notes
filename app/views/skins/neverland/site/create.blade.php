@@ -8,7 +8,8 @@
 			Form::open(array(
 				'action'         => $action,
 				'autocomplete'   => 'off',
-				'role'           => 'form'
+				'role'           => 'form',
+				'data-navigate'  => 'ajax'
 			))
 		}}
 

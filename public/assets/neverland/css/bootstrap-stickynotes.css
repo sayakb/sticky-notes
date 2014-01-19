@@ -73,8 +73,9 @@ section#admin-dashboard #dashboard-stats {
   height: 280px;
   text-align: center;
 }
-section#admin-dashboard #dashboard-stats .btn {
+section#admin-dashboard #dashboard-stats .well-loader {
   margin-top: 110px;
+  display: inline-block;
 }
 select.input-xxlarge {
   width: 543px;
@@ -200,4 +201,14 @@ select.input-xxlarge {
 }
 .muted {
   color: #888;
+}
+.loader {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 22px;
+  z-index: 10000;
+  display: none;
 }
