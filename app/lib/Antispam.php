@@ -110,7 +110,7 @@ class Antispam {
 		{
 			$flags = new stdClass();
 
-			$services = static::services();
+			$services = Antispam::services();
 
 			// Fetching all enabled filters. This value can be defined
 			// from the antispam screen in the admin panel
