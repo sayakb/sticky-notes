@@ -14,6 +14,7 @@
 
 	<script type="text/javascript" src="{{ View::asset('js/jquery.min.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/jquery.cookie.js') }}"></script>
+	<script type="text/javascript" src="{{ View::asset('js/jquery.scrollto.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/bootstrap.min.js') }}"></script>
 	<script type="text/javascript" src="{{ View::asset('js/stickynotes.js') }}"></script>
 	<script type="text/javascript" src="//www.google.com/jsapi"></script>
@@ -23,7 +24,11 @@
 	</script>
 </head>
 
-<body>
+<body data-toggle="ajax">
+	<div class="loader">
+		@include('skins.bootstrap.common.loader')
+	</div>
+
 	<nav class="navbar navbar-default navbar-static-top" role="navigation">
 		<div class="container">
 			<div class="navbar-header">

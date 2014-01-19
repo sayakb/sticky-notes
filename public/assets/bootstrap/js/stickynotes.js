@@ -13,14 +13,24 @@
  */
 
 /**
+ * Stores the current URL
+ *
+ * @var string
+ */
+var currentUrl = window.location;
+
+/**
  * This is the main entry point of the script
  *
  * @return void
  */
 function stickyNotes()
 {
-	// Initialize AJAX events
-	initAjax();
+	// Initialize AJAX components
+	initAjaxComponents();
+
+	// Initialize AJAX navigation
+	initAjaxNavigation();
 
 	// Initialize code wrapping
 	initWrapToggle();
@@ -39,7 +49,7 @@ function stickyNotes()
 }
 
 /**
- * Scans for and processes AJAX requests
+ * Scans for and processes AJAX components
  *
  * Each AJAX component can have 4 parameters:
  *  - realtime  : Indicates if the component involves realtime data
@@ -49,7 +59,7 @@ function stickyNotes()
  *
  * @return void
  */
-function initAjax()
+function initAjaxComponents()
 {
 	var count = 1;
 
@@ -65,7 +75,7 @@ function initAjax()
 		// Set the id of this element
 		$(this).attr('data-id', id);
 
-		// ajaxUrl and component must be defined
+		// AJAX URL and component must be defined
 		if (ajaxUrl !== undefined && component !== undefined)
 		{
 			var getUrl = ajaxUrl + '/' + component + (extra !== undefined ? '/' + extra : '');
@@ -77,7 +87,8 @@ function initAjax()
 
 				// Send the AJAX request
 				$.ajax({
-					url: getUrl + '?key=' + Math.random(),
+					url: getUrl,
+					data: { key: Math.random(), ajax: 1 },
 					context: $('[data-id="' + id + '"]'),
 					success: function(response)
 					{
@@ -92,8 +103,8 @@ function initAjax()
 							$(this).off('click');
 						}
 
-						// Activate bootstrap components again
-						initBootstrap();
+						// Load JS triggers
+						stickyNotes();
 					}
 				});
 
@@ -103,8 +114,7 @@ function initAjax()
 				}
 			};
 
-			// For onload requests, execute the callback right away
-			// For the rest, bind it to the click event of the element
+			// Execute the AJAX callback
 			if (onload)
 			{
 				if (realtime)
@@ -118,10 +128,106 @@ function initAjax()
 			}
 			else
 			{
-				$(this).on('click', callback);
+				$(this).off('click').on('click', callback);
 			}
 		}
 	});
+}
+
+/**
+ * Enabled AJAX navigation across the site
+ *
+ * @return void
+ */
+function initAjaxNavigation()
+{
+	// AJAX callback
+	var callback = function(e) {
+		var navMethod = $(this).prop('tagName') == 'A' ? 'GET' : 'POST';
+		var seek = $(this).attr('data-seek');
+
+		// Set up data based on method
+		switch (navMethod)
+		{
+			case 'GET':
+				navUrl = $(this).attr('href');
+				payload = 'ajax=1';
+				break;
+
+			case 'POST':
+				navUrl = $(this).attr('action');
+				payload = $(this).serialize() + '&ajax=1';
+				break;
+		}
+
+		// Send an AJAX request for all but anchor links
+		if (navUrl !== undefined && !$('.loader').is(':visible'))
+		{
+			$('.loader').show();
+
+			$.ajax({
+				url: navUrl,
+				method: navMethod,
+				context: $('body'),
+				data: payload,
+				success: function(response, status, info)
+				{
+					// Write the response to the container
+					if (response.indexOf('<!DOCTYPE html>') == -1)
+					{
+						$(this).html(response);
+					}
+					else
+					{
+						document.open();
+						document.write(response);
+						document.close();
+					}
+
+					// Change the page URL
+					currentUrl = info.getResponseHeader('StickyNotes-Url');
+					window.history.pushState({ html: response }, '', currentUrl);
+
+					// Seek to top of the page
+					$.scrollTo(0, 200);
+
+					// Load JS triggers again
+					stickyNotes();
+				},
+				error: function()
+				{
+					window.location = navUrl;
+				}
+			});
+
+			e.preventDefault();
+		}
+	};
+
+	// Execute callback on all non-admin links without an 'onclick' attribute
+	$('body').find('a:not([href*="/admin"]):not([onclick])').off('click').on('click', callback);
+
+	// Execute callback on all designated forms
+	$('body').find('form[data-navigate="ajax"]').off('submit').on('submit', callback);
+
+	// URL change monitor
+	setInterval(function()
+	{
+		if (currentUrl != window.location)
+		{
+			currentUrl = window.location;
+
+			// Load the selected page
+			$('.loader').show();
+
+			$.get(window.location, function(response)
+			{
+				document.open();
+				document.write(response);
+				document.close();
+			});
+		}
+	}, 300);
 }
 
 /**
@@ -131,7 +237,7 @@ function initAjax()
  */
 function initWrapToggle()
 {
-	$('[data-toggle="wrap"]').click(function(e)
+	$('[data-toggle="wrap"]').off('click').on('click', function(e)
 	{
 		var isWrapped = $('.pre div').css('white-space') != 'nowrap';
 		var newValue = isWrapped ? 'nowrap' : 'inherit';
@@ -150,7 +256,7 @@ function initWrapToggle()
 function initEditor()
 {
 	// Insert tab in the code box
-	$('[name="data"]').keydown(function (e)
+	$('[name="data"]').off('keydown').on('keydown', function (e)
 	{
 		if (e.keyCode == 9)
 		{
@@ -170,7 +276,7 @@ function initEditor()
 	});
 
 	// Tick the private checkbox if password is entered
-	$('[name="password"]').keyup(function()
+	$('[name="password"]').off('keyup').on('keyup', function()
 	{
 		$('[name="private"]').attr('checked', $(this).val().length > 0);
 	});
@@ -250,7 +356,7 @@ function initLineReference()
 		}
 
 		// Click to change anchor
-		$('.pre li').mouseup(function()
+		$('.pre li').off('mouseup').on('mouseup', function()
 		{
 			if (window.getSelection() == '')
 			{
@@ -270,7 +376,7 @@ function initLineReference()
  */
 function initAreaChart()
 {
-	if (typeof(chartData) != 'undefined' && typeof(chartContainer) != 'undefined')
+	if (chartData !== undefined && chartContainer !== undefined)
 	{
 		// Create an instance of line chart
 		var chart = new google.visualization.AreaChart(chartContainer);
@@ -313,14 +419,12 @@ function initAreaChart()
 		// Draw the line chart
 		chart.draw(chartData, options);
 	}
+
+	// Redraw chart on window resize
+	$(window).off('resize').on('resize', initAreaChart);
 }
 
 /**
  * Invoke the entry point on DOM ready
  */
 $(stickyNotes);
-
-/**
- * Draw google chart on window resize
- */
-$(window).resize(initAreaChart);
