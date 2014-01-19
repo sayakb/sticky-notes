@@ -83,10 +83,7 @@
 					<div class="span12">
 						@if (count($stats) > 1)
 							<div id="dashboard-stats" class="well well-small well-white">
-								<button class="btn" disabled="disabled">
-									<i class="icon-time"></i>
-									{{ Lang::get('global.loading') }}
-								</button>
+								@include('skins.neverland.common.loader')
 							</div>
 
 							<script type="text/javascript">
