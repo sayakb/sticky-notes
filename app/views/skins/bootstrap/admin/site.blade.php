@@ -66,6 +66,22 @@
 
 							<div class="form-group">
 								{{
+									Form::label('lang', Lang::get('admin.language'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::select('lang', $langs, $site->general->lang, array(
+											'class' => 'form-control'
+										))
+									}}
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
 									Form::label('copyright', Lang::get('admin.copyright'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
@@ -78,22 +94,33 @@
 											'rows'  => 4,
 										))
 									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.copyright_exp') }}
+									</div>
 								</div>
 							</div>
 
 							<div class="form-group">
 								{{
-									Form::label('lang', Lang::get('admin.language'), array(
+									Form::label('ajax_nav', Lang::get('admin.ajax_nav'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
 								}}
 
 								<div class="col-sm-9 col-lg-10">
 									{{
-										Form::select('lang', $langs, $site->general->lang, array(
+										Form::select('ajax_nav', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->general->ajaxNav, array(
 											'class' => 'form-control'
 										))
 									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.ajax_nav_exp') }}
+									</div>
 								</div>
 							</div>
 

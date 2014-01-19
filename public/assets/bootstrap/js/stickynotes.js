@@ -141,93 +141,96 @@ function initAjaxComponents()
  */
 function initAjaxNavigation()
 {
-	// AJAX callback
-	var callback = function(e) {
-		var navMethod = $(this).prop('tagName') == 'A' ? 'GET' : 'POST';
-		var seek = $(this).attr('data-seek');
-
-		// Set up data based on method
-		switch (navMethod)
-		{
-			case 'GET':
-				navUrl = $(this).attr('href');
-				payload = 'ajax=1';
-				break;
-
-			case 'POST':
-				navUrl = $(this).attr('action');
-				payload = $(this).serialize() + '&ajax=1';
-				break;
-		}
-
-		// Send an AJAX request for all but anchor links
-		if (navUrl !== undefined && !$('.loader').is(':visible'))
-		{
-			$('.loader').show();
-
-			$.ajax({
-				url: navUrl,
-				method: navMethod,
-				context: $('body'),
-				data: payload,
-				success: function(response, status, info)
-				{
-					// Write the response to the container
-					if (response.indexOf('<!DOCTYPE html>') == -1)
-					{
-						$(this).html(response);
-					}
-					else
-					{
-						document.open();
-						document.write(response);
-						document.close();
-					}
-
-					// Change the page URL
-					currentUrl = info.getResponseHeader('StickyNotes-Url');
-					window.history.pushState({ html: response }, '', currentUrl);
-
-					// Seek to top of the page
-					$.scrollTo(0, 200);
-
-					// Load JS triggers again
-					stickyNotes();
-				},
-				error: function()
-				{
-					window.location = navUrl;
-				}
-			});
-
-			e.preventDefault();
-		}
-	};
-
-	// Execute callback on all non-admin links without an 'onclick' attribute
-	$('body').find('a:not([href*="/admin"]):not([onclick])').off('click').on('click', callback);
-
-	// Execute callback on all designated forms
-	$('body').find('form[data-navigate="ajax"]').off('submit').on('submit', callback);
-
-	// URL change monitor
-	setInterval(function()
+	if (ajaxNav !== undefined && ajaxNav)
 	{
-		if (currentUrl != window.location)
-		{
-			currentUrl = window.location;
+		// AJAX callback
+		var callback = function(e) {
+			var navMethod = $(this).prop('tagName') == 'A' ? 'GET' : 'POST';
+			var seek = $(this).attr('data-seek');
 
-			// Load the selected page
-			$('.loader').show();
-
-			$.get(window.location, function(response)
+			// Set up data based on method
+			switch (navMethod)
 			{
-				document.open();
-				document.write(response);
-				document.close();
-			});
-		}
-	}, 300);
+				case 'GET':
+					navUrl = $(this).attr('href');
+					payload = 'ajax=1';
+					break;
+
+				case 'POST':
+					navUrl = $(this).attr('action');
+					payload = $(this).serialize() + '&ajax=1';
+					break;
+			}
+
+			// Send an AJAX request for all but anchor links
+			if (navUrl !== undefined && !$('.loader').is(':visible'))
+			{
+				$('.loader').show();
+
+				$.ajax({
+					url: navUrl,
+					method: navMethod,
+					context: $('body'),
+					data: payload,
+					success: function(response, status, info)
+					{
+						// Write the response to the container
+						if (response.indexOf('<!DOCTYPE html>') == -1)
+						{
+							$(this).html(response);
+						}
+						else
+						{
+							document.open();
+							document.write(response);
+							document.close();
+						}
+
+						// Change the page URL
+						currentUrl = info.getResponseHeader('StickyNotes-Url');
+						window.history.pushState({ html: response }, '', currentUrl);
+
+						// Seek to top of the page
+						$.scrollTo(0, 200);
+
+						// Load JS triggers again
+						stickyNotes();
+					},
+					error: function()
+					{
+						window.location = navUrl;
+					}
+				});
+
+				e.preventDefault();
+			}
+		};
+
+		// Execute callback on all non-admin links without an 'onclick' attribute
+		$('body').find('a:not([href*="/admin"]):not([onclick])').off('click').on('click', callback);
+
+		// Execute callback on all designated forms
+		$('body').find('form[data-navigate="ajax"]').off('submit').on('submit', callback);
+
+		// URL change monitor
+		setInterval(function()
+		{
+			if (currentUrl != window.location)
+			{
+				currentUrl = window.location;
+
+				// Load the selected page
+				$('.loader').show();
+
+				$.get(window.location, function(response)
+				{
+					document.open();
+					document.write(response);
+					document.close();
+				});
+			}
+		}, 300);
+	}
 }
 
 /**

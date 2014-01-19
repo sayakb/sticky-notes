@@ -21,6 +21,7 @@
 
 	<script type="text/javascript">
 		var ajaxUrl = "{{ url('ajax') }}";
+		var ajaxNav = {{ $site->general->ajaxNav ? 'true' : 'false' }};
 	</script>
 </head>
 
