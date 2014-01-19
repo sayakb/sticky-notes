@@ -83,10 +83,7 @@
 					<div class="col-sm-12">
 						@if (count($stats) > 1)
 							<div id="dashboard-stats" class="well well-sm well-white">
-								<button class="btn" disabled="disabled">
-									<span class="glyphicon glyphicon-time"></span>
-									{{ Lang::get('global.loading') }}
-								</button>
+								@include('skins.bootstrap.common.loader')
 							</div>
 
 							<script type="text/javascript">
