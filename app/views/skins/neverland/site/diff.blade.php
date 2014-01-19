@@ -1,4 +1,4 @@
-@extends('skins.neverland.common.page')
+@extends("skins.neverland.common.{$container}")
 
 <link href="{{ View::asset('css/phpdiff.css') }}" rel="stylesheet" />
 

@@ -1,4 +1,4 @@
-@extends('skins.neverland.common.page')
+@extends("skins.neverland.common.{$container}")
 
 @section('body')
 	<div class="row-fluid">
