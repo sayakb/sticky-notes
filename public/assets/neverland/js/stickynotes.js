@@ -17,7 +17,7 @@
  *
  * @var string
  */
-var currentUrl = window.location;
+var currentUrl = $(location).attr('href');
 
 /**
  * This is the main entry point of the script
@@ -217,14 +217,16 @@ function initAjaxNavigation()
 		// URL change monitor
 		setInterval(function()
 		{
-			if (currentUrl != window.location)
+			var href = $(location).attr('href');
+
+			if (currentUrl != href)
 			{
-				currentUrl = window.location;
+				currentUrl = href;
 
 				// Load the selected page
 				$('.loader').show();
 
-				$.get(window.location, function(response)
+				$.get(href, function(response)
 				{
 					document.open();
 					document.write(response);
