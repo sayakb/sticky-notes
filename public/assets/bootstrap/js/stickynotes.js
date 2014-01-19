@@ -206,8 +206,8 @@ function initAjaxNavigation()
 			}
 		};
 
-		// Execute callback on all non-admin links without an 'onclick' attribute
-		$('body').find('a:not([href*="/admin"]):not([onclick])').off('click').on('click', callback);
+		// Execute callback on all non-admin, non-anchor links without an 'onclick' attribute
+		$('body').find('a:not([href*="/admin"]):not([href*="#"]):not([onclick])').off('click').on('click', callback);
 
 		// Execute callback on all designated forms
 		$('body').find('form[data-navigate="ajax"]').off('submit').on('submit', callback);
