@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="{{ $site->general->lang }}">
 
 <head>
 	<meta charset="utf-8">

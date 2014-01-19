@@ -88,7 +88,7 @@
 
 							<script type="text/javascript">
 								// Load the Visualization API and the piechart package.
-								google.load('visualization', '1.0', { packages: ['corechart'], language: '{{ Config::get('app.locale') }}' });
+								google.load('visualization', '1.0', { packages: ['corechart'], language: '{{ $site->general->lang }}' });
 
 								// Set a callback to run when the Google Visualization API is loaded.
 								google.setOnLoadCallback(function()
