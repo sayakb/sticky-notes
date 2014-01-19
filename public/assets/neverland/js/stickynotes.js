@@ -176,16 +176,23 @@ function initAjaxNavigation()
 					data: payload,
 					success: function(response, status, info)
 					{
-						// Write the response to the container
-						if (response.indexOf('<!DOCTYPE html>') == -1)
+						var isPageSection = response.indexOf('<!DOCTYPE html>') == -1;
+						var isHtmlContent = info.getResponseHeader('Content-Type').indexOf('text/html') != -1;
+
+						// Handle the response
+						if (isPageSection && isHtmlContent)
 						{
 							$(this).html(response);
 						}
-						else
+						else if (isHtmlContent)
 						{
 							document.open();
 							document.write(response);
 							document.close();
+						}
+						else
+						{
+							window.location = navUrl;
 						}
 
 						// Change the page URL
