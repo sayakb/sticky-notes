@@ -1,4 +1,4 @@
-<button class="btn" disabled="disabled">
+<span class="well well-sm well-white well-loader">
 	<span class="glyphicon glyphicon-time"></span>
 	{{ Lang::get('global.loading') }}
-</button>
+</span>

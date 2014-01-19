@@ -60,8 +60,9 @@ section#admin-dashboard #dashboard-stats {
   height: 280px;
   text-align: center;
 }
-section#admin-dashboard #dashboard-stats .btn {
+section#admin-dashboard #dashboard-stats .well {
   margin-top: 110px;
+  display: inline-block;
 }
 .navbar {
   background: #f2f2f2;
@@ -178,6 +179,16 @@ section#admin-dashboard #dashboard-stats .btn {
 .img-thumbnail.pull-left {
   margin-right: 20px;
   margin-bottom: 20px;
+}
+.loader {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 15px;
+  z-index: 10000;
+  display: none;
 }
 @media (max-width: 767px) {
   .form-horizontal .control-label {
