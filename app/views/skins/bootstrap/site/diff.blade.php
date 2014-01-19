@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.common.page')
+@extends("skins.bootstrap.common.{$container}")
 
 <link href="{{ View::asset('css/phpdiff.css') }}" rel="stylesheet" />
 

@@ -1,4 +1,4 @@
-@extends('skins.bootstrap.common.page')
+@extends("skins.bootstrap.common.{$container}")
 
 @section('body')
 	<section id="forgot">
