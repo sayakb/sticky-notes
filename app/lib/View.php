@@ -35,6 +35,14 @@ use User;
 class View extends \Illuminate\Support\Facades\View {
 
 	/**
+	 * Cache for default view data
+	 *
+	 * @static
+	 * @var array
+	 */
+	private static $viewDefaults = NULL;
+
+	/**
 	 * Returns default view data.
 	 *
 	 * @static
@@ -42,32 +50,35 @@ class View extends \Illuminate\Support\Facades\View {
 	 */
 	public static function defaults()
 	{
-		// Get all site configuration
-		$site = Site::config();
-
-		// Get system active status. This is done in order to ensure
-		// that 1.x features are available
-		$active = System::version($site->general->version) > 0;
-
-		$defaults = array(
-			'site'       => $site,
-			'active'     => $active,
-			'error'      => Session::get('messages.error'),
-			'success'    => Session::get('messages.success'),
-			'context'    => System::action(),
-			'container'  => Input::has('ajax') ? 'wrapper' : 'page',
-		);
-
-		// Inject user and role information on active systems
-		if ($active)
+		if (is_null(static::$viewDefaults))
 		{
-			$defaults = array_merge($defaults, array(
-				'auth'   => Auth::user(),
-				'role'   => Auth::roles(),
-			));
+			// Get all site configuration
+			$site = Site::config();
+
+			// Get system active status. This is done in order to ensure
+			// that 1.x features are available
+			$active = System::version($site->general->version) > 0;
+
+			static::$viewDefaults = array(
+				'site'       => $site,
+				'active'     => $active,
+				'error'      => Session::get('messages.error'),
+				'success'    => Session::get('messages.success'),
+				'context'    => System::action(),
+				'container'  => Input::has('ajax') ? 'wrapper' : 'page',
+			);
+
+			// Inject user and role information on active systems
+			if ($active)
+			{
+				static::$viewDefaults = array_merge(static::$viewDefaults, array(
+					'auth'   => Auth::user(),
+					'role'   => Auth::roles(),
+				));
+			}
 		}
 
-		return $defaults;
+		return static::$viewDefaults;
 	}
 
 	/**
@@ -76,18 +87,21 @@ class View extends \Illuminate\Support\Facades\View {
 	 *
 	 * @param  string  $view
 	 * @param  array   $data
-	 * @param  array   $mergeData
+	 * @param  bool    $inject
 	 * @return \Illuminate\View\View
 	 */
-	public static function make($view, $data = array())
+	public static function make($view, $data = array(), $inject = TRUE)
 	{
 		$view = parent::make(static::skin($view), $data, static::defaults());
 
-		$response = Response::make($view, 200);
+		if ($inject)
+		{
+			$view = Response::make($view, 200);
 
-		$response->header('StickyNotes-Url', URL::current());
+			$view->header('StickyNotes-Url', URL::current());
+		}
 
-		return $response;
+		return $view;
 	}
 
 	/**
@@ -265,7 +279,7 @@ class View extends \Illuminate\Support\Facades\View {
 					// Set the entry icon
 					if (isset($item['icon']))
 					{
-						$icon = parent::make(static::skin('common/icon'), array('icon' => $item['icon']));
+						$icon = View::make('common/icon', array('icon' => $item['icon']), FALSE);
 					}
 					else
 					{
@@ -296,7 +310,7 @@ class View extends \Illuminate\Support\Facades\View {
 				// Are we on the login screen?
 				$active = $path == 'user/login' ? 'class="active"' : '';
 
-				$icon = parent::make(static::skin('common/icon'), array('icon' => 'user'));;
+				$icon = View::make('common/icon', array('icon' => 'user'), FALSE);
 
 				// Generate the markup
 				$output .= "<li {$active}><a {$href}>{$icon} {$label}</a></li>";
