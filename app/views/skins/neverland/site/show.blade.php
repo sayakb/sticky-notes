@@ -81,8 +81,9 @@
 
 					{{
 						Form::open(array(
-							'action'  => 'ShowController@postComment',
-							'role'    => 'form'
+							'action'        => 'ShowController@postComment',
+							'role'          => 'form',
+							'data-navigate' => 'ajax'
 						))
 					}}
 
