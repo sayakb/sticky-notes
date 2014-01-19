@@ -34,6 +34,7 @@ return array(
 		'csrf'                => '1',
 		'statsTTL'            => '-6 months',
 		'statsDisplay'        => '-1 month',
+		'ajaxNav'             => '1',
 	),
 
 	'antispam'                => (object) array(

@@ -69,7 +69,11 @@ return array(
 	                           "used to determine the project level sub-domains.",
 	"site_title"            => "Site title",
 	"copyright"             => "Copyright",
+	"copyright_exp"         => "This copyright notice will be displayed in your site's footer. You can ".
+	                           "use HTML markup here.",
 	"language"              => "Language",
+	"ajax_nav"              => "AJAX mode",
+	"ajax_nav_exp"          => "Enable AJAX to allow faster navigation and to save bandwidth.",
 	"list_length"           => "List length",
 	"list_length_exp"       => "Sets the number of items displayed per page in a list.",
 	"paste_age"             => "Paste age",
