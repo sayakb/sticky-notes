@@ -222,7 +222,7 @@ class Paste extends Eloquent {
 			}
 		}
 
-		return trim($data);
+		return $data;
 	}
 
 	/**

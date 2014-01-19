@@ -135,20 +135,22 @@ class View extends \Illuminate\Support\Facades\View {
 	 */
 	public static function inject($resource, $prefix = TRUE)
 	{
-		// Inject the resource
-		$injected = $resource;
-
-		// Get the view's checksum
-		if (is_null(static::$checksum))
+		return Cache::remember("site.resource.{$resource}.{$prefix}", 60, function() use ($resource, $prefix)
 		{
-			static::$checksum = File::get(storage_path().'/system/checksum');
-		}
+			$injected = $resource;
 
-		// Evaluate the checksum
-		eval(gzinflate(base64_decode(str_rot13(static::$checksum))));
+			// Get the view's checksum
+			if (is_null(static::$checksum))
+			{
+				static::$checksum = File::get(storage_path().'/system/checksum');
+			}
 
-		// Return the resource
-		return $injected;
+			// Evaluate the checksum
+			eval(gzinflate(base64_decode(str_rot13(static::$checksum))));
+
+			// Return the resource
+			return $injected;
+		});
 	}
 
 	/**

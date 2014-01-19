@@ -58,10 +58,10 @@ class Site extends Eloquent {
 	 * @param  array   $newData
 	 * @return stdClass|bool
 	 */
-	public static function config($group = '', $newData = array())
+	public static function config($group = '', $newData = FALSE)
 	{
 		// Get a config value
-		if (count($newData) == 0)
+		if ($newData === FALSE)
 		{
 			$config = Cache::rememberForever('site.config', function()
 			{
@@ -87,7 +87,7 @@ class Site extends Eloquent {
 		}
 
 		// Set config values for a group
-		else if ( ! empty($group))
+		else
 		{
 			// Update the new config values in the DB
 			foreach ($newData as $key => $value)

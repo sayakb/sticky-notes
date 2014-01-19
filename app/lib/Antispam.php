@@ -106,20 +106,23 @@ class Antispam {
 	 */
 	public static function flags()
 	{
-		$flags = new stdClass();
-
-		$services = static::services();
-
-		// Fetching all enabled filters. This value can be defined
-		// from the antispam screen in the admin panel
-		$enabled = preg_split('/\||,/', Site::config('antispam')->services);
-
-		foreach ($services as $service)
+		return Cache::rememberForever('antispam.flags', function()
 		{
-			$flags->$service = in_array($service, $enabled);
-		}
+			$flags = new stdClass();
 
-		return $flags;
+			$services = static::services();
+
+			// Fetching all enabled filters. This value can be defined
+			// from the antispam screen in the admin panel
+			$enabled = preg_split('/\||,/', Site::config('antispam')->services);
+
+			foreach ($services as $service)
+			{
+				$flags->$service = in_array($service, $enabled);
+			}
+
+			return $flags;
+		});
 	}
 
 	/**
