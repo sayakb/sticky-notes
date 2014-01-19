@@ -32,13 +32,12 @@ class AjaxController extends BaseController {
 	 */
 	public function getVersion()
 	{
-		// Get the site configuration
-		$config = Site::config();
+		// Build the view data and return the view
+		$data = array(
+			'updated' => System::updated() >= 0,
+		);
 
-		// Determine the state of the system based on the update status
-		$view = System::updated() >= 0 ? 'ok' : 'old';
-
-		return View::make("ajax/version/{$view}");
+		return View::make("admin/version", $data);
 	}
 
 	/**
