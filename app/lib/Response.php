@@ -39,7 +39,7 @@ class Response extends \Illuminate\Support\Facades\Response {
 	{
 		$data = array_merge(View::defaults(), $data);
 
-		return parent::view(View::skin($view), $data, $status, $headers);
+		return parent::view(View::inject($view), $data, $status, $headers);
 	}
 
 }
