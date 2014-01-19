@@ -15,6 +15,7 @@
  */
 
 use File;
+use Input;
 use Lang;
 use Request;
 use Schema;
@@ -53,6 +54,7 @@ class View extends \Illuminate\Support\Facades\View {
 			'error'      => Session::get('messages.error'),
 			'success'    => Session::get('messages.success'),
 			'context'    => System::action(),
+			'container'  => Input::has('ajax') ? 'wrapper' : 'page',
 		);
 
 		// Inject user and role information on active systems
