@@ -291,7 +291,7 @@ class Container implements ArrayAccess
     protected function fireCallbackArray($object, array $callbacks)
     {
         foreach ($callbacks as $callback) {
-            call_user_func($callback, $object);
+            call_user_func($callback, $object, $this);
         }
     }
     public function isShared($abstract)
@@ -388,6 +388,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Events\EventServiceProvider;
 use Illuminate\Routing\RoutingServiceProvider;
 use Illuminate\Exception\ExceptionServiceProvider;
+use Illuminate\Config\FileEnvironmentVariablesLoader;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\TerminableInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -398,7 +399,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.16';
+    const VERSION = '4.1.18';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -426,7 +427,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     protected function registerBaseServiceProviders()
     {
-        foreach (array('Exception', 'Routing', 'Event') as $name) {
+        foreach (array('Event', 'Exception', 'Routing') as $name) {
             $this->{"register{$name}Provider"}();
         }
     }
@@ -520,8 +521,9 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     protected function markAsRegistered($provider)
     {
+        $this['events']->fire($class = get_class($provider), array($provider));
         $this->serviceProviders[] = $provider;
-        $this->loadedProviders[get_class($provider)] = true;
+        $this->loadedProviders[$class] = true;
     }
     public function loadDeferredProviders()
     {
@@ -551,6 +553,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public function make($abstract, $parameters = array())
     {
+        $abstract = $this->getAlias($abstract);
         if (isset($this->deferredServices[$abstract])) {
             $this->loadDeferredProvider($abstract);
         }
@@ -575,6 +578,12 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
         } else {
             $this->shutdownCallbacks[] = $callback;
         }
+    }
+    public function useArraySessions(Closure $callback)
+    {
+        $this->bind('session.reject', function () use($callback) {
+            return $callback;
+        });
     }
     public function isBooted()
     {
@@ -616,7 +625,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     protected function getStackedClient()
     {
-        $client = with(new \Stack\Builder())->push('Illuminate\\Cookie\\Guard', $this['encrypter'])->push('Illuminate\\Cookie\\Queue', $this['cookie'])->push('Illuminate\\Session\\Middleware', $this['session']);
+        $sessionReject = $this->bound('session.reject') ? $this['session.reject'] : null;
+        $client = with(new \Stack\Builder())->push('Illuminate\\Cookie\\Guard', $this['encrypter'])->push('Illuminate\\Cookie\\Queue', $this['cookie'])->push('Illuminate\\Session\\Middleware', $this['session'], $sessionReject);
         $this->mergeCustomMiddlewares($client);
         return $client->resolve($this);
     }
@@ -690,8 +700,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public function prepareRequest(Request $request)
     {
-        if (!is_null($this['config']['session.driver'])) {
-            $request->setSessionStore($this['session.store']);
+        if (!is_null($this['config']['session.driver']) && !$request->hasSession()) {
+            $request->setSession($this['session']->driver());
         }
         return $request;
     }
@@ -746,20 +756,14 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         return new FileLoader(new Filesystem(), $this['path'] . '/config');
     }
+    public function getEnvironmentVariablesLoader()
+    {
+        return new FileEnvironmentVariablesLoader(new Filesystem(), $this['path.base']);
+    }
     public function getProviderRepository()
     {
         $manifest = $this['config']['app.manifest'];
         return new ProviderRepository(new Filesystem(), $manifest);
-    }
-    public function getLocale()
-    {
-        return $this['config']->get('app.locale');
-    }
-    public function setLocale($locale)
-    {
-        $this['config']->set('app.locale', $locale);
-        $this['translator']->setLocale($locale);
-        $this['events']->fire('locale.changed', array($locale));
     }
     public function getLoadedProviders()
     {
@@ -786,9 +790,19 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         return forward_static_call_array(array(static::requestClass(), $method), $parameters);
     }
+    public function getLocale()
+    {
+        return $this['config']->get('app.locale');
+    }
+    public function setLocale($locale)
+    {
+        $this['config']->set('app.locale', $locale);
+        $this['translator']->setLocale($locale);
+        $this['events']->fire('locale.changed', array($locale));
+    }
     public function registerCoreContainerAliases()
     {
-        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatacher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Environment', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Environment');
+        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\CacheManager', 'cache.store' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatacher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Environment', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Environment');
         foreach ($aliases as $key => $alias) {
             $this->alias($key, $alias);
         }
@@ -878,6 +892,10 @@ class Request extends SymfonyRequest
     {
         $pattern = trim($this->getPathInfo(), '/');
         return $pattern == '' ? '/' : $pattern;
+    }
+    public function decodedPath()
+    {
+        return rawurldecode($this->path());
     }
     public function segment($index, $default = null)
     {
@@ -980,12 +998,12 @@ class Request extends SymfonyRequest
     }
     public function old($key = null, $default = null)
     {
-        return $this->getSessionStore()->getOldInput($key, $default);
+        return $this->session()->getOldInput($key, $default);
     }
     public function flash($filter = null, $keys = array())
     {
         $flash = !is_null($filter) ? $this->{$filter}($keys) : $this->input();
-        $this->getSessionStore()->flashInput($flash);
+        $this->session()->flashInput($flash);
     }
     public function flashOnly($keys)
     {
@@ -999,7 +1017,7 @@ class Request extends SymfonyRequest
     }
     public function flush()
     {
-        $this->getSessionStore()->flashInput(array());
+        $this->session()->flashInput(array());
     }
     protected function retrieveItem($source, $key, $default)
     {
@@ -1059,20 +1077,12 @@ class Request extends SymfonyRequest
         }
         return with($self = new static())->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
     }
-    public function getSessionStore()
+    public function session()
     {
-        if (!isset($this->sessionStore)) {
+        if (!$this->hasSession()) {
             throw new \RuntimeException('Session store not set on request.');
         }
-        return $this->sessionStore;
-    }
-    public function setSessionStore(SessionStore $session)
-    {
-        $this->sessionStore = $session;
-    }
-    public function hasSessionStore()
-    {
-        return isset($this->sessionStore);
+        return $this->getSession();
     }
 }
 namespace Illuminate\Http;
@@ -2866,6 +2876,10 @@ abstract class ServiceProvider
     {
         return array();
     }
+    public function when()
+    {
+        return array();
+    }
     public function isDeferred()
     {
         return $this->defer;
@@ -3684,6 +3698,61 @@ interface LoaderInterface
     public function getNamespaces();
     public function cascadePackage($environment, $package, $group, $items);
 }
+namespace Illuminate\Config;
+
+interface EnvironmentVariablesLoaderInterface
+{
+    public function load($environment = null);
+}
+namespace Illuminate\Config;
+
+use Illuminate\Filesystem\Filesystem;
+class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterface
+{
+    protected $files;
+    protected $path;
+    public function __construct(Filesystem $files, $path = null)
+    {
+        $this->files = $files;
+        $this->path = $path ?: base_path();
+    }
+    public function load($environment = null)
+    {
+        if ($environment == 'production') {
+            $environment = null;
+        }
+        if (!$this->files->exists($path = $this->getFile($environment))) {
+            return array();
+        } else {
+            return $this->files->getRequire($path);
+        }
+    }
+    protected function getFile($environment)
+    {
+        if ($environment) {
+            return $this->path . '/.env.' . $environment . '.php';
+        } else {
+            return $this->path . '/.env.php';
+        }
+    }
+}
+namespace Illuminate\Config;
+
+class EnvironmentVariables
+{
+    protected $loader;
+    public function __construct(EnvironmentVariablesLoaderInterface $loader)
+    {
+        $this->loader = $loader;
+    }
+    public function load($environment = null)
+    {
+        foreach ($this->loader->load($environment) as $key => $value) {
+            $_ENV[$key] = $value;
+            $_SERVER[$key] = $value;
+        }
+    }
+}
 namespace Illuminate\Filesystem;
 
 use FilesystemIterator;
@@ -3704,10 +3773,6 @@ class Filesystem
             return file_get_contents($path);
         }
         throw new FileNotFoundException("File does not exist at path {$path}");
-    }
-    public function getRemote($path)
-    {
-        return file_get_contents($path);
     }
     public function getRequire($path)
     {
@@ -3934,6 +3999,7 @@ class ProviderRepository
 {
     protected $files;
     protected $manifestPath;
+    protected $default = array('when' => array());
     public function __construct(Filesystem $files, $manifestPath)
     {
         $this->files = $files;
@@ -3948,10 +4014,22 @@ class ProviderRepository
         if ($app->runningInConsole()) {
             $manifest['eager'] = $manifest['providers'];
         }
+        foreach ($manifest['when'] as $provider => $events) {
+            $this->registerLoadEvents($app, $provider, $events);
+        }
         foreach ($manifest['eager'] as $provider) {
             $app->register($this->createProvider($app, $provider));
         }
         $app->setDeferredServices($manifest['deferred']);
+    }
+    protected function registerLoadEvents(Application $app, $provider, array $events)
+    {
+        if (count($events) < 1) {
+            return;
+        }
+        $app->make('events')->listen($events, function () use($app, $provider) {
+            $app->register($provider);
+        });
     }
     protected function compileManifest(Application $app, $providers)
     {
@@ -3962,6 +4040,7 @@ class ProviderRepository
                 foreach ($instance->provides() as $service) {
                     $manifest['deferred'][$service] = $provider;
                 }
+                $manifest['when'][$provider] = $instance->when();
             } else {
                 $manifest['eager'][] = $provider;
             }
@@ -3980,7 +4059,8 @@ class ProviderRepository
     {
         $path = $this->manifestPath . '/services.json';
         if ($this->files->exists($path)) {
-            return json_decode($this->files->get($path), true);
+            $manifest = json_decode($this->files->get($path), true);
+            return array_merge($this->default, $manifest);
         }
     }
     public function writeManifest($manifest)
@@ -4916,15 +4996,23 @@ class Route
     }
     public function bindParameters(Request $request)
     {
-        preg_match($this->compiled->getRegex(), '/' . $request->path(), $matches);
-        $parameters = $this->combineMatchesWithKeys(array_slice($matches, 1));
+        $params = $this->matchToKeys(array_slice($this->bindPathParameters($request), 1));
         if (!is_null($this->compiled->getHostRegex())) {
-            preg_match($this->compiled->getHostRegex(), $request->getHost(), $matches);
-            $parameters = array_merge($this->combineMatchesWithKeys(array_slice($matches, 1)), $parameters);
+            $params = $this->bindHostParameters($request, $params);
         }
-        return $this->parameters = $this->replaceDefaults($parameters);
+        return $this->parameters = $this->replaceDefaults($params);
     }
-    protected function combineMatchesWithKeys(array $matches)
+    protected function bindPathParameters(Request $request)
+    {
+        preg_match($this->compiled->getRegex(), '/' . $request->decodedPath(), $matches);
+        return $matches;
+    }
+    protected function bindHostParameters(Request $request, $parameters)
+    {
+        preg_match($this->compiled->getHostRegex(), $request->getHost(), $matches);
+        return array_merge($this->matchToKeys(array_slice($matches, 1)), $parameters);
+    }
+    protected function matchToKeys(array $matches)
     {
         if (count($this->parameterNames()) == 0) {
             return array();
@@ -4933,10 +5021,6 @@ class Route
         return array_filter($parameters, function ($value) {
             return is_string($value) && strlen($value) > 0;
         });
-    }
-    protected function padMatches(array $matches)
-    {
-        return array_pad($matches, count($this->parameterNames()), null);
     }
     protected function replaceDefaults(array $parameters)
     {
@@ -5027,6 +5111,14 @@ class Route
     public function methods()
     {
         return $this->methods;
+    }
+    public function httpOnly()
+    {
+        return in_array('http', $this->action);
+    }
+    public function httpsOnly()
+    {
+        return $this->secure();
     }
     public function secure()
     {
@@ -5300,7 +5392,7 @@ class UrlGenerator
             return $path;
         }
         $scheme = $this->getScheme($secure);
-        $tail = implode('/', (array) $extra);
+        $tail = implode('/', array_map('rawurlencode', (array) $extra));
         $root = $this->getRootUrl($scheme);
         return $this->trimUrl($root, $path, $tail);
     }
@@ -5327,7 +5419,7 @@ class UrlGenerator
     }
     protected function getScheme($secure)
     {
-        if (!$secure) {
+        if (is_null($secure)) {
             return $this->request->getScheme() . '://';
         } else {
             return $secure ? 'https://' : 'http://';
@@ -5355,19 +5447,16 @@ class UrlGenerator
     }
     protected function replaceRouteParameters($path, array &$parameters)
     {
-        foreach ($parameters as $key => $value) {
-            $path = $this->replaceRouteParameter($path, $key, $value, $parameters);
+        if (count($parameters)) {
+            $path = preg_replace_sub('/\\{.*?\\}/', $parameters, $this->replaceNamedParameters($path, $parameters));
         }
         return trim(preg_replace('/\\{.*?\\?\\}/', '', $path), '/');
     }
-    protected function replaceRouteParameter($path, $key, $value, array &$parameters)
+    protected function replaceNamedParameters($path, &$parameters)
     {
-        $pattern = is_string($key) ? '/\\{' . $key . '[\\?]?\\}/' : '/\\{.*?\\}/';
-        $path = preg_replace($pattern, $value, $path, 1, $count);
-        if ($count > 0) {
-            unset($parameters[$key]);
-        }
-        return $path;
+        return preg_replace_callback('/\\{(.*?)\\??\\}/', function ($m) use(&$parameters) {
+            return isset($parameters[$m[1]]) ? array_pull($parameters, $m[1]) : $m[0];
+        }, $path);
     }
     protected function getRouteQueryString(array $parameters)
     {
@@ -5402,7 +5491,7 @@ class UrlGenerator
     }
     protected function getDomainAndScheme($route)
     {
-        return $this->getScheme($route->secure()) . $route->domain();
+        return $this->getRouteScheme($route) . $route->domain();
     }
     protected function addPortToDomain($domain)
     {
@@ -5414,7 +5503,17 @@ class UrlGenerator
     }
     protected function getRouteRoot($route, $domain)
     {
-        return $this->getRootUrl($this->getScheme($route->secure()), $domain);
+        return $this->getRootUrl($this->getRouteScheme($route), $domain);
+    }
+    protected function getRouteScheme($route)
+    {
+        if ($route->httpOnly()) {
+            return $this->getScheme(false);
+        } elseif ($route->httpsOnly()) {
+            return $this->getScheme(true);
+        } else {
+            return $this->getScheme(null);
+        }
     }
     public function action($action, $parameters = array(), $absolute = true)
     {
@@ -5487,7 +5586,12 @@ class SchemeValidator implements ValidatorInterface
 {
     public function matches(Route $route, Request $request)
     {
-        return $route->secure() ? $request->secure() : true;
+        if ($route->httpOnly()) {
+            return !$request->secure();
+        } elseif ($route->secure()) {
+            return $request->secure();
+        }
+        return true;
     }
 }
 namespace Illuminate\Routing\Matching;
@@ -5499,7 +5603,7 @@ class UriValidator implements ValidatorInterface
     public function matches(Route $route, Request $request)
     {
         $path = $request->path() == '/' ? '/' : '/' . $request->path();
-        return preg_match($route->getCompiled()->getRegex(), $path);
+        return preg_match($route->getCompiled()->getRegex(), rawurldecode($path));
     }
 }
 namespace Illuminate\Workbench;
@@ -5538,13 +5642,15 @@ class Dispatcher
     {
         $this->container = $container ?: new Container();
     }
-    public function listen($event, $listener, $priority = 0)
+    public function listen($events, $listener, $priority = 0)
     {
-        if (str_contains($event, '*')) {
-            return $this->setupWildcardListen($event, $listener);
+        foreach ((array) $events as $event) {
+            if (str_contains($event, '*')) {
+                return $this->setupWildcardListen($event, $listener);
+            }
+            $this->listeners[$event][$priority][] = $this->makeListener($listener);
+            unset($this->sorted[$event]);
         }
-        $this->listeners[$event][$priority][] = $this->makeListener($listener);
-        unset($this->sorted[$event]);
     }
     protected function setupWildcardListen($event, $listener)
     {
@@ -6796,11 +6902,11 @@ class DatabaseManager implements ConnectionResolverInterface
     {
         $config = $this->getConfig($name);
         if (isset($this->extensions[$name])) {
-            return call_user_func($this->extensions[$name], $config);
+            return call_user_func($this->extensions[$name], $config, $name);
         }
         $driver = $config['driver'];
         if (isset($this->extensions[$driver])) {
-            return call_user_func($this->extensions[$driver], $config);
+            return call_user_func($this->extensions[$driver], $config, $name);
         }
         return $this->factory->make($config, $name);
     }
@@ -6927,6 +7033,9 @@ class ConnectionFactory
         if (!isset($config['driver'])) {
             throw new \InvalidArgumentException('A driver must be specified.');
         }
+        if ($this->container->bound($key = "db.connector.{$config['driver']}")) {
+            return $this->container->make($key);
+        }
         switch ($config['driver']) {
             case 'mysql':
                 return new MySqlConnector();
@@ -6959,6 +7068,7 @@ class ConnectionFactory
 }
 namespace Illuminate\Session;
 
+use Closure;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -6968,15 +7078,19 @@ class Middleware implements HttpKernelInterface
 {
     protected $app;
     protected $manager;
-    public function __construct(HttpKernelInterface $app, SessionManager $manager)
+    protected $reject;
+    public function __construct(HttpKernelInterface $app, SessionManager $manager, Closure $reject = null)
     {
         $this->app = $app;
+        $this->reject = $reject;
         $this->manager = $manager;
     }
     public function handle(Request $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
+        $this->checkRequestForArraySessions($request);
         if ($this->sessionConfigured()) {
             $session = $this->startSession($request);
+            $request->setSession($session);
         }
         $response = $this->app->handle($request, $type, $catch);
         if ($this->sessionConfigured()) {
@@ -6984,6 +7098,15 @@ class Middleware implements HttpKernelInterface
             $this->addCookieToResponse($response, $session);
         }
         return $response;
+    }
+    public function checkRequestForArraySessions(Request $request)
+    {
+        if (is_null($this->reject)) {
+            return;
+        }
+        if (call_user_func($this->reject, $request)) {
+            $this->manager->setDefaultDriver('array');
+        }
     }
     protected function startSession(Request $request)
     {
@@ -7443,6 +7566,10 @@ class CookieJar
     public function forget($name)
     {
         return $this->make($name, null, -2628000);
+    }
+    public function hasQueued($key)
+    {
+        return !is_null($this->queued($key));
     }
     public function queued($key, $default = null)
     {
