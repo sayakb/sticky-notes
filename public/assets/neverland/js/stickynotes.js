@@ -193,7 +193,7 @@ function initAjaxComponents()
 			{
 				if (realtime)
 				{
-					initTimer('repeat', callback, 1000);
+					initTimer('repeat', callback, 5000);
 				}
 				else
 				{
