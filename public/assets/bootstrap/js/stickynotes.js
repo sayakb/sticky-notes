@@ -193,10 +193,8 @@ function initAjaxComponents()
 				{
 					initTimer('repeat', callback, 5000);
 				}
-				else
-				{
-					initTimer('once', callback, 0);
-				}
+
+				initTimer('once', callback, 0);
 			}
 			else
 			{
