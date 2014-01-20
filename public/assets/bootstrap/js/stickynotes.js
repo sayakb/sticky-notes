@@ -20,18 +20,46 @@
 var currentUrl = $(location).attr('href');
 
 /**
+ * Timer container
+ *
+ * @var array
+ */
+var timers = new Array();
+
+/**
+ * Instance counter
+ *
+ * @var int
+ */
+var instance = 0;
+
+/**
  * This is the main entry point of the script
  *
  * @return void
  */
-function stickyNotes()
+function initMain()
 {
+	// Initialize a new instance
+	initInstance();
+
 	// Initialize AJAX components
 	initAjaxComponents();
 
 	// Initialize AJAX navigation
 	initAjaxNavigation();
 
+	// Initialize addons
+	initAddons();
+}
+
+/**
+ * This initializes all JS addons
+ *
+ * @return void
+ */
+function initAddons()
+{
 	// Initialize code wrapping
 	initWrapToggle();
 
@@ -46,6 +74,50 @@ function stickyNotes()
 
 	// Initialize bootstrap components
 	initBootstrap();
+}
+
+/**
+ * Initializes a new instance of the JS library
+ *
+ * @return void
+ */
+function initInstance()
+{
+	// Clear all timers
+	if (timers[instance] !== undefined)
+	{
+		for (idx in timers[instance])
+		{
+			clearInterval(timers[instance][idx]);
+		}
+	}
+
+	// Create a new instance and timer container
+	instance++;
+
+	timers[instance] = new Array();
+}
+
+/**
+ * Starts a new timed operation
+ *
+ * @param  operation
+ * @param  callback
+ * @param  interval
+ * @return void
+ */
+function initTimer(operation, callback, interval)
+{
+	switch (operation)
+	{
+		case 'once':
+			setTimeout(callback, interval);
+			break;
+
+		case 'repeat':
+			timers[instance].push(setInterval(callback, interval));
+			break;
+	}
 }
 
 /**
@@ -103,8 +175,8 @@ function initAjaxComponents()
 							$(this).off('click');
 						}
 
-						// Load JS triggers
-						stickyNotes();
+						// Load addons again
+						initAddons();
 					}
 				});
 
@@ -119,11 +191,11 @@ function initAjaxComponents()
 			{
 				if (realtime)
 				{
-					setInterval(callback, 1000);
+					initTimer('repeat', callback, 1000);
 				}
 				else
 				{
-					setTimeout(callback);
+					initTimer('once', callback, 0);
 				}
 			}
 			else
@@ -201,7 +273,7 @@ function initAjaxNavigation()
 						$.scrollTo(0, 200);
 
 						// Load JS triggers again
-						stickyNotes();
+						initMain();
 					},
 					error: function()
 					{
@@ -220,7 +292,7 @@ function initAjaxNavigation()
 		$('body').find('form[data-navigate="ajax"]').off('submit').on('submit', callback);
 
 		// URL change monitor
-		setInterval(function()
+		initTimer('repeat', function()
 		{
 			var href = $(location).attr('href');
 
@@ -439,4 +511,4 @@ function initAreaChart()
 /**
  * Invoke the entry point on DOM ready
  */
-$(stickyNotes);
+$(initMain);
