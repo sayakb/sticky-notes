@@ -214,7 +214,8 @@ function initAjaxNavigation()
 	if (ajaxNav !== undefined && ajaxNav)
 	{
 		// AJAX callback
-		var callback = function(e) {
+		var callback = function(e)
+		{
 			var navMethod = $(this).prop('tagName') == 'A' ? 'GET' : 'POST';
 			var seek = $(this).attr('data-seek');
 
@@ -247,6 +248,10 @@ function initAjaxNavigation()
 						var isPageSection = response.indexOf('<!DOCTYPE html>') == -1;
 						var isHtmlContent = info.getResponseHeader('Content-Type').indexOf('text/html') != -1;
 
+						// Change the page URL
+						currentUrl = info.getResponseHeader('StickyNotes-Url');
+						window.history.pushState({ html: response }, null, currentUrl);
+
 						// Handle the response
 						if (isPageSection && isHtmlContent)
 						{
@@ -254,18 +259,15 @@ function initAjaxNavigation()
 						}
 						else if (isHtmlContent)
 						{
-							document.open();
-							document.write(response);
-							document.close();
+							dom = $(document.createElement('html'));
+							dom[0].innerHTML = response;
+
+							$(this).html(dom.find('body').html());
 						}
 						else
 						{
 							window.location = navUrl;
 						}
-
-						// Change the page URL
-						currentUrl = info.getResponseHeader('StickyNotes-Url');
-						window.history.pushState({ html: response }, '', currentUrl);
 
 						// Seek to top of the page
 						$.scrollTo(0, 200);
@@ -303,9 +305,10 @@ function initAjaxNavigation()
 
 				$.get(href, function(response)
 				{
-					document.open();
-					document.write(response);
-					document.close();
+					dom = $(document.createElement('html'));
+					dom[0].innerHTML = response;
+
+					$('body').html(dom.find('body').html());
 				});
 			}
 		}, 300);
