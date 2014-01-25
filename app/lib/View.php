@@ -96,9 +96,17 @@ class View extends \Illuminate\Support\Facades\View {
 
 		if ($inject)
 		{
+			// Make the response
 			$view = Response::make($view, 200);
 
-			$view->header('StickyNotes-Url', URL::current());
+			// Build the query string
+			$queryString = preg_replace('[\&?(ajax=1)]', '', getenv('QUERY_STRING'));
+
+			// Build the page URL
+			$url = URL::current().( ! empty($queryString) ? "?{$queryString}" : '');
+
+			// Add the current URL to the response header
+			$view->header('StickyNotes-Url', $url);
 		}
 
 		return $view;
