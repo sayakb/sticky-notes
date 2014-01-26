@@ -21,6 +21,7 @@ use Requests;
 use Route;
 use Schema;
 use Site;
+use URL;
 
 /**
  * System class
@@ -228,11 +229,11 @@ class System {
 	public static function submitStats()
 	{
 		// Send / mask the site's URL
-		$fqdn = Config::get('app.fullStats') ? Site::config('general')->fqdn : Lang::get('global.anonymous');
+		$url = Config::get('app.fullStats') ? URL::current() : Lang::get('global.anonymous');
 
 		// Populate the data to be send
 		$data =  array(
-			'fqdn'     => $fqdn,
+			'url'      => $url,
 			'action'   => Request::segment(2),
 			'version'  => Config::get('app.version'),
 		);
