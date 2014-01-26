@@ -213,7 +213,7 @@ function initAjaxComponents()
  */
 function initAjaxNavigation()
 {
-	if (ajaxNav !== undefined && ajaxNav)
+	if (ajaxNav !== undefined && ajaxNav && $.support.cors)
 	{
 		// AJAX callback
 		var callback = function(e)
