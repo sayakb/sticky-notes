@@ -46,7 +46,7 @@ class ShowController extends BaseController {
 		}
 
 		// Check if the logged in user is the owner of the paste
-		$owner = Auth::access($paste->authorid);
+		$owner = Auth::access($paste->author_id);
 
 		// We do not make password prompt mandatory for owners
 		if ( ! $owner)
