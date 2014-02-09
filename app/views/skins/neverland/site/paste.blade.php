@@ -45,7 +45,7 @@
 							))
 						}}
 
-						@if (site->general->share)
+						@if ($site->general->share)
 							{{
 								HTML::decode(link_to($share, '<i class="icon icon-envelope icon-white"></i>', array(
 									'class' => 'btn btn-warning'
