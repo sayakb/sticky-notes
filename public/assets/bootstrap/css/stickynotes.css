@@ -120,6 +120,9 @@ section#admin-dashboard #dashboard-stats .well {
   font-size: 0.95em;
   height: 25px;
 }
+.pre-info.pre-header a.btn .glyphicon {
+  top: 3px;
+}
 .pre-info.pre-footer {
   border-radius: 0 0 4px 4px;
   margin-bottom: 20px;
