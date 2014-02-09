@@ -153,13 +153,13 @@ class System {
 	 */
 	public static function project()
 	{
-		$site = Site::config('general')->fqdn;
+		$fqdn = explode('.', Site::config('general')->fqdn);
 
-		$host = getenv('SERVER_NAME');
+		$host = explode('.', getenv('SERVER_NAME'));
 
-		if ($site != $host)
+		if (count($host) > count($fqdn))
 		{
-			return trim(str_replace($site, '', $host), '.');
+			return $host[0];
 		}
 	}
 
