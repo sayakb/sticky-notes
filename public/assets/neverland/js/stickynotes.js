@@ -482,7 +482,7 @@ function initAreaChart()
 
 		// Define chart options
 		var options = {
-			colors: [ '#428bca', '#d9534f' ],
+			colors: [ '#0068c6', '#da4f49' ],
 			areaOpacity: 0.1,
 			lineWidth: 4,
 			pointSize: 8,
