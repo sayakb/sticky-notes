@@ -67,7 +67,7 @@
 			<p><a href="http://sayakbanerjee.com/sticky-notes">Sticky Notes</a> &copy; 2014 <a href="http://sayakbanerjee.com">Sayak Banerjee</a>.</p>
 
 			@if ($active AND $role->admin)
-				<small>{{ sprintf(Lang::get('global.statistics'), microtime(true) - LARAVEL_START, count(DB::getQueryLog())) }}</small>
+				<small>{{ sprintf(Lang::get('global.statistics'), microtime(true) - LARAVEL_START, count(DB::getQueryLog()) - 1) }}</small>
 			@endif
 
 			@if (Antispam::flags()->php)
