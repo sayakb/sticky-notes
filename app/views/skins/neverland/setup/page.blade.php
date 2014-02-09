@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<title>{{ Lang::get('global.sticky_notes') }}</title>
 
-	<link href="//cdn.kde.org/img/favicon.png" rel="shortcut icon" />
+	<link href="//cdn.kde.org/img/favicon.ico" rel="shortcut icon" />
 	<link href="//cdn.kde.org/css/bootstrap.css" rel="stylesheet" />
 	<link href="//cdn.kde.org/css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="//cdn.kde.org/css/bootstrap-stickynotes.css" rel="stylesheet" />
