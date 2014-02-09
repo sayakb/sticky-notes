@@ -44,6 +44,12 @@
 								'class' => 'btn btn-success'
 							))
 						}}
+
+						{{
+							HTML::decode(link_to($share, '<span class="glyphicon glyphicon-envelope"></span>', array(
+								'class' => 'btn btn-warning'
+							)))
+						}}
 					@elseif ($context == 'ListController')
 						{{
 							link_to(Paste::getUrl($paste), Lang::get('list.show_paste'), array(
