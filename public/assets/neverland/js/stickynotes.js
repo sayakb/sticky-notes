@@ -287,8 +287,13 @@ function initAjaxNavigation()
 			}
 		};
 
-		// Execute callback on all non-admin, non-anchor links without an 'onclick' attribute
-		$('body').find('a:not([href*="/admin"]):not([href*="#"]):not([onclick])').off('click').on('click', callback);
+		// Execute callback on all links, excluding some
+		$('body').find('a' +
+			':not([href*="/admin"])' +
+			':not([href*="#"])' +
+			':not([href*="mailto:"])' +
+			':not([onclick])'
+		).off('click').on('click', callback);
 
 		// Execute callback on all designated forms
 		$('body').find('form[data-navigate="ajax"]').off('submit').on('submit', callback);
@@ -299,13 +304,13 @@ function initAjaxNavigation()
 			var href = $(location).attr('href');
 
 			// Trim the trailing slash from the href
-			if(href.substr(-1) == '/')
+			if (href.substr(-1) == '/')
 			{
 				href = href.substr(0, href.length - 1);
 			}
 
 			// Reload page if URL changed
-			if (currentUrl != href)
+			if (currentUrl != href && href.indexOf('#') == -1)
 			{
 				currentUrl = href;
 
