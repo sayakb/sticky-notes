@@ -326,6 +326,29 @@
 									</div>
 								</div>
 							</div>
+
+							<div class="form-group">
+								{{
+									Form::label('share', Lang::get('global.share'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::select('share', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->general->share, array(
+											'class' => 'form-control'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.share_exp') }}
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 
