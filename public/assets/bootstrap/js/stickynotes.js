@@ -296,6 +296,13 @@ function initAjaxNavigation()
 		{
 			var href = $(location).attr('href');
 
+			// Trim the trailing slash from the href
+			if(href.substr(-1) == '/')
+			{
+				href = href.substr(0, href.length - 1);
+			}
+
+			// Reload page if URL changed
 			if (currentUrl != href)
 			{
 				currentUrl = href;
