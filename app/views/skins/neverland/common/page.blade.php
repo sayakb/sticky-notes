@@ -8,7 +8,7 @@
 
 	<link rel="alternate" type="application/rss+xml" title="RSS" href="{{ url('feed') }}" />
 
-	<link href="//cdn.kde.org/img/favicon.png" rel="shortcut icon" />
+	<link href="//cdn.kde.org/img/favicon.ico" rel="shortcut icon" />
 	<link href="//cdn.kde.org/css/bootstrap.css" rel="stylesheet" />
 	<link href="//cdn.kde.org/css/bootstrap-responsive.css" rel="stylesheet" />
 	<link href="//cdn.kde.org/css/bootstrap-stickynotes.css" rel="stylesheet" />
