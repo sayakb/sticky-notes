@@ -17,5 +17,6 @@ return array(
 	"new_password"       => "Your new password is: <b>%s</b>",
 	"click_login"        => "Click here to log in: %s",
 	"autogen_mail"       => "This is an auto generated email. Do not reply to this.",
+	"share_subject"      => "%s: %s",
 
 );

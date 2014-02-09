@@ -37,6 +37,8 @@ class ShowController extends BaseController {
 	 */
 	public function getPaste($urlkey, $hash = '', $action = '', $extra = '')
 	{
+		$site = Site::config('general');
+
 		$paste = Paste::where('urlkey', $urlkey)->first();
 
 		// Paste was not found
@@ -120,11 +122,15 @@ class ShowController extends BaseController {
 				return Redirect::to(Paste::getUrl($paste));
 		}
 
+		// Build the sharing subject for the paste
+		$subject = sprintf(Lang::get('mail.share_subject'), $site->title, URL::current());
+
 		// Build data for show paste page
 		$data = array(
 			'paste'      => $paste,
 			'revisions'  => $paste->revisions,
-			'comments'   => $paste->comments()->paginate(Site::config('general')->perPage),
+			'comments'   => $paste->comments()->paginate($site->perPage),
+			'share'      => 'mailto:?subject='.urlencode($subject),
 		);
 
 		// Display the show paste view
