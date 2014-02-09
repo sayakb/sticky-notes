@@ -107,6 +107,8 @@ return array(
 	"paste_search"          => "Paste search",
 	"paste_search_exp"      => "Enable or disable paste search functionality on archives.",
 	"comments_exp"          => "Allow users to comment on pastes.",
+	"share"                 => "Sharing",
+	"share_exp"             => "Allow users to share pastes by email.",
 	"site_updated"          => "Site settings updated successfully",
 	"word_censor"           => "Word censor",
 	"word_censor_exp"       => "This module allows you to block pastes that contain specific words. ".

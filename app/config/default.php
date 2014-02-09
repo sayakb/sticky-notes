@@ -35,6 +35,7 @@ return array(
 		'statsTTL'            => '-6 months',
 		'statsDisplay'        => '-1 month',
 		'ajaxNav'             => '1',
+		'share'               => '1',
 	),
 
 	'antispam'                => (object) array(
