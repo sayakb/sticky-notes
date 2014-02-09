@@ -328,7 +328,7 @@
 
 							<div class="control-group">
 								{{
-									Form::label('share', Lang::get('global.share'), array(
+									Form::label('share', Lang::get('admin.share'), array(
 										'class' => 'control-label span2'
 									))
 								}}
