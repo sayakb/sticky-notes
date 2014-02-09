@@ -399,7 +399,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.18';
+    const VERSION = '4.1.21';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -674,6 +674,9 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
                 return $this->prepareResponse($response, $request);
             }
         }
+        if ($this->runningUnitTests() && !$this['session']->isStarted()) {
+            $this['session']->start();
+        }
         return $this['router']->dispatch($this->prepareRequest($request));
     }
     public function terminate(SymfonyRequest $request, SymfonyResponse $response)
@@ -802,7 +805,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public function registerCoreContainerAliases()
     {
-        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\CacheManager', 'cache.store' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatacher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Environment', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Environment');
+        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'auth.reminder.repository' => 'Illuminate\\Auth\\Reminders\\ReminderRepositoryInterface', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\CacheManager', 'cache.store' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatacher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Environment', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Environment');
         foreach ($aliases as $key => $alias) {
             $this->alias($key, $alias);
         }
@@ -910,7 +913,7 @@ class Request extends SymfonyRequest
         $path = $this->path();
         return $path == '/' ? array() : explode('/', $path);
     }
-    public function is($pattern)
+    public function is()
     {
         foreach (func_get_args() as $pattern) {
             if (str_is($pattern, $this->path())) {
@@ -4285,6 +4288,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     protected $inspector;
     protected $filtering = true;
     protected $patternFilters = array();
+    protected $regexFilters = array();
     protected $binders = array();
     protected $patterns = array();
     protected $groupStack = array();
@@ -4424,15 +4428,16 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         if (isset($options['names'][$method])) {
             return $options['names'][$method];
         }
+        $prefix = isset($options['as']) ? $options['as'] . '.' : '';
         if (count($this->groupStack) == 0) {
-            return $resource . '.' . $method;
+            return $prefix . $resource . '.' . $method;
         }
-        return $this->getGroupResourceName($resource, $method);
+        return $this->getGroupResourceName($prefix, $resource, $method);
     }
-    protected function getGroupResourceName($resource, $method)
+    protected function getGroupResourceName($prefix, $resource, $method)
     {
-        $prefix = str_replace('/', '.', $this->getLastGroupPrefix());
-        return trim("{$prefix}.{$resource}.{$method}", '.');
+        $group = str_replace('/', '.', $this->getLastGroupPrefix());
+        return trim("{$prefix}{$group}.{$resource}.{$method}", '.');
     }
     public function getResourceWildcard($value)
     {
@@ -4541,12 +4546,16 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         if ($this->routingToController($action)) {
             $action = $this->getControllerAction($action);
         }
-        $route = with(new Route($methods, $uri = $this->prefix($uri), $action));
+        $route = $this->newRoute($methods, $uri = $this->prefix($uri), $action);
         $route->where($this->patterns);
         if (count($this->groupStack) > 0) {
             $this->mergeController($route);
         }
         return $route;
+    }
+    protected function newRoute($methods, $uri, $action)
+    {
+        return new Route($methods, $uri, $action);
     }
     protected function prefix($uri)
     {
@@ -4606,6 +4615,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     public function dispatchToRoute(Request $request)
     {
         $route = $this->findRoute($request);
+        $this->events->fire('router.matched', array($route, $request));
         $response = $this->callRouteBefore($route, $request);
         if (is_null($response)) {
             $response = $route->run($request);
@@ -4631,6 +4641,10 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     protected function performBinding($key, $value, $route)
     {
         return call_user_func($this->binders[$key], $value, $route);
+    }
+    public function matched($callback)
+    {
+        $this->events->listen('router.matched', $callback);
     }
     public function before($callback)
     {
@@ -4662,6 +4676,13 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
             $methods = array_map('strtoupper', (array) $methods);
         }
         $this->patternFilters[$pattern][] = compact('name', 'methods');
+    }
+    public function whenRegex($pattern, $name, $methods = null)
+    {
+        if (!is_null($methods)) {
+            $methods = array_map('strtoupper', (array) $methods);
+        }
+        $this->regexFilters[$pattern][] = compact('name', 'methods');
     }
     public function model($key, $class, Closure $callback = null)
     {
@@ -4710,9 +4731,15 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     public function findPatternFilters($request)
     {
         $results = array();
-        $method = $request->getMethod();
+        list($path, $method) = array($request->path(), $request->getMethod());
         foreach ($this->patternFilters as $pattern => $filters) {
-            if (str_is($pattern, $request->path())) {
+            if (str_is($pattern, $path)) {
+                $merge = $this->patternsByMethod($method, $filters);
+                $results = array_merge($results, $merge);
+            }
+        }
+        foreach ($this->regexFilters as $pattern => $filters) {
+            if (preg_match($pattern, $path)) {
                 $merge = $this->patternsByMethod($method, $filters);
                 $results = array_merge($results, $merge);
             }
@@ -4958,6 +4985,11 @@ class Route
     {
         $this->parameters();
         $this->parameters[$name] = $value;
+    }
+    public function forgetParameter($name)
+    {
+        $this->parameters();
+        unset($this->parameters[$name]);
     }
     public function parameters()
     {
@@ -5926,6 +5958,9 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public static function find($id, $columns = array('*'))
     {
+        if (is_array($id) && empty($id)) {
+            return new Collection();
+        }
         $instance = new static();
         return $instance->newQuery()->find($id, $columns);
     }
@@ -5934,7 +5969,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         if (!is_null($model = static::find($id, $columns))) {
             return $model;
         }
-        throw new ModelNotFoundException(get_called_class() . ' model not found');
+        throw with(new ModelNotFoundException())->setModel(get_called_class());
     }
     public function load($relations)
     {
@@ -6018,7 +6053,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         if (is_null($relation)) {
             $caller = $this->getBelongsToManyCaller();
-            $name = $caller['function'];
         }
         $foreignKey = $foreignKey ?: $this->getForeignKey();
         $instance = new $related();
@@ -6247,8 +6281,8 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             }
             if ($this->timestamps) {
                 $this->updateTimestamps();
-                $dirty = $this->getDirty();
             }
+            $dirty = $this->getDirty();
             $this->setKeysForSaveQuery($query)->update($dirty);
             $this->fireModelEvent('updated', false);
         }
@@ -7119,6 +7153,11 @@ class Middleware implements HttpKernelInterface
         $session->save();
         $this->collectGarbage($session);
     }
+    protected function getUrl(Request $request)
+    {
+        $url = rtrim(preg_replace('/\\?.*/', '', $request->getUri()), '/');
+        return $request->getQueryString() ? $url . '?' . $request->getQueryString() : $url;
+    }
     protected function collectGarbage(SessionInterface $session)
     {
         $config = $this->manager->getSessionConfig();
@@ -7178,6 +7217,7 @@ class Store implements SessionInterface
     protected $metaBag;
     protected $bagData = array();
     protected $handler;
+    protected $started = false;
     public function __construct($name, SessionHandlerInterface $handler, $id = null)
     {
         $this->name = $name;
@@ -7245,9 +7285,9 @@ class Store implements SessionInterface
         $this->id = $this->generateSessionId();
         return true;
     }
-    public function regenerate()
+    public function regenerate($destroy = false)
     {
-        return $this->migrate();
+        return $this->migrate($destroy);
     }
     public function save()
     {
@@ -7898,6 +7938,11 @@ class Writer
         if (isset($this->dispatcher)) {
             $this->dispatcher->fire('illuminate.log', compact('level', 'message', 'context'));
         }
+    }
+    public function write()
+    {
+        $level = head(func_get_args());
+        return call_user_func_array(array($this, $level), array_slice(func_get_args(), 1));
     }
     public function __call($method, $parameters)
     {
@@ -10558,12 +10603,18 @@ class Builder
     }
     public function unshift()
     {
+        if (func_num_args() === 0) {
+            throw new \InvalidArgumentException('Missing argument(s) when calling unshift');
+        }
         $spec = func_get_args();
         $this->specs->unshift($spec);
         return $this;
     }
     public function push()
     {
+        if (func_num_args() === 0) {
+            throw new \InvalidArgumentException('Missing argument(s) when calling push');
+        }
         $spec = func_get_args();
         $this->specs->push($spec);
         return $this;

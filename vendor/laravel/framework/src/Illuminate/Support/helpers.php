@@ -48,6 +48,32 @@ if ( ! function_exists('app_path'))
 	}
 }
 
+if ( ! function_exists('append_config'))
+{
+	/**
+	 * Assign high numeric IDs to a config item to force appending.
+	 *
+	 * @param  array  $array
+	 * @return array
+	 */
+	function append_config(array $array)
+	{
+		$start = 9999;
+
+		foreach ($array as $key => $value)
+		{
+			if (is_numeric($key))
+			{
+				$start++;
+
+				$array[$start] = array_pull($array, $key);
+			}
+		}
+
+		return $array;
+	}
+}
+
 if ( ! function_exists('array_add'))
 {
 	/**
@@ -458,6 +484,7 @@ if ( ! function_exists('base_path'))
 	/**
 	 * Get the path to the base of the install.
 	 *
+	 * @param  string $path
 	 * @return string
 	 */
 	function base_path($path = '')
@@ -712,6 +739,7 @@ if ( ! function_exists('public_path'))
 	/**
 	 * Get the path to the public folder.
 	 *
+	 * @param  string $path
 	 * @return string
 	 */
 	function public_path($path = '')
@@ -726,7 +754,7 @@ if ( ! function_exists('route'))
 	 * Generate a URL to a named route.
 	 *
 	 * @param  string  $route
-	 * @param  string  $parameters
+	 * @param  array   $parameters
 	 * @return string
 	 */
 	function route($route, $parameters = array())
@@ -799,6 +827,7 @@ if ( ! function_exists('storage_path'))
 	/**
 	 * Get the path to the storage folder.
 	 *
+	 * @param   string $path
 	 * @return  string
 	 */
 	function storage_path($path = '')

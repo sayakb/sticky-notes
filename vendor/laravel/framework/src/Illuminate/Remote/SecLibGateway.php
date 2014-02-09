@@ -107,6 +107,29 @@ class SecLibGateway implements GatewayInterface {
 	}
 
 	/**
+	 * Download the contents of a remote file.
+	 *
+	 * @param  string  $remote
+	 * @param  string  $local
+	 * @return void
+	 */
+	public function get($remote, $local)
+	{
+		$this->getConnection()->get($remote, $local);
+	}
+
+	/**
+	 * Get the contents of a remote file.
+	 *
+	 * @param  string  $remote
+	 * @return string
+	 */
+	public function getString($remote)
+	{
+		return $this->getConnection()->get($remote);
+	}
+
+	/**
 	 * Upload a local file to the server.
 	 *
 	 * @param  string  $local
