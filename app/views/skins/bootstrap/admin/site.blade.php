@@ -329,7 +329,7 @@
 
 							<div class="form-group">
 								{{
-									Form::label('share', Lang::get('global.share'), array(
+									Form::label('share', Lang::get('admin.share'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
 								}}
