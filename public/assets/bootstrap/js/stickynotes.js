@@ -447,8 +447,12 @@ function initLineReference()
 
 		if (anchor.length > 0)
 		{
-			window.location = anchor;
+			var top = $(anchor).offset().top;
 
+			// Scroll to the anchor
+			$.scrollTo(top, 200);
+
+			// Highlight the anchor
 			$(anchor).addClass('highlight');
 		}
 
@@ -457,8 +461,15 @@ function initLineReference()
 		{
 			if (window.getSelection() == '')
 			{
-				window.location.hash = '#' + $(this).attr('id');
+				var id = $(this).attr('id');
+				var top = $(this).offset().top;
 
+				// Scroll to the anchor
+				$.scrollTo(top, 200, function() {
+					window.location.hash = '#' + id;
+				});
+
+				// Highlight the anchor
 				$('.pre li').removeClass('highlight');
 				$(this).addClass('highlight');
 			}
