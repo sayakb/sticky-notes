@@ -303,7 +303,13 @@ function initAjaxNavigation()
 		{
 			var href = $(location).attr('href');
 
-			// Trim the trailing slash from the href
+			// Trim the trailing slash from currentUrl
+			if (currentUrl.substr(-1) == '/')
+			{
+				currentUrl = currentUrl.substr(0, currentUrl.length - 1);
+			}
+
+			// Trim the trailing slash from href
 			if (href.substr(-1) == '/')
 			{
 				href = href.substr(0, href.length - 1);
