@@ -130,7 +130,7 @@ class StickyNotesDBUserProvider implements UserProviderInterface {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function createModel()
+	private function createModel()
 	{
 		$class = '\\'.ltrim($this->model, '\\');
 

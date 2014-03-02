@@ -58,13 +58,6 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 	protected $auth;
 
 	/**
-	 * Contains the retrieved user details
-	 *
-	 * @var object
-	 */
-	protected $user;
-
-	/**
 	 * Initializes the provider and sets the model instance
 	 *
 	 * @return void
@@ -94,40 +87,6 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 	 * @return \Illuminate\Auth\UserInterface|null
 	 */
 	public function retrieveByCredentials(array $credentials)
-	{
-		// First we will add each credential element to the query as a where clause.
-		// Then we can execute the query and, if we found a user, return it in a
-		// Eloquent User "model" that will be utilized by the Guard instances.
-		$query = $this->createModel()->newQuery();
-
-		foreach ($credentials as $key => $value)
-		{
-			if ( ! str_contains($key, 'password'))
-			{
-				$query->where($key, $value);
-			}
-		}
-
-		// A filter for type=oauth is added to avoid getting users created by
-		// other auth methods
-		$query->where('type', 'oauth');
-
-		// We store it locally as we need to access the data later
-		// If a user is not found, we need to create one automagically
-		// Thats why even if count is 0, we return a new model instance
-		$this->user = $query->count() > 0 ? $query->first() : $this->createModel();
-
-		return $this->user;
-	}
-
-	/**
-	 * Validate a user against the given credentials.
-	 *
-	 * @param  \Illuminate\Auth\UserInterface  $user
-	 * @param  array                           $credentials
-	 * @return bool
-	 */
-	public function validateCredentials(UserInterface $user, array $credentials)
 	{
 		require_once base_path().'/vendor/lusitanian/OAuth/bootstrap.php';
 
@@ -164,10 +123,18 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 				{
 					if ($result['verified_email'])
 					{
-						// Fetch the user by his/her email address
-						$this->retrieveByCredentials(array(
-							'email' => $result['email']
-						));
+						// First we will add each credential element to the query as a where clause.
+						// Then we can execute the query and, if we found a user, return it in a
+						// Eloquent User "model" that will be utilized by the Guard instances.
+						$query = $this->createModel()->newQuery();
+
+						// We search by email and user type. A filter for type=oauth is added to avoid
+						// getting users created by other auth methods
+						$query->where('email', $result['email'])->where('type', 'oauth');
+
+						// If a user is not found, we need to create one automagically
+						// Thats why even if count is 0, we return a new model instance
+						$user = $query->count() > 0 ? $query->first() : $this->createModel();
 
 						// Determine if user is an admin
 						$googleAdmins = explode("\n", $this->auth->oauthGoogleAdmins);
@@ -178,21 +145,21 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 						$parts = explode('@', $result['email']);
 
 						// Insert/Update user info
-						$this->user->username = $parts[0];
-						$this->user->password = '';
-						$this->user->salt     = '';
-						$this->user->email    = $result['email'];
-						$this->user->type     = 'oauth';
-						$this->user->active   = 1;
-						$this->user->admin    = $isAdmin;
+						$user->username = $parts[0];
+						$user->password = '';
+						$user->salt     = '';
+						$user->email    = $result['email'];
+						$user->type     = 'oauth';
+						$user->active   = 1;
+						$user->admin    = $isAdmin;
 
-						$this->user->save();
+						$user->save();
 
 						// Log the user in. We need to do it manually because we don't have an username
 						// that we can 'attempt' to log in.
-						Auth::login($this->user);
+						Auth::login($user);
 
-						return TRUE;
+						return $user;
 					}
 				}
 
@@ -211,6 +178,18 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 			$response->headers->set('Location', $url);
 		});
 
+		return NULL;
+	}
+
+	/**
+	 * Validate a user against the given credentials.
+	 *
+	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  array                           $credentials
+	 * @return bool
+	 */
+	public function validateCredentials(UserInterface $user, array $credentials)
+	{
 		return FALSE;
 	}
 
@@ -219,7 +198,7 @@ class StickyNotesOAuthUserProvider implements UserProviderInterface {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function createModel()
+	private function createModel()
 	{
 		$class = '\\'.ltrim($this->model, '\\');
 

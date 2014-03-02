@@ -242,7 +242,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	 *
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function createModel()
+	private function createModel()
 	{
 		$class = '\\'.ltrim($this->model, '\\');
 
@@ -255,7 +255,7 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	 * @param  string  $string
 	 * @return string
 	 */
-	function ldapEscape($string)
+	private function ldapEscape($string)
 	{
 		return str_replace(
 			array('*', '\\', '(', ')'),
