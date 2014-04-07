@@ -4,6 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ $site->general->title }}</title>
 
 	<link rel="alternate" type="application/rss+xml" title="RSS" href="{{ url('feed') }}" />
