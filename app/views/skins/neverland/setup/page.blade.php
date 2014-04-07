@@ -4,6 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>{{ Lang::get('global.sticky_notes') }}</title>
 
 	<link href="//cdn.kde.org/img/favicon.ico" rel="shortcut icon" />
