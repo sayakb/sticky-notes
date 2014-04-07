@@ -18,6 +18,7 @@ use File;
 use Lang;
 use Request;
 use Requests;
+use Requests_Exception;
 use Route;
 use Schema;
 use Site;
@@ -182,7 +183,7 @@ class System {
 	 * is installed.
 	 *
 	 *  - If local version is same as remote, return 0
-	 *  - If remove version is newer, return negative integer
+	 *  - If remote version is newer, return negative integer
 	 *  - If local version is newer, return positive integer
 	 *
 	 * @static
@@ -190,16 +191,24 @@ class System {
 	 */
 	public static function updated()
 	{
-		// Get the local (installed) version number
-		$localVersion = static::version(Config::get('app.version'));
+		try
+		{
+			// Get the local (installed) version number
+			$localVersion = static::version(Config::get('app.version'));
 
-		// Get the remote version number
-		$response = Requests::get(Site::config('services')->updateUrl);
+			// Get the remote version number
+			$response = Requests::get(Site::config('services')->updateUrl);
 
-		$remoteVersion = static::version($response->body);
+			$remoteVersion = static::version($response->body);
 
-		// Return the version difference
-		return $localVersion - $remoteVersion;
+			// Return the version difference
+			return $localVersion - $remoteVersion;
+		}
+		catch (Requests_Exception $e)
+		{
+			// HTTP GET failed
+			return 0;
+		}
 	}
 
 	/**
@@ -228,18 +237,25 @@ class System {
 	 */
 	public static function submitStats()
 	{
-		// Send / mask the site's URL
-		$url = Config::get('app.fullStats') ? URL::current() : Lang::get('global.anonymous');
+		try
+		{
+			// Send / mask the site's URL
+			$url = Config::get('app.fullStats') ? URL::current() : Lang::get('global.anonymous');
 
-		// Populate the data to be send
-		$data =  array(
-			'url'      => $url,
-			'action'   => Request::segment(2),
-			'version'  => Config::get('app.version'),
-		);
+			// Populate the data to be send
+			$data =  array(
+				'url'      => $url,
+				'action'   => Request::segment(2),
+				'version'  => Config::get('app.version'),
+			);
 
-		// Send the stats to the REST stats service
-		Requests::post(Site::config('services')->statsUrl, array(), $data);
+			// Send the stats to the REST stats service
+			Requests::post(Site::config('services')->statsUrl, array(), $data);
+		}
+		catch (Requests_Exception $e)
+		{
+			// HTTP POST failed. Suppress this exception
+		}
 	}
 
 	/**
