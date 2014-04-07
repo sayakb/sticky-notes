@@ -10,7 +10,7 @@
 					<div class="col-sm-12">
 						{{
 							HTML::image(url('admin/skin/preview/'.urlencode($skin->key)), NULL, array(
-								'class'   => 'img-thumbnail pull-left',
+								'class'   => 'img-thumbnail pull-left hidden-xs',
 								'width'   => 310,
 								'height'  => 190,
 							))
@@ -48,6 +48,8 @@
 						@endif
 					</div>
 				</div>
+
+				<br />
 			@endforeach
 		</fieldset>
 	</section>
