@@ -116,7 +116,7 @@
 								<div class="col-sm-9 col-lg-10">
 									{{
 										Form::password('password', array(
-											'class'         => 'form-control',
+											'class' => 'form-control',
 										))
 									}}
 								</div>
@@ -220,7 +220,8 @@
 										<td class="text-right">
 											{{
 												HTML::image('//www.gravatar.com/avatar/'.md5(strtolower($user->email)).'?s=28', NULL, array(
-													'class' => 'img-circle'
+													'class'   => 'img-circle',
+													'onerror' => 'this.style.display="none"',
 												))
 											}}
 										</td>
