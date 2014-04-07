@@ -4,6 +4,7 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Sticky Notes</title>
 
 	<link href="../../assets/img/favicon.png" rel="shortcut icon" />
@@ -126,21 +127,21 @@
 		<h3 id="folder-permissions-on-linux-machines">Folder permissions on Linux machines</h3>
 
 		<p>
-			You'll need to change the permissions on the <code>app/storage</code> folder, and 
-			all of its subfolders to make them writable by apache. On linux systems, apache 
-			usually runs as the user <code>www-data</code> - so you'll need to make the folder 
-			writable by the user under which apache is running on your system. When in doubt, 
-			you can always set the <code>storage</code> folder's (and its subfolder's) 
-			permissions to <code>777</code>, however it is recommended to limit the write 
+			You'll need to change the permissions on the <code>app/storage</code> folder, and
+			all of its subfolders to make them writable by apache. On linux systems, apache
+			usually runs as the user <code>www-data</code> - so you'll need to make the folder
+			writable by the user under which apache is running on your system. When in doubt,
+			you can always set the <code>storage</code> folder's (and its subfolder's)
+			permissions to <code>777</code>, however it is recommended to limit the write
 			access to apache's user only.
 		</p>
 
 		<h3 id="database-configuration">Database configuration</h3>
 
 		<p>
-			The installer does not create the database on the DB server for security reasons, 
-			it only creates and modifies tables. Once you have created the database manually, 
-			go to the <code>app/config</code> folder and rename <code>database.sample.php</code> 
+			The installer does not create the database on the DB server for security reasons,
+			it only creates and modifies tables. Once you have created the database manually,
+			go to the <code>app/config</code> folder and rename <code>database.sample.php</code>
 			to <code>database.php</code>. Now open the <code>database.php</code> file and fill
 			in your database server details. There are two main things to do here:
 		</p>
