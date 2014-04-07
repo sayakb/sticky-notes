@@ -102,11 +102,11 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $application = new Application();
         $commands = $application->all();
-        $this->assertEquals('Symfony\\Component\\Console\\Command\\HelpCommand', get_class($commands['help']), '->all() returns the registered commands');
+        $this->assertInstanceOf('Symfony\\Component\\Console\\Command\\HelpCommand', $commands['help'], '->all() returns the registered commands');
 
         $application->add(new \FooCommand());
         $commands = $application->all('foo');
-        $this->assertEquals(1, count($commands), '->all() takes a namespace as its first argument');
+        $this->assertCount(1, $commands, '->all() takes a namespace as its first argument');
     }
 
     public function testRegister()
@@ -471,7 +471,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testAsText()
     {
         $application = new Application();
-        $application->add(new \FooCommand);
+        $application->add(new \FooCommand());
         $this->ensureStaticCommandHelp($application);
         $this->assertStringEqualsFile(self::$fixturesPath.'/application_astext1.txt', $this->normalizeLineBreaks($application->asText()), '->asText() returns a text representation of the application');
         $this->assertStringEqualsFile(self::$fixturesPath.'/application_astext2.txt', $this->normalizeLineBreaks($application->asText('foo')), '->asText() returns a text representation of the application');
@@ -480,7 +480,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testAsXml()
     {
         $application = new Application();
-        $application->add(new \FooCommand);
+        $application->add(new \FooCommand());
         $this->ensureStaticCommandHelp($application);
         $this->assertXmlStringEqualsXmlFile(self::$fixturesPath.'/application_asxml1.txt', $application->asXml(), '->asXml() returns an XML representation of the application');
         $this->assertXmlStringEqualsXmlFile(self::$fixturesPath.'/application_asxml2.txt', $application->asXml('foo'), '->asXml() returns an XML representation of the application');
@@ -504,7 +504,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $tester->run(array('command' => 'list', '--foo' => true), array('decorated' => false));
         $this->assertStringEqualsFile(self::$fixturesPath.'/application_renderexception2.txt', $tester->getDisplay(true), '->renderException() renders the command synopsis when an exception occurs in the context of a command');
 
-        $application->add(new \Foo3Command);
+        $application->add(new \Foo3Command());
         $tester = new ApplicationTester($application);
         $tester->run(array('command' => 'foo3:bar'), array('decorated' => false));
         $this->assertStringEqualsFile(self::$fixturesPath.'/application_renderexception3.txt', $tester->getDisplay(true), '->renderException() renders a pretty exceptions with previous exceptions');
@@ -535,8 +535,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $application->run();
         ob_end_clean();
 
-        $this->assertSame('Symfony\Component\Console\Input\ArgvInput', get_class($command->input), '->run() creates an ArgvInput by default if none is given');
-        $this->assertSame('Symfony\Component\Console\Output\ConsoleOutput', get_class($command->output), '->run() creates a ConsoleOutput by default if none is given');
+        $this->assertInstanceOf('Symfony\Component\Console\Input\ArgvInput', $command->input, '->run() creates an ArgvInput by default if none is given');
+        $this->assertInstanceOf('Symfony\Component\Console\Output\ConsoleOutput', $command->output, '->run() creates a ConsoleOutput by default if none is given');
 
         $application = new Application();
         $application->setAutoExit(false);

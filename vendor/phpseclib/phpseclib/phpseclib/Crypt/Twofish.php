@@ -50,7 +50,6 @@
  * @author    Hans-Juergen Petrich <petrich@tronic-media.com>
  * @copyright MMVII Jim Wigginton
  * @license   http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version   1.0
  * @link      http://phpseclib.sourceforge.net
  */
 
@@ -122,7 +121,6 @@ define('CRYPT_TWOFISH_MODE_MCRYPT', CRYPT_MODE_MCRYPT);
  * @package Crypt_Twofish
  * @author  Jim Wigginton <terrafrost@php.net>
  * @author  Hans-Juergen Petrich <petrich@tronic-media.com>
- * @version 1.0
  * @access  public
  */
 class Crypt_Twofish extends Crypt_Base
@@ -465,7 +463,7 @@ class Crypt_Twofish extends Crypt_Base
      *
      * - CRYPT_TWOFISH_MODE_OFB
      *
-     * If not explictly set, CRYPT_TWOFISH_MODE_CBC will be used.
+     * If not explicitly set, CRYPT_TWOFISH_MODE_CBC will be used.
      *
      * @see Crypt_Base::Crypt_Base()
      * @param optional Integer $mode
@@ -919,4 +917,3 @@ class Crypt_Twofish extends Crypt_Base
         $this->inline_crypt = $lambda_functions[$code_hash];
     }
 }
-

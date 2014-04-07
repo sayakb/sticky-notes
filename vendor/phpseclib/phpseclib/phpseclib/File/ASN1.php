@@ -112,7 +112,6 @@ define('FILE_ASN1_TYPE_ANY',             -2);
  *
  * @package File_ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @version 0.3.0
  * @access  public
  */
 class File_ASN1_Element
@@ -143,7 +142,6 @@ class File_ASN1_Element
  *
  * @package File_ASN1
  * @author  Jim Wigginton <terrafrost@php.net>
- * @version 0.3.0
  * @access  public
  */
 class File_ASN1
@@ -164,7 +162,7 @@ class File_ASN1
      * @access private
      * @link http://php.net/class.datetime
      */
-    var $format = 'D, d M y H:i:s O';
+    var $format = 'D, d M Y H:i:s O';
 
     /**
      * Default date format

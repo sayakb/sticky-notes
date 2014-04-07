@@ -20,10 +20,10 @@ class TagSet {
 	 * Create a new TagSet instance.
 	 *
 	 * @param  \Illuminate\Cache\StoreInterface  $store
-	 * @param  string  $names
+	 * @param  array  $names
 	 * @return void
 	 */
-	public function __construct(StoreInterface $store, $names)
+	public function __construct(StoreInterface $store, array $names = array())
 	{
 		$this->store = $store;
 		$this->names = $names;
@@ -78,7 +78,7 @@ class TagSet {
 	 */
 	public function resetTag($name)
 	{
-		$this->store->forever($this->tagKey($name), $id = uniqid());
+		$this->store->forever($this->tagKey($name), $id = str_replace('.', '', uniqid('', true)));
 
 		return $id;
 	}

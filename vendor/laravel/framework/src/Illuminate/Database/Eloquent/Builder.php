@@ -77,6 +77,8 @@ class Builder {
 	 */
 	public function findMany($id, $columns = array('*'))
 	{
+		if (empty($id)) return $this->model->newCollection();
+
 		$this->query->whereIn($this->model->getKeyName(), $id);
 
 		return $this->get($columns);
@@ -506,7 +508,7 @@ class Builder {
 		// Once we have the results, we just match those back up to their parent models
 		// using the relationship instance. Then we just return the finished arrays
 		// of models which have been eagerly hydrated and are readied for return.
-		$results = $relation->get();
+		$results = $relation->getEager();
 
 		return $relation->match($models, $results, $name);
 	}
@@ -601,7 +603,7 @@ class Builder {
 		}
 		else
 		{
-			$this->query->where($column, $operator, $value, $boolean);
+			call_user_func_array(array($this->query, 'where'), func_get_args());
 		}
 
 		return $this;
@@ -695,6 +697,11 @@ class Builder {
 	protected function addHasWhere(Builder $hasQuery, Relation $relation, $operator, $count, $boolean)
 	{
 		$this->mergeWheresToHas($hasQuery, $relation);
+
+		if (is_numeric($count))
+		{
+			$count = new Expression($count);
+		}
 
 		return $this->where(new Expression('('.$hasQuery->toSql().')'), $operator, $count, $boolean);
 	}

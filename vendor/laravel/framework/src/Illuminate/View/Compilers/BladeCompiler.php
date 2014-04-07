@@ -12,6 +12,13 @@ class BladeCompiler extends Compiler implements CompilerInterface {
 	protected $extensions = array();
 
 	/**
+	 * The file currently being compiled.
+	 *
+	 * @var string
+	 */
+	protected $path;
+
+	/**
 	 * All of the available compiler functions.
 	 *
 	 * @var array
@@ -57,14 +64,40 @@ class BladeCompiler extends Compiler implements CompilerInterface {
 	 * @param  string  $path
 	 * @return void
 	 */
-	public function compile($path)
+	public function compile($path = null)
 	{
-		$contents = $this->compileString($this->files->get($path));
+		if ($path)
+		{
+			$this->setPath($path);
+		}
+
+		$contents = $this->compileString($this->files->get($this->getPath()));
 
 		if ( ! is_null($this->cachePath))
 		{
-			$this->files->put($this->getCompiledPath($path), $contents);
+			$this->files->put($this->getCompiledPath($this->getPath()), $contents);
 		}
+	}
+
+	/**
+	 * Get the path currently being compiled.
+	 *
+	 * @return string
+	 */
+	public function getPath()
+	{
+		return $this->path;
+	}
+
+	/**
+	 * Set the path currently being compiled.
+	 *
+	 * @param string $path
+	 * @return void
+	 */
+	public function setPath($path)
+	{
+		$this->path = $path;
 	}
 
 	/**
@@ -483,6 +516,26 @@ class BladeCompiler extends Compiler implements CompilerInterface {
 	public function setEscapedContentTags($openTag, $closeTag)
 	{
 		$this->setContentTags($openTag, $closeTag, true);
+	}
+
+	/**
+	* Gets the content tags used for the compiler.
+	*
+	* @return string
+	*/
+	public function getContentTags()
+	{
+		return $this->contentTags;
+	}
+
+	/**
+	* Gets the escaped content tags used for the compiler.
+	*
+	* @return string
+	*/
+	public function getEscapedContentTags()
+	{
+		return $this->escapedTags;
 	}
 
 }

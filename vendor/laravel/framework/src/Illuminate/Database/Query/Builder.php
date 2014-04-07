@@ -480,10 +480,9 @@ class Builder {
 	 *
 	 * @param  string  $column
 	 * @param  array   $values
-	 * @param  bool  $not
 	 * @return \Illuminate\Database\Query\Builder|static
 	 */
-	public function orWhereBetween($column, array $values, $not = false)
+	public function orWhereBetween($column, array $values)
 	{
 		return $this->whereBetween($column, $values, 'or');
 	}
@@ -782,6 +781,67 @@ class Builder {
 	public function orWhereNotNull($column)
 	{
 		return $this->whereNotNull($column, 'or');
+	}
+
+	/**
+	 * Add a "where day" statement to the query.
+	 *
+	 * @param  string  $column
+	 * @param  string   $operator
+	 * @param  int   $value
+	 * @param  string   $boolean
+	 * @return \Illuminate\Database\Query\Builder|static
+	 */
+	public function whereDay($column, $operator, $value, $boolean = 'and')
+	{
+		return $this->addDateBasedWhere('Day', $column, $operator, $value, $boolean);
+	}
+
+	/**
+	 * Add a "where month" statement to the query.
+	 *
+	 * @param  string  $column
+	 * @param  string   $operator
+	 * @param  int   $value
+	 * @param  string   $boolean
+	 * @return \Illuminate\Database\Query\Builder|static
+	 */
+	public function whereMonth($column, $operator, $value, $boolean = 'and')
+	{
+		return $this->addDateBasedWhere('Month', $column, $operator, $value, $boolean);
+	}
+
+	/**
+	 * Add a "where year" statement to the query.
+	 *
+	 * @param  string  $column
+	 * @param  string   $operator
+	 * @param  int   $value
+	 * @param  string   $boolean
+	 * @return \Illuminate\Database\Query\Builder|static
+	 */
+	public function whereYear($column, $operator, $value, $boolean = 'and')
+	{
+		return $this->addDateBasedWhere('Year', $column, $operator, $value, $boolean);
+	}
+
+	/**
+	 * Add a date based (year, month, day) statement to the query.
+	 *
+	 * @param  string  $type
+	 * @param  string  $column
+	 * @param  string  $operator
+	 * @param  int  $value
+	 * @param  string  $boolean
+	 * @return \Illuminate\Database\Query\Builder|static
+	 */
+	protected function addDateBasedWhere($type, $column, $operator, $value, $boolean = 'and')
+	{
+		$this->wheres[] = compact('column', 'type', 'boolean', 'operator', 'value');
+
+		$this->bindings[] = $value;
+
+		return $this;
 	}
 
 	/**
@@ -1102,7 +1162,7 @@ class Builder {
 	/**
 	 * Indicate that the query results should be cached.
 	 *
-	 * @param  \Carbon\Carbon|\Datetime|int  $minutes
+	 * @param  \DateTime|int  $minutes
 	 * @param  string  $key
 	 * @return \Illuminate\Database\Query\Builder|static
 	 */

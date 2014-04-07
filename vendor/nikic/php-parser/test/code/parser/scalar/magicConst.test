@@ -12,20 +12,20 @@ __NAMESPACE__;
 __TRAIT__;
 -----
 array(
-    0: Scalar_MagicConst_Class(
+    0: Scalar_ClassConst(
     )
-    1: Scalar_MagicConst_Dir(
+    1: Scalar_DirConst(
     )
-    2: Scalar_MagicConst_File(
+    2: Scalar_FileConst(
     )
-    3: Scalar_MagicConst_Function(
+    3: Scalar_FuncConst(
     )
-    4: Scalar_MagicConst_Line(
+    4: Scalar_LineConst(
     )
-    5: Scalar_MagicConst_Method(
+    5: Scalar_MethodConst(
     )
-    6: Scalar_MagicConst_Namespace(
+    6: Scalar_NSConst(
     )
-    7: Scalar_MagicConst_Trait(
+    7: Scalar_TraitConst(
     )
 )

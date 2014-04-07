@@ -145,7 +145,6 @@ define('NET_SSH2_LOG_MAX_SIZE', 1024 * 1024);
  *
  * @package Net_SSH2
  * @author  Jim Wigginton <terrafrost@php.net>
- * @version 0.1.0
  * @access  public
  */
 class Net_SSH2
@@ -1769,8 +1768,13 @@ class Net_SSH2
         }
 
         // although PHP5's get_class() preserves the case, PHP4's does not
-        if (is_object($password) && strtolower(get_class($password)) == 'crypt_rsa') {
-            return $this->_privatekey_login($username, $password);
+        if (is_object($password)) {
+            switch (strtolower(get_class($password))) {
+                case 'crypt_rsa':
+                    return $this->_privatekey_login($username, $password);
+                case 'system_ssh_agent':
+                    return $this->_ssh_agent_login($username, $password);
+            }
         }
 
         if (is_array($password)) {
@@ -2008,6 +2012,26 @@ class Net_SSH2
     }
 
     /**
+     * Login with an ssh-agent provided key
+     *
+     * @param String $username
+     * @param System_SSH_Agent $agent
+     * @return Boolean
+     * @access private
+     */
+    function _ssh_agent_login($username, $agent)
+    {
+        $keys = $agent->requestIdentities();
+        foreach ($keys as $key) {
+            if ($this->_privatekey_login($username, $key)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Login with an RSA private key
      *
      * @param String $username
@@ -2233,7 +2257,7 @@ class Net_SSH2
                     return false;
                 default:
                     if (is_callable($callback)) {
-                        $callback($temp);
+                        call_user_func($callback, $temp);
                     } else {
                         $output.= $temp;
                     }
@@ -3120,14 +3144,15 @@ class Net_SSH2
                 ) - 4;
             }
 
+            $temp = $this->_string_shift($data, $max_size);
             $packet = pack('CN2a*',
                 NET_SSH2_MSG_CHANNEL_DATA,
                 $this->server_channels[$client_channel],
-                $max_size,
-                $this->_string_shift($data, $max_size)
+                strlen($temp),
+                $temp
             );
 
-            $this->window_size_client_to_server[$client_channel]-= $max_size + 4;
+            $this->window_size_client_to_server[$client_channel]-= strlen($temp) + 4;
 
             if (!$this->_send_binary_packet($packet)) {
                 return false;

@@ -14,7 +14,6 @@ namespace Monolog\Handler;
 use Monolog\TestCase;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\RavenHandler;
 
 class RavenHandlerTest extends TestCase
 {
@@ -73,6 +72,18 @@ class RavenHandlerTest extends TestCase
         $this->assertEquals($ravenClient::WARNING, $ravenClient->lastData['level']);
         $this->assertContains($record['message'], $ravenClient->lastData['message']);
     }
+    
+    public function testTag()
+    {
+        $ravenClient = $this->getRavenClient();
+        $handler = $this->getHandler($ravenClient);
+
+        $tags = array(1, 2, 'foo');
+        $record = $this->getRecord(Logger::INFO, "test", array('tags' => $tags));
+        $handler->handle($record);
+
+        $this->assertEquals($tags, $ravenClient->lastData['tags']);
+    }
 
     public function testException()
     {
@@ -99,7 +110,7 @@ class RavenHandlerTest extends TestCase
         $logFormatter->expects($this->once())->method('formatBatch');
 
         $formatter = $this->getMock('Monolog\\Formatter\\FormatterInterface');
-        $formatter->expects($this->once())->method('format')->with($this->callback(function($record) {
+        $formatter->expects($this->once())->method('format')->with($this->callback(function ($record) {
             return $record['level'] == 400;
         }));
 

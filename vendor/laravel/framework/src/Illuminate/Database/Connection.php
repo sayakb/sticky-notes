@@ -370,7 +370,7 @@ class Connection implements ConnectionInterface {
 	 */
 	public function unprepared($query)
 	{
-		return $this->run($query, array(), function($me, $query, $bindings)
+		return $this->run($query, array(), function($me, $query)
 		{
 			if ($me->pretending()) return true;
 
@@ -916,6 +916,16 @@ class Connection implements ConnectionInterface {
 	public function disableQueryLog()
 	{
 		$this->loggingQueries = false;
+	}
+
+	/**
+	 * Determine whether we're logging queries.
+	 *
+	 * @return bool
+	 */
+	public function logging()
+	{
+		return $this->loggingQueries;
 	}
 
 	/**

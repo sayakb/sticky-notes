@@ -10,6 +10,10 @@ By default Predis does not require any additional C extension, but it can be opt
 Redis protocol. An asynchronous implementation of the client, albeit experimental, is also available
 through [Predis\Async](https://github.com/nrk/predis-async).
 
+Predis can be used with [HHVM](http://www.hhvm.com) >= 2.4.0, but there are no guarantees you will
+not run into unexpected issues (especially with the JIT compiler enabled via `Eval.Jit = true`) due
+to HHVM being still under heavy development, thus unstable and not yet 100% compatible with PHP.
+
 More details about the project can be found in our [frequently asked questions](FAQ.md) section or
 on the online [wiki](https://github.com/nrk/predis/wiki).
 
@@ -294,11 +298,11 @@ Predis has a comprehensive test suite covering every aspect of the library. This
 integration tests against a running instance of Redis (>= 2.4.0 is required) to verify the correct
 behaviour of the implementation of each command and automatically skips commands not defined in the
 specified Redis profile. If you do not have Redis up and running, integration tests can be disabled.
-By default the test suite is configured to execute integration tests using the profile for Redis 2.6
-but can optionally target a Redis instance built from `2.8` or `unstable` branches by modifying the
-`phpunit.xml` file and setting `REDIS_SERVER_VERSION` respectively to `2.8` or `dev` so that the
-correct server profile will be used. You can refer to [the tests README](tests/README.md) for more
-detailed information about testing Predis.
+By default the test suite is configured to execute integration tests using the profile for Redis 2.8
+(which is the current stable version of Redis) but can optionally target a Redis instance built from
+the `unstable` branch by modifying `phpunit.xml` and setting `REDIS_SERVER_VERSION` to `dev` so that
+the development server profile will be used. You can refer to [the tests README](tests/README.md)
+for more detailed information about testing Predis.
 
 Predis uses Travis CI for continuous integration and the history for past and current builds can be
 found [on its project page](http://travis-ci.org/nrk/predis).

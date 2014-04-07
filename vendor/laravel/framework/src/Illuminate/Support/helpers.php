@@ -376,11 +376,12 @@ if ( ! function_exists('array_pull'))
 	 *
 	 * @param  array   $array
 	 * @param  string  $key
+	 * @param  mixed   $default
 	 * @return mixed
 	 */
-	function array_pull(&$array, $key)
+	function array_pull(&$array, $key, $default = null)
 	{
-		$value = array_get($array, $key);
+		$value = array_get($array, $key, $default);
 
 		array_forget($array, $key);
 
@@ -547,6 +548,35 @@ if ( ! function_exists('csrf_token'))
 	}
 }
 
+if ( ! function_exists('data_get'))
+{
+	/**
+	 * Get an item from an array or object using "dot" notation.
+	 *
+	 * @param  mixed   $target
+	 * @param  string  $key
+	 * @param  mixed   $default
+	 * @return mixed
+	 *
+	 * @throws \InvalidArgumentException
+	 */
+	function data_get($target, $key, $default = null)
+	{
+		if (is_array($target))
+		{
+			return array_get($target, $key, $default);
+		}
+		elseif (is_object($target))
+		{
+			return object_get($target, $key, $default);
+		}
+		else
+		{
+			throw new \InvalidArgumentException("Array or object must be passed to data_get.");
+		}
+	}
+}
+
 if ( ! function_exists('dd'))
 {
 	/**
@@ -698,7 +728,7 @@ if ( ! function_exists('object_get'))
 	 */
 	function object_get($object, $key, $default = null)
 	{
-		if (is_null($key) or trim($key) == '') return $object;
+		if (is_null($key) || trim($key) == '') return $object;
 
 		foreach (explode('.', $key) as $segment)
 		{

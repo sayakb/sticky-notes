@@ -140,7 +140,6 @@ define('CRYPT_DES_MODE_MCRYPT', CRYPT_MODE_MCRYPT);
  *
  * @package Crypt_DES
  * @author  Jim Wigginton <terrafrost@php.net>
- * @version 0.1.0
  * @access  public
  */
 class Crypt_DES extends Crypt_Base
@@ -679,7 +678,7 @@ class Crypt_DES extends Crypt_Base
      *
      * - CRYPT_DES_MODE_OFB
      *
-     * If not explictly set, CRYPT_DES_MODE_CBC will be used.
+     * If not explicitly set, CRYPT_DES_MODE_CBC will be used.
      *
      * @see Crypt_Base::Crypt_Base()
      * @param optional Integer $mode
@@ -1533,4 +1532,3 @@ class Crypt_DES extends Crypt_Base
         $this->inline_crypt = $lambda_functions[$code_hash];
     }
 }
-

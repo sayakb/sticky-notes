@@ -65,11 +65,11 @@
         "illuminate/workbench": "self.version"
     },
     "require-dev": {
-        "aws/aws-sdk-php": "2.5.*",
-        "iron-io/iron_mq": "1.4.*",
+        "aws/aws-sdk-php": "2.6.*",
+        "iron-io/iron_mq": "1.5.*",
         "pda/pheanstalk": "2.1.*",
-        "mockery/mockery": "0.8.0",
-        "phpunit/phpunit": "3.7.*"
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "4.0.*"
     },
     "autoload": {
         "classmap": [

@@ -4,10 +4,7 @@ PHP Parser
 This is a PHP 5.5 (and older) parser written in PHP. It's purpose is to simplify static code analysis and
 manipulation.
 
-[**Documentation for version 0.9.x**][doc_0_9] (current stable).
-
-[Documentation for version 1.0-dev][doc_master]
-(for >= PHP 5.3, using namespaced names, but compatible with old names).
+Documentation can be found in the [`doc/`][1] directory.
 
 ***Note: This project is experimental, so the API is subject to change.***
 
@@ -76,7 +73,6 @@ programming errors or security issues).
 Additionally, you can convert a syntax tree back to PHP code. This allows you to do code preprocessing
 (like automatedly porting code to older PHP versions).
 
-So, that's it, in a nutshell. You can find everything else in the [docs][doc_master].
+So, that's it, in a nutshell. You can find everything else in the [docs][1].
 
- [doc_0_9]: https://github.com/nikic/PHP-Parser/tree/0.9/doc
- [doc_master]: https://github.com/nikic/PHP-Parser/tree/master/doc
+ [1]: https://github.com/nikic/PHP-Parser/tree/master/doc

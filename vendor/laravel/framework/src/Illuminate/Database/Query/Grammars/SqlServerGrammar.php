@@ -59,7 +59,7 @@ class SqlServerGrammar extends Grammar {
 		// If there is a limit on the query, but not an offset, we will add the top
 		// clause to the query, which serves as a "limit" type clause within the
 		// SQL Server system similar to the limit keywords available in MySQL.
-		if ($query->limit > 0 and $query->offset <= 0)
+		if ($query->limit > 0 && $query->offset <= 0)
 		{
 			$select .= 'top '.$query->limit.' ';
 		}
@@ -119,8 +119,6 @@ class SqlServerGrammar extends Grammar {
 		// Next we need to calculate the constraints that should be placed on the query
 		// to get the right offset and limit from our query but if there is no limit
 		// set we will just handle the offset only since that is all that matters.
-		$start = $query->offset + 1;
-
 		$constraint = $this->compileRowConstraint($query);
 
 		$sql = $this->concatenate($components);
