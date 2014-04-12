@@ -58,7 +58,23 @@
 	</header>
 
 	<div class="container">
+		@if ( ! empty($site->general->bannerTop))
+			<div class="row-fluid">
+				<div class="span12">
+					{{ $site->general->bannerTop }}
+				</div>
+			</div>
+		@endif
+
 		@yield('body')
+
+		@if ( ! empty($site->general->bannerBottom))
+			<div class="row-fluid">
+				<div class="span12">
+					{{ $site->general->bannerBottom }}
+				</div>
+			</div>
+		@endif
 
 		<footer class="align-center">
 			<p>{{ $site->general->copyright }}</p>

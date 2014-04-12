@@ -22,6 +22,10 @@
 						<li>
 							<a href="#site-content" data-toggle="tab">{{ Lang::get('admin.content') }}</a>
 						</li>
+
+						<li>
+							<a href="#site-banners" data-toggle="tab">{{ Lang::get('admin.banners') }}</a>
+						</li>
 					</ul>
 
 					<div class="tab-content form-horizontal">
@@ -346,6 +350,54 @@
 									<div class="help-block">
 										{{ Lang::get('admin.share_exp') }}
 									</div>
+								</div>
+							</div>
+						</div>
+
+						<div id="site-banners" class="tab-pane fade">
+							<div class="row-fluid">
+								<div class="span12">
+									<div class="alert alert-info">
+										{{ Lang::get('admin.banners_exp') }}
+									</div>
+
+									<div class="alert alert-success">
+										{{{ sprintf(Lang::get('admin.allowed_tags'), $site->general->allowedTags) }}}
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('banner_top', Lang::get('admin.banner_top'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::textarea('banner_top', $site->general->bannerTop, array(
+											'class' => 'form-control',
+											'rows'  => 5,
+										))
+									}}
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('banner_bottom', Lang::get('admin.banner_bottom'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::textarea('banner_bottom', $site->general->bannerBottom, array(
+											'class' => 'form-control',
+											'rows'  => 5,
+										))
+									}}
 								</div>
 							</div>
 						</div>
