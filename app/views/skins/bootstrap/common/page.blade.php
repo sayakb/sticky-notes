@@ -52,7 +52,23 @@
 	</nav>
 
 	<div class="container">
+		@if ( ! empty($site->general->bannerTop))
+			<div class="row">
+				<div class="col-sm-12">
+					{{ $site->general->bannerTop }}
+				</div>
+			</div>
+		@endif
+
 		@yield('body')
+
+		@if ( ! empty($site->general->bannerBottom))
+			<div class="row">
+				<div class="col-sm-12">
+					{{ $site->general->bannerBottom }}
+				</div>
+			</div>
+		@endif
 	</div>
 
 	<footer>
