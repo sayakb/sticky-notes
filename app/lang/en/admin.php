@@ -234,5 +234,11 @@ return array(
 	"google_analytics_exp"  => "Specify your Google Analytics tracking ID here. To disable tracking, simply leave ".
 	                           "this field blank.",
 	"services_updated"      => "Services settings updated successfully",
+	"banners"               => "Banners",
+	"banners_exp"           => "Site banners allow you to place custom HTML content within placeholders on all screens. ".
+	                           "You can typically use banners to place advertisements on your website.",
+	"allowed_tags"          => "Allowed HTML tags: %s",
+	"banner_top"            => "Top banner",
+	"banner_bottom"         => "Bottom banner",
 
 );

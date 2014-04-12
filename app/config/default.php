@@ -36,6 +36,11 @@ return array(
 		'statsDisplay'        => '-1 month',
 		'ajaxNav'             => '1',
 		'share'               => '1',
+		'bannerTop'           => '',
+		'bannerBottom'        => '',
+		'htmlKeys'            => 'banner_top|banner_bottom',
+		'allowedTags'         => '<a> <em> <strong> <u> <cite> <blockquote> <code> <ul> <ol>'.
+		                         '<li> <dl> <dt> <dd> <h4> <h5> <h6> <p> <br> <img> <strike>',
 	),
 
 	'antispam'                => (object) array(

@@ -89,9 +89,21 @@ class Site extends Eloquent {
 		// Set config values for a group
 		else
 		{
+			$site = static::config('general');
+
+			// Get the tags that have HTML content
+			$htmlKeys = preg_split('/\||,/', $site->htmlKeys);
+
 			// Update the new config values in the DB
 			foreach ($newData as $key => $value)
 			{
+				// Check for and strip HTML content
+				if (in_array($key, $htmlKeys))
+				{
+					$value = strip_tags($value, $site->allowedTags);
+				}
+
+				// Save config data
 				if ( ! starts_with($key, '_'))
 				{
 					$key = camel_case($key);
