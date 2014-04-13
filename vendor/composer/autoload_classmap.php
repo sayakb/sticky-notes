@@ -39,6 +39,7 @@ return array(
     'StickyNotes\\Highlighter' => $baseDir . '/app/lib/Highlighter.php',
     'StickyNotes\\PHPDiff' => $baseDir . '/app/lib/PHPDiff.php',
     'StickyNotes\\PHPass' => $baseDir . '/app/lib/PHPass.php',
+    'StickyNotes\\Redirect' => $baseDir . '/app/lib/Redirect.php',
     'StickyNotes\\Response' => $baseDir . '/app/lib/Response.php',
     'StickyNotes\\Service' => $baseDir . '/app/lib/Service.php',
     'StickyNotes\\Session' => $baseDir . '/app/lib/Session.php',

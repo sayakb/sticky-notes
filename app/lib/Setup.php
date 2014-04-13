@@ -16,7 +16,6 @@
 
 use App;
 use Lang;
-use Redirect;
 use Schema;
 use Site;
 
