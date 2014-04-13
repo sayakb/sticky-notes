@@ -1586,7 +1586,7 @@ class Builder {
 	 */
 	public function count($column = '*')
 	{
-		return $this->aggregate(__FUNCTION__, array($column));
+		return (int) $this->aggregate(__FUNCTION__, array($column));
 	}
 
 	/**
@@ -1653,7 +1653,7 @@ class Builder {
 
 		if (isset($results[0]))
 		{
-			$result = (array) $results[0];
+			$result = array_change_key_case((array) $results[0]);
 
 			return $result['aggregate'];
 		}

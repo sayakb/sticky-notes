@@ -399,6 +399,54 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
+	 * Create a collection of models from plain arrays.
+	 *
+	 * @param  array  $items
+	 * @param  string  $connection
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public static function hydrate(array $items, $connection = null)
+	{
+		$collection = with($instance = new static)->newCollection();
+
+		foreach ($items as $item)
+		{
+			$model = $instance->newFromBuilder($item);
+
+			if ( ! is_null($connection))
+			{
+				$model->setConnection($connection);
+			}
+
+			$collection->push($model);
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Create a collection of models from a raw query.
+	 *
+	 * @param  string  $query
+	 * @param  array  $bindings
+	 * @param  string  $connection
+	 * @return \Illuminate\Database\Eloquent\Collection
+	 */
+	public static function hydrateRaw($query, $bindings = array(), $connection = null)
+	{
+		$instance = new static;
+
+		if ( ! is_null($connection))
+		{
+			$instance->setConnection($connection);
+		}
+
+		$items = $instance->getConnection()->select($query, $bindings);
+
+		return static::hydrate($items, $connection);
+	}
+
+	/**
 	 * Save a new model and return the instance.
 	 *
 	 * @param  array  $attributes
@@ -505,6 +553,22 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
+	 * Find a model by its primary key.
+	 *
+	 * @param  mixed  $id
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Model|Collection|static
+	 */
+	public static function find($id, $columns = array('*'))
+	{
+		if (is_array($id) && empty($id)) return new Collection;
+
+		$instance = new static;
+
+		return $instance->newQuery()->find($id, $columns);
+	}
+
+	/**
 	 * Find a model by its primary key or return new static.
 	 *
 	 * @param  mixed  $id
@@ -516,6 +580,22 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 		if ( ! is_null($model = static::find($id, $columns))) return $model;
 
 		return new static($columns);
+	}
+
+	/**
+	 * Find a model by its primary key or throw an exception.
+	 *
+	 * @param  mixed  $id
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Model|Collection|static
+	 *
+	 * @throws ModelNotFoundException
+	 */
+	public static function findOrFail($id, $columns = array('*'))
+	{
+		if ( ! is_null($model = static::find($id, $columns))) return $model;
+
+		throw with(new ModelNotFoundException)->setModel(get_called_class());
 	}
 
 	/**

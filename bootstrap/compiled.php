@@ -417,7 +417,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.24';
+    const VERSION = '4.1.25';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -950,6 +950,17 @@ class Request extends SymfonyRequest
     public function secure()
     {
         return $this->isSecure();
+    }
+    public function exists($key)
+    {
+        $keys = is_array($key) ? $key : func_get_args();
+        $input = $this->all();
+        foreach ($keys as $value) {
+            if (!array_key_exists($value, $input)) {
+                return false;
+            }
+        }
+        return true;
     }
     public function has($key)
     {
@@ -5952,6 +5963,27 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $instance->setRawAttributes((array) $attributes, true);
         return $instance;
     }
+    public static function hydrate(array $items, $connection = null)
+    {
+        $collection = with($instance = new static())->newCollection();
+        foreach ($items as $item) {
+            $model = $instance->newFromBuilder($item);
+            if (!is_null($connection)) {
+                $model->setConnection($connection);
+            }
+            $collection->push($model);
+        }
+        return $collection;
+    }
+    public static function hydrateRaw($query, $bindings = array(), $connection = null)
+    {
+        $instance = new static();
+        if (!is_null($connection)) {
+            $instance->setConnection($connection);
+        }
+        $items = $instance->getConnection()->select($query, $bindings);
+        return static::hydrate($items, $connection);
+    }
     public static function create(array $attributes)
     {
         $model = new static($attributes);
@@ -5995,12 +6027,27 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $instance = new static();
         return $instance->newQuery()->get($columns);
     }
+    public static function find($id, $columns = array('*'))
+    {
+        if (is_array($id) && empty($id)) {
+            return new Collection();
+        }
+        $instance = new static();
+        return $instance->newQuery()->find($id, $columns);
+    }
     public static function findOrNew($id, $columns = array('*'))
     {
         if (!is_null($model = static::find($id, $columns))) {
             return $model;
         }
         return new static($columns);
+    }
+    public static function findOrFail($id, $columns = array('*'))
+    {
+        if (!is_null($model = static::find($id, $columns))) {
+            return $model;
+        }
+        throw with(new ModelNotFoundException())->setModel(get_called_class());
     }
     public function load($relations)
     {
@@ -8357,7 +8404,7 @@ class StreamHandler extends AbstractProcessingHandler
     }
     protected function write(array $record)
     {
-        if (null === $this->stream) {
+        if (!is_resource($this->stream)) {
             if (!$this->url) {
                 throw new \LogicException('Missing stream url, the stream can not be opened. This may be caused by a premature call to close().');
             }
@@ -8566,7 +8613,7 @@ class Handler
     }
     protected function registerExceptionHandler()
     {
-        set_exception_handler(array($this, 'handleException'));
+        set_exception_handler(array($this, 'handleUncaughtException'));
     }
     protected function registerShutdownHandler()
     {
@@ -8582,15 +8629,13 @@ class Handler
     {
         $response = $this->callCustomHandlers($exception);
         if (!is_null($response)) {
-            $response = $this->prepareResponse($response);
-        } else {
-            $response = $this->displayException($exception);
+            return $this->prepareResponse($response);
         }
-        return $this->sendResponse($response);
+        return $this->displayException($exception);
     }
-    protected function sendResponse($response)
+    public function handleUncaughtException($exception)
     {
-        return $this->responsePreparer->readyForResponses() && !$this->runningInConsole() ? $response : $response->send();
+        $this->handleException($exception)->send();
     }
     public function handleShutdown()
     {

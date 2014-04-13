@@ -77,7 +77,7 @@ class Builder {
 	 */
 	public function findMany($id, $columns = array('*'))
 	{
-		if (empty($id)) return $this->model->newCollection();
+		if (empty($id)) return new Collection;
 
 		$this->query->whereIn($this->model->getKeyName(), $id);
 
@@ -579,7 +579,7 @@ class Builder {
 	{
 		$dots = str_contains($name, '.');
 
-		return $dots && starts_with($name, $relation) && $name != $relation;
+		return $dots && starts_with($name, $relation.'.');
 	}
 
 	/**
