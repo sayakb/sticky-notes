@@ -275,7 +275,11 @@ class Paste extends Eloquent {
 	 */
 	public static function getExpiration($category = 'create', $csv = FALSE)
 	{
-		return Cache::rememberForever("expire.{$category}.{$csv}", function() use ($category, $csv)
+		// Current user ID for role based expiration options
+		$user = Auth::check() ? Auth::user()->id : 0;
+
+		// Fetch/update expiration times in cache
+		return Cache::rememberForever("expire.{$category}.{$user}.{$csv}", function() use ($category, $csv)
 		{
 			$times = array();
 
