@@ -77,7 +77,7 @@
 						}}
 
 						{{
-							link_to('user/pastes', Lang::get('user.my_pastes'), array(
+							link_to("user/u{$auth->id}/pastes", Lang::get('user.my_pastes'), array(
 								'class' => 'btn btn-link',
 							))
 						}}
