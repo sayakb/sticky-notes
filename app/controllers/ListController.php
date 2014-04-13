@@ -103,7 +103,7 @@ class ListController extends BaseController {
 		$query = Paste::where('timestamp', '>=', $filter);
 
 		// Hide private pastes from non-admins
-		if (Auth::roles()->guest)
+		if ( ! Auth::roles()->admin)
 		{
 			$query = $query->where('private', '<>', 1);
 		}
@@ -125,15 +125,34 @@ class ListController extends BaseController {
 	 * Gets user's own pastes
 	 *
 	 * @access public
+	 * @param  int    $userId
 	 * @return \Illuminate\Support\Facades\View
 	 */
-	public function getUserPastes()
+	public function getUserPastes($userId)
 	{
 		$perPage = Site::config('general')->perPage;
 
-		$userId = Auth::user()->id;
+		// Remove the leading 'u' from the userId
+		$userId = substr($userId, 1);
 
-		$pastes = Paste::where('author_id', $userId)->orderBy('id', 'desc')->paginate($perPage);
+		// Get all pastes for the specific author
+		$query = Paste::where('author_id', $userId);
+
+		// Apply restrictions to non-admins
+		if ( ! Auth::roles()->admin)
+		{
+			$query = $query->where(function($query)
+			{
+				// Fetch all pastes belonging to the current user
+				$query->where('author_id', Auth::user()->id);
+
+				// If paste doesn't belong to current user, hide if private
+				$query->orWhere('private', '<>', 1);
+			});
+		}
+
+		// Show latest first
+		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
 
 		return $this->getList($pastes);
 	}

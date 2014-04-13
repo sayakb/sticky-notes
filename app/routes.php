@@ -98,7 +98,7 @@ Route::group(array('before' => 'auth.config'), function()
 Route::group(array('before' => 'auth'), function()
 {
 	// User pastes route
-	Route::get('user/pastes', 'ListController@getUserPastes');
+	Route::get('user/{userid}/pastes', 'ListController@getUserPastes')->where('userid', 'u[0-9]+');
 
 	// User profile route
 	Route::get('user/profile', 'UserController@getProfile');
