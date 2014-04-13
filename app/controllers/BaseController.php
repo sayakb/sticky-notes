@@ -74,10 +74,10 @@ class BaseController extends Controller {
 
 		// Trim leading and trailing whitespace
 		// If the control's name is "data", we only trim trailing space
-		array_walk($input, function($key, $value) use (&$input)
+		foreach ($input as $key => $value)
 		{
 			$input[$key] = $key == 'data' ? rtrim($value) : trim($value);
-		});
+		}
 
 		// Merge it back to the Input data
 		Input::merge($input);
