@@ -263,6 +263,32 @@
 
 							<div class="control-group">
 								{{
+									Form::label('max_paste_size', Lang::get('admin.size_limit'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									<div class="input-append">
+										{{
+											Form::text('max_paste_size', $site->general->maxPasteSize, array(
+												'class' => 'input-xxlarge',
+											))
+										}}
+
+										<div class="add-on">
+											{{ Lang::get('admin.bytes') }}
+										</div>
+									</div>
+
+									<div class="help-block">
+										{{ Lang::get('admin.size_limit_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
 									Form::label('no_expire', Lang::get('admin.expiration'), array(
 										'class' => 'control-label span2'
 									))
@@ -377,7 +403,7 @@
 								<div class="span9">
 									{{
 										Form::textarea('banner_top', $site->general->bannerTop, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 											'rows'  => 5,
 										))
 									}}
@@ -394,7 +420,7 @@
 								<div class="span9">
 									{{
 										Form::textarea('banner_bottom', $site->general->bannerBottom, array(
-											'class' => 'form-control',
+											'class' => 'input-xxlarge',
 											'rows'  => 5,
 										))
 									}}
