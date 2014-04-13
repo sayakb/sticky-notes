@@ -144,7 +144,7 @@ Route::filter('admin', function()
 
 Route::filter('private', function()
 {
-	if (Site::config('general')->privateSite)
+	if (Site::config('general')->privateSite AND ! Auth::roles()->admin)
 	{
 		App::abort(403); // Forbidden
 	}

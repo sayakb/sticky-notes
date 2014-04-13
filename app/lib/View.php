@@ -191,50 +191,61 @@ class View extends \Illuminate\Support\Facades\View {
 					// Check if visibility of the item is bound
 					if (isset($item['visible']))
 					{
-						$bindings = explode('.', $item['visible']);
+						$visible = FALSE;
 
-						// Check for the invert flag
-						if (starts_with($bindings[0], '!'))
+						$bindings = preg_split('/\||,/', $item['visible']);
+
+						// Iterate through each binding
+						foreach ($bindings as $binding)
 						{
-							$bindings[0] = substr($bindings[0], 1);
+							$components = explode('.', $binding);
 
-							$invert = TRUE;
-						}
-						else
-						{
-							$invert = FALSE;
-						}
-
-						// Get the binding flags
-						switch ($bindings[0])
-						{
-							case 'role':
-
-								$flags = Auth::roles();
-
-								break;
-
-							case 'config':
-
-								$flags = Site::config('general');
-
-								break;
-
-							default:
-
-								$flags = NULL;
-
-								break;
-						}
-
-						// Do not parse the menu item if the flag does not
-						// evaluate to true
-						if ( ! is_null($flags))
-						{
-							if ( ! $flags->$bindings[1] XOR $invert)
+							// Check for the invert flag
+							if (starts_with($components[0], '!'))
 							{
-								continue;
+								$components[0] = substr($components[0], 1);
+
+								$invert = TRUE;
 							}
+							else
+							{
+								$invert = FALSE;
+							}
+
+							// Get the binding flags
+							switch ($components[0])
+							{
+								case 'role':
+
+									$flags = Auth::roles();
+
+									break;
+
+								case 'config':
+
+									$flags = Site::config('general');
+
+									break;
+
+								default:
+
+									$flags = NULL;
+
+									break;
+							}
+
+							// Do not parse the menu item if the flag does not
+							// evaluate to true
+							if ( ! is_null($flags))
+							{
+								$visible = ($visible OR ($flags->$components[1] XOR $invert));
+							}
+						}
+
+						// Set the visibility of the item
+						if ( ! $visible)
+						{
+							continue;
 						}
 					}
 

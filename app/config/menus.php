@@ -24,7 +24,8 @@ return array(
 	|  * icon       : Determines the glyphicon for that item
 	|  * visible    : This can be used to bind the visibility of an item to a
 	|                 user role or a site config. You can use ! to invert a
-	|                 flag.
+	|                 flag. Multiple flags with 'OR' relationships should be
+	|                 separated by a |
 	|
 	*/
 
@@ -37,13 +38,13 @@ return array(
 		'all'               => array(
 			'label'         => 'global.archives',
 			'icon'          => 'list',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 		'trending'          => array(
 			'label'         => 'global.trending',
 			'icon'          => 'fire',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 		'docs'              => array(
@@ -73,27 +74,27 @@ return array(
 
 		'trending'          => array(
 			'label'         => 'list.filter_now',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 		'trending/week'     => array(
 			'label'         => 'list.filter_week',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 		'trending/month'    => array(
 			'label'         => 'list.filter_month',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 		'trending/year'     => array(
 			'label'         => 'list.filter_year',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 		'trending/all'      => array(
 			'label'         => 'list.filter_all',
-			'visible'       => '!config.privateSite'
+			'visible'       => '!config.privateSite|role.admin'
 		),
 
 	),
