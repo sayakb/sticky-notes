@@ -264,6 +264,32 @@
 
 							<div class="form-group">
 								{{
+									Form::label('max_paste_size', Lang::get('admin.size_limit'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									<div class="input-group">
+										{{
+											Form::text('max_paste_size', $site->general->maxPasteSize, array(
+												'class' => 'form-control',
+											))
+										}}
+
+										<div class="input-group-addon">
+											{{ Lang::get('admin.bytes') }}
+										</div>
+									</div>
+
+									<div class="help-block">
+										{{ Lang::get('admin.size_limit_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
 									Form::label('no_expire', Lang::get('admin.expiration'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
