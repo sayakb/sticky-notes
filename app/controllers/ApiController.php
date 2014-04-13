@@ -215,6 +215,7 @@ class ApiController extends BaseController {
 			'title.max'           => 'title_max_30',
 			'data.required'       => 'data_required',
 			'data.auth'           => 'cannot_post',
+			'data.mbmax'          => 'data_too_big',
 			'language.required'   => 'lang_required',
 			'language.in'         => 'lang_invalid',
 			'expire.integer'      => 'expire_integer',
@@ -224,7 +225,7 @@ class ApiController extends BaseController {
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
 			'title'     => 'max:30',
-			'data'      => 'required|auth',
+			'data'      => 'required|auth|mbmax:'.Site::config('general')->maxPasteSize,
 			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
 			'expire'    => 'integer|in:'.Paste::getExpiration('create', TRUE),
 		), $custom);
