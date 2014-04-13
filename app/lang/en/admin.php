@@ -240,5 +240,9 @@ return array(
 	"allowed_tags"          => "Allowed HTML tags: %s",
 	"banner_top"            => "Top banner",
 	"banner_bottom"         => "Bottom banner",
+	"size_limit"            => "Size limit",
+	"size_limit_exp"        => "Maximum allowed size for the paste data. Set this to 0 to allow paste data to be as big ".
+	                           "as the size supported by the database field itself.",
+	"bytes"                 => "bytes",
 
 );

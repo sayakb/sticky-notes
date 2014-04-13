@@ -139,6 +139,31 @@ Validator::extend('auth', function($attribute, $value, $parameters)
 
 /*
 |--------------------------------------------------------------------------
+| Multibyte string length validator
+|--------------------------------------------------------------------------
+|
+| This rule checks whether a specific string is longer than the maximum
+| allowed multibyte length.
+|
+*/
+
+Validator::extend('mbmax', function($attribute, $value, $parameters)
+{
+	if ($parameters[0] > 0)
+	{
+		return mb_strlen($value, '8bit') <= $parameters[0];
+	}
+
+	return TRUE;
+});
+
+Validator::replacer('mbmax', function($message, $attribute, $rule, $parameters)
+{
+	return str_replace(':max', $parameters[0], $message);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Trust proxy headers
 |--------------------------------------------------------------------------
 |

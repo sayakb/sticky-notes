@@ -104,7 +104,7 @@ class Site extends Eloquent {
 				}
 
 				// Save config data
-				if ( ! starts_with($key, '_'))
+				if ( ! empty($key) AND ! starts_with($key, '_'))
 				{
 					$key = camel_case($key);
 
