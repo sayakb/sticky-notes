@@ -106,7 +106,8 @@
 		<div class="pre-info pre-footer">
 			<div class="row-fluid">
 				<div class="span6">
-					{{{ sprintf(Lang::get('global.posted_by'), $paste->author ?: Lang::get('global.anonymous'), date('d M Y, H:i:s e', $paste->timestamp)) }}}
+					{? $author = $paste->author ? link_to("user/u{$paste->author_id}/pastes", $paste->author) : Lang::get('global.anonymous') ?}
+					{{ sprintf(Lang::get('global.posted_by'), $author, date('d M Y, H:i:s e', $paste->timestamp)) }}
 				</div>
 
 				<div class="span6 align-right">
