@@ -1,13 +1,20 @@
 <?php
 
-class Swift_Mime_ContentEncoder_QpContentEncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Mime/ContentEncoder/QpContentEncoder.php';
+require_once 'Swift/CharacterStream/ArrayCharacterStream.php';
+require_once 'Swift/CharacterReaderFactory/SimpleCharacterReaderFactory.php';
+require_once 'Swift/ByteStream/ArrayByteStream.php';
+
+class Swift_Mime_ContentEncoder_QpContentEncoderAcceptanceTest
+    extends Swift_Tests_SwiftUnitTestCase
 {
     private $_samplesDir;
     private $_factory;
 
     public function setUp()
     {
-        $this->_samplesDir = realpath(__DIR__ . '/../../../../_samples/charsets');
+        $this->_samplesDir = realpath(dirname(__FILE__) . '/../../../../_samples/charsets');
         $this->_factory = new Swift_CharacterReaderFactory_SimpleCharacterReaderFactory();
     }
 
@@ -47,7 +54,7 @@ class Swift_Mime_ContentEncoder_QpContentEncoderAcceptanceTest extends \PHPUnit_
                         $encoded .= $bytes;
                     }
 
-                    $this->assertEquals(
+                    $this->assertEqual(
                         quoted_printable_decode($encoded), $text,
                         '%s: Encoded string should decode back to original string for sample ' .
                         $sampleDir . '/' . $sampleFile
@@ -94,7 +101,7 @@ class Swift_Mime_ContentEncoder_QpContentEncoderAcceptanceTest extends \PHPUnit_
                         $encoded .= $bytes;
                     }
 
-                    $this->assertEquals(
+                    $this->assertEqual(
                         str_replace("\r\n", "\n", quoted_printable_decode($encoded)), str_replace("\r\n", "\n", $text),
                         '%s: Encoded string should decode back to original string for sample ' .
                         $sampleDir . '/' . $sampleFile
@@ -110,25 +117,25 @@ class Swift_Mime_ContentEncoder_QpContentEncoderAcceptanceTest extends \PHPUnit_
     public function testEncodingLFTextWithDiConfiguredInstance()
     {
         $encoder = $this->_createEncoderFromContainer();
-        $this->assertEquals("a\r\nb\r\nc", $encoder->encodeString("a\nb\nc"));
+        $this->assertEqual("a\r\nb\r\nc", $encoder->encodeString("a\nb\nc"));
     }
 
     public function testEncodingCRTextWithDiConfiguredInstance()
     {
         $encoder = $this->_createEncoderFromContainer();
-        $this->assertEquals("a\r\nb\r\nc", $encoder->encodeString("a\rb\rc"));
+        $this->assertEqual("a\r\nb\r\nc", $encoder->encodeString("a\rb\rc"));
     }
 
     public function testEncodingLFCRTextWithDiConfiguredInstance()
     {
         $encoder = $this->_createEncoderFromContainer();
-        $this->assertEquals("a\r\n\r\nb\r\n\r\nc", $encoder->encodeString("a\n\rb\n\rc"));
+        $this->assertEqual("a\r\n\r\nb\r\n\r\nc", $encoder->encodeString("a\n\rb\n\rc"));
     }
 
     public function testEncodingCRLFTextWithDiConfiguredInstance()
     {
         $encoder = $this->_createEncoderFromContainer();
-        $this->assertEquals("a\r\nb\r\nc", $encoder->encodeString("a\r\nb\r\nc"));
+        $this->assertEqual("a\r\nb\r\nc", $encoder->encodeString("a\r\nb\r\nc"));
     }
 
     public function testEncodingDotStuffingWithDiConfiguredInstance()
@@ -136,11 +143,11 @@ class Swift_Mime_ContentEncoder_QpContentEncoderAcceptanceTest extends \PHPUnit_
         // Enable DotEscaping
         Swift_Preferences::getInstance()->setQPDotEscape(true);
         $encoder = $this->_createEncoderFromContainer();
-        $this->assertEquals("a=2E\r\n=2E\r\n=2Eb\r\nc", $encoder->encodeString("a.\r\n.\r\n.b\r\nc"));
+        $this->assertEqual("a=2E\r\n=2E\r\n=2Eb\r\nc", $encoder->encodeString("a.\r\n.\r\n.b\r\nc"));
         // Return to default
         Swift_Preferences::getInstance()->setQPDotEscape(false);
         $encoder = $this->_createEncoderFromContainer();
-        $this->assertEquals("a.\r\n.\r\n.b\r\nc", $encoder->encodeString("a.\r\n.\r\n.b\r\nc"));
+        $this->assertEqual("a.\r\n.\r\n.b\r\nc", $encoder->encodeString("a.\r\n.\r\n.b\r\nc"));
     }
 
     public function testDotStuffingEncodingAndDecodingSamplesFromDiConfiguredInstance()

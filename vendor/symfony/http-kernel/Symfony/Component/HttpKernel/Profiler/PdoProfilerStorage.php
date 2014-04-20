@@ -31,7 +31,7 @@ abstract class PdoProfilerStorage implements ProfilerStorageInterface
      * @param string  $dsn      A data source name
      * @param string  $username The username for the database
      * @param string  $password The password for the database
-     * @param int     $lifetime The lifetime to use for the purge
+     * @param integer $lifetime The lifetime to use for the purge
      */
     public function __construct($dsn, $username = '', $password = '', $lifetime = 86400)
     {
@@ -59,7 +59,7 @@ abstract class PdoProfilerStorage implements ProfilerStorageInterface
         $criteria = $criteria ? 'WHERE '.implode(' AND ', $criteria) : '';
 
         $db = $this->initDb();
-        $tokens = $this->fetch($db, 'SELECT token, ip, method, url, time, parent FROM sf_profiler_data '.$criteria.' ORDER BY time DESC LIMIT '.((int) $limit), $args);
+        $tokens = $this->fetch($db, 'SELECT token, ip, method, url, time, parent FROM sf_profiler_data '.$criteria.' ORDER BY time DESC LIMIT '.((integer) $limit), $args);
         $this->close($db);
 
         return $tokens;
@@ -77,6 +77,8 @@ abstract class PdoProfilerStorage implements ProfilerStorageInterface
         if (isset($data[0]['data'])) {
             return $this->createProfileFromData($token, $data[0]);
         }
+
+        return null;
     }
 
     /**

@@ -1,6 +1,8 @@
 <?php
 
-class Swift_Mime_HeaderEncoder_Base64HeaderEncoderTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Mime/HeaderEncoder/Base64HeaderEncoder.php';
+
+class Swift_Mime_HeaderEncoder_Base64HeaderEncoderTest extends UnitTestCase
 {
     //Most tests are already covered in Base64EncoderTest since this subclass only
     // adds a getName() method
@@ -8,6 +10,6 @@ class Swift_Mime_HeaderEncoder_Base64HeaderEncoderTest extends \PHPUnit_Framewor
     public function testNameIsB()
     {
         $encoder = new Swift_Mime_HeaderEncoder_Base64HeaderEncoder();
-        $this->assertEquals('B', $encoder->getName());
+        $this->assertEqual('B', $encoder->getName());
     }
 }

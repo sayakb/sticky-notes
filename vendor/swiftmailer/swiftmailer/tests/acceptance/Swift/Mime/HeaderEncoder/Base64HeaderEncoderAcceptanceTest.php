@@ -1,6 +1,9 @@
 <?php
 
-class Swift_Mime_HeaderEncoder_Base64HeaderEncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Mime/HeaderEncoder/Base64HeaderEncoder.php';
+require_once 'Swift/ByteStream/ArrayByteStream.php';
+
+class Swift_Mime_HeaderEncoder_Base64HeaderEncoderAcceptanceTest extends UnitTestCase
 {
     private $_encoder;
 
@@ -23,7 +26,7 @@ class Swift_Mime_HeaderEncoder_Base64HeaderEncoderAcceptanceTest extends \PHPUni
             mb_internal_encoding($old);
 
             $encoded = $this->_encoder->encodeString($subject, 0, 75 - $encodedWrapperLength, 'iso-2022-jp');
-            $this->assertEquals(
+            $this->assertEqual(
                 $encoded, $newstring,
                 'Encoded string should decode back to original string for sample '
             );

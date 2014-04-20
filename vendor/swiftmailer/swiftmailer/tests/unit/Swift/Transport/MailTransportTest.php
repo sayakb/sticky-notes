@@ -1,6 +1,8 @@
 <?php
 
-class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+
+class Swift_Transport_MailTransportTest extends Swift_Tests_SwiftUnitTestCase
 {
     public function testTransportInvokesMailOncePerMessage()
     {
@@ -11,8 +13,12 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         $headers = $this->_createHeaders();
         $message = $this->_createMessage($headers);
 
-        $invoker->shouldReceive('mail')
-                ->once();
+        $this->_checking(Expectations::create()
+            -> one($invoker)->mail(any(), any(), any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+        );
 
         $transport->send($message);
     }
@@ -29,12 +35,14 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         ));
         $message = $this->_createMessage($headers);
 
-        $to->shouldReceive('getFieldBody')
-           ->zeroOrMoreTimes()
-           ->andReturn("Foo <foo@bar>");
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with("Foo <foo@bar>", \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any());
+        $this->_checking(Expectations::create()
+            -> allowing($to)->getFieldBody() -> returns("Foo <foo@bar>")
+            -> one($invoker)->mail("Foo <foo@bar>", any(), any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+            -> ignoring($to)
+        );
 
         $transport->send($message);
     }
@@ -51,12 +59,14 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         ));
         $message = $this->_createMessage($headers);
 
-        $subj->shouldReceive('getFieldBody')
-             ->zeroOrMoreTimes()
-             ->andReturn("Thing");
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), "Thing", \Mockery::any(), \Mockery::any(), \Mockery::any());
+        $this->_checking(Expectations::create()
+            -> allowing($subj)->getFieldBody() -> returns("Thing")
+            -> one($invoker)->mail(any(), "Thing", any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+            -> ignoring($subj)
+        );
 
         $transport->send($message);
     }
@@ -70,16 +80,17 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         $headers = $this->_createHeaders();
         $message = $this->_createMessage($headers);
 
-        $message->shouldReceive('toString')
-             ->zeroOrMoreTimes()
-             ->andReturn(
+        $this->_checking(Expectations::create()
+            -> allowing($message)->toString() -> returns(
                 "To: Foo <foo@bar>\r\n" .
                 "\r\n" .
                 "This body"
-             );
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), "This body", \Mockery::any(), \Mockery::any());
+                )
+            -> one($invoker)->mail(any(), any(), "This body", any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+        );
 
         $transport->send($message);
     }
@@ -93,16 +104,17 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         $headers = $this->_createHeaders();
         $message = $this->_createMessage($headers);
 
-        $message->shouldReceive('toString')
-             ->zeroOrMoreTimes()
-             ->andReturn(
+        $this->_checking(Expectations::create()
+            -> allowing($message)->toString() -> returns(
                 "Subject: Stuff\r\n" .
                 "\r\n" .
                 "This body"
-             );
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), "Subject: Stuff" . PHP_EOL, \Mockery::any());
+                )
+            -> one($invoker)->mail(any(), any(), any(), "Subject: Stuff" . PHP_EOL, optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+        );
 
         $transport->send($message);
     }
@@ -116,18 +128,16 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         $headers = $this->_createHeaders();
         $message = $this->_createMessage($headers);
 
-        $message->shouldReceive('getTo')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('foo@bar'=>null, 'zip@button'=>null));
-        $message->shouldReceive('getCc')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('test@test'=>null));
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any())
-                ->andReturn(true);
+        $this->_checking(Expectations::create()
+            -> allowing($message)->getTo() -> returns(array('foo@bar'=>null, 'zip@button'=>null))
+            -> allowing($message)->getCc() -> returns(array('test@test'=>null))
+            -> one($invoker)->mail(any(), any(), any(), any(), optional()) -> returns(true)
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+        );
 
-        $this->assertEquals(3, $transport->send($message));
+        $this->assertEqual(3, $transport->send($message));
     }
 
     public function testTransportReturnsZeroIfInvokerReturnsFalse()
@@ -139,18 +149,16 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         $headers = $this->_createHeaders();
         $message = $this->_createMessage($headers);
 
-        $message->shouldReceive('getTo')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('foo@bar'=>null, 'zip@button'=>null));
-        $message->shouldReceive('getCc')
-                ->zeroOrMoreTimes()
-                ->andReturn(array('test@test'=>null));
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any())
-                ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($message)->getTo() -> returns(array('foo@bar'=>null, 'zip@button'=>null))
+            -> allowing($message)->getCc() -> returns(array('test@test'=>null))
+            -> one($invoker)->mail(any(), any(), any(), any(), optional()) -> returns(false)
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+        );
 
-        $this->assertEquals(0, $transport->send($message));
+        $this->assertEqual(0, $transport->send($message));
     }
 
     public function testToHeaderIsRemovedFromHeaderSetDuringSending()
@@ -165,14 +173,14 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         ));
         $message = $this->_createMessage($headers);
 
-        $headers->shouldReceive('remove')
-                ->once()
-                ->with('To');
-        $headers->shouldReceive('remove')
-                ->zeroOrMoreTimes();
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any());
+        $this->_checking(Expectations::create()
+            -> one($headers)->remove('To')
+            -> one($invoker)->mail(any(), any(), any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+            -> ignoring($to)
+        );
 
         $transport->send($message);
     }
@@ -189,14 +197,14 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         ));
         $message = $this->_createMessage($headers);
 
-        $headers->shouldReceive('remove')
-                ->once()
-                ->with('Subject');
-        $headers->shouldReceive('remove')
-                ->zeroOrMoreTimes();
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any());
+        $this->_checking(Expectations::create()
+            -> one($headers)->remove('Subject')
+            -> one($invoker)->mail(any(), any(), any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+            -> ignoring($subject)
+        );
 
         $transport->send($message);
     }
@@ -213,14 +221,14 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         ));
         $message = $this->_createMessage($headers);
 
-        $headers->shouldReceive('set')
-                ->once()
-                ->with($to);
-        $headers->shouldReceive('set')
-                ->zeroOrMoreTimes();
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any());
+        $this->_checking(Expectations::create()
+            -> one($headers)->set($to, optional())
+            -> one($invoker)->mail(any(), any(), any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+            -> ignoring($to)
+        );
 
         $transport->send($message);
     }
@@ -237,14 +245,14 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
         ));
         $message = $this->_createMessage($headers);
 
-        $headers->shouldReceive('set')
-                ->once()
-                ->with($subject);
-        $headers->shouldReceive('set')
-                ->zeroOrMoreTimes();
-        $invoker->shouldReceive('mail')
-                ->once()
-                ->with(\Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any(), \Mockery::any());
+        $this->_checking(Expectations::create()
+            -> one($headers)->set($subject, optional())
+            -> one($invoker)->mail(any(), any(), any(), any(), optional())
+            -> ignoring($dispatcher)
+            -> ignoring($headers)
+            -> ignoring($message)
+            -> ignoring($subject)
+        );
 
         $transport->send($message);
     }
@@ -258,54 +266,50 @@ class Swift_Transport_MailTransportTest extends \SwiftMailerTestCase
 
     private function _createEventDispatcher()
     {
-        return $this->getMockery('Swift_Events_EventDispatcher')->shouldIgnoreMissing();
+        return $this->_mock('Swift_Events_EventDispatcher');
     }
 
     private function _createInvoker()
     {
-        return $this->getMockery('Swift_Transport_MailInvoker');
+        return $this->_mock('Swift_Transport_MailInvoker');
     }
 
     private function _createMessage($headers)
     {
-        $message = $this->getMockery('Swift_Mime_Message')->shouldIgnoreMissing();
-        $message->shouldReceive('getHeaders')
-                ->zeroOrMoreTimes()
-                ->andReturn($headers);
+        $message = $this->_mock('Swift_Mime_Message');
+
+        $this->_checking(Expectations::create()
+            -> allowing($message)->getHeaders() -> returns($headers)
+            );
 
         return $message;
     }
 
     private function _createHeaders($headers = array())
     {
-        $set = $this->getMockery('Swift_Mime_HeaderSet')->shouldIgnoreMissing();
+        $set = $this->_mock('Swift_Mime_HeaderSet');
 
         if (count($headers) > 0) {
             foreach ($headers as $name => $header) {
-                $set->shouldReceive('get')
-                    ->zeroOrMoreTimes()
-                    ->with($name)
-                    ->andReturn($header);
-                $set->shouldReceive('has')
-                    ->zeroOrMoreTimes()
-                    ->with($name)
-                    ->andReturn(true);
+                $this->_checking(Expectations::create()
+                    -> allowing($set)->get($name) -> returns($header)
+                    -> allowing($set)->has($name) -> returns(true)
+                );
             }
         }
 
         $header = $this->_createHeader();
-        $set->shouldReceive('get')
-            ->zeroOrMoreTimes()
-            ->andReturn($header);
-        $set->shouldReceive('has')
-            ->zeroOrMoreTimes()
-            ->andReturn(true);
+        $this->_checking(Expectations::create()
+            -> allowing($set)->get(any()) -> returns($header)
+            -> allowing($set)->has(any()) -> returns(true)
+            -> ignoring($header)
+        );
 
         return $set;
     }
 
     private function _createHeader()
     {
-        return $this->getMockery('Swift_Mime_Header')->shouldIgnoreMissing();
+        return $this->_mock('Swift_Mime_Header');
     }
 }

@@ -1,9 +1,10 @@
 <?php
 
 require_once 'swift_required.php';
-require_once __DIR__ . '/Mime/SimpleMessageAcceptanceTest.php';
+require_once 'Swift/Mime/SimpleMessageAcceptanceTest.php';
 
-class Swift_MessageAcceptanceTest extends Swift_Mime_SimpleMessageAcceptanceTest
+class Swift_MessageAcceptanceTest
+    extends Swift_Mime_SimpleMessageAcceptanceTest
 {
     public function testAddPartWrapper()
     {
@@ -19,7 +20,7 @@ class Swift_MessageAcceptanceTest extends Swift_Mime_SimpleMessageAcceptanceTest
         $message->addPart('foo', 'text/plain', 'iso-8859-1');
         $message->addPart('test <b>foo</b>', 'text/html', 'iso-8859-1');
 
-        $this->assertEquals(
+        $this->assertEqual(
             'Message-ID: <' . $id . '>' . "\r\n" .
             'Date: ' . date('r', $date) . "\r\n" .
             'Subject: just a test subject' . "\r\n" .

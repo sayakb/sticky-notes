@@ -36,10 +36,10 @@ class Interval
     /**
      * Tests if the given number is in the math interval.
      *
-     * @param int     $number   A number
+     * @param integer $number   A number
      * @param string  $interval An interval
      *
-     * @return bool
+     * @return Boolean
      *
      * @throws \InvalidArgumentException
      */

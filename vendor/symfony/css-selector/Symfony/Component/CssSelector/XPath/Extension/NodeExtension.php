@@ -53,7 +53,7 @@ class NodeExtension extends AbstractExtension
 
     /**
      * @param int     $flag
-     * @param bool    $on
+     * @param boolean $on
      *
      * @return NodeExtension
      */
@@ -73,7 +73,7 @@ class NodeExtension extends AbstractExtension
     /**
      * @param int $flag
      *
-     * @return bool
+     * @return boolean
      */
     public function hasFlag($flag)
     {
@@ -261,7 +261,7 @@ class NodeExtension extends AbstractExtension
      *
      * @param string $name
      *
-     * @return bool
+     * @return boolean
      */
     private function isSafeName($name)
     {

@@ -36,8 +36,8 @@ interface OutputInterface
      * Writes a message to the output.
      *
      * @param string|array $messages The message as an array of lines or a single string
-     * @param bool         $newline  Whether to add a newline
-     * @param int          $type     The type of output (one of the OUTPUT constants)
+     * @param Boolean      $newline  Whether to add a newline
+     * @param integer      $type     The type of output (one of the OUTPUT constants)
      *
      * @throws \InvalidArgumentException When unknown output type is given
      *
@@ -49,7 +49,7 @@ interface OutputInterface
      * Writes a message to the output and adds a newline at the end.
      *
      * @param string|array $messages The message as an array of lines of a single string
-     * @param int          $type     The type of output (one of the OUTPUT constants)
+     * @param integer      $type     The type of output (one of the OUTPUT constants)
      *
      * @throws \InvalidArgumentException When unknown output type is given
      *
@@ -60,7 +60,7 @@ interface OutputInterface
     /**
      * Sets the verbosity of the output.
      *
-     * @param int     $level The level of verbosity (one of the VERBOSITY constants)
+     * @param integer $level The level of verbosity (one of the VERBOSITY constants)
      *
      * @api
      */
@@ -69,7 +69,7 @@ interface OutputInterface
     /**
      * Gets the current verbosity of the output.
      *
-     * @return int     The current level of verbosity (one of the VERBOSITY constants)
+     * @return integer The current level of verbosity (one of the VERBOSITY constants)
      *
      * @api
      */
@@ -78,7 +78,7 @@ interface OutputInterface
     /**
      * Sets the decorated flag.
      *
-     * @param bool    $decorated Whether to decorate the messages
+     * @param Boolean $decorated Whether to decorate the messages
      *
      * @api
      */
@@ -87,7 +87,7 @@ interface OutputInterface
     /**
      * Gets the decorated flag.
      *
-     * @return bool    true if the output will decorate messages, false otherwise
+     * @return Boolean true if the output will decorate messages, false otherwise
      *
      * @api
      */

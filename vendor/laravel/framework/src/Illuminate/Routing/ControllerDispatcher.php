@@ -174,7 +174,7 @@ class ControllerDispatcher {
 	}
 
 	/**
-	 * Determine if the filter fails the "only" constraint.
+	 * Determine if the filter fails the "only" cosntraint.
 	 *
 	 * @param  array  $filter
 	 * @param  \Illuminate\Http\Request  $request
@@ -189,7 +189,7 @@ class ControllerDispatcher {
 	}
 
 	/**
-	 * Determine if the filter fails the "except" constraint.
+	 * Determine if the filter fails the "except" cosntraint.
 	 *
 	 * @param  array  $filter
 	 * @param  \Illuminate\Http\Request  $request
@@ -204,7 +204,7 @@ class ControllerDispatcher {
 	}
 
 	/**
-	 * Determine if the filter fails the "on" constraint.
+	 * Determine if the filter fails the "on" cosntraint.
 	 *
 	 * @param  array  $filter
 	 * @param  \Illuminate\Http\Request  $request

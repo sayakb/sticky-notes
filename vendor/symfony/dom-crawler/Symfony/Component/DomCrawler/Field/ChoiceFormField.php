@@ -27,7 +27,7 @@ class ChoiceFormField extends FormField
      */
     private $type;
     /**
-     * @var bool
+     * @var Boolean
      */
     private $multiple;
     /**
@@ -35,14 +35,14 @@ class ChoiceFormField extends FormField
      */
     private $options;
     /**
-     * @var bool
+     * @var boolean
      */
     private $validationDisabled = false;
 
     /**
      * Returns true if the field should be included in the submitted values.
      *
-     * @return bool    true if the field should be included in the submitted values, false otherwise
+     * @return Boolean true if the field should be included in the submitted values, false otherwise
      */
     public function hasValue()
     {
@@ -57,7 +57,7 @@ class ChoiceFormField extends FormField
     /**
      * Check if the current selected option is disabled
      *
-     * @return bool
+     * @return Boolean
      */
     public function isDisabled()
     {
@@ -192,7 +192,7 @@ class ChoiceFormField extends FormField
     /**
      * Returns true if the field accepts multiple values.
      *
-     * @return bool    true if the field accepts multiple values, false otherwise
+     * @return Boolean true if the field accepts multiple values, false otherwise
      */
     public function isMultiple()
     {

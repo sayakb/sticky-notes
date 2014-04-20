@@ -32,12 +32,12 @@ class NativeSessionStorage implements SessionStorageInterface
     protected $bags;
 
     /**
-     * @var bool
+     * @var Boolean
      */
     protected $started = false;
 
     /**
-     * @var bool
+     * @var Boolean
      */
     protected $closed = false;
 

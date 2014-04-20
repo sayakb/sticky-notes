@@ -69,7 +69,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function open($savePath, $sessionName)
     {
@@ -77,7 +77,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function close()
     {
@@ -85,7 +85,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function destroy($sessionId)
     {
@@ -97,9 +97,9 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function gc($maxlifetime)
+    public function gc($lifetime)
     {
         /* Note: MongoDB 2.2+ supports TTL collections, which may be used in
          * place of this method by indexing the "time_field" field with an
@@ -109,7 +109,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
          *
          * See: http://docs.mongodb.org/manual/tutorial/expire-data/
          */
-        $time = new \MongoDate(time() - $maxlifetime);
+        $time = new \MongoDate(time() - $lifetime);
 
         $this->getCollection()->remove(array(
             $this->options['time_field'] => array('$lt' => $time),
@@ -119,7 +119,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc]
      */
     public function write($sessionId, $data)
     {
@@ -136,7 +136,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function read($sessionId)
     {

@@ -11,7 +11,6 @@
 
 namespace Monolog\Handler;
 
-use Monolog\Formatter\LineFormatter;
 use Monolog\Logger;
 
 /**
@@ -52,14 +51,6 @@ class ErrorLogHandler extends AbstractProcessingHandler
             self::OPERATING_SYSTEM,
             self::SAPI,
         );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getDefaultFormatter()
-    {
-        return new LineFormatter('[%datetime%] %channel%.%level_name%: %message% %context% %extra%');
     }
 
     /**

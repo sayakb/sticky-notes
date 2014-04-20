@@ -1,6 +1,25 @@
 <?php
 
-class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Mime/ContentEncoder/Base64ContentEncoder.php';
+require_once 'Swift/OutputByteStream.php';
+require_once 'Swift/InputByteStream.php';
+
+class Swift_StreamCollector implements Yay_Action
+{
+    public $content = '';
+    public function &invoke(Yay_Invocation $inv) {
+        $args = $inv->getArguments();
+        $this->content .= current($args);
+    }
+    public function describeTo(Yay_Description $description)
+    {
+        $description->appendText(' gathers input;');
+    }
+}
+
+class Swift_Mime_ContentEncoder_Base64ContentEncoderTest
+    extends Swift_Tests_SwiftUnitTestCase
 {
     private $_encoder;
 
@@ -11,7 +30,7 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
 
     public function testNameIsBase64()
     {
-        $this->assertEquals('base64', $this->_encoder->getName());
+        $this->assertEqual('base64', $this->_encoder->getName());
     }
 
     /*
@@ -36,18 +55,18 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('123');
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('123')
+            -> allowing($os)->read(optional()) -> returns(false)
+
+            -> ignoring($os)
+            );
 
         $this->_encoder->encodeByteStream($os, $is);
-        $this->assertEquals('MTIz', $collection->content);
+        $this->assertEqual('MTIz', $collection->content);
     }
 
     public function testPadLength()
@@ -77,18 +96,17 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
             $is = $this->_createInputByteStream();
             $collection = new Swift_StreamCollector();
 
-            $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
-            $os->shouldReceive('read')
-               ->once()
-               ->andReturn(pack('C', rand(0, 255)));
-            $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+            $this->_checking(Expectations::create()
+                -> allowing($is)->write(any(), optional()) -> will($collection)
+                -> ignoring($is)
+
+                -> one($os)->read(optional()) -> returns(pack('C', rand(0, 255)))
+                -> allowing($os)->read(optional()) -> returns(false)
+                -> ignoring($os)
+                );
 
             $this->_encoder->encodeByteStream($os, $is);
-            $this->assertRegExp('~^[a-zA-Z0-9/\+]{2}==$~', $collection->content,
+            $this->assertPattern('~^[a-zA-Z0-9/\+]{2}==$~', $collection->content,
                 '%s: A single byte should have 2 bytes of padding'
                 );
         }
@@ -98,18 +116,17 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
             $is = $this->_createInputByteStream();
             $collection = new Swift_StreamCollector();
 
-            $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
-            $os->shouldReceive('read')
-               ->once()
-               ->andReturn(pack('C*', rand(0, 255), rand(0, 255)));
-            $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+            $this->_checking(Expectations::create()
+                -> allowing($is)->write(any(), optional()) -> will($collection)
+                -> ignoring($is)
+
+                -> one($os)->read(optional()) -> returns(pack('C*', rand(0, 255), rand(0, 255)))
+                -> allowing($os)->read(optional()) -> returns(false)
+                -> ignoring($os)
+                );
 
             $this->_encoder->encodeByteStream($os, $is);
-            $this->assertRegExp('~^[a-zA-Z0-9/\+]{3}=$~', $collection->content,
+            $this->assertPattern('~^[a-zA-Z0-9/\+]{3}=$~', $collection->content,
                 '%s: Two bytes should have 1 byte of padding'
                 );
         }
@@ -119,18 +136,17 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
             $is = $this->_createInputByteStream();
             $collection = new Swift_StreamCollector();
 
-            $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
-            $os->shouldReceive('read')
-               ->once()
-               ->andReturn(pack('C*', rand(0, 255), rand(0, 255), rand(0, 255)));
-            $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+            $this->_checking(Expectations::create()
+                -> allowing($is)->write(any(), optional()) -> will($collection)
+                -> ignoring($is)
+
+                -> one($os)->read(optional()) -> returns(pack('C*', rand(0, 255), rand(0, 255), rand(0, 255)))
+                -> allowing($os)->read(optional()) -> returns(false)
+                -> ignoring($os)
+                );
 
             $this->_encoder->encodeByteStream($os, $is);
-            $this->assertRegExp('~^[a-zA-Z0-9/\+]{4}$~', $collection->content,
+            $this->assertPattern('~^[a-zA-Z0-9/\+]{4}$~', $collection->content,
                 '%s: Three bytes should have no padding'
                 );
         }
@@ -148,36 +164,23 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //12
+            -> one($os)->read(optional()) -> returns('mnopqrstuvwx') //24
+            -> one($os)->read(optional()) -> returns('yzabc1234567') //36
+            -> one($os)->read(optional()) -> returns('890ABCDEFGHI') //48
+            -> one($os)->read(optional()) -> returns('JKLMNOPQRSTU') //60
+            -> one($os)->read(optional()) -> returns('VWXYZ1234567') //72
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //84
+            -> allowing($os)->read(optional()) -> returns(false)
+            -> ignoring($os)
+            );
 
         $this->_encoder->encodeByteStream($os, $is);
-        $this->assertEquals(
+        $this->assertEqual(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3ODkwQUJDREVGR0hJSktMTU5PUFFS\r\n" .
             "U1RVVldYWVoxMjM0NTY3YWJjZGVmZ2hpamts",
             $collection->content
@@ -190,36 +193,23 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //12
+            -> one($os)->read(optional()) -> returns('mnopqrstuvwx') //24
+            -> one($os)->read(optional()) -> returns('yzabc1234567') //36
+            -> one($os)->read(optional()) -> returns('890ABCDEFGHI') //48
+            -> one($os)->read(optional()) -> returns('JKLMNOPQRSTU') //60
+            -> one($os)->read(optional()) -> returns('VWXYZ1234567') //72
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //84
+            -> allowing($os)->read(optional()) -> returns(false)
+            -> ignoring($os)
+            );
 
         $this->_encoder->encodeByteStream($os, $is, 0, 50);
-        $this->assertEquals(
+        $this->assertEqual(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3OD\r\n" .
             "kwQUJDREVGR0hJSktMTU5PUFFSU1RVVldYWVoxMjM0NTY3YWJj\r\n" .
             "ZGVmZ2hpamts",
@@ -233,36 +223,23 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //12
+            -> one($os)->read(optional()) -> returns('mnopqrstuvwx') //24
+            -> one($os)->read(optional()) -> returns('yzabc1234567') //36
+            -> one($os)->read(optional()) -> returns('890ABCDEFGHI') //48
+            -> one($os)->read(optional()) -> returns('JKLMNOPQRSTU') //60
+            -> one($os)->read(optional()) -> returns('VWXYZ1234567') //72
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //84
+            -> allowing($os)->read(optional()) -> returns(false)
+            -> ignoring($os)
+            );
 
         $this->_encoder->encodeByteStream($os, $is, 0, 100);
-        $this->assertEquals(
+        $this->assertEqual(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3ODkwQUJDREVGR0hJSktMTU5PUFFS\r\n" .
             "U1RVVldYWVoxMjM0NTY3YWJjZGVmZ2hpamts",
             $collection->content
@@ -275,36 +252,23 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //12
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('mnopqrstuvwx'); //24
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('yzabc1234567'); //36
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('890ABCDEFGHI'); //48
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('JKLMNOPQRSTU'); //60
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('VWXYZ1234567'); //72
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('abcdefghijkl'); //84
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //12
+            -> one($os)->read(optional()) -> returns('mnopqrstuvwx') //24
+            -> one($os)->read(optional()) -> returns('yzabc1234567') //36
+            -> one($os)->read(optional()) -> returns('890ABCDEFGHI') //48
+            -> one($os)->read(optional()) -> returns('JKLMNOPQRSTU') //60
+            -> one($os)->read(optional()) -> returns('VWXYZ1234567') //72
+            -> one($os)->read(optional()) -> returns('abcdefghijkl') //84
+            -> allowing($os)->read(optional()) -> returns(false)
+            -> ignoring($os)
+            );
 
         $this->_encoder->encodeByteStream($os, $is, 19);
-        $this->assertEquals(
+        $this->assertEqual(
             "YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXphYmMxMjM0NTY3ODkwQUJDR\r\n" .
             "EVGR0hJSktMTU5PUFFSU1RVVldYWVoxMjM0NTY3YWJjZGVmZ2hpamts",
             $collection->content
@@ -315,11 +279,17 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderTest extends \SwiftMailerTes
 
     private function _createOutputByteStream($stub = false)
     {
-        return $this->getMockery('Swift_OutputByteStream')->shouldIgnoreMissing();
+        return $stub
+            ? $this->_stub('Swift_OutputByteStream')
+            : $this->_mock('Swift_OutputByteStream')
+            ;
     }
 
     private function _createInputByteStream($stub = false)
     {
-        return $this->getMockery('Swift_InputByteStream')->shouldIgnoreMissing();
+        return $stub
+            ? $this->_stub('Swift_InputByteStream')
+            : $this->_mock('Swift_InputByteStream')
+            ;
     }
 }

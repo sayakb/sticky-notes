@@ -81,7 +81,6 @@ class Factory {
 	 * @param  array  $data
 	 * @param  array  $rules
 	 * @param  array  $messages
-	 * @param  array  $customAttributes
 	 * @return \Illuminate\Validation\Validator
 	 */
 	public function make(array $data, array $rules, array $messages = array(), array $customAttributes = array())
@@ -115,7 +114,7 @@ class Factory {
 	 * @param  \Illuminate\Validation\Validator  $validator
 	 * @return void
 	 */
-	protected function addExtensions(Validator $validator)
+	protected function addExtensions($validator)
 	{
 		$validator->addExtensions($this->extensions);
 
@@ -137,10 +136,9 @@ class Factory {
 	 * @param  array  $data
 	 * @param  array  $rules
 	 * @param  array  $messages
-	 * @param  array  $customAttributes
 	 * @return \Illuminate\Validation\Validator
 	 */
-	protected function resolve(array $data, array $rules, array $messages, array $customAttributes)
+	protected function resolve($data, $rules, $messages, $customAttributes)
 	{
 		if (is_null($this->resolver))
 		{

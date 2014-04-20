@@ -1,12 +1,18 @@
 <?php
 
-class Swift_Transport_Esmtp_Auth_PlainAuthenticatorTest extends \SwiftMailerTestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Transport/SmtpAgent.php';
+require_once 'Swift/Transport/Esmtp/Auth/PlainAuthenticator.php';
+require_once 'Swift/TransportException.php';
+
+class Swift_Transport_Esmtp_Auth_PlainAuthenticatorTest
+    extends Swift_Tests_SwiftUnitTestCase
 {
     private $_agent;
 
     public function setUp()
     {
-        $this->_agent = $this->getMockery('Swift_Transport_SmtpAgent')->shouldIgnoreMissing();
+        $this->_agent = $this->_mock('Swift_Transport_SmtpAgent');
     }
 
     public function testKeywordIsPlain()
@@ -16,7 +22,7 @@ class Swift_Transport_Esmtp_Auth_PlainAuthenticatorTest extends \SwiftMailerTest
         */
 
         $login = $this->_getAuthenticator();
-        $this->assertEquals('PLAIN', $login->getAuthKeyword());
+        $this->assertEqual('PLAIN', $login->getAuthKeyword());
     }
 
     public function testSuccessfulAuthentication()
@@ -29,12 +35,11 @@ class Swift_Transport_Esmtp_Auth_PlainAuthenticatorTest extends \SwiftMailerTest
         */
 
         $plain = $this->_getAuthenticator();
-
-        $this->_agent->shouldReceive('executeCommand')
-             ->once()
-             ->with('AUTH PLAIN ' . base64_encode(
-                        'jack' . chr(0) . 'jack' . chr(0) . 'pass'
-                    ) . "\r\n", array(235));
+        $this->_checking(Expectations::create()
+            -> one($this->_agent)->executeCommand('AUTH PLAIN ' . base64_encode(
+                'jack' . chr(0) . 'jack' . chr(0) . 'pass'
+                ) . "\r\n", array(235))
+            );
 
         $this->assertTrue($plain->authenticate($this->_agent, 'jack', 'pass'),
             '%s: The buffer accepted all commands authentication should succeed'
@@ -44,16 +49,13 @@ class Swift_Transport_Esmtp_Auth_PlainAuthenticatorTest extends \SwiftMailerTest
     public function testAuthenticationFailureSendRsetAndReturnFalse()
     {
         $plain = $this->_getAuthenticator();
+        $this->_checking(Expectations::create()
+            -> one($this->_agent)->executeCommand('AUTH PLAIN ' . base64_encode(
+                'jack' . chr(0) . 'jack' . chr(0) . 'pass'
+                ) . "\r\n", array(235)) -> throws(new Swift_TransportException(""))
 
-        $this->_agent->shouldReceive('executeCommand')
-             ->once()
-             ->with('AUTH PLAIN ' . base64_encode(
-                        'jack' . chr(0) . 'jack' . chr(0) . 'pass'
-                    ) . "\r\n", array(235))
-             ->andThrow(new Swift_TransportException(""));
-        $this->_agent->shouldReceive('executeCommand')
-             ->once()
-             ->with("RSET\r\n", array(250));
+            -> one($this->_agent)->executeCommand("RSET\r\n", array(250))
+            );
 
         $this->assertFalse($plain->authenticate($this->_agent, 'jack', 'pass'),
             '%s: Authentication fails, so RSET should be sent'

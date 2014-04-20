@@ -80,7 +80,7 @@ interface FlashBagInterface extends SessionBagInterface
      *
      * @param string $type
      *
-     * @return bool
+     * @return boolean
      */
     public function has($type);
 

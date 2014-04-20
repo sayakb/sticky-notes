@@ -21,12 +21,12 @@ abstract class AbstractProxy
     /**
      * Flag if handler wraps an internal PHP session handler (using \SessionHandler).
      *
-     * @var bool
+     * @var boolean
      */
     protected $wrapper = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $active = false;
 
@@ -48,7 +48,7 @@ abstract class AbstractProxy
     /**
      * Is this proxy handler and instance of \SessionHandlerInterface.
      *
-     * @return bool
+     * @return boolean
      */
     public function isSessionHandlerInterface()
     {
@@ -58,7 +58,7 @@ abstract class AbstractProxy
     /**
      * Returns true if this handler wraps an internal PHP session save handler using \SessionHandler.
      *
-     * @return bool
+     * @return Boolean
      */
     public function isWrapper()
     {
@@ -68,7 +68,7 @@ abstract class AbstractProxy
     /**
      * Has a session started?
      *
-     * @return bool
+     * @return Boolean
      */
     public function isActive()
     {
@@ -87,7 +87,7 @@ abstract class AbstractProxy
      *
      * @internal
      *
-     * @param bool    $flag
+     * @param Boolean $flag
      *
      * @throws \LogicException
      */

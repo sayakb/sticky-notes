@@ -1,18 +1,22 @@
 <?php
 
-class Swift_Mime_Headers_PathHeaderTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Mime/Headers/PathHeader.php';
+require_once 'Swift/Mime/Grammar.php';
+
+class Swift_Mime_Headers_PathHeaderTest extends Swift_Tests_SwiftUnitTestCase
 {
     public function testTypeIsPathHeader()
     {
         $header = $this->_getHeader('Return-Path');
-        $this->assertEquals(Swift_Mime_Header::TYPE_PATH, $header->getFieldType());
+        $this->assertEqual(Swift_Mime_Header::TYPE_PATH, $header->getFieldType());
     }
 
     public function testSingleAddressCanBeSetAndFetched()
     {
         $header = $this->_getHeader('Return-Path');
         $header->setAddress('chris@swiftmailer.org');
-        $this->assertEquals('chris@swiftmailer.org', $header->getAddress());
+        $this->assertEqual('chris@swiftmailer.org', $header->getAddress());
     }
 
     public function testAddressMustComplyWithRfc2822()
@@ -20,8 +24,9 @@ class Swift_Mime_Headers_PathHeaderTest extends \PHPUnit_Framework_TestCase
         try {
             $header = $this->_getHeader('Return-Path');
             $header->setAddress('chr is@swiftmailer.org');
-            $this->fail('Addresses not valid according to RFC 2822 addr-spec grammar must be rejected.');
+            $this->fail('Address must be valid according to RFC 2822 addr-spec grammar.');
         } catch (Exception $e) {
+            $this->pass();
         }
     }
 
@@ -37,35 +42,35 @@ class Swift_Mime_Headers_PathHeaderTest extends \PHPUnit_Framework_TestCase
 
         $header = $this->_getHeader('Return-Path');
         $header->setAddress('chris@swiftmailer.org');
-        $this->assertEquals('<chris@swiftmailer.org>', $header->getFieldBody());
+        $this->assertEqual('<chris@swiftmailer.org>', $header->getFieldBody());
     }
 
     public function testValueIsEmptyAngleBracketsIfEmptyAddressSet()
     {
         $header = $this->_getHeader('Return-Path');
         $header->setAddress('');
-        $this->assertEquals('<>', $header->getFieldBody());
+        $this->assertEqual('<>', $header->getFieldBody());
     }
 
     public function testSetBodyModel()
     {
         $header = $this->_getHeader('Return-Path');
         $header->setFieldBodyModel('foo@bar.tld');
-        $this->assertEquals('foo@bar.tld', $header->getAddress());
+        $this->assertEqual('foo@bar.tld', $header->getAddress());
     }
 
     public function testGetBodyModel()
     {
         $header = $this->_getHeader('Return-Path');
         $header->setAddress('foo@bar.tld');
-        $this->assertEquals('foo@bar.tld', $header->getFieldBodyModel());
+        $this->assertEqual('foo@bar.tld', $header->getFieldBodyModel());
     }
 
     public function testToString()
     {
         $header = $this->_getHeader('Return-Path');
         $header->setAddress('chris@swiftmailer.org');
-        $this->assertEquals('Return-Path: <chris@swiftmailer.org>' . "\r\n",
+        $this->assertEqual('Return-Path: <chris@swiftmailer.org>' . "\r\n",
             $header->toString()
             );
     }

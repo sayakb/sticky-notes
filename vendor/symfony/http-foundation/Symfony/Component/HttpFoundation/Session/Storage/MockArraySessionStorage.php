@@ -38,12 +38,12 @@ class MockArraySessionStorage implements SessionStorageInterface
     protected $name;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $started = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $closed = false;
 

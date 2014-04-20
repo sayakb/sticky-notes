@@ -31,12 +31,12 @@ class DialogHelper extends InputAwareHelper
      * @param OutputInterface $output       An Output instance
      * @param string|array    $question     The question to ask
      * @param array           $choices      List of choices to pick from
-     * @param bool|string     $default      The default answer if the user enters nothing
-     * @param bool|int        $attempts Max number of times to ask before giving up (false by default, which means infinite)
+     * @param Boolean|string  $default      The default answer if the user enters nothing
+     * @param Boolean|integer $attempts Max number of times to ask before giving up (false by default, which means infinite)
      * @param string          $errorMessage Message which will be shown if invalid value from choice list would be picked
-     * @param bool            $multiselect  Select more than one value separated by comma
+     * @param Boolean         $multiselect  Select more than one value separated by comma
      *
-     * @return int|string|array     The selected value or values (the key of the choices array)
+     * @return integer|string|array The selected value or values (the key of the choices array)
      *
      * @throws \InvalidArgumentException
      */
@@ -227,9 +227,9 @@ class DialogHelper extends InputAwareHelper
      *
      * @param OutputInterface $output   An Output instance
      * @param string|array    $question The question to ask
-     * @param bool            $default  The default answer if the user enters nothing
+     * @param Boolean         $default  The default answer if the user enters nothing
      *
-     * @return bool    true if the user has confirmed, false otherwise
+     * @return Boolean true if the user has confirmed, false otherwise
      */
     public function askConfirmation(OutputInterface $output, $question, $default = true)
     {
@@ -250,7 +250,7 @@ class DialogHelper extends InputAwareHelper
      *
      * @param OutputInterface $output   An Output instance
      * @param string|array    $question The question
-     * @param bool            $fallback In case the response can not be hidden, whether to fallback on non-hidden question or not
+     * @param Boolean         $fallback In case the response can not be hidden, whether to fallback on non-hidden question or not
      *
      * @return string         The answer
      *
@@ -325,7 +325,7 @@ class DialogHelper extends InputAwareHelper
      * @param OutputInterface $output       An Output instance
      * @param string|array    $question     The question to ask
      * @param callable        $validator    A PHP callback
-     * @param int             $attempts     Max number of times to ask before giving up (false by default, which means infinite)
+     * @param integer         $attempts     Max number of times to ask before giving up (false by default, which means infinite)
      * @param string          $default      The default answer if none is given by the user
      * @param array           $autocomplete List of values to autocomplete
      *
@@ -354,8 +354,8 @@ class DialogHelper extends InputAwareHelper
      * @param OutputInterface $output    An Output instance
      * @param string|array    $question  The question to ask
      * @param callable        $validator A PHP callback
-     * @param int             $attempts  Max number of times to ask before giving up (false by default, which means infinite)
-     * @param bool            $fallback  In case the response can not be hidden, whether to fallback on non-hidden question or not
+     * @param integer         $attempts  Max number of times to ask before giving up (false by default, which means infinite)
+     * @param Boolean         $fallback  In case the response can not be hidden, whether to fallback on non-hidden question or not
      *
      * @return string         The response
      *
@@ -397,7 +397,7 @@ class DialogHelper extends InputAwareHelper
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getName()
     {
@@ -407,7 +407,7 @@ class DialogHelper extends InputAwareHelper
     /**
      * Return a valid Unix shell
      *
-     * @return string|bool     The valid shell name, false in case no valid shell is found
+     * @return string|Boolean  The valid shell name, false in case no valid shell is found
      */
     private function getShell()
     {
@@ -448,7 +448,7 @@ class DialogHelper extends InputAwareHelper
      * @param callable         $interviewer  A callable that will ask for a question and return the result
      * @param OutputInterface  $output       An Output instance
      * @param callable         $validator    A PHP callback
-     * @param int              $attempts     Max number of times to ask before giving up ; false will ask infinitely
+     * @param integer          $attempts     Max number of times to ask before giving up ; false will ask infinitely
      *
      * @return string   The validated response
      *

@@ -28,7 +28,7 @@ interface HandlerInterface
      * @param Reader      $reader
      * @param TokenStream $stream
      *
-     * @return bool
+     * @return boolean
      */
     public function handle(Reader $reader, TokenStream $stream);
 }

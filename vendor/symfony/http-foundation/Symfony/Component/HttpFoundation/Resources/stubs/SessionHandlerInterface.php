@@ -10,7 +10,9 @@
  */
 
 /**
- * SessionHandlerInterface for PHP < 5.4
+ * SessionHandlerInterface
+ *
+ * Provides forward compatibility with PHP 5.4
  *
  * Extensive documentation can be found at php.net, see links:
  *
@@ -23,68 +25,76 @@
 interface SessionHandlerInterface
 {
     /**
-     * Re-initializes existing session, or creates a new one.
+     * Open session.
      *
      * @see http://php.net/sessionhandlerinterface.open
      *
-     * @param string $savePath    Save path
-     * @param string $sessionName Session name, see http://php.net/function.session-name.php
+     * @param string $savePath    Save path.
+     * @param string $sessionName Session Name.
      *
-     * @return bool true on success, false on failure
+     * @throws \RuntimeException If something goes wrong starting the session.
+     *
+     * @return boolean
      */
     public function open($savePath, $sessionName);
 
     /**
-     * Closes the current session.
+     * Close session.
      *
      * @see http://php.net/sessionhandlerinterface.close
      *
-     * @return bool true on success, false on failure
+     * @return boolean
      */
     public function close();
 
     /**
-     * Reads the session data.
+     * Read session.
+     *
+     * @param string $sessionId
      *
      * @see http://php.net/sessionhandlerinterface.read
      *
-     * @param string $sessionId Session ID, see http://php.net/function.session-id
+     * @throws \RuntimeException On fatal error but not "record not found".
      *
-     * @return string Same session data as passed in write() or empty string when non-existent or on failure
+     * @return string String as stored in persistent storage or empty string in all other cases.
      */
     public function read($sessionId);
 
     /**
-     * Writes the session data to the storage.
+     * Commit session to storage.
      *
      * @see http://php.net/sessionhandlerinterface.write
      *
-     * @param string $sessionId Session ID , see http://php.net/function.session-id
-     * @param string $data      Serialized session data to save
+     * @param string $sessionId Session ID.
+     * @param string $data      Session serialized data to save.
      *
-     * @return bool true on success, false on failure
+     * @return boolean
      */
     public function write($sessionId, $data);
 
     /**
-     * Destroys a session.
+     * Destroys this session.
      *
      * @see http://php.net/sessionhandlerinterface.destroy
      *
-     * @param string $sessionId Session ID, see http://php.net/function.session-id
+     * @param string $sessionId Session ID.
      *
-     * @return bool true on success, false on failure
+     * @throws \RuntimeException On fatal error.
+     *
+     * @return boolean
      */
     public function destroy($sessionId);
 
     /**
-     * Cleans up expired sessions (garbage collection).
+     * Garbage collection for storage.
      *
      * @see http://php.net/sessionhandlerinterface.gc
      *
-     * @param string|int $maxlifetime Sessions that have not updated for the last maxlifetime seconds will be removed
+     * @param integer $lifetime Max lifetime in seconds to keep sessions stored.
      *
-     * @return bool true on success, false on failure
+     * @throws \RuntimeException On fatal error.
+     *
+     * @return boolean
      */
-    public function gc($maxlifetime);
+    public function gc($lifetime);
 }

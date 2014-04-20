@@ -76,7 +76,7 @@ class Comparator
      *
      * @param mixed $test A test value
      *
-     * @return bool
+     * @return Boolean
      */
     public function test($test)
     {

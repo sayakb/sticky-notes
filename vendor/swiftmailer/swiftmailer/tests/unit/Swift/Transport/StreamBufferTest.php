@@ -1,15 +1,19 @@
 <?php
 
-class Swift_Transport_StreamBufferTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Transport/StreamBuffer.php';
+require_once 'Swift/ReplacementFilterFactory.php';
+require_once 'Swift/StreamFilter.php';
+
+class Swift_Transport_StreamBufferTest extends Swift_Tests_SwiftUnitTestCase
 {
     public function testSettingWriteTranslationsCreatesFilters()
     {
         $factory = $this->_createFactory();
-        $factory->expects($this->once())
-                ->method('createFilter')
-                ->with('a', 'b')
-                ->will($this->returnCallback(array($this, '_createFilter')));
-
+        $this->_checking(Expectations::create()
+            -> one($factory)->createFilter('a', 'b') -> returns($this->_createFilter())
+            -> never($factory)
+            );
         $buffer = $this->_createBuffer($factory);
         $buffer->setWriteTranslations(array('a' => 'b'));
     }
@@ -17,10 +21,11 @@ class Swift_Transport_StreamBufferTest extends \PHPUnit_Framework_TestCase
     public function testOverridingTranslationsOnlyAddsNeededFilters()
     {
         $factory = $this->_createFactory();
-        $factory->expects($this->exactly(2))
-                ->method('createFilter')
-                ->will($this->returnCallback(array($this, '_createFilter')));
-
+        $this->_checking(Expectations::create()
+            -> one($factory)->createFilter('a', 'b') -> returns($this->_createFilter())
+            -> one($factory)->createFilter('x', 'y') -> returns($this->_createFilter())
+            -> never($factory)
+            );
         $buffer = $this->_createBuffer($factory);
         $buffer->setWriteTranslations(array('a' => 'b'));
         $buffer->setWriteTranslations(array('x' => 'y', 'a' => 'b'));
@@ -35,11 +40,11 @@ class Swift_Transport_StreamBufferTest extends \PHPUnit_Framework_TestCase
 
     private function _createFactory()
     {
-        return $this->getMock('Swift_ReplacementFilterFactory');
+        return $this->_mock('Swift_ReplacementFilterFactory');
     }
 
-    public function _createFilter()
+    private function _createFilter()
     {
-        return $this->getMock('Swift_StreamFilter');
+        return $this->_stub('Swift_StreamFilter');
     }
 }

@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 abstract class ConfigurableExtension extends Extension
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     final public function load(array $configs, ContainerBuilder $container)
     {

@@ -21,7 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 class IniFileDumper extends FileDumper
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function format(MessageCatalogue $messages, $domain = 'messages')
     {
@@ -36,7 +36,7 @@ class IniFileDumper extends FileDumper
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getExtension()
     {

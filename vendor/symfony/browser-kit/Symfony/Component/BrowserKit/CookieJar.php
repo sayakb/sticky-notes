@@ -73,7 +73,7 @@ class CookieJar
                 }
             }
 
-            return;
+            return null;
         }
 
         // avoid relying on this behavior that is mainly here for BC reasons
@@ -82,6 +82,8 @@ class CookieJar
                 return $cookies[$path][$name];
             }
         }
+
+        return null;
     }
 
     /**
@@ -199,7 +201,7 @@ class CookieJar
      * Returns not yet expired cookie values for the given URI.
      *
      * @param string  $uri             A URI
-     * @param bool    $returnsRawValue Returns raw value or urldecoded value
+     * @param Boolean $returnsRawValue Returns raw value or urldecoded value
      *
      * @return array An array of cookie values
      */

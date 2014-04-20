@@ -30,7 +30,7 @@ class TokenStream
     private $tokens = array();
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $frozen = false;
 
@@ -50,7 +50,7 @@ class TokenStream
     private $peeked = null;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $peeking = false;
 
@@ -162,7 +162,7 @@ class TokenStream
         }
 
         if ($next->isDelimiter(array('*'))) {
-            return;
+            return null;
         }
 
         throw SyntaxErrorException::unexpectedToken('identifier or "*"', $next);

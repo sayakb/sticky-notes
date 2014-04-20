@@ -1,6 +1,8 @@
 <?php
 
-class Swift_Bug35Test extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+
+class Swift_Bug35Test extends Swift_Tests_SwiftUnitTestCase
 {
     public function setUp()
     {
@@ -28,7 +30,7 @@ class Swift_Bug35Test extends \PHPUnit_Framework_TestCase
         $date = preg_quote(date('r', $message->getDate()), '~');
         $boundary = $message->getBoundary();
 
-        $this->assertRegExp(
+        $this->assertPattern(
         '~^' .
         'Sender: Other <other@domain.tld>' . "\r\n" .
         'Message-ID: <' . $id . '>' . "\r\n" .

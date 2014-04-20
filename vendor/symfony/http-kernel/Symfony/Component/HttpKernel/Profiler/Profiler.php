@@ -40,7 +40,7 @@ class Profiler
     private $logger;
 
     /**
-     * @var bool
+     * @var Boolean
      */
     private $enabled = true;
 
@@ -105,7 +105,7 @@ class Profiler
      *
      * @param Profile $profile A Profile instance
      *
-     * @return bool
+     * @return Boolean
      */
     public function saveProfile(Profile $profile)
     {
@@ -253,7 +253,7 @@ class Profiler
      *
      * @param string $name A collector name
      *
-     * @return bool
+     * @return Boolean
      */
     public function has($name)
     {
@@ -281,13 +281,13 @@ class Profiler
     private function getTimestamp($value)
     {
         if (null === $value || '' == $value) {
-            return;
+            return null;
         }
 
         try {
             $value = new \DateTime(is_numeric($value) ? '@'.$value : $value);
         } catch (\Exception $e) {
-            return;
+            return null;
         }
 
         return $value->getTimestamp();

@@ -47,7 +47,7 @@ class Net_SSH2FunctionalTest extends PhpseclibFunctionalTestCase
 
     /**
     * @depends testPasswordLogin
-    * @group github280
+    * @group bug280
     */
     public function testExecWithMethodCallback($ssh)
     {

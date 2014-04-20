@@ -43,7 +43,7 @@ class ConfigPublisher {
 	 *
 	 * @param  string  $package
 	 * @param  string  $source
-	 * @return bool
+	 * @return void
 	 */
 	public function publish($package, $source)
 	{
@@ -59,7 +59,7 @@ class ConfigPublisher {
 	 *
 	 * @param  string  $package
 	 * @param  string  $packagePath
-	 * @return bool
+	 * @return void
 	 */
 	public function publishPackage($package, $packagePath = null)
 	{

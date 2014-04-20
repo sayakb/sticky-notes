@@ -344,7 +344,7 @@ class RedisProfilerStorage implements ProfilerStorageInterface
      * @param int    $expiration
      * @param int    $serializer
      *
-     * @return bool
+     * @return Boolean
      */
     private function setValue($key, $value, $expiration = 0, $serializer = self::REDIS_SERIALIZER_NONE)
     {
@@ -361,7 +361,7 @@ class RedisProfilerStorage implements ProfilerStorageInterface
      * @param string $value
      * @param int    $expiration
      *
-     * @return bool
+     * @return Boolean
      */
     private function appendValue($key, $value, $expiration = 0)
     {
@@ -382,7 +382,7 @@ class RedisProfilerStorage implements ProfilerStorageInterface
      *
      * @param array $keys
      *
-     * @return bool
+     * @return Boolean
      */
     private function delete(array $keys)
     {

@@ -69,7 +69,7 @@ class Store implements StoreInterface
      *
      * @param Request $request A Request instance
      *
-     * @return bool|string    true if the lock is acquired, the path to the current lock otherwise
+     * @return Boolean|string true if the lock is acquired, the path to the current lock otherwise
      */
     public function lock(Request $request)
     {
@@ -95,7 +95,7 @@ class Store implements StoreInterface
      *
      * @param Request $request A Request instance
      *
-     * @return bool    False if the lock file does not exist or cannot be unlocked, true otherwise
+     * @return Boolean False if the lock file does not exist or cannot be unlocked, true otherwise
      */
     public function unlock(Request $request)
     {
@@ -121,7 +121,7 @@ class Store implements StoreInterface
         $key = $this->getCacheKey($request);
 
         if (!$entries = $this->getMetadata($key)) {
-            return;
+            return null;
         }
 
         // find a cached entry that matches the request.
@@ -135,7 +135,7 @@ class Store implements StoreInterface
         }
 
         if (null === $match) {
-            return;
+            return null;
         }
 
         list($req, $headers) = $match;
@@ -146,6 +146,7 @@ class Store implements StoreInterface
         // TODO the metaStore referenced an entity that doesn't exist in
         // the entityStore. We definitely want to return nil but we should
         // also purge the entry from the meta-store when this is detected.
+        return null;
     }
 
     /**
@@ -257,7 +258,7 @@ class Store implements StoreInterface
      * @param array  $env1 A Request HTTP header array
      * @param array  $env2 A Request HTTP header array
      *
-     * @return bool    true if the two environments match, false otherwise
+     * @return Boolean true if the two environments match, false otherwise
      */
     private function requestsMatch($vary, $env1, $env2)
     {
@@ -300,7 +301,7 @@ class Store implements StoreInterface
      *
      * @param string $url A URL
      *
-     * @return bool    true if the URL exists and has been purged, false otherwise
+     * @return Boolean true if the URL exists and has been purged, false otherwise
      */
     public function purge($url)
     {
@@ -333,7 +334,7 @@ class Store implements StoreInterface
      * @param string $key  The store key
      * @param string $data The data to store
      *
-     * @return bool
+     * @return Boolean
      */
     private function save($key, $data)
     {

@@ -14,7 +14,6 @@ class ClassLoader
                 return true;
             }
         }
-        return false;
     }
     public static function normalizeClass($class)
     {
@@ -222,17 +221,10 @@ class Container implements ArrayAccess
     protected function getConcrete($abstract)
     {
         if (!isset($this->bindings[$abstract])) {
-            if ($this->missingLeadingSlash($abstract) && isset($this->bindings['\\' . $abstract])) {
-                $abstract = '\\' . $abstract;
-            }
             return $abstract;
         } else {
             return $this->bindings[$abstract]['concrete'];
         }
-    }
-    protected function missingLeadingSlash($abstract)
-    {
-        return is_string($abstract) && !starts_with($abstract, '\\');
     }
     public function build($concrete, $parameters = array())
     {
@@ -425,7 +417,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.28';
+    const VERSION = '4.1.25';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -972,18 +964,18 @@ class Request extends SymfonyRequest
     }
     public function has($key)
     {
-        $keys = is_array($key) ? $key : func_get_args();
-        foreach ($keys as $value) {
-            if ($this->isEmptyString($value)) {
-                return false;
+        if (count(func_get_args()) > 1) {
+            foreach (func_get_args() as $value) {
+                if (!$this->has($value)) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
-    }
-    protected function isEmptyString($key)
-    {
-        $boolOrArray = is_bool($this->input($key)) || is_array($this->input($key));
-        return !$boolOrArray && trim((string) $this->input($key)) === '';
+        if (is_bool($this->input($key)) || is_array($this->input($key))) {
+            return true;
+        }
+        return trim((string) $this->input($key)) !== '';
     }
     public function all()
     {
@@ -1645,6 +1637,7 @@ class Request
                 return $format;
             }
         }
+        return null;
     }
     public function setFormat($format, $mimeTypes)
     {
@@ -4947,13 +4940,10 @@ class Route
         });
         return call_user_func_array($this->action['uses'], $parameters);
     }
-    public function matches(Request $request, $includingMethod = true)
+    public function matches(Request $request)
     {
         $this->compileRoute();
         foreach ($this->getValidators() as $validator) {
-            if (!$includingMethod && $validator instanceof MethodValidator) {
-                continue;
-            }
             if (!$validator->matches($this, $request)) {
                 return false;
             }
@@ -5197,7 +5187,7 @@ class Route
     }
     public function httpOnly()
     {
-        return in_array('http', $this->action, true);
+        return in_array('http', $this->action);
     }
     public function httpsOnly()
     {
@@ -5205,7 +5195,7 @@ class Route
     }
     public function secure()
     {
-        return in_array('https', $this->action, true);
+        return in_array('https', $this->action);
     }
     public function domain()
     {
@@ -5252,7 +5242,6 @@ use Countable;
 use ArrayIterator;
 use IteratorAggregate;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 class RouteCollection implements Countable, IteratorAggregate
@@ -5297,41 +5286,26 @@ class RouteCollection implements Countable, IteratorAggregate
         if (!is_null($route)) {
             return $route->bind($request);
         }
-        $others = $this->checkForAlternateVerbs($request);
-        if (count($others) > 0) {
-            return $this->getOtherMethodsRoute($request, $others);
-        }
+        $this->checkForAlternateVerbs($request);
         throw new NotFoundHttpException();
     }
     protected function checkForAlternateVerbs($request)
     {
-        $methods = array_diff(Router::$verbs, array($request->getMethod()));
-        $others = array();
-        foreach ($methods as $method) {
-            if (!is_null($this->check($this->get($method), $request, false))) {
-                $others[] = $method;
+        $others = array_diff(Router::$verbs, array($request->getMethod()));
+        foreach ($others as $other) {
+            if (!is_null($this->check($this->get($other), $request))) {
+                $this->methodNotAllowed($other);
             }
         }
-        return $others;
     }
-    protected function getOtherMethodsRoute($request, array $others)
+    protected function methodNotAllowed($other)
     {
-        if ($request->method() == 'OPTIONS') {
-            return with(new Route('OPTIONS', $request->path(), function () use($others) {
-                return new Response('', 200, array('Allow' => implode(',', $others)));
-            }))->bind($request);
-        } else {
-            $this->methodNotAllowed($others);
-        }
+        throw new MethodNotAllowedHttpException(array($other));
     }
-    protected function methodNotAllowed(array $others)
+    protected function check(array $routes, $request)
     {
-        throw new MethodNotAllowedHttpException($others);
-    }
-    protected function check(array $routes, $request, $includingMethod = true)
-    {
-        return array_first($routes, function ($key, $value) use($request, $includingMethod) {
-            return $value->matches($request, $includingMethod);
+        return array_first($routes, function ($key, $value) use($request) {
+            return $value->matches($request);
         });
     }
     protected function get($method = null)
@@ -6878,19 +6852,11 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         $dirty = array();
         foreach ($this->attributes as $key => $value) {
-            if (!array_key_exists($key, $this->original)) {
-                $dirty[$key] = $value;
-            } elseif ($value !== $this->original[$key] && !$this->originalIsNumericallyEquivalent($key)) {
+            if (!array_key_exists($key, $this->original) || $value !== $this->original[$key]) {
                 $dirty[$key] = $value;
             }
         }
         return $dirty;
-    }
-    protected function originalIsNumericallyEquivalent($key)
-    {
-        $current = $this->attributes[$key];
-        $original = $this->original[$key];
-        return is_numeric($current) && is_numeric($original) && strcmp((string) $current, (string) $original) === 0;
     }
     public function getRelations()
     {
@@ -7856,8 +7822,6 @@ class Queue implements HttpKernelInterface
 }
 namespace Illuminate\Encryption;
 
-use Symfony\Component\Security\Core\Util\StringUtils;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 class DecryptException extends \RuntimeException
 {
     
@@ -7908,9 +7872,7 @@ class Encrypter
     }
     protected function validMac(array $payload)
     {
-        $bytes = with(new SecureRandom())->nextBytes(16);
-        $calcMac = hash_hmac('sha256', $this->hash($payload['iv'], $payload['value']), $bytes, true);
-        return StringUtils::equals(hash_hmac('sha256', $payload['mac'], $bytes, true), $calcMac);
+        return $payload['mac'] === $this->hash($payload['iv'], $payload['value']);
     }
     protected function hash($iv, $value)
     {
@@ -8496,8 +8458,6 @@ class RotatingFileHandler extends StreamHandler
     {
         $this->filenameFormat = $filenameFormat;
         $this->dateFormat = $dateFormat;
-        $this->url = $this->getTimedFilename();
-        $this->close();
     }
     protected function write(array $record)
     {
@@ -9860,6 +9820,7 @@ class Response
         if (null !== $this->getExpires()) {
             return $this->getExpires()->format('U') - $this->getDate()->format('U');
         }
+        return null;
     }
     public function setMaxAge($value)
     {
@@ -9877,6 +9838,7 @@ class Response
         if (null !== ($maxAge = $this->getMaxAge())) {
             return $maxAge - $this->getAge();
         }
+        return null;
     }
     public function setTtl($seconds)
     {
@@ -10040,7 +10002,7 @@ class Response
     }
     public function isEmpty()
     {
-        return in_array($this->statusCode, array(204, 304));
+        return in_array($this->statusCode, array(201, 204, 304));
     }
     protected function ensureIEOverSSLCompatibility(Request $request)
     {

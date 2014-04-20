@@ -175,7 +175,7 @@ class AcceptHeaderItem
      *
      * @param string $name
      *
-     * @return bool
+     * @return Boolean
      */
     public function hasAttribute($name)
     {

@@ -25,7 +25,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 abstract class FileDumper implements DumperInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function dump(MessageCatalogue $messages, $options = array())
     {

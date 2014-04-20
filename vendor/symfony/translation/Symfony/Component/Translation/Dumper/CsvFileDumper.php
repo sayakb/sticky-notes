@@ -24,7 +24,7 @@ class CsvFileDumper extends FileDumper
     private $enclosure = '"';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function format(MessageCatalogue $messages, $domain = 'messages')
     {
@@ -54,7 +54,7 @@ class CsvFileDumper extends FileDumper
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getExtension()
     {

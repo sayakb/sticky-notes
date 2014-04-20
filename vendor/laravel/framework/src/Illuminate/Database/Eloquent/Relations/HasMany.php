@@ -19,7 +19,7 @@ class HasMany extends HasOneOrMany {
 	 *
 	 * @param  array   $models
 	 * @param  string  $relation
-	 * @return array
+	 * @return void
 	 */
 	public function initRelation(array $models, $relation)
 	{

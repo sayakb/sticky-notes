@@ -685,7 +685,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	{
 		// If no relation name was given, we will use this debug backtrace to extract
 		// the calling method's name and use that as the relationship name as most
-		// of the time this will be what we desire to use for the relationships.
+		// of the time this will be what we desire to use for the relatinoships.
 		if (is_null($relation))
 		{
 			list(, $caller) = debug_backtrace(false);
@@ -745,7 +745,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 			);
 		}
 
-		// If we are not eager loading the relationship we will essentially treat this
+		// If we are not eager loading the relatinship, we will essentially treat this
 		// as a belongs-to style relationship since morph-to extends that class and
 		// we will pass in the appropriate values so that it behaves as expected.
 		else
@@ -1337,7 +1337,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 
 		// To sync all of the relationships to the database, we will simply spin through
 		// the relationships and save each model via this "push" method, which allows
-		// us to recurs into all of these nested relations for this model instance.
+		// us to recurse into all of these nested relations for the model instance.
 		foreach ($this->relations as $models)
 		{
 			foreach (Collection::make($models) as $model)
@@ -1922,7 +1922,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
-	 * Set the number of models to return per page.
+	 * Set the number of models ot return per page.
 	 *
 	 * @param  int   $perPage
 	 * @return void
@@ -2645,33 +2645,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 
 		foreach ($this->attributes as $key => $value)
 		{
-			if ( ! array_key_exists($key, $this->original))
-			{
-				$dirty[$key] = $value;
-			}
-			elseif ($value !== $this->original[$key] &&
-                                 ! $this->originalIsNumericallyEquivalent($key))
+			if ( ! array_key_exists($key, $this->original) || $value !== $this->original[$key])
 			{
 				$dirty[$key] = $value;
 			}
 		}
 
 		return $dirty;
-	}
-
-	/**
-	 * Determine if the new and old values for a given key are numerically equivalent.
-	 *
-	 * @param  string  $key
-	 * @return bool
-	 */
-	protected function originalIsNumericallyEquivalent($key)
-	{
-		$current = $this->attributes[$key];
-
-		$original = $this->original[$key];
-
-		return is_numeric($current) && is_numeric($original) && strcmp((string) $current, (string) $original) === 0;
 	}
 
 	/**
@@ -2907,7 +2887,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 * Determine if an attribute exists on the model.
 	 *
 	 * @param  string  $key
-	 * @return bool
+	 * @return void
 	 */
 	public function __isset($key)
 	{

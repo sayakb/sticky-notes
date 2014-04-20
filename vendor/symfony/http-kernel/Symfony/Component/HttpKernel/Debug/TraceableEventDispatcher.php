@@ -67,7 +67,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, TraceableEve
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function addListener($eventName, $listener, $priority = 0)
     {
@@ -149,7 +149,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, TraceableEve
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getCalledListeners()
     {
@@ -157,7 +157,7 @@ class TraceableEventDispatcher implements EventDispatcherInterface, TraceableEve
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getNotCalledListeners()
     {

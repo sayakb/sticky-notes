@@ -1,6 +1,9 @@
 <?php
 
-class Swift_CharacterReader_UsAsciiReaderTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/CharacterReader/UsAsciiReader.php';
+
+class Swift_CharacterReader_UsAsciiReaderTest
+    extends UnitTestCase
 {
     /*
 
@@ -26,7 +29,7 @@ class Swift_CharacterReader_UsAsciiReaderTest extends \PHPUnit_Framework_TestCas
     public function testAllValidAsciiCharactersReturnZero()
     {
         for ($ordinal = 0x00; $ordinal <= 0x7F; ++$ordinal) {
-            $this->assertSame(
+            $this->assertIdentical(
                 0, $this->_reader->validateByteSequence(array($ordinal), 1)
                 );
         }
@@ -35,7 +38,7 @@ class Swift_CharacterReader_UsAsciiReaderTest extends \PHPUnit_Framework_TestCas
     public function testMultipleBytesAreInvalid()
     {
         for ($ordinal = 0x00; $ordinal <= 0x7F; $ordinal += 2) {
-            $this->assertSame(
+            $this->assertIdentical(
                 -1, $this->_reader->validateByteSequence(array($ordinal, $ordinal + 1), 2)
                 );
         }
@@ -44,7 +47,7 @@ class Swift_CharacterReader_UsAsciiReaderTest extends \PHPUnit_Framework_TestCas
     public function testBytesAboveAsciiRangeAreInvalid()
     {
         for ($ordinal = 0x80; $ordinal <= 0xFF; ++$ordinal) {
-            $this->assertSame(
+            $this->assertIdentical(
                 -1, $this->_reader->validateByteSequence(array($ordinal), 1)
                 );
         }

@@ -1,14 +1,33 @@
 <?php
 
-class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Mime/ContentEncoder/PlainContentEncoder.php';
+require_once 'Swift/InputByteStream.php';
+require_once 'Swift/OutputByteStream.php';
+
+class Swift_StreamCollector implements Yay_Action
+{
+    public $content = '';
+    public function &invoke(Yay_Invocation $inv) {
+        $args = $inv->getArguments();
+        $this->content .= current($args);
+    }
+    public function describeTo(Yay_Description $description)
+    {
+        $description->appendText(' gathers input;');
+    }
+}
+
+class Swift_Mime_ContentEncoder_PlainContentEncoderTest
+    extends Swift_Tests_SwiftUnitTestCase
 {
     public function testNameCanBeSpecifiedInConstructor()
     {
         $encoder = $this->_getEncoder('7bit');
-        $this->assertEquals('7bit', $encoder->getName());
+        $this->assertEqual('7bit', $encoder->getName());
 
         $encoder = $this->_getEncoder('8bit');
-        $this->assertEquals('8bit', $encoder->getName());
+        $this->assertEqual('8bit', $encoder->getName());
     }
 
     public function testNoOctetsAreModifiedInString()
@@ -30,15 +49,15 @@ class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTest
             $is = $this->_createInputByteStream();
             $collection = new Swift_StreamCollector();
 
-            $is->shouldReceive('write')
-               ->zeroOrMoreTimes()
-               ->andReturnUsing($collection);
-            $os->shouldReceive('read')
-               ->once()
-               ->andReturn($byte);
-            $os->shouldReceive('read')
-               ->zeroOrMoreTimes()
-               ->andReturn(false);
+            $this->_checking(Expectations::create()
+                -> allowing($is)->write(any(), optional()) -> will($collection)
+                -> ignoring($is)
+
+                -> one($os)->read(optional()) -> returns($byte)
+                -> allowing($os)->read(optional()) -> returns(false)
+
+                -> ignoring($os)
+                );
 
             $encoder->encodeByteStream($os, $is);
             $this->assertIdenticalBinary($byte, $collection->content);
@@ -55,7 +74,7 @@ class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTest
         }
         $input = implode(' ', $chars); //99 chars long
 
-        $this->assertEquals(
+        $this->assertEqual(
             'a a a a a a a a a a a a a a a a a a a a a a a a a ' . "\r\n" . //50 *
             'a a a a a a a a a a a a a a a a a a a a a a a a a',            //99
             $encoder->encodeString($input, 0, 50),
@@ -71,22 +90,23 @@ class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTest
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+            );
 
         for ($i = 0; $i < 50; $i++) {
-            $os->shouldReceive('read')
-               ->once()
-               ->andReturn('a ');
+            $this->_checking(Expectations::create()
+                -> one($os)->read(optional()) -> returns('a ')
+                );
         }
 
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($os)->read(optional()) -> returns(false)
+            );
 
         $encoder->encodeByteStream($os, $is, 0, 50);
-        $this->assertEquals(
+        $this->assertEqual(
             str_repeat('a ', 25) . "\r\n" . str_repeat('a ', 25),
             $collection->content
             );
@@ -95,38 +115,24 @@ class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTest
     public function testencodeStringGeneratesCorrectCrlf()
     {
         $encoder = $this->_getEncoder('7bit', true);
-        $this->assertEquals("a\r\nb", $encoder->encodeString("a\rb"),
+        $this->assertEqual("a\r\nb", $encoder->encodeString("a\rb"),
             '%s: Line endings should be standardized'
             );
-        $this->assertEquals("a\r\nb", $encoder->encodeString("a\nb"),
+        $this->assertEqual("a\r\nb", $encoder->encodeString("a\nb"),
             '%s: Line endings should be standardized'
             );
-        $this->assertEquals("a\r\n\r\nb", $encoder->encodeString("a\n\rb"),
+        $this->assertEqual("a\r\n\r\nb", $encoder->encodeString("a\n\rb"),
             '%s: Line endings should be standardized'
             );
-        $this->assertEquals("a\r\n\r\nb", $encoder->encodeString("a\r\rb"),
+        $this->assertEqual("a\r\n\r\nb", $encoder->encodeString("a\r\rb"),
             '%s: Line endings should be standardized'
             );
-        $this->assertEquals("a\r\n\r\nb", $encoder->encodeString("a\n\nb"),
+        $this->assertEqual("a\r\n\r\nb", $encoder->encodeString("a\n\nb"),
             '%s: Line endings should be standardized'
             );
     }
 
-    public function crlfProvider()
-    {
-        return array(
-            array("\r", "a\r\nb"),
-            array("\n", "a\r\nb"),
-            array("\n\r", "a\r\n\r\nb"),
-            array("\n\n", "a\r\n\r\nb"),
-            array("\r\r", "a\r\n\r\nb")
-        );
-    }
-
-    /**
-     * @dataProvider crlfProvider
-     */
-    public function testCanonicEncodeByteStreamGeneratesCorrectCrlf($test, $expected)
+    public function testCanonicEncodeByteStreamGeneratesCorrectCrlf_1()
     {
         $encoder = $this->_getEncoder('7bit', true);
 
@@ -134,24 +140,116 @@ class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTest
         $is = $this->_createInputByteStream();
         $collection = new Swift_StreamCollector();
 
-        $is->shouldReceive('write')
-           ->zeroOrMoreTimes()
-           ->andReturnUsing($collection);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('a');
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn($test);
-        $os->shouldReceive('read')
-           ->once()
-           ->andReturn('b');
-        $os->shouldReceive('read')
-           ->zeroOrMoreTimes()
-           ->andReturn(false);
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('a')
+            -> one($os)->read(optional()) -> returns("\r")
+            -> one($os)->read(optional()) -> returns('b')
+            -> allowing($os)->read(optional()) -> returns(false)
+
+            -> ignoring($os)
+            );
 
         $encoder->encodeByteStream($os, $is);
-        $this->assertEquals($expected, $collection->content);
+        $this->assertEqual("a\r\nb", $collection->content);
+    }
+
+    public function testCanonicEncodeByteStreamGeneratesCorrectCrlf_2()
+    {
+        $encoder = $this->_getEncoder('7bit', true);
+
+        $os = $this->_createOutputByteStream();
+        $is = $this->_createInputByteStream();
+        $collection = new Swift_StreamCollector();
+
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('a')
+            -> one($os)->read(optional()) -> returns("\n")
+            -> one($os)->read(optional()) -> returns('b')
+            -> allowing($os)->read(optional()) -> returns(false)
+
+            -> ignoring($os)
+            );
+
+        $encoder->encodeByteStream($os, $is);
+        $this->assertEqual("a\r\nb", $collection->content);
+    }
+
+    public function testCanonicEncodeByteStreamGeneratesCorrectCrlf_3()
+    {
+        $encoder = $this->_getEncoder('7bit', true);
+
+        $os = $this->_createOutputByteStream();
+        $is = $this->_createInputByteStream();
+        $collection = new Swift_StreamCollector();
+
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('a')
+            -> one($os)->read(optional()) -> returns("\n\r")
+            -> one($os)->read(optional()) -> returns('b')
+            -> allowing($os)->read(optional()) -> returns(false)
+
+            -> ignoring($os)
+            );
+
+        $encoder->encodeByteStream($os, $is);
+        $this->assertEqual("a\r\n\r\nb", $collection->content);
+    }
+
+    public function testCanonicEncodeByteStreamGeneratesCorrectCrlf_4()
+    {
+        $encoder = $this->_getEncoder('7bit', true);
+
+        $os = $this->_createOutputByteStream();
+        $is = $this->_createInputByteStream();
+        $collection = new Swift_StreamCollector();
+
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('a')
+            -> one($os)->read(optional()) -> returns("\n\n")
+            -> one($os)->read(optional()) -> returns('b')
+            -> allowing($os)->read(optional()) -> returns(false)
+
+            -> ignoring($os)
+            );
+
+        $encoder->encodeByteStream($os, $is);
+        $this->assertEqual("a\r\n\r\nb", $collection->content);
+    }
+
+    public function testCanonicEncodeByteStreamGeneratesCorrectCrlf_5()
+    {
+        $encoder = $this->_getEncoder('7bit', true);
+
+        $os = $this->_createOutputByteStream();
+        $is = $this->_createInputByteStream();
+        $collection = new Swift_StreamCollector();
+
+        $this->_checking(Expectations::create()
+            -> allowing($is)->write(any(), optional()) -> will($collection)
+            -> ignoring($is)
+
+            -> one($os)->read(optional()) -> returns('a')
+            -> one($os)->read(optional()) -> returns("\r\r")
+            -> one($os)->read(optional()) -> returns('b')
+            -> allowing($os)->read(optional()) -> returns(false)
+
+            -> ignoring($os)
+            );
+
+        $encoder->encodeByteStream($os, $is);
+        $this->assertEqual("a\r\n\r\nb", $collection->content);
     }
 
     // -- Private helpers
@@ -163,11 +261,17 @@ class Swift_Mime_ContentEncoder_PlainContentEncoderTest extends \SwiftMailerTest
 
     private function _createOutputByteStream($stub = false)
     {
-        return $this->getMockery('Swift_OutputByteStream')->shouldIgnoreMissing();
+        return $stub
+            ? $this->_stub('Swift_OutputByteStream')
+            : $this->_mock('Swift_OutputByteStream')
+            ;
     }
 
     private function _createInputByteStream($stub = false)
     {
-        return $this->getMockery('Swift_InputByteStream')->shouldIgnoreMissing();
+        return $stub
+            ? $this->_stub('Swift_InputByteStream')
+            : $this->_mock('Swift_InputByteStream')
+            ;
     }
 }

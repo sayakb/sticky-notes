@@ -1,5 +1,9 @@
 <?php
 
+require_once 'Swift/Mime/AbstractMimeEntityTest.php';
+require_once 'Swift/Mime/SimpleMimeEntity.php';
+require_once 'Swift/Mime/Grammar.php';
+
 class Swift_Mime_SimpleMimeEntityTest extends Swift_Mime_AbstractMimeEntityTest
 {
     // -- Private helpers

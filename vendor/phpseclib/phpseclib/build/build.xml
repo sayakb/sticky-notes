@@ -13,14 +13,14 @@
         --extensions=php
         --standard=build/code-sniffer-ruleset.xml
         phpseclib/"
-      dir=".." checkreturn="true" passthru="true" />
+      dir=".." passthru="true" />
   </target>
   <target name="sniff-php-tests">
     <exec command="vendor/bin/phpcs -s
         --extensions=php
         --standard=build/code-sniffer-ruleset-tests.xml
         tests/"
-      dir=".." checkreturn="true" passthru="true" />
+      dir=".." passthru="true" />
   </target>
 
 </project>

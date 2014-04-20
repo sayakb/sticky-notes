@@ -21,7 +21,7 @@ use Symfony\Component\Translation\MessageCatalogue;
 class QtFileDumper extends FileDumper
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function format(MessageCatalogue $messages, $domain)
     {
@@ -41,7 +41,7 @@ class QtFileDumper extends FileDumper
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getExtension()
     {

@@ -1,6 +1,12 @@
 <?php
 
-class Swift_Mime_SimpleHeaderFactoryTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Mime/SimpleHeaderFactory.php';
+require_once 'Swift/Mime/HeaderEncoder.php';
+require_once 'Swift/Encoder.php';
+require_once 'Swift/Mime/Grammar.php';
+
+class Swift_Mime_SimpleHeaderFactoryTest extends Swift_Tests_SwiftUnitTestCase
 {
     private $_factory;
 
@@ -12,13 +18,13 @@ class Swift_Mime_SimpleHeaderFactoryTest extends \PHPUnit_Framework_TestCase
     public function testMailboxHeaderIsCorrectType()
     {
         $header = $this->_factory->createMailboxHeader('X-Foo');
-        $this->assertInstanceof('Swift_Mime_Headers_MailboxHeader', $header);
+        $this->assertIsA($header, 'Swift_Mime_Headers_MailboxHeader');
     }
 
     public function testMailboxHeaderHasCorrectName()
     {
         $header = $this->_factory->createMailboxHeader('X-Foo');
-        $this->assertEquals('X-Foo', $header->getFieldName());
+        $this->assertEqual('X-Foo', $header->getFieldName());
     }
 
     public function testMailboxHeaderHasCorrectModel()
@@ -26,61 +32,61 @@ class Swift_Mime_SimpleHeaderFactoryTest extends \PHPUnit_Framework_TestCase
         $header = $this->_factory->createMailboxHeader('X-Foo',
             array('foo@bar'=>'FooBar')
             );
-        $this->assertEquals(array('foo@bar'=>'FooBar'), $header->getFieldBodyModel());
+        $this->assertEqual(array('foo@bar'=>'FooBar'), $header->getFieldBodyModel());
     }
 
     public function testDateHeaderHasCorrectType()
     {
         $header = $this->_factory->createDateHeader('X-Date');
-        $this->assertInstanceof('Swift_Mime_Headers_DateHeader', $header);
+        $this->assertIsA($header, 'Swift_Mime_Headers_DateHeader');
     }
 
     public function testDateHeaderHasCorrectName()
     {
         $header = $this->_factory->createDateHeader('X-Date');
-        $this->assertEquals('X-Date', $header->getFieldName());
+        $this->assertEqual('X-Date', $header->getFieldName());
     }
 
     public function testDateHeaderHasCorrectModel()
     {
         $header = $this->_factory->createDateHeader('X-Date', 123);
-        $this->assertEquals(123, $header->getFieldBodyModel());
+        $this->assertEqual(123, $header->getFieldBodyModel());
     }
 
     public function testTextHeaderHasCorrectType()
     {
         $header = $this->_factory->createTextHeader('X-Foo');
-        $this->assertInstanceof('Swift_Mime_Headers_UnstructuredHeader', $header);
+        $this->assertIsA($header, 'Swift_Mime_Headers_UnstructuredHeader');
     }
 
     public function testTextHeaderHasCorrectName()
     {
         $header = $this->_factory->createTextHeader('X-Foo');
-        $this->assertEquals('X-Foo', $header->getFieldName());
+        $this->assertEqual('X-Foo', $header->getFieldName());
     }
 
     public function testTextHeaderHasCorrectModel()
     {
         $header = $this->_factory->createTextHeader('X-Foo', 'bar');
-        $this->assertEquals('bar', $header->getFieldBodyModel());
+        $this->assertEqual('bar', $header->getFieldBodyModel());
     }
 
     public function testParameterizedHeaderHasCorrectType()
     {
         $header = $this->_factory->createParameterizedHeader('X-Foo');
-        $this->assertInstanceof('Swift_Mime_Headers_ParameterizedHeader', $header);
+        $this->assertIsA($header, 'Swift_Mime_Headers_ParameterizedHeader');
     }
 
     public function testParameterizedHeaderHasCorrectName()
     {
         $header = $this->_factory->createParameterizedHeader('X-Foo');
-        $this->assertEquals('X-Foo', $header->getFieldName());
+        $this->assertEqual('X-Foo', $header->getFieldName());
     }
 
     public function testParameterizedHeaderHasCorrectModel()
     {
         $header = $this->_factory->createParameterizedHeader('X-Foo', 'bar');
-        $this->assertEquals('bar', $header->getFieldBodyModel());
+        $this->assertEqual('bar', $header->getFieldBodyModel());
     }
 
     public function testParameterizedHeaderHasCorrectParams()
@@ -88,57 +94,58 @@ class Swift_Mime_SimpleHeaderFactoryTest extends \PHPUnit_Framework_TestCase
         $header = $this->_factory->createParameterizedHeader('X-Foo', 'bar',
             array('zip' => 'button')
             );
-        $this->assertEquals(array('zip'=>'button'), $header->getParameters());
+        $this->assertEqual(array('zip'=>'button'), $header->getParameters());
     }
 
     public function testIdHeaderHasCorrectType()
     {
         $header = $this->_factory->createIdHeader('X-ID');
-        $this->assertInstanceof('Swift_Mime_Headers_IdentificationHeader', $header);
+        $this->assertIsA($header, 'Swift_Mime_Headers_IdentificationHeader');
     }
 
     public function testIdHeaderHasCorrectName()
     {
         $header = $this->_factory->createIdHeader('X-ID');
-        $this->assertEquals('X-ID', $header->getFieldName());
+        $this->assertEqual('X-ID', $header->getFieldName());
     }
 
     public function testIdHeaderHasCorrectModel()
     {
         $header = $this->_factory->createIdHeader('X-ID', 'xyz@abc');
-        $this->assertEquals(array('xyz@abc'), $header->getFieldBodyModel());
+        $this->assertEqual(array('xyz@abc'), $header->getFieldBodyModel());
     }
 
     public function testPathHeaderHasCorrectType()
     {
         $header = $this->_factory->createPathHeader('X-Path');
-        $this->assertInstanceof('Swift_Mime_Headers_PathHeader', $header);
+        $this->assertIsA($header, 'Swift_Mime_Headers_PathHeader');
     }
 
     public function testPathHeaderHasCorrectName()
     {
         $header = $this->_factory->createPathHeader('X-Path');
-        $this->assertEquals('X-Path', $header->getFieldName());
+        $this->assertEqual('X-Path', $header->getFieldName());
     }
 
     public function testPathHeaderHasCorrectModel()
     {
         $header = $this->_factory->createPathHeader('X-Path', 'foo@bar');
-        $this->assertEquals('foo@bar', $header->getFieldBodyModel());
+        $this->assertEqual('foo@bar', $header->getFieldBodyModel());
     }
 
     public function testCharsetChangeNotificationNotifiesEncoders()
     {
-        $encoder = $this->_createHeaderEncoder();
-        $encoder->expects($this->once())
-                ->method('charsetChanged')
-                ->with('utf-8');
-        $paramEncoder = $this->_createParamEncoder();
-        $paramEncoder->expects($this->once())
-                     ->method('charsetChanged')
-                     ->with('utf-8');
+        $encoder = $this->_createHeaderEncoder(false);
+        $paramEncoder = $this->_createParamEncoder(false);
 
         $factory = $this->_createFactory($encoder, $paramEncoder);
+
+        $this->_checking(Expectations::create()
+            -> one($encoder)->charsetChanged('utf-8')
+            -> one($paramEncoder)->charsetChanged('utf-8')
+            -> ignoring($encoder)
+            -> ignoring($paramEncoder)
+            );
 
         $factory->charsetChanged('utf-8');
     }
@@ -156,13 +163,17 @@ class Swift_Mime_SimpleHeaderFactoryTest extends \PHPUnit_Framework_TestCase
             );
     }
 
-    private function _createHeaderEncoder()
+    private function _createHeaderEncoder($stub = true)
     {
-        return $this->getMock('Swift_Mime_HeaderEncoder');
+        return $stub
+            ? $this->_stub('Swift_Mime_HeaderEncoder')
+            : $this->_mock('Swift_Mime_HeaderEncoder');
     }
 
-    private function _createParamEncoder()
+    private function _createParamEncoder($stub = true)
     {
-        return $this->getMock('Swift_Encoder');
+        return $stub
+            ? $this->_stub('Swift_Encoder')
+            : $this->_mock('Swift_Encoder');
     }
 }

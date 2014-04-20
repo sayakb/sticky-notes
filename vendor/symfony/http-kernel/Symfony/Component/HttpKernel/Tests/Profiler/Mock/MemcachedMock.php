@@ -24,10 +24,10 @@ class MemcachedMock
     /**
      * Set a Memcached option
      *
-     * @param int     $option
+     * @param integer $option
      * @param mixed   $value
      *
-     * @return bool
+     * @return boolean
      */
     public function setOption($option, $value)
     {
@@ -38,10 +38,10 @@ class MemcachedMock
      * Add a memcached server to connection pool
      *
      * @param string  $host
-     * @param int     $port
-     * @param int     $weight
+     * @param integer $port
+     * @param integer $weight
      *
-     * @return bool
+     * @return boolean
      */
     public function addServer($host, $port = 11211, $weight = 0)
     {
@@ -59,9 +59,9 @@ class MemcachedMock
      *
      * @param string  $key
      * @param mixed   $value
-     * @param int     $expiration
+     * @param integer $expiration
      *
-     * @return bool
+     * @return boolean
      */
     public function add($key, $value, $expiration = 0)
     {
@@ -83,9 +83,9 @@ class MemcachedMock
      *
      * @param string  $key
      * @param mixed   $value
-     * @param int     $expiration
+     * @param integer $expiration
      *
-     * @return bool
+     * @return boolean
      */
     public function set($key, $value, $expiration = null)
     {
@@ -103,9 +103,9 @@ class MemcachedMock
      *
      * @param string  $key
      * @param mixed   $value
-     * @param int     $expiration
+     * @param integer $expiration
      *
-     * @return bool
+     * @return boolean
      */
     public function replace($key, $value, $expiration = null)
     {
@@ -129,7 +129,7 @@ class MemcachedMock
      * @param callable $cache_cb
      * @param float    $cas_token
      *
-     * @return bool
+     * @return boolean
      */
     public function get($key, $cache_cb = null, &$cas_token = null)
     {
@@ -146,7 +146,7 @@ class MemcachedMock
      * @param string $key
      * @param string $value
      *
-     * @return bool
+     * @return boolean
      */
     public function append($key, $value)
     {
@@ -168,7 +168,7 @@ class MemcachedMock
      *
      * @param string $key
      *
-     * @return bool
+     * @return boolean
      */
     public function delete($key)
     {
@@ -188,7 +188,7 @@ class MemcachedMock
     /**
      * Flush all existing items at the server
      *
-     * @return bool
+     * @return boolean
      */
     public function flush()
     {

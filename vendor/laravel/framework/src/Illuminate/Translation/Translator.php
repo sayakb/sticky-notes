@@ -343,7 +343,7 @@ class Translator extends NamespacedItemResolver implements TranslatorInterface {
 	}
 
 	/**
-	 * Get the fallback locale being used.
+	 * Set the fallback locale being used.
 	 *
 	 * @return string
 	 */

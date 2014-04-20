@@ -33,7 +33,7 @@ class InputArgument
      * Constructor.
      *
      * @param string  $name        The argument name
-     * @param int     $mode        The argument mode: self::REQUIRED or self::OPTIONAL
+     * @param integer $mode        The argument mode: self::REQUIRED or self::OPTIONAL
      * @param string  $description A description text
      * @param mixed   $default     The default value (for self::OPTIONAL mode only)
      *
@@ -69,7 +69,7 @@ class InputArgument
     /**
      * Returns true if the argument is required.
      *
-     * @return bool    true if parameter mode is self::REQUIRED, false otherwise
+     * @return Boolean true if parameter mode is self::REQUIRED, false otherwise
      */
     public function isRequired()
     {
@@ -79,7 +79,7 @@ class InputArgument
     /**
      * Returns true if the argument can take multiple values.
      *
-     * @return bool    true if mode is self::IS_ARRAY, false otherwise
+     * @return Boolean true if mode is self::IS_ARRAY, false otherwise
      */
     public function isArray()
     {

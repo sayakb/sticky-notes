@@ -70,14 +70,14 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      * Constructor.
      *
      * @param string  $environment The environment
-     * @param bool    $debug       Whether to enable debugging or not
+     * @param Boolean $debug       Whether to enable debugging or not
      *
      * @api
      */
     public function __construct($environment, $debug)
     {
         $this->environment = $environment;
-        $this->debug = (bool) $debug;
+        $this->debug = (Boolean) $debug;
         $this->rootDir = $this->getRootDir();
         $this->name = $this->getName();
 
@@ -260,7 +260,7 @@ abstract class Kernel implements KernelInterface, TerminableInterface
      *
      * @param string  $name  A resource name to locate
      * @param string  $dir   A directory where to look for the resource first
-     * @param bool    $first Whether to return the first path or paths for all matching bundles
+     * @param Boolean $first Whether to return the first path or paths for all matching bundles
      *
      * @return string|array The absolute path of the resource or an array if $first is false
      *

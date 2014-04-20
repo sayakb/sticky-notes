@@ -34,7 +34,7 @@ class ChainCacheClearer implements CacheClearerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function clear($cacheDir)
     {

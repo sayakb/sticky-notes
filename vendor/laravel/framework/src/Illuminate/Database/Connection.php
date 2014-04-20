@@ -72,7 +72,7 @@ class Connection implements ConnectionInterface {
 	protected $fetchMode = PDO::FETCH_ASSOC;
 
 	/**
-	 * The number of active transactions.
+	 * The number of active transasctions.
 	 *
 	 * @var int
 	 */

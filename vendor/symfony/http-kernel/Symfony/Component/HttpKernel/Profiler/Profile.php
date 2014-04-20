@@ -261,7 +261,7 @@ class Profile
      *
      * @param string $name A collector name
      *
-     * @return bool
+     * @return Boolean
      */
     public function hasCollector($name)
     {

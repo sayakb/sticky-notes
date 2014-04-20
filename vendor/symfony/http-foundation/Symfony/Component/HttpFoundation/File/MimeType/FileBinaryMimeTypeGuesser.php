@@ -41,7 +41,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
     /**
      * Returns whether this guesser is supported on the current OS
      *
-     * @return bool
+     * @return Boolean
      */
     public static function isSupported()
     {
@@ -62,7 +62,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
         }
 
         if (!self::isSupported()) {
-            return;
+            return null;
         }
 
         ob_start();
@@ -72,14 +72,14 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
         if ($return > 0) {
             ob_end_clean();
 
-            return;
+            return null;
         }
 
         $type = trim(ob_get_clean());
 
         if (!preg_match('#^([a-z0-9\-]+/[a-z0-9\-\.]+)#i', $type, $match)) {
             // it's not a type, but an error message
-            return;
+            return null;
         }
 
         return $match[1];

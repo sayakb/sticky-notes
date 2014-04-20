@@ -40,7 +40,7 @@ class XPathExpr
      * @param string  $path
      * @param string  $element
      * @param string  $condition
-     * @param bool    $starPrefix
+     * @param boolean $starPrefix
      */
     public function __construct($path = '', $element = '*', $condition = '', $starPrefix = false)
     {

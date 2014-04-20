@@ -44,7 +44,7 @@ class RoutesCommand extends Command {
 	protected $table;
 
 	/**
-	 * The table headers for the command.
+	 * The table headeers for the command.
 	 *
 	 * @var array
 	 */

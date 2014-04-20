@@ -1,8 +1,5 @@
 <?php namespace Illuminate\Encryption;
 
-use Symfony\Component\Security\Core\Util\StringUtils;
-use Symfony\Component\Security\Core\Util\SecureRandom;
-
 class DecryptException extends \RuntimeException {}
 
 class Encrypter {
@@ -148,11 +145,7 @@ class Encrypter {
 	 */
 	protected function validMac(array $payload)
 	{
-		$bytes = with(new SecureRandom)->nextBytes(16);
-
-		$calcMac = hash_hmac('sha256', $this->hash($payload['iv'], $payload['value']), $bytes, true);
-
-		return StringUtils::equals(hash_hmac('sha256', $payload['mac'], $bytes, true), $calcMac);
+		return ($payload['mac'] === $this->hash($payload['iv'], $payload['value']));
 	}
 
 	/**

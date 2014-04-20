@@ -39,7 +39,7 @@ class ChainExtractor implements ExtractorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function setPrefix($prefix)
     {
@@ -49,7 +49,7 @@ class ChainExtractor implements ExtractorInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function extract($directory, MessageCatalogue $catalogue)
     {

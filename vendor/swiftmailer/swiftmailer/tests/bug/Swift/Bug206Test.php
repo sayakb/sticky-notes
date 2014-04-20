@@ -1,6 +1,8 @@
 <?php
 
-class Swift_Bug206Test extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+
+class Swift_Bug206Test extends Swift_Tests_SwiftUnitTestCase
 {
     private $_factory;
 
@@ -33,6 +35,6 @@ class Swift_Bug206Test extends \PHPUnit_Framework_TestCase
 
         $headerBody = substr($mailboxHeader->toString(), 3, strlen($expected));
 
-        $this->assertEquals($expected, $headerBody);
+        $this->assertEqual($expected, $headerBody);
     }
 }

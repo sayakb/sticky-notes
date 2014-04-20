@@ -94,7 +94,7 @@ class RedisQueue extends Queue implements QueueInterface {
 	 *
 	 * @param  string  $queue
 	 * @param  string  $payload
-	 * @param  int  $delay
+	 * @param  string  $delay
 	 * @param  int  $attempts
 	 * @return void
 	 */

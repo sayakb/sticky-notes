@@ -1,6 +1,10 @@
 <?php
 
-class Swift_Signers_SMimeSignerTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Tests/SwiftUnitTestCase.php';
+require_once 'Swift/Mime/Message.php';
+require_once 'Swift/Mime/HeaderSet.php';
+
+class Swift_Signers_SMimeSignerTest extends Swift_Tests_SwiftUnitTestCase
 {
     /**
      * @var Swift_StreamFilters_StringReplacementFilterFactory
@@ -14,7 +18,7 @@ class Swift_Signers_SMimeSignerTest extends \PHPUnit_Framework_TestCase
         $this->replacementFactory = Swift_DependencyContainer::getInstance()
             ->lookup('transport.replacementfactory');
 
-        $this->samplesDir = str_replace('\\', '/', realpath(__DIR__. '/../../../_samples/')) . '/';
+        $this->samplesDir = str_replace('\\', '/', realpath(dirname(__FILE__) . '/../../../_samples/')) . '/';
     }
 
     public function testUnSingedMessage()
@@ -24,7 +28,7 @@ class Swift_Signers_SMimeSignerTest extends \PHPUnit_Framework_TestCase
           ->setTo(array('receiver@domain.org', 'other@domain.org' => 'A name'))
           ->setBody('Here is the message itself');
 
-        $this->assertEquals('Here is the message itself', $message->getBody());
+        $this->assertEqual('Here is the message itself', $message->getBody());
     }
 
     public function testSingedMessage()
@@ -94,8 +98,8 @@ OEL;
             return false;
         }
 
-        $this->assertEquals($headers['content-transfer-encoding'], 'base64');
-        $this->assertEquals($headers['content-disposition'], 'attachment; filename="smime.p7m"');
+        $this->assertEqual($headers['content-transfer-encoding'], 'base64');
+        $this->assertEqual($headers['content-disposition'], 'attachment; filename="smime.p7m"');
 
         $expectedBody = '(?:^[a-zA-Z0-9\/\\r\\n+]*={0,2})';
 
@@ -203,7 +207,7 @@ OEL;
             $this->fail(sprintf('Decrypt of the message failed. Internal error "%s".', openssl_error_string()));
         }
 
-        $this->assertEquals($originalMessage, $decryptedMessageStream->getContent());
+        $this->assertEqual($originalMessage, $decryptedMessageStream->getContent());
         unset($decryptedMessageStream, $messageStream);
     }
 
@@ -241,7 +245,7 @@ OEL;
             $this->fail(sprintf('Decrypt of the message failed. Internal error "%s".', openssl_error_string()));
         }
 
-        $this->assertEquals($originalMessage, $decryptedMessageStream->getContent());
+        $this->assertEqual($originalMessage, $decryptedMessageStream->getContent());
         unset($decryptedMessageStream);
 
         $decryptedMessageStream = new Swift_ByteStream_TemporaryFileByteStream();
@@ -250,7 +254,7 @@ OEL;
             $this->fail(sprintf('Decrypt of the message failed. Internal error "%s".', openssl_error_string()));
         }
 
-        $this->assertEquals($originalMessage, $decryptedMessageStream->getContent());
+        $this->assertEqual($originalMessage, $decryptedMessageStream->getContent());
         unset($decryptedMessageStream, $messageStream);
     }
 
@@ -387,7 +391,7 @@ OEL;
             $this->fail(sprintf('Decrypt of the message failed. Internal error "%s".', openssl_error_string()));
         }
 
-        $this->assertEquals($originalMessage, $decryptedMessageStream->getContent());
+        $this->assertEqual($originalMessage, $decryptedMessageStream->getContent());
         unset($messageStreamClean, $messageStream, $decryptedMessageStream);
     }
 
@@ -399,7 +403,7 @@ OEL;
         $expected = str_replace("\n", "\r\n", $expected);
 
         $actual = trim(self::getBodyOfMessage($actual));
-        if (!$this->assertRegExp('%^' . $expected . '$\s*%m', $actual)) {
+        if (!$this->assertPattern('%^' . $expected . '$\s*%m', $actual)) {
             return false;
         }
 

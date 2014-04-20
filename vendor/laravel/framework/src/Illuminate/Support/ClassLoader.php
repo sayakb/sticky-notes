@@ -20,7 +20,7 @@ class ClassLoader {
 	 * Load the given class file.
 	 *
 	 * @param  string  $class
-	 * @return bool
+	 * @return void
 	 */
 	public static function load($class)
 	{
@@ -35,7 +35,6 @@ class ClassLoader {
 				return true;
 			}
 		}
-		return false;
 	}
 
 	/**

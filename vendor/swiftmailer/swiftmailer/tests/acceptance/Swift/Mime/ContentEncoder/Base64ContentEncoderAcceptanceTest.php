@@ -1,13 +1,17 @@
 <?php
 
-class Swift_Mime_ContentEncoder_Base64ContentEncoderAcceptanceTest extends \PHPUnit_Framework_TestCase
+require_once 'Swift/Mime/ContentEncoder/Base64ContentEncoder.php';
+require_once 'Swift/ByteStream/ArrayByteStream.php';
+
+class Swift_Mime_ContentEncoder_Base64ContentEncoderAcceptanceTest
+    extends UnitTestCase
 {
     private $_samplesDir;
     private $_encoder;
 
     public function setUp()
     {
-        $this->_samplesDir = realpath(__DIR__ . '/../../../../_samples/charsets');
+        $this->_samplesDir = realpath(dirname(__FILE__) . '/../../../../_samples/charsets');
         $this->_encoder = new Swift_Mime_ContentEncoder_Base64ContentEncoder();
     }
 
@@ -43,7 +47,7 @@ class Swift_Mime_ContentEncoder_Base64ContentEncoderAcceptanceTest extends \PHPU
                         $encoded .= $bytes;
                     }
 
-                    $this->assertEquals(
+                    $this->assertEqual(
                         base64_decode($encoded), $text,
                         '%s: Encoded string should decode back to original string for sample ' .
                         $sampleDir . '/' . $sampleFile

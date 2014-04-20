@@ -21,7 +21,7 @@ class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterf
 	/**
 	 * Create a new file environment loader instance.
 	 *
-	 * @param  \Illuminate\Filesystem\Filesystem  $files
+	 * @param  \Illumiante\Filesystem\Filesystem  $files
 	 * @return void
 	 */
 	public function __construct(Filesystem $files, $path = null)
