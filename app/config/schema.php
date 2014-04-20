@@ -714,6 +714,8 @@ return array(
 
 		'1.4' => array(),
 
+		'1.5' => array(),
+
 	),
 
 );
