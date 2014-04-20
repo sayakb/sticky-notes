@@ -80,6 +80,36 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	}
 
 	/**
+	 * Retrieve a user by by their unique identifier and "remember me" token.
+	 *
+	 * @param  mixed   $identifier
+	 * @param  string  $token
+	 * @return \Illuminate\Auth\UserInterface|null
+	 */
+	public function retrieveByToken($identifier, $token)
+	{
+		$query = $this->createModel()->newQuery();
+
+		return $query->where($model->getKeyName(), $identifier)
+                     ->where($model->getRememberTokenName(), $token)
+                     ->first();
+	}
+
+	/**
+	 * Update the "remember me" token for the given user in storage.
+	 *
+	 * @param  \Illuminate\Auth\UserInterface  $user
+	 * @param  string                          $token
+	 * @return void
+	 */
+	public function updateRememberToken(UserInterface $user, $token)
+	{
+		$user->setAttribute($user->getRememberTokenName(), $token);
+
+		$user->save();
+	}
+
+	/**
 	 * Retrieve a user by the given credentials.
 	 *
 	 * @param  array  $credentials

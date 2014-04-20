@@ -278,6 +278,12 @@ return array(
 				),
 
 				(object) array(
+					'name'     => 'remember_token',
+					'type'     => 'string',
+					'length'   => 60,
+				),
+
+				(object) array(
 					'name'     => 'email',
 					'type'     => 'string',
 					'length'   => 100,
@@ -715,6 +721,24 @@ return array(
 		'1.4' => array(),
 
 		'1.5' => array(),
+
+		'1.6' => array(
+
+			'modifyTables' => array(
+
+				'users' => array(
+
+					(object) array(
+						'name'     => 'remember_token',
+						'type'     => 'string',
+						'length'   => 60,
+					),
+
+				),
+
+			),
+
+		),
 
 	),
 
