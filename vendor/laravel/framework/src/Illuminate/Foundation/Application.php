@@ -27,7 +27,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	 *
 	 * @var string
 	 */
-	const VERSION = '4.1.25';
+	const VERSION = '4.1.28';
 
 	/**
 	 * Indicates if the application has "booted".
@@ -336,7 +336,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	}
 
 	/**
-	 * Get the registered service provider instnace if it exists.
+	 * Get the registered service provider instance if it exists.
 	 *
 	 * @param  \Illuminate\Support\ServiceProvider|string  $provider
 	 * @return \Illuminate\Support\ServiceProvider|null
@@ -418,7 +418,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	}
 
 	/**
-	 * Register a deffered provider and service.
+	 * Register a deferred provider and service.
 	 *
 	 * @param  string  $provider
 	 * @param  string  $service

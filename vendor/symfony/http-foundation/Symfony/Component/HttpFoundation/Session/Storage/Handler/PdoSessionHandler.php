@@ -81,15 +81,15 @@ class PdoSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function open($path, $name)
+    public function open($savePath, $sessionName)
     {
         return true;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function close()
     {
@@ -97,16 +97,16 @@ class PdoSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function destroy($id)
+    public function destroy($sessionId)
     {
         // delete the record associated with this id
         $sql = "DELETE FROM $this->table WHERE $this->idCol = :id";
 
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':id', $id, \PDO::PARAM_STR);
+            $stmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $e) {
             throw new \RuntimeException(sprintf('PDOException was thrown when trying to delete a session: %s', $e->getMessage()), 0, $e);
@@ -116,16 +116,16 @@ class PdoSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function gc($lifetime)
+    public function gc($maxlifetime)
     {
         // delete the session records that have expired
         $sql = "DELETE FROM $this->table WHERE $this->timeCol < :time";
 
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindValue(':time', time() - $lifetime, \PDO::PARAM_INT);
+            $stmt->bindValue(':time', time() - $maxlifetime, \PDO::PARAM_INT);
             $stmt->execute();
         } catch (\PDOException $e) {
             throw new \RuntimeException(sprintf('PDOException was thrown when trying to delete expired sessions: %s', $e->getMessage()), 0, $e);
@@ -135,15 +135,15 @@ class PdoSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function read($id)
+    public function read($sessionId)
     {
         $sql = "SELECT $this->dataCol FROM $this->table WHERE $this->idCol = :id";
 
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':id', $id, \PDO::PARAM_STR);
+            $stmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
             $stmt->execute();
 
             // We use fetchAll instead of fetchColumn to make sure the DB cursor gets closed
@@ -160,9 +160,9 @@ class PdoSessionHandler implements \SessionHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function write($id, $data)
+    public function write($sessionId, $data)
     {
         // Session data can contain non binary safe characters so we need to encode it.
         $encoded = base64_encode($data);
@@ -175,7 +175,7 @@ class PdoSessionHandler implements \SessionHandlerInterface
 
             if (null !== $mergeSql) {
                 $mergeStmt = $this->pdo->prepare($mergeSql);
-                $mergeStmt->bindParam(':id', $id, \PDO::PARAM_STR);
+                $mergeStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
                 $mergeStmt->bindParam(':data', $encoded, \PDO::PARAM_STR);
                 $mergeStmt->bindValue(':time', time(), \PDO::PARAM_INT);
                 $mergeStmt->execute();
@@ -189,13 +189,13 @@ class PdoSessionHandler implements \SessionHandlerInterface
                 $deleteStmt = $this->pdo->prepare(
                     "DELETE FROM $this->table WHERE $this->idCol = :id"
                 );
-                $deleteStmt->bindParam(':id', $id, \PDO::PARAM_STR);
+                $deleteStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
                 $deleteStmt->execute();
 
                 $insertStmt = $this->pdo->prepare(
                     "INSERT INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time)"
                 );
-                $insertStmt->bindParam(':id', $id, \PDO::PARAM_STR);
+                $insertStmt->bindParam(':id', $sessionId, \PDO::PARAM_STR);
                 $insertStmt->bindParam(':data', $encoded, \PDO::PARAM_STR);
                 $insertStmt->bindValue(':time', time(), \PDO::PARAM_INT);
                 $insertStmt->execute();
@@ -239,8 +239,6 @@ class PdoSessionHandler implements \SessionHandlerInterface
             case 'sqlite':
                 return "INSERT OR REPLACE INTO $this->table ($this->idCol, $this->dataCol, $this->timeCol) VALUES (:id, :data, :time)";
         }
-
-        return null;
     }
 
     /**

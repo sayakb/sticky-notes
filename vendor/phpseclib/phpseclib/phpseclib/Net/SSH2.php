@@ -2683,6 +2683,11 @@ class Net_SSH2
         $buffer = '';
         while ($remaining_length > 0) {
             $temp = fread($this->fsock, $remaining_length);
+            if ($temp === false || feof($this->fsock)) {
+                user_error('Error reading from socket');
+                $this->bitmap = 0;
+                return false;
+            }
             $buffer.= $temp;
             $remaining_length-= strlen($temp);
         }
@@ -2696,7 +2701,11 @@ class Net_SSH2
 
         if ($this->hmac_check !== false) {
             $hmac = fread($this->fsock, $this->hmac_size);
-            if ($hmac != $this->hmac_check->hash(pack('NNCa*', $this->get_seq_no, $packet_length, $padding_length, $payload . $padding))) {
+            if ($hmac === false || strlen($hmac) != $this->hmac_size) {
+                user_error('Error reading socket');
+                $this->bitmap = 0;
+                return false;
+            } elseif ($hmac != $this->hmac_check->hash(pack('NNCa*', $this->get_seq_no, $packet_length, $padding_length, $payload . $padding))) {
                 user_error('Invalid HMAC');
                 return false;
             }
@@ -2836,6 +2845,20 @@ class Net_SSH2
     }
 
     /**
+     * Returns whether Quiet Mode is enabled or not
+     *
+     * @see Net_SSH2::enableQuietMode()
+     * @see Net_SSH2::disableQuietMode()
+     *
+     * @access public
+     * @return boolean
+     */
+    function isQuietModeEnabled()
+    {
+        return $this->quiet_mode;
+    }
+
+    /**
      * Enable request-pty when using exec()
      *
      * @access public
@@ -2853,6 +2876,20 @@ class Net_SSH2
     function disablePTY()
     {
         $this->request_pty = false;
+    }
+
+    /**
+     * Returns whether request-pty is enabled or not
+     *
+     * @see Net_SSH2::enablePTY()
+     * @see Net_SSH2::disablePTY()
+     *
+     * @access public
+     * @return boolean
+     */
+    function isPTYEnabled()
+    {
+        return $this->request_pty;
     }
 
     /**
