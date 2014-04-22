@@ -208,21 +208,24 @@ class Paste extends Eloquent {
 	 */
 	public static function getAbstract($data)
 	{
+		// First, trim the paste to maximum allowed characters
+		$data = strlen($data) > 680 ? substr($data, 0, 680) : $data;
+
+		// Now we count the number of lines
 		$count = substr_count($data, "\n");
 
+		// If the number of lines exceed 5, return the first 5 lines only
 		if ($count > 5)
 		{
 			$lines = explode("\n", $data);
 
-			$data = '';
+			$lines = array_slice($lines, 0, 5);
 
-			for ($idx = 0; $idx < 5; $idx++)
-			{
-				$data .= ($lines[$idx] . "\n");
-			}
+			$data = implode("\n", $lines);
 		}
 
-		return $data;
+		// Remove any trailing whitespace
+		return rtrim($data);
 	}
 
 	/**
