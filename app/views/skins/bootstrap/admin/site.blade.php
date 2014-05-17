@@ -244,6 +244,29 @@
 
 							<div class="form-group">
 								{{
+									Form::label('allow_paste_del', Lang::get('admin.delete_pastes'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::select('allow_paste_del', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->general->allowPasteDel, array(
+											'class' => 'form-control'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.delete_pastes_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
 									Form::label('paste_age', Lang::get('admin.paste_age'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
