@@ -116,7 +116,7 @@ class AdminController extends BaseController {
 
 					$paste->delete();
 
-					Session::flash('messages.success', Lang::get('admin.paste_deleted'));
+					Session::flash('messages.success', Lang::get('global.paste_deleted'));
 
 					return Redirect::to('admin/paste');
 			}

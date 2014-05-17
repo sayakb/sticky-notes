@@ -82,10 +82,27 @@ class ShowController extends BaseController {
 		{
 			case 'delete':
 
-				if (is_numeric($extra))
+				if (empty($extra))
+				{
+					// Delete the paste if the user has access
+					if ($site->allowPasteDel AND $owner)
+					{
+						$paste->delete();
+
+						Session::flash('messages.success', Lang::get('global.paste_deleted'));
+
+						return Redirect::to('/');
+					}
+					else
+					{
+						App::abort(401); // Unauthorized
+					}
+				}
+				else if (is_numeric($extra))
 				{
 					$comment = Comment::findOrFail($extra);
 
+					// Delete the comment if the user has access
 					if ($owner OR Auth::user()->username == $comment->author)
 					{
 						$comment->delete();
@@ -119,7 +136,7 @@ class ShowController extends BaseController {
 					$paste->save();
 				}
 
-				return Redirect::to(Paste::getUrl($paste));
+				return Redirect::to(URL::previous());
 		}
 
 		// Build the sharing subject for the paste
@@ -135,7 +152,6 @@ class ShowController extends BaseController {
 
 		// Display the show paste view
 		return View::make('site/show', $data);
-
 	}
 
 	/**

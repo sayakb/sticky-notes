@@ -42,6 +42,7 @@ return array(
 		'allowedTags'         => '<a> <em> <strong> <u> <cite> <blockquote> <code> <ul> <ol>'.
 		                         '<li> <dl> <dt> <dd> <h4> <h5> <h6> <p> <br> <img> <strike>',
 		'maxPasteSize'        => '0',
+		'allowPasteDel'       => '1',
 	),
 
 	'antispam'                => (object) array(

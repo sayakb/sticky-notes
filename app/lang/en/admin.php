@@ -31,7 +31,6 @@ return array(
 	"has_password"          => "Has password",
 	"poster_ip"             => "Poster's IP",
 	"remove_password"       => "Remove password",
-	"paste_deleted"         => "The paste has been deleted successfully",
 	"paste_exp"             => "Enter the paste ID above and click search",
 	"paste_404"             => "No paste found with the given ID",
 	"user_404"              => "No user found with the given username",
@@ -109,6 +108,8 @@ return array(
 	"comments_exp"          => "Allow users to comment on pastes.",
 	"share"                 => "Sharing",
 	"share_exp"             => "Allow users to share pastes by email.",
+	"delete_pastes"         => "Delete pastes",
+	"delete_pastes_exp"     => "Allow users to delete their own pastes. Admins can always delete any pastes.",
 	"site_updated"          => "Site settings updated successfully",
 	"word_censor"           => "Word censor",
 	"word_censor_exp"       => "This module allows you to block pastes that contain specific words. ".

@@ -51,6 +51,7 @@ return array(
 	"paste_title"       => "Paste title",
 	"paste_data"        => "Paste data",
 	"paste_lang"        => "Language",
+	"paste_deleted"     => "The paste has been deleted successfully",
 	"action_confirm"    => "Are you sure you want to perform this action?",
 	"not_available"     => "N/A",
 	"feed"              => "Feed",
