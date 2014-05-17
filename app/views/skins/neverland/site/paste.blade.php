@@ -88,6 +88,16 @@
 								@if ($role->admin)
 									<li>{{ link_to("admin/paste/{$paste->urlkey}", Lang::get('global.edit_paste')) }}</li>
 								@endif
+
+								@if ($site->general->allowPasteDel OR $role->admin)
+									<li>
+										{{
+											link_to("{$paste->urlkey}/{$paste->hash}/delete", Lang::get('global.delete'), array(
+												'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
+											))
+										}}
+									</li>
+								@endif
 							</ul>
 						</span>
 					@endif
