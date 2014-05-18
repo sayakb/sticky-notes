@@ -18,14 +18,14 @@
         "php": ">=5.2.4"
     },
     "require-dev": {
-        "mockery/mockery": "~0.9@dev"
+        "mockery/mockery": "~0.9.1"
     },
     "autoload": {
         "files": ["lib/swift_required.php"]
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.1-dev"
+            "dev-master": "5.2-dev"
         }
     }
 }

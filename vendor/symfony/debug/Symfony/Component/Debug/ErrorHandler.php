@@ -144,6 +144,13 @@ class ErrorHandler
             if (!class_exists('Symfony\Component\Debug\Exception\ContextErrorException')) {
                 require __DIR__.'/Exception/ContextErrorException.php';
             }
+            if (!class_exists('Symfony\Component\Debug\Exception\FlattenException')) {
+                require __DIR__.'/Exception/FlattenException.php';
+            }
+
+            if (PHP_VERSION_ID < 50400 && isset($context['GLOBALS']) && is_array($context)) {
+                unset($context['GLOBALS']);
+            }
 
             $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
 

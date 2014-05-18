@@ -232,7 +232,7 @@ class Container implements ArrayAccess
     }
     protected function missingLeadingSlash($abstract)
     {
-        return is_string($abstract) && !starts_with($abstract, '\\');
+        return is_string($abstract) && strpos($abstract, '\\') !== 0;
     }
     public function build($concrete, $parameters = array())
     {
@@ -1118,7 +1118,7 @@ class Request extends SymfonyRequest
         if ($request instanceof static) {
             return $request;
         }
-        return with($self = new static())->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
+        return with(new static())->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
     }
     public function session()
     {
@@ -3155,7 +3155,7 @@ abstract class Facade
     }
     public static function __callStatic($method, $args)
     {
-        $instance = static::resolveFacadeInstance(static::getFacadeAccessor());
+        $instance = static::getFacadeRoot();
         switch (count($args)) {
             case 0:
                 return $instance->{$method}();
@@ -3381,6 +3381,12 @@ class ErrorHandler
         if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
             if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
                 require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
+            }
+            if (!class_exists('Symfony\\Component\\Debug\\Exception\\FlattenException')) {
+                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/FlattenException.php';
+            }
+            if (PHP_VERSION_ID < 50400 && isset($context['GLOBALS']) && is_array($context)) {
+                unset($context['GLOBALS']);
             }
             $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
             $exceptionHandler = set_exception_handler(function () {
@@ -6702,10 +6708,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             if (!array_key_exists($key, $attributes)) {
                 continue;
             }
-            $attributes[$key] = $this->mutateAttribute($key, $attributes[$key]);
+            $attributes[$key] = $this->mutateAttributeForArray($key, $attributes[$key]);
         }
         foreach ($this->appends as $key) {
-            $attributes[$key] = $this->mutateAttribute($key, null);
+            $attributes[$key] = $this->mutateAttributeForArray($key, null);
         }
         return $attributes;
     }
@@ -6792,6 +6798,11 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     protected function mutateAttribute($key, $value)
     {
         return $this->{'get' . studly_case($key) . 'Attribute'}($value);
+    }
+    protected function mutateAttributeForArray($key, $value)
+    {
+        $value = $this->mutateAttribute($key, $value);
+        return $value instanceof ArrayableInterface ? $value->toArray() : $value;
     }
     public function setAttribute($key, $value)
     {
@@ -7924,7 +7935,7 @@ class Encrypter
     protected function stripPadding($value)
     {
         $pad = ord($value[($len = strlen($value)) - 1]);
-        return $this->paddingIsValid($pad, $value) ? substr($value, 0, strlen($value) - $pad) : $value;
+        return $this->paddingIsValid($pad, $value) ? substr($value, 0, $len - $pad) : $value;
     }
     protected function paddingIsValid($pad, $value)
     {
@@ -8137,6 +8148,10 @@ class Logger implements LoggerInterface
         }
         return array_shift($this->handlers);
     }
+    public function getHandlers()
+    {
+        return $this->handlers;
+    }
     public function pushProcessor($callback)
     {
         if (!is_callable($callback)) {
@@ -8150,6 +8165,10 @@ class Logger implements LoggerInterface
             throw new \LogicException('You tried to pop from an empty processor stack.');
         }
         return array_shift($this->processors);
+    }
+    public function getProcessors()
+    {
+        return $this->processors;
     }
     public function addRecord($level, $message, array $context = array())
     {
@@ -8476,7 +8495,7 @@ class RotatingFileHandler extends StreamHandler
     protected $nextRotation;
     protected $filenameFormat;
     protected $dateFormat;
-    public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = true, $filePermission = 420)
+    public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = true, $filePermission = null)
     {
         $this->filename = $filename;
         $this->maxFiles = (int) $maxFiles;

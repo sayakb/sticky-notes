@@ -103,7 +103,7 @@ class Logger implements LoggerInterface
     );
 
     /**
-     * @var DateTimeZone
+     * @var \DateTimeZone
      */
     protected static $timezone;
 
@@ -173,6 +173,14 @@ class Logger implements LoggerInterface
     }
 
     /**
+     * @return HandlerInterface[]
+     */
+    public function getHandlers()
+    {
+        return $this->handlers;
+    }
+
+    /**
      * Adds a processor on to the stack.
      *
      * @param callable $callback
@@ -197,6 +205,14 @@ class Logger implements LoggerInterface
         }
 
         return array_shift($this->processors);
+    }
+
+    /**
+     * @return callable[]
+     */
+    public function getProcessors()
+    {
+        return $this->processors;
     }
 
     /**
