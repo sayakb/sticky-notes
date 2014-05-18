@@ -180,6 +180,12 @@ return array(
 					'default'  => 0,
 				),
 
+				(object) array(
+					'name'     => 'flagged',
+					'type'     => 'boolean',
+					'default'  => 0,
+				),
+
 			),
 
 			'revisions' => array(

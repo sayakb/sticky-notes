@@ -137,6 +137,37 @@ class ShowController extends BaseController {
 				}
 
 				return Redirect::to(URL::previous());
+
+			case 'flag':
+
+				$paste->flagged = 1;
+
+				$paste->save();
+
+				Cache::forget('global.flags');
+
+				Session::flash('messages.success', Lang::get('global.paste_flagged'));
+
+				return Redirect::to(URL::previous());
+
+			case 'unflag':
+
+				if (Auth::roles()->admin)
+				{
+					$paste->flagged = 0;
+
+					$paste->save();
+
+					Cache::forget('global.flags');
+
+					Session::flash('messages.success', Lang::get('global.paste_unflagged'));
+				}
+				else
+				{
+					App::abort(401); // Unauthorized
+				}
+
+				return Redirect::to(URL::previous());
 		}
 
 		// Build the sharing subject for the paste

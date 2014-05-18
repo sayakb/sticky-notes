@@ -64,6 +64,7 @@ class View extends \Illuminate\Support\Facades\View {
 				'active'     => $active,
 				'error'      => Session::get('messages.error'),
 				'success'    => Session::get('messages.success'),
+				'global'     => Session::get('messages.global'),
 				'context'    => System::action(),
 				'container'  => Input::has('ajax') ? 'wrapper' : 'page',
 			);

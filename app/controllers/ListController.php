@@ -247,6 +247,30 @@ class ListController extends BaseController {
 	}
 
 	/**
+	 * Displays a list of flagged pastes
+	 *
+	 * @access public
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function getFlagged()
+	{
+		$perPage = Site::config('general')->perPage;
+
+		// Get all flagged pastes
+		$query = Paste::where('flagged', 1);
+
+		// Filter by project
+		if ( ! empty($this->project))
+		{
+			$query = $query->where('project', $this->project);
+		}
+
+		$pastes = $query->orderBy('id', 'desc')->paginate($perPage);
+
+		return $this->getList($pastes, TRUE);
+	}
+
+	/**
 	 * Parses and displays a list
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Model  $pastes

@@ -41,6 +41,12 @@ Route::group(array('before' => 'private'), function()
 	Route::get('search', 'ListController@getSearch');
 
 	Route::post('search', 'ListController@postSearch');
+
+	// Admin-only lists
+	Route::group(array('before' => 'admin'), function()
+	{
+		Route::get('flagged', 'ListController@getFlagged');
+	});
 });
 
 // API routes
@@ -112,6 +118,9 @@ Route::group(array('before' => 'auth'), function()
 
 // Installed state check for everything
 Route::when('*', 'installed', array('get', 'post'));
+
+// Global message population
+Route::when('*', 'global', array('get'));
 
 // CSRF protection for all forms
 Route::when('*', 'csrf', array('post'));
