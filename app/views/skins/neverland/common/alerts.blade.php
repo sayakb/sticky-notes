@@ -1,3 +1,21 @@
+@if ( ! empty($global))
+	<div class="row-fluid">
+		<div class="span12">
+			<div class="alert alert-warning">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+
+				@if (is_array($global))
+					@foreach ($global as $msg)
+						{{ $msg }}
+					@endforeach
+				@else
+					{{ $global }}
+				@endif
+			</div>
+		</div>
+	</div>
+@endif
+
 @if ( ! empty($success))
 	<div class="row-fluid">
 		<div class="span12">
@@ -14,7 +32,9 @@
 			</div>
 		</div>
 	</div>
-@elseif ( ! empty($error))
+@endif
+
+@if ( ! empty($error))
 	<div class="row-fluid">
 		<div class="span12">
 			<div class="alert alert-danger">
