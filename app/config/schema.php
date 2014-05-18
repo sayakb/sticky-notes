@@ -726,6 +726,16 @@ return array(
 
 			'modifyTables' => array(
 
+				'main' => array(
+
+					(object) array(
+						'name'     => 'flagged',
+						'type'     => 'boolean',
+						'default'  => 0,
+					),
+
+				),
+
 				'users' => array(
 
 					(object) array(

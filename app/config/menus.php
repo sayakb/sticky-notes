@@ -153,7 +153,7 @@ return array(
 			'visible'       => 'role.admin'
 		),
 
-		'admin/services'        => array(
+		'admin/services'    => array(
 			'label'         => 'admin.services',
 			'icon'          => 'briefcase',
 			'visible'       => 'role.admin'

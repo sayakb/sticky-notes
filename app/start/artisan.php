@@ -11,3 +11,8 @@
 |
 */
 
+// Reads a Sticky Notes config value and displays it
+Artisan::add(new ConfigReader);
+
+// Sets a Sticky Notes config value
+Artisan::add(new ConfigWriter);

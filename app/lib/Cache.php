@@ -83,4 +83,16 @@ class Cache extends \Illuminate\Support\Facades\Cache {
 		return static::$cache[$key];
 	}
 
+	/**
+	 * Remove all items from the cache.
+	 *
+	 * @return void
+	 */
+	public static function flush()
+	{
+		static::$cache = array();
+
+		parent::flush();
+	}
+
 }
