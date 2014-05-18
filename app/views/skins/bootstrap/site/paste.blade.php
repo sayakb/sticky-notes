@@ -48,10 +48,24 @@
 						@if ($site->general->share)
 							{{
 								HTML::decode(link_to($share, '<span class="glyphicon glyphicon-envelope"></span>', array(
-									'class' => 'btn btn-warning'
+									'class'       => 'btn btn-warning',
+									'data-toggle' => 'tooltip',
+									'title'       => Lang::get('global.share')
 								)))
 							}}
 						@endif
+
+						{{
+							HTML::decode(
+								link_to("{$paste->urlkey}/{$paste->hash}/flag", '<span class="glyphicon glyphicon-exclamation-sign"></span>', array(
+										'class'       => 'btn btn-danger',
+										'data-toggle' => 'tooltip',
+										'onclick'     => "return confirm('".Lang::get('global.action_confirm')."')",
+										'title'       => Lang::get('global.flag_paste')
+									)
+								)
+							)
+						}}
 					@elseif ($context == 'ListController')
 						{{
 							link_to(Paste::getUrl($paste), Lang::get('list.show_paste'), array(
@@ -86,6 +100,10 @@
 								</li>
 
 								@if ($role->admin)
+									@if ($paste->flagged)
+										<li>{{ link_to("{$paste->urlkey}/{$paste->hash}/unflag", Lang::get('global.remove_flag')) }}</li>
+									@endif
+
 									<li>{{ link_to("admin/paste/{$paste->urlkey}", Lang::get('global.edit_paste')) }}</li>
 								@endif
 
@@ -93,7 +111,7 @@
 									<li>
 										{{
 											link_to("{$paste->urlkey}/{$paste->hash}/delete", Lang::get('global.delete'), array(
-												'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
+												'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')"
 											))
 										}}
 									</li>
