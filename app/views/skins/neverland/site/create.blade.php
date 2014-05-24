@@ -47,6 +47,17 @@
 			</div>
 		</div>
 
+		@if ($site->general->allowAttachment)
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="well well-small well-white">
+						<i class="icon-file"></i>
+						{{ Form::file('attachment') }}
+					</div>
+				</div>
+			</div>
+		@endif
+
 		<div class="row-fluid form-inline">
 			<div class="span6">
 				<div class="control-group">
@@ -57,7 +68,7 @@
 
 						{{
 							Form::password('password', array(
-								'class'         => 'input-xlarge -right',
+								'class'         => 'input-xlarge',
 								'placeholder'   => Lang::get('global.password'),
 								'disabled'      => $disabled
 							))

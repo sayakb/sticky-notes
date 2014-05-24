@@ -248,7 +248,7 @@
 									))
 								}}
 
-								<div class="col-sm-9 col-lg-10">
+								<div class="span9">
 									{{
 										Form::select('allow_paste_del', array(
 											'1' => Lang::get('admin.enabled'),
@@ -260,6 +260,29 @@
 
 									<div class="help-block">
 										{{ Lang::get('admin.delete_pastes_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
+									Form::label('allow_attachment', Lang::get('admin.attachment'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::select('allow_attachment', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->general->allowAttachment, array(
+											'class' => 'input-xxlarge'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.attachment_exp') }}
 									</div>
 								</div>
 							</div>
