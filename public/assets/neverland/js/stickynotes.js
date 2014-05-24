@@ -290,6 +290,7 @@ function initAjaxNavigation()
 		// Execute callback on all links, excluding some
 		$('body').find('a' +
 			':not([href*="/admin"])' +
+			':not([href*="/attachment"])' +
 			':not([href*="#"])' +
 			':not([href*="mailto:"])' +
 			':not([onclick])'
