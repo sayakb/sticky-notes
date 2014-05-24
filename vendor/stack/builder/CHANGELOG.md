@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-* 1.0.2 (2014-xx-xx)
+* 1.0.2 (2014-05-18)
 
   * Validate missing arguments (@bajbnet).
 

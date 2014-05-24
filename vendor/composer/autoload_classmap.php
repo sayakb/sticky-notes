@@ -11,6 +11,8 @@ return array(
     'ApiController' => $baseDir . '/app/controllers/ApiController.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'Comment' => $baseDir . '/app/models/Comment.php',
+    'ConfigReader' => $baseDir . '/app/commands/ConfigReader.php',
+    'ConfigWriter' => $baseDir . '/app/commands/ConfigWriter.php',
     'CreateController' => $baseDir . '/app/controllers/CreateController.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'FeedController' => $baseDir . '/app/controllers/FeedController.php',

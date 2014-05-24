@@ -425,7 +425,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.28';
+    const VERSION = '4.1.29';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -4876,6 +4876,15 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     {
         return $this->current() ? $this->current()->getName() : null;
     }
+    public function is()
+    {
+        foreach (func_get_args() as $pattern) {
+            if (str_is($pattern, $this->currentRouteName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     public function currentRouteNamed($name)
     {
         return $this->current() ? $this->current()->getName() == $name : false;
@@ -4884,6 +4893,15 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     {
         $action = $this->current()->getAction();
         return isset($action['controller']) ? $action['controller'] : null;
+    }
+    public function isAction()
+    {
+        foreach (func_get_args() as $pattern) {
+            if (str_is($pattern, $this->currentRouteAction())) {
+                return true;
+            }
+        }
+        return false;
     }
     public function currentRouteUses($action)
     {
