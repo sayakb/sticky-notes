@@ -6,6 +6,17 @@
 	<section id="show">
 		@include('skins.neverland.site.paste')
 
+		@if ($paste->attachment)
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="well well-small well-white">
+						<i class="icon-file"></i>
+						{{ link_to("attachment/{$paste->urlkey}/{$paste->hash}", $attachment) }}
+					</div>
+				</div>
+			</div>
+		@endif
+
 		@if ($revisions->count() > 0)
 			<div class="row-fluid">
 				<div class="span12">
