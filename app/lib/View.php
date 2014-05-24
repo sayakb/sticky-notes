@@ -17,6 +17,7 @@
 use File;
 use Input;
 use Lang;
+use Paste;
 use Request;
 use Schema;
 use Site;
@@ -80,6 +81,28 @@ class View extends \Illuminate\Support\Facades\View {
 		}
 
 		return static::$viewDefaults;
+	}
+
+	/**
+	 * Checks for and sets global messages for admins
+	 *
+	 * @return void
+	 */
+	public static function globals()
+	{
+		if (Auth::roles()->admin)
+		{
+			$global = array();
+
+			// If there are one or more flagged pastes, show an alert
+			if (Paste::where('flagged', 1)->count() > 0)
+			{
+				$global[] = sprintf(Lang::get('global.alert_flags'), URL::to('flagged'));
+			}
+
+			// Save the global messages to session
+			Session::put('messages.global', $global);
+		}
 	}
 
 	/**

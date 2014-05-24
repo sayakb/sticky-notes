@@ -238,6 +238,9 @@ Route::filter('installed', function()
 				// Run Google Analytics visitor tracking
 				Service::analytics();
 
+				// Set global admin messages
+				View::globals();
+
 				// Run cron tasks
 				Cron::run();
 			}
@@ -255,36 +258,5 @@ Route::filter('installed', function()
 	else if ($installed AND $appVersion == $dbVersion AND ! Session::has('setup.stage'))
 	{
 		return Redirect::to('/');
-	}
-});
-
-/*
-|--------------------------------------------------------------------------
-| Global messages filter
-|--------------------------------------------------------------------------
-|
-| This filter populates various global messages for active systems
-|
-*/
-
-Route::filter('global', function()
-{
-	// Proceed only if it is an active system
-	if (System::version(Site::config('general')->version) > 0)
-	{
-		$global = array();
-
-		// Populate admin messages
-		if (Auth::roles()->admin)
-		{
-			// If there are one or more flagged pastes, show an alert
-			if (Paste::where('flagged', 1)->count() > 0)
-			{
-				$global[] = sprintf(Lang::get('global.alert_flags'), URL::to('flagged'));
-			}
-		}
-
-		// Save the global messages to session
-		Session::put('messages.global', $global);
 	}
 });
