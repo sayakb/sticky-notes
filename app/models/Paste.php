@@ -98,7 +98,7 @@ class Paste extends Eloquent {
 	public static function createNew($source, $data)
 	{
 		// Get the site's configuration
-		$config = Site::config('general');
+		$site = Site::config('general');
 
 		// Set the paste protected flag
 		$protected = ! empty($data['password']);
@@ -119,7 +119,7 @@ class Paste extends Eloquent {
 		$hash = static::getHash();
 
 		// If the site is set as a private site, default $private to true
-		if ($config->privateSite)
+		if ($site->privateSite)
 		{
 			$private = TRUE;
 		}
@@ -153,11 +153,11 @@ class Paste extends Eloquent {
 		// Set the paste expiration time default
 		if ( ! isset($data['expire']) OR $data['expire'] < 0)
 		{
-			$data['expire'] = $config->pasteAge;
+			$data['expire'] = $site->pasteAge;
 		}
 
 		// Check if we have an attachment
-		if (isset($data['attachment']) AND is_array($data['attachment']))
+		if ($site->allowAttachment AND isset($data['attachment']) AND is_array($data['attachment']))
 		{
 			$attachment = empty($data['attachment'][0]) ? 0 : 1;
 		}
