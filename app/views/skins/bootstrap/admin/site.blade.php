@@ -267,6 +267,29 @@
 
 							<div class="form-group">
 								{{
+									Form::label('allow_attachment', Lang::get('admin.attachment'), array(
+										'class' => 'control-label col-sm-3 col-lg-2'
+									))
+								}}
+
+								<div class="col-sm-9 col-lg-10">
+									{{
+										Form::select('allow_attachment', array(
+											'1' => Lang::get('admin.enabled'),
+											'0' => Lang::get('admin.disabled'),
+										), $site->general->allowAttachment, array(
+											'class' => 'form-control'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.attachment_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="form-group">
+								{{
 									Form::label('paste_age', Lang::get('admin.paste_age'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
