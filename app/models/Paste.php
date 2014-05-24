@@ -93,7 +93,7 @@ class Paste extends Eloquent {
 	 * @static
 	 * @param  string  $source
 	 * @param  array   $data
-	 * @return Paste
+	 * @return Illuminate\Database\Eloquent\Model
 	 */
 	public static function createNew($source, $data)
 	{
