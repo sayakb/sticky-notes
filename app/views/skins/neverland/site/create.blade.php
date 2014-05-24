@@ -9,7 +9,6 @@
 				'action'         => $action,
 				'autocomplete'   => 'off',
 				'role'           => 'form',
-				'data-navigate'  => 'ajax'
 			))
 		}}
 
