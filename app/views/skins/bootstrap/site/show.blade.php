@@ -6,6 +6,17 @@
 	<section id="show">
 		@include('skins.bootstrap.site.paste')
 
+		@if ($paste->attachment)
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="well well-sm well-white">
+						<span class="glyphicon glyphicon-paperclip"></span>
+						{{ link_to("attachment/{$paste->urlkey}/{$paste->hash}", $attachment) }}
+					</div>
+				</div>
+			</div>
+		@endif
+
 		@if ($revisions->count() > 0)
 			<div class="row">
 				<div class="col-sm-12">

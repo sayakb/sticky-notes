@@ -19,6 +19,10 @@ footer {
   margin: 30px;
   text-align: center;
 }
+input[type="file"] {
+  display: inline;
+  margin-left: 5px;
+}
 section div.row:first-child h3 {
   margin-top: 0;
 }

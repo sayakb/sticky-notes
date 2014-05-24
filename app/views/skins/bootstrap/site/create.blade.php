@@ -9,7 +9,8 @@
 				'action'         => $action,
 				'autocomplete'   => 'off',
 				'role'           => 'form',
-				'data-navigate'  => 'ajax'
+				'data-navigate'  => 'ajax',
+				'files'          => TRUE
 			))
 		}}
 
@@ -54,6 +55,17 @@
 				</div>
 			</div>
 		</div>
+
+		@if ($site->general->allowAttachment)
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="well well-sm well-white">
+						<span class="glyphicon glyphicon-paperclip"></span>
+						{{ Form::file('attachment') }}
+					</div>
+				</div>
+			</div>
+		@endif
 
 		<div class="row">
 			<div class="col-sm-4">
