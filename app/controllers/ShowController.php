@@ -44,7 +44,7 @@ class ShowController extends BaseController {
 		// Paste was not found
 		if (is_null($paste))
 		{
-			App::abort(404);
+			App::abort(404); // Not found
 		}
 
 		// Check if the logged in user is the owner of the paste
@@ -181,6 +181,19 @@ class ShowController extends BaseController {
 			'share'      => 'mailto:?subject='.urlencode($subject),
 		);
 
+		// If paste has an attachment, get the file type
+		if ($paste->attachment)
+		{
+			$pathToFile = storage_path()."/uploads/{$paste->urlkey}";
+
+			if (File::exists($pathToFile))
+			{
+				$file = new Symfony\Component\HttpFoundation\File\File($pathToFile);
+
+				$data['attachment'] = sprintf(Lang::get('show.download_attachment'), $file->getMimeType());
+			}
+		}
+
 		// Display the show paste view
 		return View::make('site/show', $data);
 	}
@@ -217,7 +230,7 @@ class ShowController extends BaseController {
 	 *
 	 * @param  string  $oldkey
 	 * @param  string  $newkey
-	 * @return void
+	 * @return \Illuminate\Support\Facades\View
 	 */
 	public function getDiff($oldkey, $newkey)
 	{
@@ -232,6 +245,58 @@ class ShowController extends BaseController {
 		);
 
 		return View::make('site/diff', $data);
+	}
+
+	/**
+	 * Triggers download action for a paste's attachment
+	 *
+	 * @param  string  $urlkey
+	 * @param  string  $hash
+	 * @return \Illuminate\Support\Facades\View
+	 */
+	public function getAttachment($urlkey, $hash = '')
+	{
+		$paste = Paste::where('urlkey', $urlkey)->first();
+
+		// Paste and/or attachment was not found
+		if (is_null($paste))
+		{
+			App::abort(404); // Not found
+		}
+
+		// Check if the logged in user is the owner of the paste
+		$owner = Auth::access($paste->author_id);
+
+		// We do not make password prompt mandatory for owners
+		if ( ! $owner)
+		{
+			// Require hash to be passed for private pastes
+			if ($paste->private AND $paste->hash != $hash)
+			{
+				App::abort(401); // Unauthorized
+			}
+
+			// Check if paste is password protected and user hasn't entered
+			// the password yet
+			if ($paste->password AND ! Session::has('paste.password'.$paste->id))
+			{
+				return View::make('site/password', array());
+			}
+		}
+
+		// Find the attachment, and process the download
+		if ($paste->attachment)
+		{
+			$pathToFile = storage_path()."/uploads/{$paste->urlkey}";
+
+			if (File::exists($pathToFile))
+			{
+				return Response::download($pathToFile);
+			}
+		}
+
+		// If we are here, the attachment wasn't found
+		App::abort(404);
 	}
 
 	/**

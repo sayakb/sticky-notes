@@ -61,12 +61,15 @@ class CreateController extends BaseController {
 	 */
 	public function postCreate()
 	{
+		// Get the site configuration
+		$site = Site::config('general');
+
 		// Define validation rules
 		$validator = Validator::make(Input::all(), array(
-			'title'     => 'max:30',
-			'data'      => 'required|auth|mbmax:'.Site::config('general')->maxPasteSize,
-			'language'  => 'required|in:'.Highlighter::make()->languages(TRUE),
-			'expire'    => 'in:'.Paste::getExpiration('create', TRUE),
+			'title'      => 'max:30',
+			'data'       => 'required|auth|mbmax:'.$site->maxPasteSize,
+			'language'   => 'required|in:'.Highlighter::make()->languages(TRUE),
+			'expire'     => 'in:'.Paste::getExpiration('create', TRUE),
 		));
 
 		// Generate anti-spam modules
@@ -114,6 +117,17 @@ class CreateController extends BaseController {
 
 			// All OK! Create the paste already!!
 			$paste = Paste::createNew('web', Input::all());
+
+			// Now, save the attachment, if any (and if enabled)
+			if ($site->allowAttachment AND Input::hasFile('attachment'))
+			{
+				$file = Input::file('attachment');
+
+				if ($file->isValid())
+				{
+					$file->move(storage_path().'/uploads', $paste->urlkey);
+				}
+			}
 
 			// Redirect to paste if there's no password
 			// Otherwise, just show a link

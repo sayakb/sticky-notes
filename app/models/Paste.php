@@ -156,24 +156,36 @@ class Paste extends Eloquent {
 			$data['expire'] = $config->pasteAge;
 		}
 
-		// Insert the new paste
+		// Check if we have an attachment
+		if (isset($data['attachment']) AND is_array($data['attachment']))
+		{
+			$attachment = empty($data['attachment'][0]) ? 0 : 1;
+		}
+		else
+		{
+			$attachment = 0;
+		}
+
+		// Set up the new paste
 		$paste = new Paste;
 
-		$paste->project   = empty($data['project']) ? NULL : $data['project'];
-		$paste->title     = empty($data['title']) ? NULL : $data['title'];
-		$paste->data      = $data['data'];
-		$paste->language  = $data['language'];
-		$paste->private   = ($protected OR $private) ? 1 : 0;
-		$paste->password  = $password;
-		$paste->salt      = $salt;
-		$paste->hash      = $hash;
-		$paste->urlkey    = $urlkey;
-		$paste->author    = $author;
-		$paste->author_id = $authorId;
-		$paste->timestamp = time();
-		$paste->expire    = $data['expire'] > 0 ? time() + $data['expire'] : 0;
-		$paste->ip        = Request::getClientIp();
-		$paste->hits      = 0;
+		$paste->project    = empty($data['project']) ? NULL : $data['project'];
+		$paste->title      = empty($data['title']) ? NULL : $data['title'];
+		$paste->data       = $data['data'];
+		$paste->language   = $data['language'];
+		$paste->private    = ($protected OR $private) ? 1 : 0;
+		$paste->password   = $password;
+		$paste->salt       = $salt;
+		$paste->hash       = $hash;
+		$paste->urlkey     = $urlkey;
+		$paste->author     = $author;
+		$paste->author_id  = $authorId;
+		$paste->timestamp  = time();
+		$paste->expire     = $data['expire'] > 0 ? time() + $data['expire'] : 0;
+		$paste->ip         = Request::getClientIp();
+		$paste->attachment = $attachment;
+		$paste->hits       = 0;
+		$paste->flagged    = 0;
 
 		$paste->save();
 

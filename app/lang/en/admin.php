@@ -110,6 +110,8 @@ return array(
 	"share_exp"             => "Allow users to share pastes by email.",
 	"delete_pastes"         => "Delete pastes",
 	"delete_pastes_exp"     => "Allow users to delete their own pastes. Admins can always delete any pastes.",
+	"attachment"            => "Attachment",
+	"attachment_exp"        => "Allow users to attach an image to their paste.",
 	"site_updated"          => "Site settings updated successfully",
 	"word_censor"           => "Word censor",
 	"word_censor_exp"       => "This module allows you to block pastes that contain specific words. ".

@@ -186,6 +186,12 @@ return array(
 					'default'  => 0,
 				),
 
+				(object) array(
+					'name'     => 'attachment',
+					'type'     => 'boolean',
+					'default'  => 0,
+				),
+
 			),
 
 			'revisions' => array(
@@ -736,6 +742,12 @@ return array(
 
 					(object) array(
 						'name'     => 'flagged',
+						'type'     => 'boolean',
+						'default'  => 0,
+					),
+
+					(object) array(
+						'name'     => 'attachment',
 						'type'     => 'boolean',
 						'default'  => 0,
 					),

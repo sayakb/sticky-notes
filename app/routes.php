@@ -25,6 +25,8 @@ Route::group(array('before' => 'numeric'), function()
 	Route::get('{urlkey}/{hash?}/{action?}/{extra?}', 'ShowController@getPaste')->where('urlkey', 'p[a-zA-Z0-9]+|[0-9]+');
 });
 
+Route::get('attachment/{urlkey}/{hash?}', 'ShowController@getAttachment');
+
 Route::get('diff/{oldkey}/{newkey}', 'ShowController@getDiff');
 
 Route::post('{urlkey}/{hash?}', 'ShowController@postPassword')->where('urlkey', 'p[a-zA-Z0-9]+');
