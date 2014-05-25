@@ -27,7 +27,7 @@
 	</script>
 </head>
 
-<body data-toggle="ajax">
+<body data-toggle="ajax" data-context="{{ $context }}">
 	<div class="loader">
 		@include('skins.neverland.common.loader')
 	</div>
