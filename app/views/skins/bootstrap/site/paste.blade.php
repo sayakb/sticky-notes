@@ -55,17 +55,20 @@
 							}}
 						@endif
 
-						{{
-							HTML::decode(
-								link_to("{$paste->urlkey}/{$paste->hash}/flag", '<span class="glyphicon glyphicon-exclamation-sign"></span>', array(
-										'class'       => 'btn btn-danger',
-										'data-toggle' => 'tooltip',
-										'onclick'     => "return confirm('".Lang::get('global.action_confirm')."')",
-										'title'       => Lang::get('global.flag_paste')
+						@if ($site->general->flagPaste == 'all' OR ($site->general->flagPaste == 'user' AND $role->user))
+							{{
+								HTML::decode(
+									link_to("{$paste->urlkey}/{$paste->hash}/flag", '<span class="glyphicon glyphicon-exclamation-sign"></span>', array(
+											'rel'         => 'nofollow',
+											'class'       => 'btn btn-danger',
+											'data-toggle' => 'tooltip',
+											'onclick'     => "return confirm('".Lang::get('global.action_confirm')."')",
+											'title'       => Lang::get('global.flag_paste')
+										)
 									)
 								)
-							)
-						}}
+							}}
+						@endif
 					@elseif ($context == 'ListController')
 						{{
 							link_to(Paste::getUrl($paste), Lang::get('list.show_paste'), array(
