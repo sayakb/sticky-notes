@@ -140,13 +140,20 @@ class ShowController extends BaseController {
 
 			case 'flag':
 
-				$paste->flagged = 1;
+				if ($site->flagPaste == 'all' OR ($site->flagPaste == 'user' AND Auth::roles()->user))
+				{
+					$paste->flagged = 1;
 
-				$paste->save();
+					$paste->save();
 
-				Cache::forget('global.flags');
+					Cache::forget('global.flags');
 
-				Session::flash('messages.success', Lang::get('global.paste_flagged'));
+					Session::flash('messages.success', Lang::get('global.paste_flagged'));
+				}
+				else
+				{
+					App::abort(401); // Unauthorized
+				}
 
 				return Redirect::to(URL::previous());
 

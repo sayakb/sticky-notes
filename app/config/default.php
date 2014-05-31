@@ -44,6 +44,7 @@ return array(
 		'maxPasteSize'        => '0',
 		'allowPasteDel'       => '1',
 		'allowAttachment'     => '1',
+		'flagPaste'           => 'user',
 	),
 
 	'antispam'                => (object) array(
