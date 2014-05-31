@@ -70,6 +70,7 @@ class RedisClusterHashStrategy implements CommandHashStrategyInterface
             'GETSET'                => $keyIsFirstArgument,
             'INCR'                  => $keyIsFirstArgument,
             'INCRBY'                => $keyIsFirstArgument,
+            'INCRBYFLOAT'           => $keyIsFirstArgument,
             'SETBIT'                => $keyIsFirstArgument,
             'SETEX'                 => $keyIsFirstArgument,
             'MSET'                  => array($this, 'getKeyFromInterleavedArguments'),
@@ -139,6 +140,11 @@ class RedisClusterHashStrategy implements CommandHashStrategyInterface
             'HSETNX'                => $keyIsFirstArgument,
             'HVALS'                 => $keyIsFirstArgument,
             'HSCAN'                 => $keyIsFirstArgument,
+
+            /* commands operating on HyperLogLog */
+            'PFADD'                 => $keyIsFirstArgument,
+            'PFCOUNT'               => array($this, 'getKeyFromAllArguments'),
+            'PFMERGE'               => array($this, 'getKeyFromAllArguments'),
 
             /* scripting */
             'EVAL'                  => array($this, 'getKeyFromScriptingCommands'),

@@ -4,11 +4,19 @@ v0.8.6 (2014-xx-xx)
 - Switched to Redis 2.8 as the default server profile as there are no changes
   that would break compatibility with previous releases.
 
+- Added `PFADD`, `PFCOUNT`, `PFMERGE` to the server profile for Redis 2.8 for
+  handling the HyperLogLog data structure introduced in Redis 2.8.9.
+
 - Minor tweaks to make this version of Predis compatible with HHVM >= 2.4.0.
 
 - Add support for key hash tags when using redis-cluster (Redis 3.0.0b1).
 
 - __FIX__: redis-sentinel does not break the parsing of responses to `INFO`.
+
+- __FIX__: `INCRBYFLOAT` is now handled as expected in cluster and replication
+  configurations (ISSUE #159).
+
+- Upgraded to PHPUnit 4.* for the test suite.
 
 
 v0.8.5 (2014-01-16)

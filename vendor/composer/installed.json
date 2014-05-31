@@ -298,12 +298,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "30de331eb49e0961424744f430aed54ea1947fff"
+            "reference": "eb12b347b7832fa1253e6e9950be821b0ad64708"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/30de331eb49e0961424744f430aed54ea1947fff",
-            "reference": "30de331eb49e0961424744f430aed54ea1947fff",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/eb12b347b7832fa1253e6e9950be821b0ad64708",
+            "reference": "eb12b347b7832fa1253e6e9950be821b0ad64708",
             "shasum": ""
         },
         "require": {
@@ -319,7 +319,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 4.3.3."
         },
-        "time": "2014-05-22 13:27:56",
+        "time": "2014-05-30 13:50:36",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -529,67 +529,18 @@
         ]
     },
     {
-        "name": "predis/predis",
-        "version": "0.8.x-dev",
-        "version_normalized": "0.8.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/nrk/predis.git",
-            "reference": "83df2ef11c18ea490daf6a7a8789315f57f555a8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/nrk/predis/zipball/83df2ef11c18ea490daf6a7a8789315f57f555a8",
-            "reference": "83df2ef11c18ea490daf6a7a8789315f57f555a8",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "suggest": {
-            "ext-curl": "Allows access to Webdis when paired with phpiredis",
-            "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
-        },
-        "time": "2014-03-25 14:02:22",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Predis": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Daniele Alessandri",
-                "email": "suppakilla@gmail.com",
-                "homepage": "http://clorophilla.net"
-            }
-        ],
-        "description": "Flexible and feature-complete PHP client library for Redis",
-        "homepage": "http://github.com/nrk/predis",
-        "keywords": [
-            "nosql",
-            "predis",
-            "redis"
-        ]
-    },
-    {
         "name": "monolog/monolog",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "6171a062686b4c34789b869d8056091b286c0607"
+            "reference": "016423a804140a33814b8fad4240dbfa49a884da"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/6171a062686b4c34789b869d8056091b286c0607",
-            "reference": "6171a062686b4c34789b869d8056091b286c0607",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/016423a804140a33814b8fad4240dbfa49a884da",
+            "reference": "016423a804140a33814b8fad4240dbfa49a884da",
             "shasum": ""
         },
         "require": {
@@ -614,7 +565,7 @@
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2014-05-22 17:19:06",
+        "time": "2014-05-29 15:04:35",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -749,12 +700,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "46d55baab96f943061de6712b38011db354eed78"
+            "reference": "59e424776e352f0adb325daecdb7f136757853fe"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/46d55baab96f943061de6712b38011db354eed78",
-            "reference": "46d55baab96f943061de6712b38011db354eed78",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/59e424776e352f0adb325daecdb7f136757853fe",
+            "reference": "59e424776e352f0adb325daecdb7f136757853fe",
             "shasum": ""
         },
         "require": {
@@ -763,7 +714,7 @@
         "require-dev": {
             "mockery/mockery": "~0.9.1"
         },
-        "time": "2014-05-08 08:35:11",
+        "time": "2014-05-25 14:34:15",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1496,63 +1447,6 @@
         "homepage": "http://symfony.com"
     },
     {
-        "name": "symfony/dom-crawler",
-        "version": "2.4.x-dev",
-        "version_normalized": "2.4.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/DomCrawler",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/DomCrawler.git",
-            "reference": "5e8ad4367af467b9e40d6bb27d58a76a87cebb79"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/5e8ad4367af467b9e40d6bb27d58a76a87cebb79",
-            "reference": "5e8ad4367af467b9e40d6bb27d58a76a87cebb79",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "symfony/css-selector": "~2.0"
-        },
-        "suggest": {
-            "symfony/css-selector": ""
-        },
-        "time": "2014-05-21 15:50:42",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\DomCrawler\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony DomCrawler Component",
-        "homepage": "http://symfony.com"
-    },
-    {
         "name": "symfony/translation",
         "version": "2.4.x-dev",
         "version_normalized": "2.4.9999999.9999999-dev",
@@ -1669,6 +1563,115 @@
         "homepage": "http://symfony.com"
     },
     {
+        "name": "predis/predis",
+        "version": "0.8.x-dev",
+        "version_normalized": "0.8.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nrk/predis.git",
+            "reference": "c4b592298c8b83e05da3c791a2e0ab26e49708aa"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nrk/predis/zipball/c4b592298c8b83e05da3c791a2e0ab26e49708aa",
+            "reference": "c4b592298c8b83e05da3c791a2e0ab26e49708aa",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0"
+        },
+        "suggest": {
+            "ext-curl": "Allows access to Webdis when paired with phpiredis",
+            "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+        },
+        "time": "2014-05-30 10:22:12",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Predis": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Alessandri",
+                "email": "suppakilla@gmail.com",
+                "homepage": "http://clorophilla.net"
+            }
+        ],
+        "description": "Flexible and feature-complete PHP client library for Redis",
+        "homepage": "http://github.com/nrk/predis",
+        "keywords": [
+            "nosql",
+            "predis",
+            "redis"
+        ]
+    },
+    {
+        "name": "symfony/dom-crawler",
+        "version": "2.4.x-dev",
+        "version_normalized": "2.4.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/DomCrawler",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/DomCrawler.git",
+            "reference": "667b11b7099dc823bac0bc65a36b65488d4486eb"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/667b11b7099dc823bac0bc65a36b65488d4486eb",
+            "reference": "667b11b7099dc823bac0bc65a36b65488d4486eb",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "symfony/css-selector": "~2.0"
+        },
+        "suggest": {
+            "symfony/css-selector": ""
+        },
+        "time": "2014-05-26 15:36:05",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\DomCrawler\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony DomCrawler Component",
+        "homepage": "http://symfony.com"
+    },
+    {
         "name": "symfony/http-kernel",
         "version": "2.4.x-dev",
         "version_normalized": "2.4.9999999.9999999-dev",
@@ -1676,12 +1679,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/HttpKernel.git",
-            "reference": "17bc11b13f264299126f1928cc500cd635c0d1ab"
+            "reference": "8e0504d7abfdbfc7e9d45d3c18830c0c2c52a916"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/17bc11b13f264299126f1928cc500cd635c0d1ab",
-            "reference": "17bc11b13f264299126f1928cc500cd635c0d1ab",
+            "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/8e0504d7abfdbfc7e9d45d3c18830c0c2c52a916",
+            "reference": "8e0504d7abfdbfc7e9d45d3c18830c0c2c52a916",
             "shasum": ""
         },
         "require": {
@@ -1697,7 +1700,6 @@
             "symfony/config": "~2.0",
             "symfony/console": "~2.2",
             "symfony/dependency-injection": "~2.0",
-            "symfony/filesystem": "~2.4",
             "symfony/finder": "~2.0",
             "symfony/process": "~2.0",
             "symfony/routing": "~2.2",
@@ -1710,10 +1712,9 @@
             "symfony/config": "",
             "symfony/console": "",
             "symfony/dependency-injection": "",
-            "symfony/filesystem": "",
             "symfony/finder": ""
         },
-        "time": "2014-05-23 14:00:26",
+        "time": "2014-05-26 16:43:09",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1752,12 +1753,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "3f0269f97344deed0b7b5279d368a099837c7483"
+            "reference": "8da08c2f80aa5031d1a5e045f85917824292a9b5"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/3f0269f97344deed0b7b5279d368a099837c7483",
-            "reference": "3f0269f97344deed0b7b5279d368a099837c7483",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/8da08c2f80aa5031d1a5e045f85917824292a9b5",
+            "reference": "8da08c2f80aa5031d1a5e045f85917824292a9b5",
             "shasum": ""
         },
         "require": {
@@ -1827,7 +1828,7 @@
         "suggest": {
             "doctrine/dbal": "Allow renaming columns and dropping SQLite columns."
         },
-        "time": "2014-05-23 16:44:01",
+        "time": "2014-05-30 18:49:47",
         "type": "library",
         "extra": {
             "branch-alias": {

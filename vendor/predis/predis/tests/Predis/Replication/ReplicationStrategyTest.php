@@ -286,6 +286,7 @@ class ReplicationStrategyTest extends PredisTestCase
             'GETSET'                => 'write',
             'INCR'                  => 'write',
             'INCRBY'                => 'write',
+            'INCRBYFLOAT'           => 'write',
             'SETBIT'                => 'write',
             'SETEX'                 => 'write',
             'MSET'                  => 'write',
@@ -356,6 +357,11 @@ class ReplicationStrategyTest extends PredisTestCase
             'HSETNX'                => 'write',
             'HVALS'                 => 'read',
             'HSCAN'                 => 'read',
+
+            /* commands operating on HyperLogLog */
+            'PFADD'                 => 'write',
+            'PFMERGE'               => 'write',
+            'PFCOUNT'               => 'read',
 
             /* scripting */
             'EVAL'                  => 'write',

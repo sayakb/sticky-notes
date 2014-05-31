@@ -940,7 +940,9 @@ class Request extends SymfonyRequest
     public function segments()
     {
         $segments = explode('/', $this->path());
-        return array_values(array_filter($segments));
+        return array_values(array_filter($segments, function ($v) {
+            return $v != '';
+        }));
     }
     public function is()
     {
@@ -5931,6 +5933,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     protected $touches = array();
     protected $observables = array();
     protected $with = array();
+    protected $morphClass;
     public $exists = false;
     protected $softDelete = false;
     public static $snakeAttributes = true;
@@ -6419,8 +6422,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
                 $this->updateTimestamps();
             }
             $dirty = $this->getDirty();
-            $this->setKeysForSaveQuery($query)->update($dirty);
-            $this->fireModelEvent('updated', false);
+            if (count($dirty) > 0) {
+                $this->setKeysForSaveQuery($query)->update($dirty);
+                $this->fireModelEvent('updated', false);
+            }
         }
         return true;
     }
@@ -6612,6 +6617,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $id = $id ?: $name . '_id';
         return array($type, $id);
     }
+    public function getMorphClass()
+    {
+        return $this->morphClass ?: get_class($this);
+    }
     public function getPerPage()
     {
         return $this->perPage;
@@ -6722,6 +6731,12 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function attributesToArray()
     {
         $attributes = $this->getArrayableAttributes();
+        foreach ($this->getDates() as $key) {
+            if (!array_key_exists($key, $attributes)) {
+                continue;
+            }
+            $attributes[$key] = (string) $this->asDateTime($attributes[$key]);
+        }
         foreach ($this->getMutatedAttributes() as $key) {
             if (!array_key_exists($key, $attributes)) {
                 continue;
@@ -6963,6 +6978,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public static function setConnectionResolver(Resolver $resolver)
     {
         static::$resolver = $resolver;
+    }
+    public static function unsetConnectionResolver()
+    {
+        static::$resolver = null;
     }
     public static function getEventDispatcher()
     {

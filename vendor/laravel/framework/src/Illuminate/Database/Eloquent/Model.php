@@ -150,6 +150,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	protected $with = array();
 
 	/**
+	 * The class name to be used in polymorphic relations.
+	 *
+	 * @var string
+	 */
+	protected $morphClass;
+
+	/**
 	 * Indicates if the model exists.
 	 *
 	 * @var bool
@@ -1436,9 +1443,12 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 			// models are updated, giving them a chance to do any special processing.
 			$dirty = $this->getDirty();
 
-			$this->setKeysForSaveQuery($query)->update($dirty);
+			if (count($dirty) > 0)
+			{
+				$this->setKeysForSaveQuery($query)->update($dirty);
 
-			$this->fireModelEvent('updated', false);
+				$this->fireModelEvent('updated', false);
+			}
 		}
 
 		return true;
@@ -1912,6 +1922,16 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
+	 * Get the class name for polymorphic relations.
+	 *
+	 * @return string
+	 */
+	public function getMorphClass()
+	{
+		return $this->morphClass ?: get_class($this);
+	}
+
+	/**
 	 * Get the number of models to return per page.
 	 *
 	 * @return int
@@ -2179,6 +2199,16 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public function attributesToArray()
 	{
 		$attributes = $this->getArrayableAttributes();
+
+		// If an attribute is a date, we will cast it to a string after converting it
+		// to a DateTime / Carbon instance. This is so we will get some consistent
+		// formatting while accessing attributes vs. arraying / JSONing a model.
+		foreach ($this->getDates() as $key)
+		{
+			if ( ! array_key_exists($key, $attributes)) continue;
+
+			$attributes[$key] = (string) $this->asDateTime($attributes[$key]);
+		}
 
 		// We want to spin through all the mutated attributes for this model and call
 		// the mutator for the attribute. We cache off every mutated attributes so
@@ -2799,6 +2829,16 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public static function setConnectionResolver(Resolver $resolver)
 	{
 		static::$resolver = $resolver;
+	}
+
+	/**
+	 * Unset the connection resolver for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetConnectionResolver()
+	{
+		static::$resolver = null;
 	}
 
 	/**
