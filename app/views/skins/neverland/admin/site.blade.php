@@ -243,6 +243,30 @@
 
 							<div class="control-group">
 								{{
+									Form::label('flag_paste', Lang::get('admin.flagging'), array(
+										'class' => 'control-label span2'
+									))
+								}}
+
+								<div class="span9">
+									{{
+										Form::select('flag_paste', array(
+											'all'  => Lang::get('admin.flag_all'),
+											'user' => Lang::get('admin.flag_user'),
+											'off'  => Lang::get('admin.flag_off'),
+										), $site->general->flagPaste, array(
+											'class' => 'input-xxlarge'
+										))
+									}}
+
+									<div class="help-block">
+										{{ Lang::get('admin.flagging_exp') }}
+									</div>
+								</div>
+							</div>
+
+							<div class="control-group">
+								{{
 									Form::label('allow_paste_del', Lang::get('admin.delete_pastes'), array(
 										'class' => 'control-label span2'
 									))
