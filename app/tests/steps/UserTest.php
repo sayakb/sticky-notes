@@ -10,7 +10,7 @@
  * @copyright   (c) 2014 Sayak Banerjee <mail@sayakbanerjee.com>
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://sayakbanerjee.com/sticky-notes
- * @since       Version 1.7
+ * @since       Version 1.8
  * @filesource
  */
 
@@ -30,7 +30,9 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testGetLogin()
 	{
-		$this->action('GET', 'UserController@getLogin');
+		$this->initTestStep();
+
+		$this->call('GET', 'user/login');
 
 		$this->assertResponseOk();
 	}
@@ -40,7 +42,9 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testPostLogin()
 	{
-		$response = $this->action('POST', 'UserController@postLogin', array(
+		$this->initTestStep();
+
+		$response = $this->call('POST', 'user/login', array(
 			'username' => 'unittest',
 			'password' => 'unittest',
 		));
@@ -53,7 +57,9 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testGetRegister()
 	{
-		$this->action('GET', 'UserController@getRegister');
+		$this->initTestStep();
+
+		$this->call('GET', 'user/register');
 
 		$this->assertResponseOk();
 	}
@@ -63,6 +69,8 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testPostRegister()
 	{
+		$this->initTestStep();
+
 		// Disable the captcha
 		Site::config('auth', array(
 			'db_show_captcha' => 0
@@ -71,13 +79,15 @@ class UserTest extends StickyNotesTestCase {
 		// Generate a random user key
 		$key = 'unittest'.time();
 
-		$this->action('POST', 'UserController@postRegister', array(
+		$this->call('POST', 'user/register', array(
 			'username' => $key,
 			'password' => $key,
 			'email'    => "{$key}@test.com",
 		));
 
 		$this->assertRedirectedTo('user/login');
+
+		$this->assertTrue(User::where('username', $key)->count() == 1);
 	}
 
 	/**
@@ -85,9 +95,9 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testGetLogout()
 	{
-		$this->be(User::first());
+		$this->initTestStep();
 
-		$this->action('GET', 'UserController@getLogout');
+		$this->call('GET', 'user/logout');
 
 		$this->assertFalse(Auth::check());
 	}
@@ -97,7 +107,9 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testGetForgot()
 	{
-		$this->action('GET', 'UserController@getForgot');
+		$this->initTestStep();
+
+		$this->call('GET', 'user/forgot');
 
 		$this->assertResponseOk();
 	}
@@ -109,9 +121,11 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testPostForgot()
 	{
+		$this->initTestStep();
+
 		$username = User::orderBy('id', 'desc')->first()->username;
 
-		$this->action('POST', 'UserController@postForgot', array(
+		$this->call('POST', 'user/forgot', array(
 			'username' => $username,
 		));
 
@@ -123,11 +137,9 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testGetProfile()
 	{
-		$this->be(User::first());
+		$this->initTestStep();
 
-		$this->enableFilters();
-
-		$this->action('GET', 'UserController@getProfile');
+		$this->call('GET', 'user/profile');
 
 		$this->assertResponseOk();
 	}
@@ -137,16 +149,20 @@ class UserTest extends StickyNotesTestCase {
 	 */
 	public function testPostProfile()
 	{
-		$this->be(User::first());
+		$this->initTestStep();
 
-		$this->action('POST', 'UserController@postProfile', array(
+		$key = 'Unit Test'.time();
+
+		$this->call('POST', 'user/profile', array(
 			'username' => 'unittest',
 			'password' => 'unittest',
 			'email'    => 'unit@test.com',
-			'dispname' => 'Unit Test',
+			'dispname' => $key,
 		));
 
 		$this->assertSessionHas('messages.success');
+
+		$this->assertTrue(User::where('dispname', $key)->count() == 1);
 	}
 
 }

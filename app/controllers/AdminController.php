@@ -90,7 +90,7 @@ class AdminController extends BaseController {
 			{
 				case 'rempass':
 
-					$paste->password = NULL;
+					$paste->password = '';
 
 					$paste->save();
 
@@ -102,7 +102,7 @@ class AdminController extends BaseController {
 
 					$paste->private = $paste->private ? 0 : 1;
 
-					$paste->password = NULL;
+					$paste->password = '';
 
 					$paste->save();
 

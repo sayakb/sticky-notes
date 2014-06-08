@@ -10,7 +10,7 @@
  * @copyright   (c) 2014 Sayak Banerjee <mail@sayakbanerjee.com>
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://sayakbanerjee.com/sticky-notes
- * @since       Version 1.7
+ * @since       Version 1.8
  * @filesource
  */
 
@@ -30,17 +30,153 @@ class ShowTest extends StickyNotesTestCase {
 	 */
 	public function testGetPaste()
 	{
-		$paste = Paste::where('private', 0)->first();
+		$this->initTestStep();
 
-		// We need this to inject role data to the paste view
-		$this->enableFilters();
-
-		$this->action('GET', 'ShowController@getPaste', array(
-			'urlkey' => $paste->urlkey,
-			'hash'   => $paste->hash,
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
 		));
 
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}");
+
 		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getPaste's 'delete-paste' action
+	 */
+	public function testGetPasteDeletePaste()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/delete");
+
+		$this->assertSessionHas('messages.success');
+
+		$this->assertRedirectedTo('/');
+
+		$this->assertTrue(Paste::where('id', $paste->id)->count() == 0);
+	}
+
+	/**
+	 * Tests the getPaste's 'delete-comment' action
+	 */
+	public function testGetPasteDeleteComment()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		Comment::insert(array(
+			'paste_id'  => $paste->id,
+			'data'      => 'UnitTest::Comment',
+			'timestamp' => time(),
+		));
+
+		$comment = Comment::where('paste_id', $paste->id)->first();
+
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/delete/{$comment->id}");
+
+		$this->assertRedirectedTo('/');
+
+		$this->assertTrue(Comment::where('id', $comment->id)->count() == 0);
+	}
+
+	/**
+	 * Tests the getPaste's 'raw' action
+	 */
+	public function testGetPasteRaw()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/raw");
+
+		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getPaste's 'toggle' action
+	 */
+	public function testGetPasteToggle()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+			'private'   => 1,
+		));
+
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/toggle");
+
+		$this->assertRedirectedTo('/');
+
+		$this->assertTrue(Paste::find($paste->id)->private == 0);
+	}
+
+	/**
+	 * Tests the getPaste's 'flag' action
+	 */
+	public function testGetPasteFlag()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/flag");
+
+		$this->assertRedirectedTo('/');
+
+		$this->assertSessionHas('messages.success');
+
+		$this->assertTrue(Paste::find($paste->id)->flagged == 1);
+	}
+
+	/**
+	 * Tests the getPaste's 'unflag' action
+	 */
+	public function testGetPasteUnflag()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+			'private'   => 1,
+		));
+
+		$paste->update(array('flagged', 1));
+
+		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/unflag");
+
+		$this->assertRedirectedTo('/');
+
+		$this->assertSessionHas('messages.success');
+
+		$this->assertTrue(Paste::find($paste->id)->flagged == 0);
 	}
 
 	/**
@@ -48,15 +184,22 @@ class ShowTest extends StickyNotesTestCase {
 	 */
 	public function testPostPassword()
 	{
-		$paste = Paste::where('password', '<>', '')->orderBy('id', 'desc')->first();
+		$this->initTestStep();
 
-		$this->action('POST', 'ShowController@postPassword', array(
-			'urlkey'   => $paste->urlkey,
-			'hash'     => $paste->hash,
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'password'  => 'UnitTest::Password',
+			'language'  => 'text',
+		));
+
+		$this->call('POST', "{$paste->urlkey}/{$paste->hash}", array(
 			'password' => 'UnitTest::Password',
 		));
 
 		$this->assertRedirectedTo("{$paste->urlkey}/{$paste->hash}");
+
+		$this->assertSessionHas("paste.password{$paste->id}", TRUE);
 	}
 
 	/**
@@ -64,14 +207,28 @@ class ShowTest extends StickyNotesTestCase {
 	 */
 	public function testGetDiff()
 	{
-		$left = Revision::firstOrFail();
+		$this->initTestStep();
 
-		$right = Paste::findOrFail($left->paste_id);
-
-		$this->action('GET', 'ShowController@getDiff', array(
-			'oldKey' => $left->urlkey,
-			'newKey' => $right->urlkey,
+		$oldPaste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
 		));
+
+		$newPaste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Revision',
+			'language'  => 'text',
+		));
+
+		Revision::insert(array(
+			'paste_id'     => $newPaste->id,
+			'urlkey'       => $oldPaste->urlkey,
+			'author'       => $oldPaste->author,
+			'timestamp'    => $oldPaste->timestamp,
+		));
+
+		$this->call('GET', "diff/{$oldPaste->urlkey}/{$newPaste->urlkey}");
 
 		$this->assertResponseOk();
 	}
@@ -81,20 +238,18 @@ class ShowTest extends StickyNotesTestCase {
 	 */
 	public function testGetAttachment()
 	{
-		$paste = Paste::where('private', 0)->first();
+		$this->initTestStep();
 
-		// We force the attachment flag
-		$paste->attachment = 1;
+		$paste = Paste::createNew('web', array(
+			'title'      => 'UnitTest::Title',
+			'data'       => 'UnitTest::Data',
+			'language'   => 'text',
+			'attachment' => array(1),
+		));
 
-		$paste->save();
-
-		// We create a dummy attachment
 		File::put(storage_path()."/uploads/{$paste->urlkey}", 'UnitTest::Attachment');
 
-		$this->action('GET', 'ShowController@getAttachment', array(
-			'urlkey' => $paste->urlkey,
-			'hash'   => $paste->hash,
-		));
+		$this->call('GET', "attachment/{$paste->urlkey}/{$paste->hash}");
 
 		$this->assertResponseOk();
 	}
@@ -104,14 +259,22 @@ class ShowTest extends StickyNotesTestCase {
 	 */
 	public function testPostComment()
 	{
-		$paste = Paste::firstOrFail();
+		$this->initTestStep();
 
-		$this->action('POST', 'ShowController@postComment', array(
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('POST', 'comment', array(
 			'id'      => $paste->id,
 			'comment' => 'UnitTest::Comment',
 		));
 
 		$this->assertFalse($this->app['session.store']->has('messages.error'));
+
+		$this->assertTrue(Comment::where('paste_id', $paste->id)->count() == 1);
 	}
 
 }

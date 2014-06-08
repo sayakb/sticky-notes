@@ -131,7 +131,7 @@ class ShowController extends BaseController {
 
 					$paste->private = $paste->private ? 0 : 1;
 
-					$paste->password = NULL;
+					$paste->password = '';
 
 					$paste->save();
 				}
@@ -223,7 +223,7 @@ class ShowController extends BaseController {
 
 			if (PHPass::make()->check('Paste', $entered, $paste->salt, $paste->password))
 			{
-				Session::put('paste.password'.$paste->id, TRUE);
+				Session::put("paste.password{$paste->id}", TRUE);
 
 				return Redirect::to("{$urlkey}/{$hash}");
 			}

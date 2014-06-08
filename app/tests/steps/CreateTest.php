@@ -10,7 +10,7 @@
  * @copyright   (c) 2014 Sayak Banerjee <mail@sayakbanerjee.com>
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://sayakbanerjee.com/sticky-notes
- * @since       Version 1.7
+ * @since       Version 1.8
  * @filesource
  */
 
@@ -30,7 +30,9 @@ class CreateTest extends StickyNotesTestCase {
 	 */
 	public function testGetCreate()
 	{
-		$this->action('GET', 'CreateController@getCreate');
+		$this->initTestStep();
+
+		$this->call('GET', '/');
 
 		$this->assertResponseOk();
 	}
@@ -41,15 +43,19 @@ class CreateTest extends StickyNotesTestCase {
 	 */
 	public function testPostCreatePublic()
 	{
-		$this->be(User::first());
+		$this->initTestStep();
 
-		$response = $this->action('POST', 'CreateController@postCreate', array(
+		$key = 'UnitTest::Public'.time();
+
+		$response = $this->call('POST', 'create', array(
 			'title'     => 'UnitTest::Title',
-			'data'      => 'UnitTest::Data',
+			'data'      => $key,
 			'language'  => 'text',
 		));
 
 		$this->assertRedirectedTo($response->getTargetUrl());
+
+		$this->assertTrue(Paste::where('data', $key)->count() == 1);
 	}
 
 	/**
@@ -58,9 +64,13 @@ class CreateTest extends StickyNotesTestCase {
 	 */
 	public function testPostCreateProtected()
 	{
-		$this->action('POST', 'CreateController@postCreate', array(
+		$this->initTestStep();
+
+		$key = 'UnitTest::Protected'.time();
+
+		$this->call('POST', 'create', array(
 			'title'    => 'UnitTest::Title',
-			'data'     => 'UnitTest::Data',
+			'data'     => $key,
 			'password' => 'UnitTest::Password',
 			'language' => 'text',
 		));
@@ -68,6 +78,8 @@ class CreateTest extends StickyNotesTestCase {
 		$this->assertRedirectedTo('/');
 
 		$this->assertSessionHas('messages.success');
+
+		$this->assertTrue(Paste::where('data', $key)->count() == 1);
 	}
 
 	/**
@@ -75,13 +87,15 @@ class CreateTest extends StickyNotesTestCase {
 	 */
 	public function testGetRevision()
 	{
-		// Revisions are allowed only for public pastes
-		// So we get the key for the first public paste
-		$urlkey = Paste::where('private', 0)->firstOrFail()->urlkey;
+		$this->initTestStep();
 
-		$this->action('GET', 'CreateController@getRevision', array(
-			'urlkey' => $urlkey,
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
 		));
+
+		$this->call('GET', "rev/{$paste->urlkey}");
 
 		$this->assertResponseOk();
 	}
@@ -91,20 +105,26 @@ class CreateTest extends StickyNotesTestCase {
 	 */
 	public function testPostRevision()
 	{
-		$id = Paste::where('private', 0)->firstOrFail()->id;
+		$this->initTestStep();
 
-		// This is a security check that is performed at the controller
-		// level which we need to mock
-		$this->session(array('paste.revision' => $id));
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
 
-		$response = $this->action('POST', 'CreateController@postRevision', array(
-			'id'       => $id,
+		$this->session(array('paste.revision' => $paste->id));
+
+		$response = $this->call('POST', 'revise', array(
+			'id'       => $paste->id,
 			'title'    => 'UnitTest::Title',
 			'data'     => 'UnitTest::Revision',
 			'language' => 'text',
 		));
 
 		$this->assertRedirectedTo($response->getTargetUrl());
+
+		$this->assertTrue(Revision::where('urlkey', $paste->urlkey)->count() == 1);
 	}
 
 }

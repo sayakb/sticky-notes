@@ -10,7 +10,7 @@
  * @copyright   (c) 2014 Sayak Banerjee <mail@sayakbanerjee.com>
  * @license     http://www.opensource.org/licenses/bsd-license.php
  * @link        http://sayakbanerjee.com/sticky-notes
- * @since       Version 1.7
+ * @since       Version 1.8
  * @filesource
  */
 
@@ -30,17 +30,105 @@ class ListTest extends StickyNotesTestCase {
 	 */
 	public function testGetAll()
 	{
-		$this->action('GET', 'ListController@getAll');
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'all');
 
 		$this->assertResponseOk();
 	}
 
 	/**
-	 * Tests the getTrending method of the controller
+	 * Tests the getTrending method's 'now' age
 	 */
-	public function testGetTrending()
+	public function testGetTrendingNow()
 	{
-		$this->action('GET', 'ListController@getTrending');
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'trending');
+
+		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getTrending method's 'week' age
+	 */
+	public function testGetTrendingWeek()
+	{
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'trending/week');
+
+		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getTrending method's 'month' age
+	 */
+	public function testGetTrendingMonth()
+	{
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'trending/month');
+
+		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getTrending method's 'year' age
+	 */
+	public function testGetTrendingYear()
+	{
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'trending/year');
+
+		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getTrending method's 'all' age
+	 */
+	public function testGetTrendingAll()
+	{
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'trending/all');
 
 		$this->assertResponseOk();
 	}
@@ -50,11 +138,15 @@ class ListTest extends StickyNotesTestCase {
 	 */
 	public function testGetUserPastes()
 	{
-		$this->be(User::first());
+		$this->initTestStep();
 
-		$this->action('GET', 'ListController@getUserPastes', array(
-			'userid' => 'u1',
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
 		));
+
+		$this->call('GET', 'user/u1/pastes');
 
 		$this->assertResponseOk();
 	}
@@ -64,7 +156,15 @@ class ListTest extends StickyNotesTestCase {
 	 */
 	public function testGetSearch()
 	{
-		$this->action('GET', 'ListController@getSearch', array(
+		$this->initTestStep();
+
+		Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', 'search', array(
 			'q' => 'UnitTest',
 		));
 
@@ -76,7 +176,9 @@ class ListTest extends StickyNotesTestCase {
 	 */
 	public function testPostSearch()
 	{
-		$this->action('POST', 'ListController@postSearch', array(
+		$this->initTestStep();
+
+		$this->call('POST', 'search', array(
 			'search' => 'UnitTest',
 		));
 
@@ -88,15 +190,19 @@ class ListTest extends StickyNotesTestCase {
 	 */
 	public function testGetFlagged()
 	{
-		// Flag the first paste
-		Paste::where('id', 1)->update(array(
-			'flagged' => 1,
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
 		));
 
-		// Only admins have access to flags
-		$this->be(User::first());
+		$paste->flagged = 1;
 
-		$this->action('GET', 'ListController@getFlagged');
+		$paste->save();
+
+		$this->call('GET', 'flagged');
 
 		$this->assertResponseOk();
 	}

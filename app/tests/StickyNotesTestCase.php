@@ -42,10 +42,12 @@ class StickyNotesTestCase extends TestCase {
 	}
 
 	/**
-	 * Enables all filters for the current test step
+	 * Initializes the test step by enabling filters
 	 */
-	protected function enableFilters()
+	protected function initTestStep()
 	{
+		$this->be(User::first());
+
 		Route::enableFilters();
 	}
 

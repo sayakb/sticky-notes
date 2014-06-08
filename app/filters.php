@@ -106,11 +106,14 @@ Route::filter('guest', function()
 
 Route::filter('csrf', function()
 {
-	if (Site::config('general')->csrf AND Request::segment(1) != 'api')
+	if (Site::config('general')->csrf)
 	{
-		if (Session::token() != Input::get('_token'))
+		if (Request::segment(1) != 'api' AND php_sapi_name() != 'cli')
 		{
-			throw new Illuminate\Session\TokenMismatchException;
+			if (Session::token() != Input::get('_token'))
+			{
+				throw new Illuminate\Session\TokenMismatchException;
+			}
 		}
 	}
 });

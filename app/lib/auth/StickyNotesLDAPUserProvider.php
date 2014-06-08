@@ -88,11 +88,12 @@ class StickyNotesLDAPUserProvider implements UserProviderInterface {
 	 */
 	public function retrieveByToken($identifier, $token)
 	{
-		$query = $this->createModel()->newQuery();
+		$model = $this->createModel();
 
-		return $query->where($model->getKeyName(), $identifier)
-                     ->where($model->getRememberTokenName(), $token)
-                     ->first();
+		return $model->newQuery()
+		             ->where($model->getKeyName(), $identifier)
+		             ->where($model->getRememberTokenName(), $token)
+		             ->first();
 	}
 
 	/**
