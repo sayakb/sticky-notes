@@ -60,6 +60,23 @@ class ShowTest extends StickyNotesTestCase {
 	}
 
 	/**
+	 * Tests the getDiff method of the controller
+	 */
+	public function testGetDiff()
+	{
+		$left = Revision::firstOrFail();
+
+		$right = Paste::find($left->paste_id);
+
+		$this->action('GET', 'ShowController@getDiff', array(
+			'oldKey' => $left->urlkey,
+			'newKey' => $right->urlkey,
+		));
+
+		$this->assertResponseOk();
+	}
+
+	/**
 	 * Tests the getAttachment method of the controller
 	 */
 	public function testGetAttachment()

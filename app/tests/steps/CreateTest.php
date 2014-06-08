@@ -100,7 +100,7 @@ class CreateTest extends StickyNotesTestCase {
 		$response = $this->action('POST', 'CreateController@postRevision', array(
 			'id'       => $id,
 			'title'    => 'UnitTest::Title',
-			'data'     => 'UnitTest::Data',
+			'data'     => 'UnitTest::Revision',
 			'language' => 'text',
 		));
 
