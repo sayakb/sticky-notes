@@ -95,7 +95,7 @@ class CreateTest extends StickyNotesTestCase {
 
 		// This is a security check that is performed at the controller
 		// level which we need to mock
-		$this->session(['paste.revision' => $id]);
+		$this->session(array('paste.revision' => $id));
 
 		$response = $this->action('POST', 'CreateController@postRevision', array(
 			'id'       => $id,
