@@ -293,6 +293,7 @@ return array(
 					'name'     => 'remember_token',
 					'type'     => 'string',
 					'length'   => 60,
+					'default'  => '',
 				),
 
 				(object) array(
@@ -382,7 +383,6 @@ return array(
 			$user->salt           = str_random(5);
 			$user->password       = PHPass::make()->create($password, $user->salt);
 			$user->admin          = 1;
-			$user->remember_token = '';
 
 			$user->save();
 
@@ -761,6 +761,7 @@ return array(
 						'name'     => 'remember_token',
 						'type'     => 'string',
 						'length'   => 60,
+						'default'  => '',
 					),
 
 				),
