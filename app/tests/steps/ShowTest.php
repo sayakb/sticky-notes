@@ -99,4 +99,19 @@ class ShowTest extends StickyNotesTestCase {
 		$this->assertResponseOk();
 	}
 
+	/**
+	 * Tests the postComment method of the controller
+	 */
+	public function testPostComment()
+	{
+		$paste = Paste::firstOrFail();
+
+		$this->action('POST', 'ShowController@postComment', array(
+			'id'      => $paste->id,
+			'comment' => 'UnitTest::Comment',
+		));
+
+		$this->assertFalse($this->app['session.store']->has('messages.error'));
+	}
+
 }
