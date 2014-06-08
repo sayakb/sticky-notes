@@ -377,11 +377,12 @@ return array(
 			// Create the admin user
 			$user = new User;
 
-			$user->username = $username;
-			$user->email    = $username.'@'.$fqdn;
-			$user->salt     = str_random(5);
-			$user->password = PHPass::make()->create($password, $user->salt);
-			$user->admin    = 1;
+			$user->username       = $username;
+			$user->email          = $username.'@'.$fqdn;
+			$user->salt           = str_random(5);
+			$user->password       = PHPass::make()->create($password, $user->salt);
+			$user->admin          = 1;
+			$user->remember_token = '';
 
 			$user->save();
 

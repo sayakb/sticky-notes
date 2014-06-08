@@ -41,4 +41,12 @@ class StickyNotesTestCase extends TestCase {
 		return require __DIR__.'/../../bootstrap/start.php';
 	}
 
+	/**
+	 * Enables all filters for the current test step
+	 */
+	protected function enableFilters()
+	{
+		Route::enableFilters();
+	}
+
 }
