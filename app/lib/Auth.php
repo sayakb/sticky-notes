@@ -56,7 +56,7 @@ class Auth extends \Illuminate\Support\Facades\Auth {
 	 */
 	public static function roles()
 	{
-		if ( ! isset(static::$roles))
+		if ( ! isset(static::$roles) OR php_sapi_name() == 'cli')
 		{
 			static::$roles = new stdClass();
 

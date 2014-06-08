@@ -51,7 +51,7 @@ class View extends \Illuminate\Support\Facades\View {
 	 */
 	public static function defaults()
 	{
-		if (is_null(static::$viewDefaults))
+		if (is_null(static::$viewDefaults) OR php_sapi_name() == 'cli')
 		{
 			// Get all site configuration
 			$site = Site::config();

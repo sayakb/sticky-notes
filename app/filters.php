@@ -233,7 +233,7 @@ Route::filter('installed', function()
 			}
 
 			// At this stage, it is safe to run version dependent modules
-			else if (php_sapi_name() != 'cli')
+			else
 			{
 				// Run Google Analytics visitor tracking
 				Service::analytics();
