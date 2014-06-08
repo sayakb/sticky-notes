@@ -66,7 +66,7 @@ class ShowTest extends StickyNotesTestCase {
 	{
 		$left = Revision::firstOrFail();
 
-		$right = Paste::find($left->paste_id);
+		$right = Paste::findOrFail($left->paste_id);
 
 		$this->action('GET', 'ShowController@getDiff', array(
 			'oldKey' => $left->urlkey,

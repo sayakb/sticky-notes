@@ -41,12 +41,12 @@ class CreateTest extends StickyNotesTestCase {
 	 */
 	public function testPostCreatePublic()
 	{
-		// Pass only required parameters and allow Sticky Notes
-		// to default the rest
+		$this->be(User::first());
+
 		$response = $this->action('POST', 'CreateController@postCreate', array(
-			'title'    => 'UnitTest::Title',
-			'data'     => 'UnitTest::Data',
-			'language' => 'text',
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
 		));
 
 		$this->assertRedirectedTo($response->getTargetUrl());
