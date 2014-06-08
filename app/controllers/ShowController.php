@@ -186,6 +186,7 @@ class ShowController extends BaseController {
 			'revisions'  => $paste->revisions,
 			'comments'   => $paste->comments()->paginate($site->perPage),
 			'share'      => 'mailto:?subject='.urlencode($subject),
+			'attachment' => sprintf(Lang::get('show.download_attachment'), Lang::get('show.unknown')),
 		);
 
 		// If paste has an attachment, get the file type

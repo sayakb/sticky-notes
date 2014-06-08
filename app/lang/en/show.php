@@ -24,5 +24,6 @@ return array(
 	"revision_diff"       => "Revision differences",
 	"return_paste"        => "Return to paste",
 	"download_attachment" => "Download attachment (%s)",
+	"unknown"             => "Unknown",
 
 );
