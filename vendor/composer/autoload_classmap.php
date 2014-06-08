@@ -35,6 +35,7 @@ return array(
     'StickyNotes\\Auth\\StickyNotesOAuthUserProvider' => $baseDir . '/app/lib/auth/StickyNotesOAuthUserProvider.php',
     'StickyNotes\\Cache' => $baseDir . '/app/lib/Cache.php',
     'StickyNotes\\Config' => $baseDir . '/app/lib/Config.php',
+    'StickyNotes\\Cookie' => $baseDir . '/app/lib/Cookie.php',
     'StickyNotes\\Cron' => $baseDir . '/app/lib/Cron.php',
     'StickyNotes\\Feed' => $baseDir . '/app/lib/Feed.php',
     'StickyNotes\\Hashing\\HashServiceProvider' => $baseDir . '/app/lib/hashing/HashServiceProvider.php',

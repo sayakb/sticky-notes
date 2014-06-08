@@ -14,7 +14,6 @@
  * @filesource
  */
 
-use Cookie;
 use GeSHi;
 
 /**
