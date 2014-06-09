@@ -425,7 +425,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.29';
+    const VERSION = '4.1.30';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -5140,7 +5140,7 @@ class Route
     }
     protected function parseAction($action)
     {
-        if ($action instanceof Closure) {
+        if (is_callable($action)) {
             return array('uses' => $action);
         } elseif (!isset($action['uses'])) {
             $action['uses'] = $this->findClosure($action);
@@ -5150,7 +5150,7 @@ class Route
     protected function findClosure(array $action)
     {
         return array_first($action, function ($key, $value) {
-            return $value instanceof Closure;
+            return is_callable($value);
         });
     }
     public static function getValidators()
@@ -6732,7 +6732,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         $attributes = $this->getArrayableAttributes();
         foreach ($this->getDates() as $key) {
-            if (!array_key_exists($key, $attributes)) {
+            if (!isset($attributes[$key])) {
                 continue;
             }
             $attributes[$key] = (string) $this->asDateTime($attributes[$key]);
