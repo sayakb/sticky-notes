@@ -4,6 +4,7 @@ use DateTime;
 use ArrayAccess;
 use Carbon\Carbon;
 use LogicException;
+use JsonSerializable;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
 
-abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterface {
+abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterface, JsonSerializable {
 
 	/**
 	 * The connection name for the model.
@@ -164,13 +165,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public $exists = false;
 
 	/**
-	 * Indicates if the model should soft delete.
-	 *
-	 * @var bool
-	 */
-	protected $softDelete = false;
-
-	/**
 	 * Indicates whether attributes are snake cased on arrays.
 	 *
 	 * @var bool
@@ -197,6 +191,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 * @var array
 	 */
 	protected static $booted = array();
+
+	/**
+	 * The array of global scopes on the model.
+	 *
+	 * @var array
+	 */
+	protected static $globalScopes = array();
 
 	/**
 	 * Indicates if all mass assignment is enabled.
@@ -232,13 +233,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 * @var string
 	 */
 	const UPDATED_AT = 'updated_at';
-
-	/**
-	 * The name of the "deleted at" column.
-	 *
-	 * @var string
-	 */
-	const DELETED_AT = 'deleted_at';
 
 	/**
 	 * Create a new Eloquent model instance.
@@ -297,6 +291,70 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 				static::$mutatorCache[$class][] = lcfirst($matches[1]);
 			}
 		}
+
+		static::bootTraits();
+	}
+
+	/**
+	 * Boot all of the bootable traits on the model.
+	 *
+	 * @return void
+	 */
+	protected static function bootTraits()
+	{
+		foreach (class_uses(get_called_class()) as $trait)
+		{
+			if (method_exists(get_called_class(), $method = 'boot'.class_basename($trait)))
+			{
+				forward_static_call([get_called_class(), $method]);
+			}
+		}
+	}
+
+	/**
+	 * Register a new global scope on the model.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\ScopeInterface  $scope
+	 * @return void
+	 */
+	public static function addGlobalScope(ScopeInterface $scope)
+	{
+		static::$globalScopes[get_called_class()][get_class($scope)] = $scope;
+	}
+
+	/**
+	 * Determine if a model has a global scope.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\ScopeInterface  $scope
+	 * @return bool
+	 */
+	public static function hasGlobalScope($scope)
+	{
+		return ! is_null(static::getGlobalScope($scope));
+	}
+
+	/**
+	 * Get a global scope registered with the modal.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\ScopeInterface  $scope
+	 * @return \Illuminate\Database\Eloquent\ScopeInterface|null
+	 */
+	public static function getGlobalScope($scope)
+	{
+		return array_first(static::$globalScopes[get_called_class()], function($key, $value) use ($scope)
+		{
+			return $scope instanceof $value;
+		});
+	}
+
+	/**
+	 * Get the global scopes for this class instance.
+	 *
+	 * @return array
+	 */
+	public function getGlobalScopes()
+	{
+		return array_get(static::$globalScopes, get_class($this), []);
 	}
 
 	/**
@@ -498,6 +556,22 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 		}
 
 		return new static($attributes);
+	}
+
+	/**
+	 * Create or update a record matching the attributes, and fill it with values.
+	 *
+	 * @param array $attributes
+	 * @param array $values
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public static function updateOrCreate(array $attributes, array $values = array())
+	{
+		$instance = static::firstOrNew($attributes);
+
+		$instance->fill($values)->save();
+
+		return $instance;
 	}
 
 	/**
@@ -1043,73 +1117,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
-	 * Force a hard delete on a soft deleted model.
-	 *
-	 * @return void
-	 */
-	public function forceDelete()
-	{
-		$softDelete = $this->softDelete;
-
-		// We will temporarily disable false delete to allow us to perform the real
-		// delete operation against the model. We will then restore the deleting
-		// state to what this was prior to this given hard deleting operation.
-		$this->softDelete = false;
-
-		$this->delete();
-
-		$this->softDelete = $softDelete;
-	}
-
-	/**
 	 * Perform the actual delete query on this model instance.
 	 *
 	 * @return void
 	 */
 	protected function performDeleteOnModel()
 	{
-		$query = $this->newQuery()->where($this->getKeyName(), $this->getKey());
-
-		if ($this->softDelete)
-		{
-			$this->{static::DELETED_AT} = $time = $this->freshTimestamp();
-
-			$query->update(array(static::DELETED_AT => $this->fromDateTime($time)));
-		}
-		else
-		{
-			$query->delete();
-		}
-	}
-
-	/**
-	 * Restore a soft-deleted model instance.
-	 *
-	 * @return bool|null
-	 */
-	public function restore()
-	{
-		if ($this->softDelete)
-		{
-			// If the restoring event does not return false, we will proceed with this
-			// restore operation. Otherwise, we bail out so the developer will stop
-			// the restore totally. We will clear the deleted timestamp and save.
-			if ($this->fireModelEvent('restoring') === false)
-			{
-				return false;
-			}
-
-			$this->{static::DELETED_AT} = null;
-
-			// Once we have saved the model, we will fire the "restored" event so this
-			// developer will do anything they need to after a restore operation is
-			// totally finished. Then we will return the result of the save call.
-			$result = $this->save();
-
-			$this->fireModelEvent('restored', false);
-
-			return $result;
-		}
+		$this->newQuery()->where($this->getKeyName(), $this->getKey())->delete();
 	}
 
 	/**
@@ -1198,28 +1212,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public static function deleted($callback)
 	{
 		static::registerModelEvent('deleted', $callback);
-	}
-
-	/**
-	 * Register a restoring model event with the dispatcher.
-	 *
-	 * @param  \Closure|string  $callback
-	 * @return void
-	 */
-	public static function restoring($callback)
-	{
-		static::registerModelEvent('restoring', $callback);
-	}
-
-	/**
-	 * Register a restored model event with the dispatcher.
-	 *
-	 * @param  \Closure|string  $callback
-	 * @return void
-	 */
-	public static function restored($callback)
-	{
-		static::registerModelEvent('restored', $callback);
 	}
 
 	/**
@@ -1364,7 +1356,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	public function save(array $options = array())
 	{
-		$query = $this->newQueryWithDeleted();
+		$query = $this->newQueryWithoutScopes();
 
 		// If the "saving" event returns false we'll bail out of the save and return
 		// false, indicating that the save failed. This gives an opportunities to
@@ -1403,9 +1395,9 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	protected function finishSave(array $options)
 	{
-		$this->syncOriginal();
-
 		$this->fireModelEvent('saved', false);
+
+		$this->syncOriginal();
 
 		if (array_get($options, 'touch', true)) $this->touchOwners();
 	}
@@ -1664,26 +1656,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
-	 * Get the name of the "deleted at" column.
-	 *
-	 * @return string
-	 */
-	public function getDeletedAtColumn()
-	{
-		return static::DELETED_AT;
-	}
-
-	/**
-	 * Get the fully qualified "deleted at" column.
-	 *
-	 * @return string
-	 */
-	public function getQualifiedDeletedAtColumn()
-	{
-		return $this->getTable().'.'.$this->getDeletedAtColumn();
-	}
-
-	/**
 	 * Get a fresh timestamp for the model.
 	 *
 	 * @return \Carbon\Carbon
@@ -1706,34 +1678,75 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	/**
 	 * Get a new query builder for the model's table.
 	 *
-	 * @param  bool  $excludeDeleted
 	 * @return \Illuminate\Database\Eloquent\Builder|static
 	 */
-	public function newQuery($excludeDeleted = true)
+	public function newQuery()
 	{
-		$builder = $this->newEloquentBuilder($this->newBaseQueryBuilder());
+		$builder = $this->newEloquentBuilder(
+			$this->newBaseQueryBuilder()
+		);
 
 		// Once we have the query builders, we will set the model instances so the
 		// builder can easily access any information it may need from the model
 		// while it is constructing and executing various queries against it.
 		$builder->setModel($this)->with($this->with);
 
-		if ($excludeDeleted && $this->softDelete)
+		return $this->applyGlobalScopes($builder);
+	}
+
+	/**
+	 * Get a new query instance without a given scope.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\ScopeInterface  $scope
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function newQueryWithoutScope($scope)
+	{
+		$this->getGlobalScope($scope)->remove($builder = $this->newQuery(), $this);
+
+		return $builder;
+	}
+
+	/**
+	 * Get a new query builder that doesn't have any global scopes.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Builder|static
+	 */
+	public function newQueryWithoutScopes()
+	{
+		return $this->removeGlobalScopes($this->newQuery());
+	}
+
+	/**
+	 * Apply all of the global scopes to an Eloquent builder.
+	 *
+	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @return \Illuminate\Database\Eloquent\Builder
+	 */
+	public function applyGlobalScopes($builder)
+	{
+		foreach ($this->getGlobalScopes() as $scope)
 		{
-			$builder->whereNull($this->getQualifiedDeletedAtColumn());
+			$scope->apply($builder, $this);
 		}
 
 		return $builder;
 	}
 
 	/**
-	 * Get a new query builder that includes soft deletes.
+	 * Remove all of the global scopes from an Eloquent builder.
 	 *
-	 * @return \Illuminate\Database\Eloquent\Builder|static
+	 * @param  \Illuminate\Database\Eloquent\Builder  $builder
+	 * @return void
 	 */
-	public function newQueryWithDeleted()
+	public function removeGlobalScopes($builder)
 	{
-		return $this->newQuery(false);
+		foreach ($this->getGlobalScopes() as $scope)
+		{
+			$scope->remove($builder, $this);
+		}
+
+		return $builder;
 	}
 
 	/**
@@ -1745,40 +1758,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public function newEloquentBuilder($query)
 	{
 		return new Builder($query);
-	}
-
-	/**
-	 * Determine if the model instance has been soft-deleted.
-	 *
-	 * @return bool
-	 */
-	public function trashed()
-	{
-		return $this->softDelete && ! is_null($this->{static::DELETED_AT});
-	}
-
-	/**
-	 * Get a new query builder that includes soft deletes.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Builder|static
-	 */
-	public static function withTrashed()
-	{
-		return with(new static)->newQueryWithDeleted();
-	}
-
-	/**
-	 * Get a new query builder that only includes soft deletes.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Builder|static
-	 */
-	public static function onlyTrashed()
-	{
-		$instance = new static;
-
-		$column = $instance->getQualifiedDeletedAtColumn();
-
-		return $instance->newQueryWithDeleted()->whereNotNull($column);
 	}
 
 	/**
@@ -1881,27 +1860,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public function usesTimestamps()
 	{
 		return $this->timestamps;
-	}
-
-	/**
-	 * Determine if the model instance uses soft deletes.
-	 *
-	 * @return bool
-	 */
-	public function isSoftDeleting()
-	{
-		return $this->softDelete;
-	}
-
-	/**
-	 * Set the soft deleting property on the model.
-	 *
-	 * @param  bool  $enabled
-	 * @return void
-	 */
-	public function setSoftDeleting($enabled)
-	{
-		$this->softDelete = $enabled;
 	}
 
 	/**
@@ -2177,6 +2135,16 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	public function toJson($options = 0)
 	{
 		return json_encode($this->toArray(), $options);
+	}
+
+	/**
+	 * Convert the object into something JSON serializable.
+	 *
+	 * @return array
+	 */
+	public function jsonSerialize()
+	{
+		return $this->toArray();
 	}
 
 	/**
@@ -2508,7 +2476,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	public function getDates()
 	{
-		$defaults = array(static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT);
+		$defaults = array(static::CREATED_AT, static::UPDATED_AT);
 
 		return array_merge($this->dates, $defaults);
 	}
@@ -2668,14 +2636,23 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	}
 
 	/**
-	 * Determine if a given attribute is dirty.
+	 * Determine if the model or a given attribute has been modified.
 	 *
-	 * @param  string  $attribute
+	 * @param  string|null  $attribute
 	 * @return bool
 	 */
-	public function isDirty($attribute)
+	public function isDirty($attribute = null)
 	{
-		return array_key_exists($attribute, $this->getDirty());
+		$dirty = $this->getDirty();
+
+		if (is_null($attribute))
+		{
+			return count($dirty) > 0;
+		}
+		else
+		{
+			return array_key_exists($attribute, $dirty);
+		}
 	}
 
 	/**

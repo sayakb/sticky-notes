@@ -425,7 +425,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.1.30';
+    const VERSION = '4.2.1';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -510,7 +510,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         return $this['env'] == 'testing';
     }
-    public function forgeRegister($provider, $options = array())
+    public function forceRegister($provider, $options = array())
     {
         return $this->register($provider, $options, true);
     }
@@ -666,7 +666,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     protected function registerBaseMiddlewares()
     {
-        $this->middleware('Illuminate\\Http\\FrameGuard');
+        
     }
     public function middleware($class, array $parameters = array())
     {
@@ -747,7 +747,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public function isDownForMaintenance()
     {
-        return file_exists($this['path.storage'] . '/meta/down');
+        return file_exists($this['config']['app.manifest'] . '/down');
     }
     public function down(Closure $callback)
     {
@@ -835,7 +835,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     }
     public function registerCoreContainerAliases()
     {
-        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'auth.reminder.repository' => 'Illuminate\\Auth\\Reminders\\ReminderRepositoryInterface', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\CacheManager', 'cache.store' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatcher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Environment', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Environment');
+        $aliases = array('app' => 'Illuminate\\Foundation\\Application', 'artisan' => 'Illuminate\\Console\\Application', 'auth' => 'Illuminate\\Auth\\AuthManager', 'auth.reminder.repository' => 'Illuminate\\Auth\\Reminders\\ReminderRepositoryInterface', 'blade.compiler' => 'Illuminate\\View\\Compilers\\BladeCompiler', 'cache' => 'Illuminate\\Cache\\CacheManager', 'cache.store' => 'Illuminate\\Cache\\Repository', 'config' => 'Illuminate\\Config\\Repository', 'cookie' => 'Illuminate\\Cookie\\CookieJar', 'encrypter' => 'Illuminate\\Encryption\\Encrypter', 'db' => 'Illuminate\\Database\\DatabaseManager', 'events' => 'Illuminate\\Events\\Dispatcher', 'files' => 'Illuminate\\Filesystem\\Filesystem', 'form' => 'Illuminate\\Html\\FormBuilder', 'hash' => 'Illuminate\\Hashing\\HasherInterface', 'html' => 'Illuminate\\Html\\HtmlBuilder', 'translator' => 'Illuminate\\Translation\\Translator', 'log' => 'Illuminate\\Log\\Writer', 'mailer' => 'Illuminate\\Mail\\Mailer', 'paginator' => 'Illuminate\\Pagination\\Factory', 'auth.reminder' => 'Illuminate\\Auth\\Reminders\\PasswordBroker', 'queue' => 'Illuminate\\Queue\\QueueManager', 'redirect' => 'Illuminate\\Routing\\Redirector', 'redis' => 'Illuminate\\Redis\\Database', 'request' => 'Illuminate\\Http\\Request', 'router' => 'Illuminate\\Routing\\Router', 'session' => 'Illuminate\\Session\\SessionManager', 'session.store' => 'Illuminate\\Session\\Store', 'remote' => 'Illuminate\\Remote\\RemoteManager', 'url' => 'Illuminate\\Routing\\UrlGenerator', 'validator' => 'Illuminate\\Validation\\Factory', 'view' => 'Illuminate\\View\\Factory');
         foreach ($aliases as $key => $alias) {
             $this->alias($key, $alias);
         }
@@ -2671,6 +2671,7 @@ namespace Symfony\Component\Debug;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Debug\Exception\FlattenException;
+use Symfony\Component\Debug\Exception\OutOfMemoryException;
 if (!defined('ENT_SUBSTITUTE')) {
     define('ENT_SUBSTITUTE', 8);
 }
@@ -2678,6 +2679,8 @@ class ExceptionHandler
 {
     private $debug;
     private $charset;
+    private $handler;
+    private $caughtOutput = 0;
     public function __construct($debug = true, $charset = 'UTF-8')
     {
         $this->debug = $debug;
@@ -2689,12 +2692,55 @@ class ExceptionHandler
         set_exception_handler(array($handler, 'handle'));
         return $handler;
     }
+    public function setHandler($handler)
+    {
+        if (isset($handler) && !is_callable($handler)) {
+            throw new \LogicException('The exception handler must be a valid PHP callable.');
+        }
+        $old = $this->handler;
+        $this->handler = $handler;
+        return $old;
+    }
     public function handle(\Exception $exception)
     {
-        if (class_exists('Symfony\\Component\\HttpFoundation\\Response')) {
-            $this->createResponse($exception)->send();
-        } else {
+        if ($exception instanceof OutOfMemoryException) {
             $this->sendPhpResponse($exception);
+            return;
+        }
+        $caughtOutput = 0;
+        $this->caughtOutput = false;
+        ob_start(array($this, 'catchOutput'));
+        try {
+            if (class_exists('Symfony\\Component\\HttpFoundation\\Response')) {
+                $response = $this->createResponse($exception);
+                $response->sendHeaders();
+                $response->sendContent();
+            } else {
+                $this->sendPhpResponse($exception);
+            }
+        } catch (\Exception $e) {
+            
+        }
+        if (false === $this->caughtOutput) {
+            ob_end_clean();
+        }
+        if (isset($this->caughtOutput[0])) {
+            ob_start(array($this, 'cleanOutput'));
+            echo $this->caughtOutput;
+            $caughtOutput = ob_get_length();
+        }
+        $this->caughtOutput = 0;
+        if (!empty($this->handler)) {
+            try {
+                call_user_func($this->handler, $exception);
+                if ($caughtOutput) {
+                    $this->caughtOutput = $caughtOutput;
+                }
+            } catch (\Exception $e) {
+                if (!$caughtOutput) {
+                    throw $exception;
+                }
+            }
         }
     }
     public function sendPhpResponse($exception)
@@ -2856,6 +2902,21 @@ class ExceptionHandler
         }
         return implode(', ', $result);
     }
+    public function catchOutput($buffer)
+    {
+        $this->caughtOutput = $buffer;
+        return '';
+    }
+    public function cleanOutput($buffer)
+    {
+        if ($this->caughtOutput) {
+            $cleanBuffer = substr_replace($buffer, '', 0, $this->caughtOutput);
+            if (isset($cleanBuffer[0])) {
+                $buffer = $cleanBuffer;
+            }
+        }
+        return $buffer;
+    }
 }
 namespace Illuminate\Support;
 
@@ -3001,11 +3062,10 @@ class ExceptionServiceProvider extends ServiceProvider
     }
     protected function registerPrettyWhoopsHandler()
     {
-        $me = $this;
-        $this->app['whoops.handler'] = $this->app->share(function () use($me) {
+        $this->app['whoops.handler'] = $this->app->share(function () {
             with($handler = new PrettyPageHandler())->setEditor('sublime');
-            if (!is_null($path = $me->resourcePath())) {
-                $handler->setResourcesPath($path);
+            if (!is_null($path = $this->resourcePath())) {
+                $handler->addResourcePath($path);
             }
             return $handler;
         });
@@ -3176,9 +3236,10 @@ abstract class Facade
 }
 namespace Illuminate\Support;
 
+use Illuminate\Support\Traits\MacroableTrait;
 class Str
 {
-    protected static $macros = array();
+    use MacroableTrait;
     public static function ascii($value)
     {
         return \Patchwork\Utf8::toAscii($value);
@@ -3309,35 +3370,28 @@ class Str
         $value = ucwords(str_replace(array('-', '_'), ' ', $value));
         return str_replace(' ', '', $value);
     }
-    public static function macro($name, $macro)
-    {
-        static::$macros[$name] = $macro;
-    }
-    public static function __callStatic($method, $parameters)
-    {
-        if (isset(static::$macros[$method])) {
-            return call_user_func_array(static::$macros[$method], $parameters);
-        }
-        throw new \BadMethodCallException("Method {$method} does not exist.");
-    }
 }
 namespace Symfony\Component\Debug;
 
+use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\Debug\Exception\FatalErrorException;
-use Symfony\Component\Debug\Exception\DummyException;
+use Symfony\Component\Debug\Exception\OutOfMemoryException;
 use Symfony\Component\Debug\FatalErrorHandler\UndefinedFunctionFatalErrorHandler;
+use Symfony\Component\Debug\FatalErrorHandler\UndefinedMethodFatalErrorHandler;
 use Symfony\Component\Debug\FatalErrorHandler\ClassNotFoundFatalErrorHandler;
 use Symfony\Component\Debug\FatalErrorHandler\FatalErrorHandlerInterface;
 class ErrorHandler
 {
     const TYPE_DEPRECATION = -100;
-    private $levels = array(E_WARNING => 'Warning', E_NOTICE => 'Notice', E_USER_ERROR => 'User Error', E_USER_WARNING => 'User Warning', E_USER_NOTICE => 'User Notice', E_STRICT => 'Runtime Notice', E_RECOVERABLE_ERROR => 'Catchable Fatal Error', E_DEPRECATED => 'Deprecated', E_USER_DEPRECATED => 'User Deprecated', E_ERROR => 'Error', E_CORE_ERROR => 'Core Error', E_COMPILE_ERROR => 'Compile Error', E_PARSE => 'Parse');
+    private $levels = array(E_WARNING => 'Warning', E_NOTICE => 'Notice', E_USER_ERROR => 'User Error', E_USER_WARNING => 'User Warning', E_USER_NOTICE => 'User Notice', E_STRICT => 'Runtime Notice', E_RECOVERABLE_ERROR => 'Catchable Fatal Error', E_DEPRECATED => 'Deprecated', E_USER_DEPRECATED => 'User Deprecated', E_ERROR => 'Error', E_CORE_ERROR => 'Core Error', E_COMPILE_ERROR => 'Compile Error', E_PARSE => 'Parse Error');
     private $level;
     private $reservedMemory;
     private $displayErrors;
     private static $loggers = array();
+    private static $stackedErrors = array();
+    private static $stackedErrorLevels = array();
     public static function register($level = null, $displayErrors = true)
     {
         $handler = new static();
@@ -3363,93 +3417,162 @@ class ErrorHandler
     }
     public function handle($level, $message, $file = 'unknown', $line = 0, $context = array())
     {
-        if (0 === $this->level) {
-            return false;
-        }
         if ($level & (E_USER_DEPRECATED | E_DEPRECATED)) {
             if (isset(self::$loggers['deprecation'])) {
-                if (version_compare(PHP_VERSION, '5.4', '<')) {
-                    $stack = array_map(function ($row) {
-                        unset($row['args']);
-                        return $row;
-                    }, array_slice(debug_backtrace(false), 0, 10));
+                if (self::$stackedErrorLevels) {
+                    self::$stackedErrors[] = func_get_args();
                 } else {
-                    $stack = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10);
-                }
-                self::$loggers['deprecation']->warning($message, array('type' => self::TYPE_DEPRECATION, 'stack' => $stack));
-            }
-            return true;
-        }
-        if ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
-            if (!class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
-                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/ContextErrorException.php';
-            }
-            if (!class_exists('Symfony\\Component\\Debug\\Exception\\FlattenException')) {
-                require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/FlattenException.php';
-            }
-            if (PHP_VERSION_ID < 50400 && isset($context['GLOBALS']) && is_array($context)) {
-                unset($context['GLOBALS']);
-            }
-            $exception = new ContextErrorException(sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line), 0, $level, $file, $line, $context);
-            $exceptionHandler = set_exception_handler(function () {
-                
-            });
-            restore_exception_handler();
-            if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
-                $exceptionHandler[0]->handle($exception);
-                if (!class_exists('Symfony\\Component\\Debug\\Exception\\DummyException')) {
-                    require __DIR__.'/../vendor/symfony/debug/Symfony/Component/Debug' . '/Exception/DummyException.php';
-                }
-                set_exception_handler(function (\Exception $e) use($exceptionHandler) {
-                    if (!$e instanceof DummyException) {
-                        call_user_func($exceptionHandler, $e);
+                    if (version_compare(PHP_VERSION, '5.4', '<')) {
+                        $stack = array_map(function ($row) {
+                            unset($row['args']);
+                            return $row;
+                        }, array_slice(debug_backtrace(false), 0, 10));
+                    } else {
+                        $stack = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10);
                     }
-                });
-                throw new DummyException();
+                    self::$loggers['deprecation']->warning($message, array('type' => self::TYPE_DEPRECATION, 'stack' => $stack));
+                }
+                return true;
+            }
+        } elseif ($this->displayErrors && error_reporting() & $level && $this->level & $level) {
+            if (PHP_VERSION_ID < 50400 && isset($context['GLOBALS']) && is_array($context)) {
+                $c = $context;
+                unset($c['GLOBALS'], $context);
+                $context = $c;
+            }
+            $exception = sprintf('%s: %s in %s line %d', isset($this->levels[$level]) ? $this->levels[$level] : $level, $message, $file, $line);
+            if ($context && class_exists('Symfony\\Component\\Debug\\Exception\\ContextErrorException')) {
+                $exception = new ContextErrorException($exception, 0, $level, $file, $line, $context);
+            } else {
+                $exception = new \ErrorException($exception, 0, $level, $file, $line);
+            }
+            if (PHP_VERSION_ID <= 50407 && (PHP_VERSION_ID >= 50400 || PHP_VERSION_ID <= 50317)) {
+                $exception->errorHandlerCanary = new ErrorHandlerCanary();
+            }
+            throw $exception;
+        }
+        if (isset(self::$loggers['scream']) && !(error_reporting() & $level)) {
+            if (self::$stackedErrorLevels) {
+                self::$stackedErrors[] = func_get_args();
+            } else {
+                switch ($level) {
+                    case E_USER_ERROR:
+                    case E_RECOVERABLE_ERROR:
+                        $logLevel = LogLevel::ERROR;
+                        break;
+                    case E_WARNING:
+                    case E_USER_WARNING:
+                        $logLevel = LogLevel::WARNING;
+                        break;
+                    default:
+                        $logLevel = LogLevel::NOTICE;
+                        break;
+                }
+                self::$loggers['scream']->log($logLevel, $message, array('type' => $level, 'file' => $file, 'line' => $line, 'scream' => error_reporting()));
             }
         }
         return false;
     }
+    public static function stackErrors()
+    {
+        self::$stackedErrorLevels[] = error_reporting(error_reporting() | E_PARSE | E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR);
+    }
+    public static function unstackErrors()
+    {
+        $level = array_pop(self::$stackedErrorLevels);
+        if (null !== $level) {
+            $e = error_reporting($level);
+            if ($e !== ($level | E_PARSE | E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR)) {
+                error_reporting($e);
+            }
+        }
+        if (empty(self::$stackedErrorLevels)) {
+            $errors = self::$stackedErrors;
+            self::$stackedErrors = array();
+            $errorHandler = set_error_handler('var_dump');
+            restore_error_handler();
+            if ($errorHandler) {
+                foreach ($errors as $e) {
+                    call_user_func_array($errorHandler, $e);
+                }
+            }
+        }
+    }
     public function handleFatal()
     {
-        if (null === ($error = error_get_last())) {
-            return;
-        }
         $this->reservedMemory = '';
-        $type = $error['type'];
-        if (0 === $this->level || !in_array($type, array(E_ERROR, E_CORE_ERROR, E_COMPILE_ERROR, E_PARSE))) {
+        gc_collect_cycles();
+        $error = error_get_last();
+        $exceptionHandler = set_exception_handler('var_dump');
+        restore_exception_handler();
+        try {
+            while (self::$stackedErrorLevels) {
+                static::unstackErrors();
+            }
+        } catch (\Exception $exception) {
+            if ($exceptionHandler) {
+                call_user_func($exceptionHandler, $exception);
+                return;
+            }
+            if ($this->displayErrors) {
+                ini_set('display_errors', 1);
+            }
+            throw $exception;
+        }
+        if (!$error || !$this->level || !($error['type'] & (E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_PARSE))) {
             return;
         }
         if (isset(self::$loggers['emergency'])) {
-            $fatal = array('type' => $type, 'file' => $error['file'], 'line' => $error['line']);
-            self::$loggers['emergency']->emerg($error['message'], $fatal);
+            $fatal = array('type' => $error['type'], 'file' => $error['file'], 'line' => $error['line']);
+            self::$loggers['emergency']->emergency($error['message'], $fatal);
         }
-        if (!$this->displayErrors) {
-            return;
-        }
-        $exceptionHandler = set_exception_handler(function () {
-            
-        });
-        restore_exception_handler();
-        if (is_array($exceptionHandler) && $exceptionHandler[0] instanceof ExceptionHandler) {
-            $this->handleFatalError($exceptionHandler[0], $error);
+        if ($this->displayErrors && $exceptionHandler) {
+            $this->handleFatalError($exceptionHandler, $error);
         }
     }
     protected function getFatalErrorHandlers()
     {
-        return array(new UndefinedFunctionFatalErrorHandler(), new ClassNotFoundFatalErrorHandler());
+        return array(new UndefinedFunctionFatalErrorHandler(), new UndefinedMethodFatalErrorHandler(), new ClassNotFoundFatalErrorHandler());
     }
-    private function handleFatalError(ExceptionHandler $exceptionHandler, array $error)
+    private function handleFatalError($exceptionHandler, array $error)
     {
+        set_error_handler('var_dump', 0);
+        ini_set('display_errors', 1);
         $level = isset($this->levels[$error['type']]) ? $this->levels[$error['type']] : $error['type'];
         $message = sprintf('%s: %s in %s line %d', $level, $error['message'], $error['file'], $error['line']);
-        $exception = new FatalErrorException($message, 0, $error['type'], $error['file'], $error['line']);
-        foreach ($this->getFatalErrorHandlers() as $handler) {
-            if ($ex = $handler->handleError($error, $exception)) {
-                return $exceptionHandler->handle($ex);
+        if (0 === strpos($error['message'], 'Allowed memory') || 0 === strpos($error['message'], 'Out of memory')) {
+            $exception = new OutOfMemoryException($message, 0, $error['type'], $error['file'], $error['line'], 3, false);
+        } else {
+            $exception = new FatalErrorException($message, 0, $error['type'], $error['file'], $error['line'], 3, true);
+            foreach ($this->getFatalErrorHandlers() as $handler) {
+                if ($e = $handler->handleError($error, $exception)) {
+                    $exception = $e;
+                    break;
+                }
             }
         }
-        $exceptionHandler->handle($exception);
+        try {
+            call_user_func($exceptionHandler, $exception);
+        } catch (\Exception $e) {
+            throw $exception;
+        }
+    }
+}
+class ErrorHandlerCanary
+{
+    private static $displayErrors = null;
+    public function __construct()
+    {
+        if (null === self::$displayErrors) {
+            self::$displayErrors = ini_set('display_errors', 1);
+        }
+    }
+    public function __destruct()
+    {
+        if (null !== self::$displayErrors) {
+            ini_set('display_errors', self::$displayErrors);
+            self::$displayErrors = null;
+        }
     }
 }
 namespace Symfony\Component\HttpKernel\Debug;
@@ -3927,7 +4050,7 @@ class Filesystem
         }
         return $directories;
     }
-    public function makeDirectory($path, $mode = 511, $recursive = false, $force = false)
+    public function makeDirectory($path, $mode = 493, $recursive = false, $force = false)
     {
         if ($force) {
             return @mkdir($path, $mode, $recursive);
@@ -4119,7 +4242,7 @@ class ProviderRepository
     public function writeManifest($manifest)
     {
         $path = $this->manifestPath . '/services.json';
-        $this->files->put($path, json_encode($manifest));
+        $this->files->put($path, json_encode($manifest, JSON_PRETTY_PRINT));
         return $manifest;
     }
     protected function freshManifest(array $providers)
@@ -4175,7 +4298,11 @@ class EncryptionServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bindShared('encrypter', function ($app) {
-            return new Encrypter($app['config']['app.key']);
+            $encrypter = new Encrypter($app['config']['app.key']);
+            if ($app['config']->has('app.cipher')) {
+                $encrypter->setCipher($app['config']['app.cipher']);
+            }
+            return $encrypter;
         });
     }
 }
@@ -4228,7 +4355,7 @@ class SessionServiceProvider extends ServiceProvider
 }
 namespace Illuminate\View;
 
-use Illuminate\Support\MessageBag;
+use Illuminate\Support\ViewErrorBag;
 use Illuminate\View\Engines\PhpEngine;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Engines\CompilerEngine;
@@ -4240,16 +4367,15 @@ class ViewServiceProvider extends ServiceProvider
     {
         $this->registerEngineResolver();
         $this->registerViewFinder();
-        $this->registerEnvironment();
+        $this->registerFactory();
         $this->registerSessionBinder();
     }
     public function registerEngineResolver()
     {
-        $me = $this;
-        $this->app->bindShared('view.engine.resolver', function ($app) use($me) {
+        $this->app->bindShared('view.engine.resolver', function ($app) {
             $resolver = new EngineResolver();
             foreach (array('php', 'blade') as $engine) {
-                $me->{'register' . ucfirst($engine) . 'Engine'}($resolver);
+                $this->{'register' . ucfirst($engine) . 'Engine'}($resolver);
             }
             return $resolver;
         });
@@ -4278,12 +4404,12 @@ class ViewServiceProvider extends ServiceProvider
             return new FileViewFinder($app['files'], $paths);
         });
     }
-    public function registerEnvironment()
+    public function registerFactory()
     {
         $this->app->bindShared('view', function ($app) {
             $resolver = $app['view.engine.resolver'];
             $finder = $app['view.finder'];
-            $env = new Environment($resolver, $finder, $app['events']);
+            $env = new Factory($resolver, $finder, $app['events']);
             $env->setContainer($app);
             $env->share('app', $app);
             return $env;
@@ -4297,7 +4423,7 @@ class ViewServiceProvider extends ServiceProvider
                 $errors = $app['session.store']->get('errors');
                 $app['view']->share('errors', $errors);
             } else {
-                $app['view']->share('errors', new MessageBag());
+                $app['view']->share('errors', new ViewErrorBag());
             }
         });
     }
@@ -4446,9 +4572,9 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     protected function getResourceMethods($defaults, $options)
     {
         if (isset($options['only'])) {
-            return array_intersect($defaults, $options['only']);
+            return array_intersect($defaults, (array) $options['only']);
         } elseif (isset($options['except'])) {
-            return array_diff($defaults, $options['except']);
+            return array_diff($defaults, (array) $options['except']);
         }
         return $defaults;
     }
@@ -4463,9 +4589,8 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     protected function getNestedResourceUri(array $segments)
     {
-        $me = $this;
-        return implode('/', array_map(function ($s) use($me) {
-            return $s . '/{' . $me->getResourceWildcard($s) . '}';
+        return implode('/', array_map(function ($s) {
+            return $s . '/{' . $this->getResourceWildcard($s) . '}';
         }, $segments));
     }
     protected function getResourceAction($resource, $controller, $method, $options)
@@ -4637,11 +4762,10 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     protected function getClassClosure($controller)
     {
-        $me = $this;
         $d = $this->getControllerDispatcher();
-        return function () use($me, $d, $controller) {
-            $route = $me->current();
-            $request = $me->getCurrentRequest();
+        return function () use($d, $controller) {
+            $route = $this->current();
+            $request = $this->getCurrentRequest();
             list($class, $method) = explode('@', $controller);
             return $d->dispatch($route, $request, $class, $method);
         };
@@ -4896,7 +5020,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         $action = $this->current()->getAction();
         return isset($action['controller']) ? $action['controller'] : null;
     }
-    public function isAction()
+    public function uses()
     {
         foreach (func_get_args() as $pattern) {
             if (str_is($pattern, $this->currentRouteAction())) {
@@ -5072,7 +5196,7 @@ class Route
     {
         if (isset($this->parameters)) {
             return array_map(function ($value) {
-                return is_string($value) ? urldecode($value) : $value;
+                return is_string($value) ? rawurldecode($value) : $value;
             }, $this->parameters);
         }
         throw new \LogicException('Route is not bound.');
@@ -5491,12 +5615,14 @@ class ControllerDispatcher
 }
 namespace Illuminate\Routing;
 
+use Illuminate\Http\Request;
 use InvalidArgumentException;
-use Symfony\Component\HttpFoundation\Request;
 class UrlGenerator
 {
     protected $routes;
     protected $request;
+    protected $forcedRoot;
+    protected $forceSchema;
     protected $dontEncode = array('%2F' => '/', '%40' => '@', '%3A' => ':', '%3B' => ';', '%2C' => ',', '%3D' => '=', '%2B' => '+', '%21' => '!', '%2A' => '*', '%7C' => '|');
     public function __construct(RouteCollection $routes, Request $request)
     {
@@ -5549,10 +5675,14 @@ class UrlGenerator
     protected function getScheme($secure)
     {
         if (is_null($secure)) {
-            return $this->request->getScheme() . '://';
+            return $this->forceSchema ?: $this->request->getScheme() . '://';
         } else {
             return $secure ? 'https://' : 'http://';
         }
+    }
+    public function forceSchema($schema)
+    {
+        $this->forceSchema = $schema . '://';
     }
     public function route($name, $parameters = array(), $absolute = true, $route = null)
     {
@@ -5650,9 +5780,15 @@ class UrlGenerator
     }
     protected function getRootUrl($scheme, $root = null)
     {
-        $root = $root ?: $this->request->root();
+        if (is_null($root)) {
+            $root = $this->forcedRoot ?: $this->request->root();
+        }
         $start = starts_with($root, 'http://') ? 'http://' : 'https://';
         return preg_replace('~' . $start . '~', $scheme, $root, 1);
+    }
+    public function forceRootUrl($root)
+    {
+        $this->forcedRoot = $root;
     }
     public function isValidUrl($path)
     {
@@ -5775,10 +5911,11 @@ class Dispatcher
     {
         foreach ((array) $events as $event) {
             if (str_contains($event, '*')) {
-                return $this->setupWildcardListen($event, $listener);
+                $this->setupWildcardListen($event, $listener);
+            } else {
+                $this->listeners[$event][$priority][] = $this->makeListener($listener);
+                unset($this->sorted[$event]);
             }
-            $this->listeners[$event][$priority][] = $this->makeListener($listener);
-            unset($this->sorted[$event]);
         }
     }
     protected function setupWildcardListen($event, $listener)
@@ -5791,9 +5928,8 @@ class Dispatcher
     }
     public function queue($event, $payload = array())
     {
-        $me = $this;
-        $this->listen($event . '_queue', function () use($me, $event, $payload) {
-            $me->fire($event, $payload);
+        $this->listen($event . '_queue', function () use($event, $payload) {
+            $this->fire($event, $payload);
         });
     }
     public function subscribe($subscriber)
@@ -5897,6 +6033,7 @@ use DateTime;
 use ArrayAccess;
 use Carbon\Carbon;
 use LogicException;
+use JsonSerializable;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -5913,7 +6050,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\ConnectionResolverInterface as Resolver;
-abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterface
+abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterface, JsonSerializable
 {
     protected $connection;
     protected $table;
@@ -5935,17 +6072,16 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     protected $with = array();
     protected $morphClass;
     public $exists = false;
-    protected $softDelete = false;
     public static $snakeAttributes = true;
     protected static $resolver;
     protected static $dispatcher;
     protected static $booted = array();
+    protected static $globalScopes = array();
     protected static $unguarded = false;
     protected static $mutatorCache = array();
     public static $manyMethods = array('belongsToMany', 'morphToMany', 'morphedByMany');
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    const DELETED_AT = 'deleted_at';
     public function __construct(array $attributes = array())
     {
         $this->bootIfNotBooted();
@@ -5973,6 +6109,33 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
                 static::$mutatorCache[$class][] = lcfirst($matches[1]);
             }
         }
+        static::bootTraits();
+    }
+    protected static function bootTraits()
+    {
+        foreach (class_uses(get_called_class()) as $trait) {
+            if (method_exists(get_called_class(), $method = 'boot' . class_basename($trait))) {
+                forward_static_call(array(get_called_class(), $method));
+            }
+        }
+    }
+    public static function addGlobalScope(ScopeInterface $scope)
+    {
+        static::$globalScopes[get_called_class()][get_class($scope)] = $scope;
+    }
+    public static function hasGlobalScope($scope)
+    {
+        return !is_null(static::getGlobalScope($scope));
+    }
+    public static function getGlobalScope($scope)
+    {
+        return array_first(static::$globalScopes[get_called_class()], function ($key, $value) use($scope) {
+            return $scope instanceof $value;
+        });
+    }
+    public function getGlobalScopes()
+    {
+        return array_get(static::$globalScopes, get_class($this), array());
     }
     public static function observe($class)
     {
@@ -6056,6 +6219,12 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             return $instance;
         }
         return new static($attributes);
+    }
+    public static function updateOrCreate(array $attributes, array $values = array())
+    {
+        $instance = static::firstOrNew($attributes);
+        $instance->fill($values)->save();
+        return $instance;
     }
     protected static function firstByAttributes($attributes)
     {
@@ -6260,34 +6429,9 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             return true;
         }
     }
-    public function forceDelete()
-    {
-        $softDelete = $this->softDelete;
-        $this->softDelete = false;
-        $this->delete();
-        $this->softDelete = $softDelete;
-    }
     protected function performDeleteOnModel()
     {
-        $query = $this->newQuery()->where($this->getKeyName(), $this->getKey());
-        if ($this->softDelete) {
-            $this->{static::DELETED_AT} = $time = $this->freshTimestamp();
-            $query->update(array(static::DELETED_AT => $this->fromDateTime($time)));
-        } else {
-            $query->delete();
-        }
-    }
-    public function restore()
-    {
-        if ($this->softDelete) {
-            if ($this->fireModelEvent('restoring') === false) {
-                return false;
-            }
-            $this->{static::DELETED_AT} = null;
-            $result = $this->save();
-            $this->fireModelEvent('restored', false);
-            return $result;
-        }
+        $this->newQuery()->where($this->getKeyName(), $this->getKey())->delete();
     }
     public static function saving($callback)
     {
@@ -6320,14 +6464,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public static function deleted($callback)
     {
         static::registerModelEvent('deleted', $callback);
-    }
-    public static function restoring($callback)
-    {
-        static::registerModelEvent('restoring', $callback);
-    }
-    public static function restored($callback)
-    {
-        static::registerModelEvent('restored', $callback);
     }
     public static function flushEventListeners()
     {
@@ -6389,7 +6525,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function save(array $options = array())
     {
-        $query = $this->newQueryWithDeleted();
+        $query = $this->newQueryWithoutScopes();
         if ($this->fireModelEvent('saving') === false) {
             return false;
         }
@@ -6405,8 +6541,8 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     protected function finishSave(array $options)
     {
-        $this->syncOriginal();
         $this->fireModelEvent('saved', false);
+        $this->syncOriginal();
         if (array_get($options, 'touch', true)) {
             $this->touchOwners();
         }
@@ -6515,14 +6651,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         return static::UPDATED_AT;
     }
-    public function getDeletedAtColumn()
-    {
-        return static::DELETED_AT;
-    }
-    public function getQualifiedDeletedAtColumn()
-    {
-        return $this->getTable() . '.' . $this->getDeletedAtColumn();
-    }
     public function freshTimestamp()
     {
         return new Carbon();
@@ -6531,36 +6659,38 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         return $this->fromDateTime($this->freshTimestamp());
     }
-    public function newQuery($excludeDeleted = true)
+    public function newQuery()
     {
         $builder = $this->newEloquentBuilder($this->newBaseQueryBuilder());
         $builder->setModel($this)->with($this->with);
-        if ($excludeDeleted && $this->softDelete) {
-            $builder->whereNull($this->getQualifiedDeletedAtColumn());
+        return $this->applyGlobalScopes($builder);
+    }
+    public function newQueryWithoutScope($scope)
+    {
+        $this->getGlobalScope($scope)->remove($builder = $this->newQuery(), $this);
+        return $builder;
+    }
+    public function newQueryWithoutScopes()
+    {
+        return $this->removeGlobalScopes($this->newQuery());
+    }
+    public function applyGlobalScopes($builder)
+    {
+        foreach ($this->getGlobalScopes() as $scope) {
+            $scope->apply($builder, $this);
         }
         return $builder;
     }
-    public function newQueryWithDeleted()
+    public function removeGlobalScopes($builder)
     {
-        return $this->newQuery(false);
+        foreach ($this->getGlobalScopes() as $scope) {
+            $scope->remove($builder, $this);
+        }
+        return $builder;
     }
     public function newEloquentBuilder($query)
     {
         return new Builder($query);
-    }
-    public function trashed()
-    {
-        return $this->softDelete && !is_null($this->{static::DELETED_AT});
-    }
-    public static function withTrashed()
-    {
-        return with(new static())->newQueryWithDeleted();
-    }
-    public static function onlyTrashed()
-    {
-        $instance = new static();
-        $column = $instance->getQualifiedDeletedAtColumn();
-        return $instance->newQueryWithDeleted()->whereNotNull($column);
     }
     protected function newBaseQueryBuilder()
     {
@@ -6602,14 +6732,6 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function usesTimestamps()
     {
         return $this->timestamps;
-    }
-    public function isSoftDeleting()
-    {
-        return $this->softDelete;
-    }
-    public function setSoftDeleting($enabled)
-    {
-        $this->softDelete = $enabled;
     }
     protected function getMorphs($name, $type, $id)
     {
@@ -6722,6 +6844,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);
+    }
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
     public function toArray()
     {
@@ -6855,7 +6981,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public function getDates()
     {
-        $defaults = array(static::CREATED_AT, static::UPDATED_AT, static::DELETED_AT);
+        $defaults = array(static::CREATED_AT, static::UPDATED_AT);
         return array_merge($this->dates, $defaults);
     }
     public function fromDateTime($value)
@@ -6914,9 +7040,14 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $this->original = $this->attributes;
         return $this;
     }
-    public function isDirty($attribute)
+    public function isDirty($attribute = null)
     {
-        return array_key_exists($attribute, $this->getDirty());
+        $dirty = $this->getDirty();
+        if (is_null($attribute)) {
+            return count($dirty) > 0;
+        } else {
+            return array_key_exists($attribute, $dirty);
+        }
     }
     public function getDirty()
     {
@@ -7433,7 +7564,7 @@ class Store implements SessionInterface
     }
     protected function generateSessionId()
     {
-        return sha1(uniqid(true) . str_random(25) . microtime(true));
+        return sha1(uniqid('', true) . str_random(25) . microtime(true));
     }
     public function getName()
     {
@@ -7454,6 +7585,7 @@ class Store implements SessionInterface
         if ($destroy) {
             $this->handler->destroy($this->getId());
         }
+        $this->setExists(false);
         $this->id = $this->generateSessionId();
         return true;
     }
@@ -7489,6 +7621,12 @@ class Store implements SessionInterface
     public function get($name, $default = null)
     {
         return array_get($this->attributes, $name, $default);
+    }
+    public function pull($key, $default = null)
+    {
+        $value = $this->get($key, $default);
+        $this->forget($key);
+        return $value;
     }
     public function hasOldInput($key = null)
     {
@@ -7615,6 +7753,12 @@ class Store implements SessionInterface
     {
         $this->put('_token', str_random(40));
     }
+    public function setExists($value)
+    {
+        if ($this->handler instanceof ExistenceAwareInterface) {
+            $this->handler->setExists($value);
+        }
+    }
     public function getHandler()
     {
         return $this->handler;
@@ -7662,17 +7806,13 @@ class SessionManager extends Manager
     protected function createDatabaseDriver()
     {
         $connection = $this->getDatabaseConnection();
-        $table = $connection->getTablePrefix() . $this->app['config']['session.table'];
-        return $this->buildSession(new PdoSessionHandler($connection->getPdo(), $this->getDatabaseOptions($table)));
+        $table = $this->app['config']['session.table'];
+        return $this->buildSession(new DatabaseSessionHandler($connection, $table));
     }
     protected function getDatabaseConnection()
     {
         $connection = $this->app['config']['session.connection'];
         return $this->app['db']->connection($connection);
-    }
-    protected function getDatabaseOptions($table)
-    {
-        return array('db_table' => $table, 'db_id_col' => 'id', 'db_data_col' => 'payload', 'db_time_col' => 'last_activity');
     }
     protected function createApcDriver()
     {
@@ -7913,9 +8053,9 @@ class DecryptException extends \RuntimeException
 class Encrypter
 {
     protected $key;
-    protected $cipher = 'rijndael-256';
-    protected $mode = 'cbc';
-    protected $block = 32;
+    protected $cipher = MCRYPT_RIJNDAEL_128;
+    protected $mode = MCRYPT_MODE_CBC;
+    protected $block = 16;
     public function __construct($key)
     {
         $this->key = $key;
@@ -7941,7 +8081,11 @@ class Encrypter
     }
     protected function mcryptDecrypt($value, $iv)
     {
-        return mcrypt_decrypt($this->cipher, $this->key, $value, $this->mode, $iv);
+        try {
+            return mcrypt_decrypt($this->cipher, $this->key, $value, $this->mode, $iv);
+        } catch (\Exception $e) {
+            throw new DecryptException($e->getMessage());
+        }
     }
     protected function getJsonPayload($payload)
     {
@@ -8005,10 +8149,16 @@ class Encrypter
     public function setCipher($cipher)
     {
         $this->cipher = $cipher;
+        $this->updateBlockSize();
     }
     public function setMode($mode)
     {
         $this->mode = $mode;
+        $this->updateBlockSize();
+    }
+    protected function updateBlockSize()
+    {
+        $this->block = mcrypt_get_iv_size($this->cipher, $this->mode);
     }
 }
 namespace Illuminate\Support\Facades;
@@ -8047,7 +8197,10 @@ use Illuminate\Events\Dispatcher;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\RotatingFileHandler;
+use Illuminate\Support\Contracts\JsonableInterface;
+use Illuminate\Support\Contracts\ArrayableInterface;
 class Writer
 {
     protected $monolog;
@@ -8071,13 +8224,23 @@ class Writer
     {
         $level = $this->parseLevel($level);
         $this->monolog->pushHandler($handler = new StreamHandler($path, $level));
-        $handler->setFormatter(new LineFormatter(null, null, true));
+        $handler->setFormatter($this->getDefaultFormatter());
     }
     public function useDailyFiles($path, $days = 0, $level = 'debug')
     {
         $level = $this->parseLevel($level);
         $this->monolog->pushHandler($handler = new RotatingFileHandler($path, $days, $level));
-        $handler->setFormatter(new LineFormatter(null, null, true));
+        $handler->setFormatter($this->getDefaultFormatter());
+    }
+    public function useErrorLog($level = 'debug', $messageType = ErrorLogHandler::OPERATING_SYSTEM)
+    {
+        $level = $this->parseLevel($level);
+        $this->monolog->pushHandler($handler = new ErrorLogHandler($messageType, $level));
+        $handler->setFormatter($this->getDefaultFormatter());
+    }
+    protected function getDefaultFormatter()
+    {
+        return new LineFormatter(null, null, true);
     }
     protected function parseLevel($level)
     {
@@ -8134,12 +8297,25 @@ class Writer
     }
     public function __call($method, $parameters)
     {
+        $this->formatParameters($parameters);
         if (in_array($method, $this->levels)) {
             call_user_func_array(array($this, 'fireLogEvent'), array_merge(array($method), $parameters));
             $method = 'add' . ucfirst($method);
             return $this->callMonolog($method, $parameters);
         }
         throw new \BadMethodCallException("Method [{$method}] does not exist.");
+    }
+    protected function formatParameters(&$parameters)
+    {
+        if (isset($parameters[0])) {
+            if (is_array($parameters[0])) {
+                $parameters[0] = var_export($parameters[0], true);
+            } elseif ($parameters[0] instanceof JsonableInterface) {
+                $parameters[0] = $parameters[0]->toJson();
+            } elseif ($parameters[0] instanceof ArrayableInterface) {
+                $parameters[0] = var_export($parameters[0]->toArray(), true);
+            }
+        }
     }
 }
 namespace Monolog;
@@ -8647,7 +8823,7 @@ class SymfonyDisplayer implements ExceptionDisplayerInterface
     }
     public function display(Exception $exception)
     {
-        $this->symfony->handle($exception);
+        return $this->symfony->createResponse($exception);
     }
 }
 namespace Illuminate\Exception;
@@ -8821,14 +8997,6 @@ namespace Illuminate\Support\Facades;
 
 class Route extends Facade
 {
-    public static function is($name)
-    {
-        return static::$app['router']->currentRouteNamed($name);
-    }
-    public static function uses($action)
-    {
-        return static::$app['router']->currentRouteUses($action);
-    }
     protected static function getFacadeAccessor()
     {
         return 'router';
@@ -8859,7 +9027,8 @@ interface ViewFinderInterface
 {
     public function find($view);
     public function addLocation($location);
-    public function addNamespace($namespace, $hint);
+    public function addNamespace($namespace, $hints);
+    public function prependNamespace($namespace, $hints);
     public function addExtension($extension);
 }
 namespace Illuminate\View;
@@ -8872,6 +9041,7 @@ class FileViewFinder implements ViewFinderInterface
     protected $views = array();
     protected $hints = array();
     protected $extensions = array('blade.php', 'php');
+    const HINT_PATH_DELIMITER = '::';
     public function __construct(Filesystem $files, array $paths, array $extensions = null)
     {
         $this->files = $files;
@@ -8885,7 +9055,7 @@ class FileViewFinder implements ViewFinderInterface
         if (isset($this->views[$name])) {
             return $this->views[$name];
         }
-        if (strpos($name, '::') !== false) {
+        if ($this->hasHintInformation($name = trim($name))) {
             return $this->views[$name] = $this->findNamedPathView($name);
         }
         return $this->views[$name] = $this->findInPaths($name, $this->paths);
@@ -8897,7 +9067,7 @@ class FileViewFinder implements ViewFinderInterface
     }
     protected function getNamespaceSegments($name)
     {
-        $segments = explode('::', $name);
+        $segments = explode(static::HINT_PATH_DELIMITER, $name);
         if (count($segments) != 2) {
             throw new \InvalidArgumentException("View [{$name}] has an invalid name.");
         }
@@ -8950,6 +9120,10 @@ class FileViewFinder implements ViewFinderInterface
         }
         array_unshift($this->extensions, $extension);
     }
+    public function hasHintInformation($name)
+    {
+        return strpos($name, static::HINT_PATH_DELIMITER) > 0;
+    }
     public function getFilesystem()
     {
         return $this->files;
@@ -8967,315 +9141,6 @@ class FileViewFinder implements ViewFinderInterface
         return $this->extensions;
     }
 }
-namespace Illuminate\View;
-
-use Closure;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
-use Illuminate\View\Engines\EngineResolver;
-use Illuminate\Support\Contracts\ArrayableInterface as Arrayable;
-class Environment
-{
-    protected $engines;
-    protected $finder;
-    protected $events;
-    protected $container;
-    protected $shared = array();
-    protected $names = array();
-    protected $extensions = array('blade.php' => 'blade', 'php' => 'php');
-    protected $composers = array();
-    protected $sections = array();
-    protected $sectionStack = array();
-    protected $renderCount = 0;
-    public function __construct(EngineResolver $engines, ViewFinderInterface $finder, Dispatcher $events)
-    {
-        $this->finder = $finder;
-        $this->events = $events;
-        $this->engines = $engines;
-        $this->share('__env', $this);
-    }
-    public function make($view, $data = array(), $mergeData = array())
-    {
-        $path = $this->finder->find($view);
-        $data = array_merge($mergeData, $this->parseData($data));
-        $this->callCreator($view = new View($this, $this->getEngineFromPath($path), $view, $path, $data));
-        return $view;
-    }
-    protected function parseData($data)
-    {
-        return $data instanceof Arrayable ? $data->toArray() : $data;
-    }
-    public function of($view, $data = array())
-    {
-        return $this->make($this->names[$view], $data);
-    }
-    public function name($view, $name)
-    {
-        $this->names[$name] = $view;
-    }
-    public function exists($view)
-    {
-        try {
-            $this->finder->find($view);
-        } catch (\InvalidArgumentException $e) {
-            return false;
-        }
-        return true;
-    }
-    public function renderEach($view, $data, $iterator, $empty = 'raw|')
-    {
-        $result = '';
-        if (count($data) > 0) {
-            foreach ($data as $key => $value) {
-                $data = array('key' => $key, $iterator => $value);
-                $result .= $this->make($view, $data)->render();
-            }
-        } else {
-            if (starts_with($empty, 'raw|')) {
-                $result = substr($empty, 4);
-            } else {
-                $result = $this->make($empty)->render();
-            }
-        }
-        return $result;
-    }
-    protected function getEngineFromPath($path)
-    {
-        $engine = $this->extensions[$this->getExtension($path)];
-        return $this->engines->resolve($engine);
-    }
-    protected function getExtension($path)
-    {
-        $extensions = array_keys($this->extensions);
-        return array_first($extensions, function ($key, $value) use($path) {
-            return ends_with($path, $value);
-        });
-    }
-    public function share($key, $value = null)
-    {
-        if (!is_array($key)) {
-            return $this->shared[$key] = $value;
-        }
-        foreach ($key as $innerKey => $innerValue) {
-            $this->share($innerKey, $innerValue);
-        }
-    }
-    public function creator($views, $callback)
-    {
-        $creators = array();
-        foreach ((array) $views as $view) {
-            $creators[] = $this->addViewEvent($view, $callback, 'creating: ');
-        }
-        return $creators;
-    }
-    public function composers(array $composers)
-    {
-        $registered = array();
-        foreach ($composers as $callback => $views) {
-            $registered += $this->composer($views, $callback);
-        }
-        return $registered;
-    }
-    public function composer($views, $callback, $priority = null)
-    {
-        $composers = array();
-        foreach ((array) $views as $view) {
-            $composers[] = $this->addViewEvent($view, $callback, 'composing: ', $priority);
-        }
-        return $composers;
-    }
-    protected function addViewEvent($view, $callback, $prefix = 'composing: ', $priority = null)
-    {
-        if ($callback instanceof Closure) {
-            $this->addEventListener($prefix . $view, $callback, $priority);
-            return $callback;
-        } elseif (is_string($callback)) {
-            return $this->addClassEvent($view, $callback, $prefix, $priority);
-        }
-    }
-    protected function addClassEvent($view, $class, $prefix, $priority = null)
-    {
-        $name = $prefix . $view;
-        $callback = $this->buildClassEventCallback($class, $prefix);
-        $this->addEventListener($name, $callback, $priority);
-        return $callback;
-    }
-    protected function addEventListener($name, $callback, $priority = null)
-    {
-        if (is_null($priority)) {
-            $this->events->listen($name, $callback);
-        } else {
-            $this->events->listen($name, $callback, $priority);
-        }
-    }
-    protected function buildClassEventCallback($class, $prefix)
-    {
-        $container = $this->container;
-        list($class, $method) = $this->parseClassEvent($class, $prefix);
-        return function () use($class, $method, $container) {
-            $callable = array($container->make($class), $method);
-            return call_user_func_array($callable, func_get_args());
-        };
-    }
-    protected function parseClassEvent($class, $prefix)
-    {
-        if (str_contains($class, '@')) {
-            return explode('@', $class);
-        } else {
-            $method = str_contains($prefix, 'composing') ? 'compose' : 'create';
-            return array($class, $method);
-        }
-    }
-    public function callComposer(View $view)
-    {
-        $this->events->fire('composing: ' . $view->getName(), array($view));
-    }
-    public function callCreator(View $view)
-    {
-        $this->events->fire('creating: ' . $view->getName(), array($view));
-    }
-    public function startSection($section, $content = '')
-    {
-        if ($content === '') {
-            ob_start() && ($this->sectionStack[] = $section);
-        } else {
-            $this->extendSection($section, $content);
-        }
-    }
-    public function inject($section, $content)
-    {
-        return $this->startSection($section, $content);
-    }
-    public function yieldSection()
-    {
-        return $this->yieldContent($this->stopSection());
-    }
-    public function stopSection($overwrite = false)
-    {
-        $last = array_pop($this->sectionStack);
-        if ($overwrite) {
-            $this->sections[$last] = ob_get_clean();
-        } else {
-            $this->extendSection($last, ob_get_clean());
-        }
-        return $last;
-    }
-    public function appendSection()
-    {
-        $last = array_pop($this->sectionStack);
-        if (isset($this->sections[$last])) {
-            $this->sections[$last] .= ob_get_clean();
-        } else {
-            $this->sections[$last] = ob_get_clean();
-        }
-        return $last;
-    }
-    protected function extendSection($section, $content)
-    {
-        if (isset($this->sections[$section])) {
-            $content = str_replace('@parent', $content, $this->sections[$section]);
-            $this->sections[$section] = $content;
-        } else {
-            $this->sections[$section] = $content;
-        }
-    }
-    public function yieldContent($section, $default = '')
-    {
-        return isset($this->sections[$section]) ? $this->sections[$section] : $default;
-    }
-    public function flushSections()
-    {
-        $this->sections = array();
-        $this->sectionStack = array();
-    }
-    public function flushSectionsIfDoneRendering()
-    {
-        if ($this->doneRendering()) {
-            $this->flushSections();
-        }
-    }
-    public function incrementRender()
-    {
-        $this->renderCount++;
-    }
-    public function decrementRender()
-    {
-        $this->renderCount--;
-    }
-    public function doneRendering()
-    {
-        return $this->renderCount == 0;
-    }
-    public function addLocation($location)
-    {
-        $this->finder->addLocation($location);
-    }
-    public function addNamespace($namespace, $hints)
-    {
-        $this->finder->addNamespace($namespace, $hints);
-    }
-    public function prependNamespace($namespace, $hints)
-    {
-        $this->finder->prependNamespace($namespace, $hints);
-    }
-    public function addExtension($extension, $engine, $resolver = null)
-    {
-        $this->finder->addExtension($extension);
-        if (isset($resolver)) {
-            $this->engines->register($engine, $resolver);
-        }
-        unset($this->extensions[$extension]);
-        $this->extensions = array_merge(array($extension => $engine), $this->extensions);
-    }
-    public function getExtensions()
-    {
-        return $this->extensions;
-    }
-    public function getEngineResolver()
-    {
-        return $this->engines;
-    }
-    public function getFinder()
-    {
-        return $this->finder;
-    }
-    public function setFinder(ViewFinderInterface $finder)
-    {
-        $this->finder = $finder;
-    }
-    public function getDispatcher()
-    {
-        return $this->events;
-    }
-    public function setDispatcher(Dispatcher $events)
-    {
-        $this->events = $events;
-    }
-    public function getContainer()
-    {
-        return $this->container;
-    }
-    public function setContainer(Container $container)
-    {
-        $this->container = $container;
-    }
-    public function shared($key, $default = null)
-    {
-        return array_get($this->shared, $key, $default);
-    }
-    public function getShared()
-    {
-        return $this->shared;
-    }
-    public function getSections()
-    {
-        return $this->sections;
-    }
-    public function getNames()
-    {
-        return $this->names;
-    }
-}
 namespace Illuminate\Support\Contracts;
 
 interface MessageProviderInterface
@@ -9285,10 +9150,11 @@ interface MessageProviderInterface
 namespace Illuminate\Support;
 
 use Countable;
+use JsonSerializable;
 use Illuminate\Support\Contracts\JsonableInterface;
 use Illuminate\Support\Contracts\ArrayableInterface;
 use Illuminate\Support\Contracts\MessageProviderInterface;
-class MessageBag implements ArrayableInterface, Countable, JsonableInterface, MessageProviderInterface
+class MessageBag implements ArrayableInterface, Countable, JsonableInterface, MessageProviderInterface, JsonSerializable
 {
     protected $messages = array();
     protected $format = ':message';
@@ -9390,6 +9256,10 @@ class MessageBag implements ArrayableInterface, Countable, JsonableInterface, Me
     {
         return $this->getMessages();
     }
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
     public function toJson($options = 0)
     {
         return json_encode($this->toArray(), $options);
@@ -9425,37 +9295,37 @@ use Illuminate\Support\Contracts\ArrayableInterface as Arrayable;
 use Illuminate\Support\Contracts\RenderableInterface as Renderable;
 class View implements ArrayAccess, Renderable
 {
-    protected $environment;
+    protected $factory;
     protected $engine;
     protected $view;
     protected $data;
     protected $path;
-    public function __construct(Environment $environment, EngineInterface $engine, $view, $path, $data = array())
+    public function __construct(Factory $factory, EngineInterface $engine, $view, $path, $data = array())
     {
         $this->view = $view;
         $this->path = $path;
         $this->engine = $engine;
-        $this->environment = $environment;
+        $this->factory = $factory;
         $this->data = $data instanceof Arrayable ? $data->toArray() : (array) $data;
     }
     public function render(Closure $callback = null)
     {
         $contents = $this->renderContents();
         $response = isset($callback) ? $callback($this, $contents) : null;
-        $this->environment->flushSectionsIfDoneRendering();
+        $this->factory->flushSectionsIfDoneRendering();
         return $response ?: $contents;
     }
     protected function renderContents()
     {
-        $this->environment->incrementRender();
-        $this->environment->callComposer($this);
+        $this->factory->incrementRender();
+        $this->factory->callComposer($this);
         $contents = $this->getContents();
-        $this->environment->decrementRender();
+        $this->factory->decrementRender();
         return $contents;
     }
     public function renderSections()
     {
-        $env = $this->environment;
+        $env = $this->factory;
         return $this->render(function ($view) use($env) {
             return $env->getSections();
         });
@@ -9466,7 +9336,7 @@ class View implements ArrayAccess, Renderable
     }
     protected function gatherData()
     {
-        $data = array_merge($this->environment->getShared(), $this->data);
+        $data = array_merge($this->factory->getShared(), $this->data);
         foreach ($data as $key => $value) {
             if ($value instanceof Renderable) {
                 $data[$key] = $value->render();
@@ -9485,7 +9355,7 @@ class View implements ArrayAccess, Renderable
     }
     public function nest($key, $view, array $data = array())
     {
-        return $this->with($key, $this->environment->make($view, $data));
+        return $this->with($key, $this->factory->make($view, $data));
     }
     public function withErrors($provider)
     {
@@ -9496,9 +9366,9 @@ class View implements ArrayAccess, Renderable
         }
         return $this;
     }
-    public function getEnvironment()
+    public function getFactory()
     {
-        return $this->environment;
+        return $this->factory;
     }
     public function getEngine()
     {
@@ -9757,22 +9627,7 @@ class Response
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         } elseif ('cli' !== PHP_SAPI) {
-            $previous = null;
-            $obStatus = ob_get_status(1);
-            while (($level = ob_get_level()) > 0 && $level !== $previous) {
-                $previous = $level;
-                if ($obStatus[$level - 1]) {
-                    if (version_compare(PHP_VERSION, '5.4', '>=')) {
-                        if (isset($obStatus[$level - 1]['flags']) && $obStatus[$level - 1]['flags'] & PHP_OUTPUT_HANDLER_REMOVABLE) {
-                            ob_end_flush();
-                        }
-                    } else {
-                        if (isset($obStatus[$level - 1]['del']) && $obStatus[$level - 1]['del']) {
-                            ob_end_flush();
-                        }
-                    }
-                }
-            }
+            static::closeOutputBuffers(0, true);
             flush();
         }
         return $this;
@@ -10098,6 +9953,18 @@ class Response
     {
         return in_array($this->statusCode, array(204, 304));
     }
+    public static function closeOutputBuffers($targetLevel, $flush)
+    {
+        $status = ob_get_status(true);
+        $level = count($status);
+        while ($level-- > $targetLevel && (!empty($status[$level]['del']) || isset($status[$level]['flags']) && $status[$level]['flags'] & PHP_OUTPUT_HANDLER_REMOVABLE && $status[$level]['flags'] & ($flush ? PHP_OUTPUT_HANDLER_FLUSHABLE : PHP_OUTPUT_HANDLER_CLEANABLE))) {
+            if ($flush) {
+                ob_end_flush();
+            } else {
+                ob_end_clean();
+            }
+        }
+    }
     protected function ensureIEOverSSLCompatibility(Request $request)
     {
         if (false !== stripos($this->headers->get('Content-Disposition'), 'attachment') && preg_match('/MSIE (.*?);/i', $request->server->get('HTTP_USER_AGENT'), $match) == 1 && true === $request->isSecure()) {
@@ -10110,22 +9977,12 @@ class Response
 namespace Illuminate\Http;
 
 use ArrayObject;
-use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Support\Contracts\JsonableInterface;
 use Illuminate\Support\Contracts\RenderableInterface;
 class Response extends \Symfony\Component\HttpFoundation\Response
 {
+    use ResponseTrait;
     public $original;
-    public function header($key, $value, $replace = true)
-    {
-        $this->headers->set($key, $value, $replace);
-        return $this;
-    }
-    public function withCookie(Cookie $cookie)
-    {
-        $this->headers->setCookie($cookie);
-        return $this;
-    }
     public function setContent($content)
     {
         $this->original = $content;
@@ -10509,8 +10366,7 @@ class Run
         $inspector = $this->getInspector($exception);
         ob_start();
         $handlerResponse = null;
-        for ($i = count($this->handlerStack) - 1; $i >= 0; $i--) {
-            $handler = $this->handlerStack[$i];
+        foreach (array_reverse($this->handlerStack) as $handler) {
             $handler->setRun($this);
             $handler->setInspector($inspector);
             $handler->setException($exception);
@@ -10519,25 +10375,18 @@ class Run
                 break;
             }
         }
+        $willQuit = $handlerResponse == Handler::QUIT && $this->allowQuit();
         $output = ob_get_clean();
         if ($this->writeToOutput()) {
-            if ($handlerResponse == Handler::QUIT && $this->allowQuit()) {
+            if ($willQuit) {
                 while (ob_get_level() > 0) {
                     ob_end_clean();
                 }
             }
-            if ($this->sendHttpCode() && isset($_SERVER['REQUEST_URI']) && !headers_sent()) {
-                $httpCode = $this->sendHttpCode();
-                if (function_exists('http_response_code')) {
-                    http_response_code($httpCode);
-                } else {
-                    header('X-Ignore-This: 1', true, $httpCode);
-                }
-            }
-            echo $output;
+            $this->writeToOutputNow($output);
         }
-        if ($handlerResponse == Handler::QUIT && $this->allowQuit()) {
-            die;
+        if ($willQuit) {
+            die(1);
         }
         return $output;
     }
@@ -10568,6 +10417,19 @@ class Run
         }
     }
     private $canThrowExceptions = true;
+    private function writeToOutputNow($output)
+    {
+        if ($this->sendHttpCode() && \Whoops\Util\Misc::canSendHeaders()) {
+            $httpCode = $this->sendHttpCode();
+            if (function_exists('http_response_code')) {
+                http_response_code($httpCode);
+            } else {
+                header('X-Ignore-This: 1', true, $httpCode);
+            }
+        }
+        echo $output;
+        return $this;
+    }
     private static function isLevelFatal($level)
     {
         return in_array($level, array(E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING));
@@ -10627,11 +10489,16 @@ abstract class Handler implements HandlerInterface
 namespace Whoops\Handler;
 
 use Whoops\Handler\Handler;
+use Whoops\Util\TemplateHelper;
 use InvalidArgumentException;
+use RuntimeException;
 class PrettyPageHandler extends Handler
 {
-    private $resourcesPath;
+    private $searchPaths = array();
+    private $resourceCache = array();
+    private $customCss = null;
     private $extraTables = array();
+    private $handleUnconditionally = false;
     private $pageTitle = 'Whoops! There was an error.';
     protected $editor;
     protected $editors = array('sublime' => 'subl://open?url=file://%file&line=%line', 'textmate' => 'txmt://open?url=file://%file&line=%line', 'emacs' => 'emacs://open?url=file://%file&line=%line', 'macvim' => 'mvim://open/?url=file://%file&line=%line');
@@ -10642,39 +10509,38 @@ class PrettyPageHandler extends Handler
                 return str_replace(array('%f', '%l'), array($file, $line), ini_get('xdebug.file_link_format'));
             };
         }
+        $this->searchPaths[] = __DIR__.'/../vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
     }
     public function handle()
     {
-        if (php_sapi_name() === 'cli' && !isset($_ENV['whoops-test'])) {
-            return Handler::DONE;
+        if (!$this->handleUnconditionally()) {
+            if (php_sapi_name() === 'cli') {
+                if (isset($_ENV['whoops-test'])) {
+                    throw new \Exception('Use handleUnconditionally instead of whoops-test' . ' environment variable');
+                }
+                return Handler::DONE;
+            }
         }
-        if (!($resources = $this->getResourcesPath())) {
-            $resources = __DIR__.'/../vendor/filp/whoops/src/Whoops/Handler' . '/../Resources';
+        $helper = new TemplateHelper();
+        $templateFile = $this->getResource('views/layout.html.php');
+        $cssFile = $this->getResource('css/whoops.base.css');
+        $zeptoFile = $this->getResource('js/zepto.min.js');
+        $jsFile = $this->getResource('js/whoops.base.js');
+        if ($this->customCss) {
+            $customCssFile = $this->getResource($this->customCss);
         }
-        $templateFile = "{$resources}/pretty-template.php";
-        $cssFile = "{$resources}/pretty-page.css";
         $inspector = $this->getInspector();
         $frames = $inspector->getFrames();
-        $v = (object) array('title' => $this->getPageTitle(), 'name' => explode('\\', $inspector->getExceptionName()), 'message' => $inspector->getException()->getMessage(), 'frames' => $frames, 'hasFrames' => !!count($frames), 'handler' => $this, 'handlers' => $this->getRun()->getHandlers(), 'pageStyle' => file_get_contents($cssFile), 'tables' => array('Server/Request Data' => $_SERVER, 'GET Data' => $_GET, 'POST Data' => $_POST, 'Files' => $_FILES, 'Cookies' => $_COOKIE, 'Session' => isset($_SESSION) ? $_SESSION : array(), 'Environment Variables' => $_ENV));
+        $vars = array('page_title' => $this->getPageTitle(), 'stylesheet' => file_get_contents($cssFile), 'zepto' => file_get_contents($zeptoFile), 'javascript' => file_get_contents($jsFile), 'header' => $this->getResource('views/header.html.php'), 'frame_list' => $this->getResource('views/frame_list.html.php'), 'frame_code' => $this->getResource('views/frame_code.html.php'), 'env_details' => $this->getResource('views/env_details.html.php'), 'title' => $this->getPageTitle(), 'name' => explode('\\', $inspector->getExceptionName()), 'message' => $inspector->getException()->getMessage(), 'frames' => $frames, 'has_frames' => !!count($frames), 'handler' => $this, 'handlers' => $this->getRun()->getHandlers(), 'tables' => array('Server/Request Data' => $_SERVER, 'GET Data' => $_GET, 'POST Data' => $_POST, 'Files' => $_FILES, 'Cookies' => $_COOKIE, 'Session' => isset($_SESSION) ? $_SESSION : array(), 'Environment Variables' => $_ENV));
+        if (isset($customCssFile)) {
+            $vars['stylesheet'] .= file_get_contents($customCssFile);
+        }
         $extraTables = array_map(function ($table) {
             return $table instanceof \Closure ? $table() : $table;
         }, $this->getDataTables());
-        $v->tables = array_merge($extraTables, $v->tables);
-        call_user_func(function () use($templateFile, $v) {
-            $e = function ($_, $allowLinks = false) {
-                $escaped = htmlspecialchars($_, ENT_QUOTES, 'UTF-8');
-                if ($allowLinks) {
-                    $escaped = preg_replace('@([A-z]+?://([-\\w\\.]+[-\\w])+(:\\d+)?(/([\\w/_\\.#-]*(\\?\\S+)?[^\\.\\s])?)?)@', '<a href="$1" target="_blank">$1</a>', $escaped);
-                }
-                return $escaped;
-            };
-            $slug = function ($_) {
-                $_ = str_replace(' ', '-', $_);
-                $_ = preg_replace('/[^\\w\\d\\-\\_]/i', '', $_);
-                return strtolower($_);
-            };
-            require $templateFile;
-        });
+        $vars['tables'] = array_merge($extraTables, $vars['tables']);
+        $helper->setVariables($vars);
+        $helper->render($templateFile);
         return Handler::QUIT;
     }
     public function addDataTable($label, array $data)
@@ -10701,6 +10567,13 @@ class PrettyPageHandler extends Handler
             return isset($this->extraTables[$label]) ? $this->extraTables[$label] : array();
         }
         return $this->extraTables;
+    }
+    public function handleUnconditionally($value = null)
+    {
+        if (func_num_args() == 0) {
+            return $this->handleUnconditionally;
+        }
+        $this->handleUnconditionally = (bool) $value;
     }
     public function addEditor($identifier, $resolver)
     {
@@ -10740,22 +10613,49 @@ class PrettyPageHandler extends Handler
     {
         return $this->pageTitle;
     }
+    public function addResourcePath($path)
+    {
+        if (!is_dir($path)) {
+            throw new InvalidArgumentException("'{$path}' is not a valid directory");
+        }
+        array_unshift($this->searchPaths, $path);
+    }
+    public function addCustomCss($name)
+    {
+        $this->customCss = $name;
+    }
+    public function getResourcePaths()
+    {
+        return $this->searchPaths;
+    }
+    protected function getResource($resource)
+    {
+        if (isset($this->resourceCache[$resource])) {
+            return $this->resourceCache[$resource];
+        }
+        foreach ($this->searchPaths as $path) {
+            $fullPath = $path . "/{$resource}";
+            if (is_file($fullPath)) {
+                $this->resourceCache[$resource] = $fullPath;
+                return $fullPath;
+            }
+        }
+        throw new RuntimeException("Could not find resource '{$resource}' in any resource paths." . '(searched: ' . join(', ', $this->searchPaths) . ')');
+    }
     public function getResourcesPath()
     {
-        return $this->resourcesPath;
+        $allPaths = $this->getResourcePaths();
+        return end($allPaths) ?: null;
     }
     public function setResourcesPath($resourcesPath)
     {
-        if (!is_dir($resourcesPath)) {
-            throw new InvalidArgumentException("{$resourcesPath} is not a valid directory");
-        }
-        $this->resourcesPath = $resourcesPath;
+        $this->addResourcePath($resourcesPath);
     }
 }
 namespace Whoops\Handler;
 
 use Whoops\Handler\Handler;
-use Whoops\Exception\Frame;
+use Whoops\Exception\Formatter;
 class JsonResponseHandler extends Handler
 {
     private $returnFrames = false;
@@ -10766,6 +10666,7 @@ class JsonResponseHandler extends Handler
             return $this->returnFrames;
         }
         $this->returnFrames = (bool) $returnFrames;
+        return $this;
     }
     public function onlyForAjaxRequests($onlyForAjaxRequests = null)
     {
@@ -10783,16 +10684,9 @@ class JsonResponseHandler extends Handler
         if ($this->onlyForAjaxRequests() && !$this->isAjaxRequest()) {
             return Handler::DONE;
         }
-        $exception = $this->getException();
-        $response = array('error' => array('type' => get_class($exception), 'message' => $exception->getMessage(), 'file' => $exception->getFile(), 'line' => $exception->getLine()));
-        if ($this->addTraceToOutput()) {
-            $inspector = $this->getInspector();
-            $frames = $inspector->getFrames();
-            $frameData = array();
-            foreach ($frames as $frame) {
-                $frameData[] = array('file' => $frame->getFile(), 'line' => $frame->getLine(), 'function' => $frame->getFunction(), 'class' => $frame->getClass(), 'args' => $frame->getArgs());
-            }
-            $response['error']['trace'] = $frameData;
+        $response = array('error' => Formatter::formatExceptionAsDataArray($this->getInspector(), $this->addTraceToOutput()));
+        if (\Whoops\Util\Misc::canSendHeaders()) {
+            header('Content-Type: application/json');
         }
         echo json_encode($response);
         return Handler::QUIT;

@@ -17,7 +17,9 @@ class PrettyPageHandlerTest extends TestCase
      */
     private function getHandler()
     {
-        return new PrettyPageHandler;
+        $handler = new PrettyPageHandler;
+        $handler->handleUnconditionally();
+        return $handler;
     }
 
     /**
@@ -62,26 +64,29 @@ class PrettyPageHandlerTest extends TestCase
     }
 
     /**
-     * @covers Whoops\Handler\PrettyPageHandler::setResourcesPath
-     * @covers Whoops\Handler\PrettyPageHandler::getResourcesPath
+     * @covers Whoops\Handler\PrettyPageHandler::addResourcePath
+     * @covers Whoops\Handler\PrettyPageHandler::getResourcePaths
      */
-    public function testGetSetResourcesPath()
+    public function testGetSetResourcePaths()
     {
         $path = __DIR__; // guaranteed to be valid!
         $handler = $this->getHandler();
 
-        $handler->setResourcesPath($path);
-        $this->assertEquals($path, $handler->getResourcesPath());
+        $handler->addResourcePath($path);
+        $allPaths = $handler->getResourcePaths();
+
+        $this->assertCount(2, $allPaths);
+        $this->assertEquals($allPaths[0], $path);
     }
 
     /**
-     * @covers Whoops\Handler\PrettyPageHandler::setResourcesPath
+     * @covers Whoops\Handler\PrettyPageHandler::addResourcePath
      * @expectedException InvalidArgumentException
      */
     public function testSetInvalidResourcesPath()
     {
         $path = __DIR__ . '/ZIMBABWE'; // guaranteed to be invalid!
-        $this->getHandler()->setResourcesPath($path);
+        $this->getHandler()->addResourcePath($path);
     }
 
     /**
@@ -242,6 +247,13 @@ class PrettyPageHandlerTest extends TestCase
 
     public function testEditorXdebug()
     {
+        if (!extension_loaded('xdebug')) {
+            // Even though this test only uses ini_set and ini_get,
+            // without xdebug active, those calls do not work.
+            // In particular, ini_get after ini_setting returns false.
+            return $this->markTestSkipped('The xdebug extension is not loaded.');
+        }
+
         $originalValue = ini_get('xdebug.file_link_format');
 
         ini_set('xdebug.file_link_format', '%f:%l');

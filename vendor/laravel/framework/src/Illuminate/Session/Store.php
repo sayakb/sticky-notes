@@ -156,7 +156,7 @@ class Store implements SessionInterface {
 	 */
 	protected function generateSessionId()
 	{
-		return sha1(uniqid(true).str_random(25).microtime(true));
+		return sha1(uniqid('', true).str_random(25).microtime(true));
 	}
 
 	/**
@@ -193,6 +193,8 @@ class Store implements SessionInterface {
 	public function migrate($destroy = false, $lifetime = null)
 	{
 		if ($destroy) $this->handler->destroy($this->getId());
+
+		$this->setExists(false);
 
 		$this->id = $this->generateSessionId(); return true;
 	}
@@ -263,6 +265,22 @@ class Store implements SessionInterface {
 	public function get($name, $default = null)
 	{
 		return array_get($this->attributes, $name, $default);
+	}
+
+	/**
+	 * Get the value of a given key and then forget it.
+	 *
+	 * @param  string  $key
+	 * @param  string  $default
+	 * @return mixed
+	 */
+	public function pull($key, $default = null)
+	{
+		$value = $this->get($key, $default);
+
+		$this->forget($key);
+
+		return $value;
 	}
 
 	/**
@@ -551,6 +569,20 @@ class Store implements SessionInterface {
 	public function regenerateToken()
 	{
 		$this->put('_token', str_random(40));
+	}
+
+	/**
+	 * Set the existence of the session on the handler if applicable.
+	 *
+	 * @param  bool  $value
+	 * @return void
+	 */
+	public function setExists($value)
+	{
+		if ($this->handler instanceof ExistenceAwareInterface)
+		{
+			$this->handler->setExists($value);
+		}
 	}
 
 	/**
