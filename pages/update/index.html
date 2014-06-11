@@ -70,11 +70,12 @@
 
 			<ul>
 				<li>
-					<a href="#updating-the-codebase">Updating the codebase</a>
+					<a href="#updating-the-files">Updating the files</a>
 
 					<ul>
-						<li><a href="#updating-from-1-0-x">Updating from 1.x</a></li>
-						<li><a href="#updating-from-older-versions">Updating from older versions</a></li>
+						<li><a href="#from-version-1-x-or-higher">From version 1.x or higher</a></li>
+						<li><a href="#from-version-0-4">From version 0.4</a></li>
+						<li><a href="#from-version-0-3-or-lower">From version 0.3 or lower</a></li>
 					</ul>
 				</li>
 
@@ -87,7 +88,7 @@
 		<hr />
 
 		<p>
-			Sticky Notes 1.x has a built-in hassle-free updater utility. This utility aims towards
+			Sticky Notes has a built-in hassle-free updater utility. This utility aims towards
 			making your update experience quick and smooth.
 		</p>
 
@@ -96,7 +97,7 @@
 			starting with the update process.
 		</p>
 
-		<h3 id="updating-the-codebase">Updating the codebase</h3>
+		<h3 id="updating-the-files">Updating the files</h3>
 
 		<p>
 			The update process is slightly different when upgrading from an older version of
@@ -105,18 +106,25 @@
 			<a href="../../download" target="_blank">here</a> and extract the archive.
 		</p>
 
-		<h4 id="updating-from-1-0-x">Updating from 1.x</h4>
-
 		<p>
-			Overwrite the old Sticky Notes 1.x files in your web root with the contents of
-			the downloaded archive.
+			If you are using a git repository clone to manage your Sticky Notes instance, please
+			don't forget to do a <code>git checkout tags/&lt;version&gt;</code> after pulling
+			the latest copy off GitHub. This is to ensure that you don't end up installing an
+			untested development version of the application on your server.
 		</p>
 
-		<h4 id="updating-from-older-versions">Updating from older versions</h4>
+		<h4 id="from-version-1-x-or-higher">From version 1.x or higher</h4>
+
+		<p>
+			Overwrite the old Sticky Notes files in your web root with the contents of the
+			downloaded archive.
+		</p>
+
+		<h4 id="from-version-0-4">From version 0.4</h4>
 
 		<p>
 			Move the old code files to any different location so that you are left with an
-			empty directory. Now copy over the new 1.x files to your web root (or wherever
+			empty directory. Now copy over the new Sticky Notes files to your web root (or wherever
 			your old code resided earlier). Follow the <a href="../install/#database-configuration">
 			database configuration</a> steps mentioned in the <a href="../install">installation guide</a>.
 		</p>
@@ -126,6 +134,14 @@
 			authentication and general site settings), place your old <code>config.php</code>
 			inside the new version's <code>app/config</code> folder before running the updater.
 		</div>
+
+		<h4 id="from-version-0-3-or-lower">From version 0.3 or lower</h4>
+
+		<p>
+			Currently, the updater <b>does not</b> support versions older than 0.4; so if you have
+			0.1 through 0.3 installed, you cannot use the automatic updater to migrate to the latest
+			version of Sticky Notes.
+		</p>
 
 		<h3 id="running-the-updater">Running the updater</h3>
 
@@ -149,12 +165,10 @@
 		</p>
 
 		<div class="alert alert-info">
-			One nice feature of the installer is that it is incremental in nature. What that means
-			is, suppose you are updating from 0.4 to 1.2, and there are two releases (1.0 and
-			1.1) that you have skipped in between, the updater will automatically take care
-			of the updates from the missed out releases. Therefore, while the updater is running,
-			you will see that it applies the database changes for each release from your old to
-			new version one by one.
+			The updater is designed to be incremental in nature. So for instance, if you are running
+			version 0.4 and wish to upgrade to 1.7, you don't need to worry about the versions in
+			between; the updater will automatically apply the database changes from all intermediate
+			versions.
 		</div>
 	</div>
 

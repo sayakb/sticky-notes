@@ -115,9 +115,10 @@
 
 		<p>
 			This document defines the REST API specifications for Sticky Notes. The API has
-			three main endpoints: <code>create</code>, <code>show</code> and <code>list</code>.
-			For each endpoint, there are a set of mandatory and optional parameters and a
-			standard output template depending upon the requested format for the response.
+			three main endpoints: <code>create</code>, <code>show</code> and <code>list</code>
+			and a utility endpoint called <code>parameter</code>. For each endpoint, there is
+			a set of mandatory and optional parameters and a standard output template depending
+			upon the requested format for the response.
 		</p>
 
 		<p>
@@ -192,7 +193,8 @@
 
 			<li>
 				<code>project</code>:
-				Whether to associate a project with the paste
+				Whether to associate the paste with a project (<a href="../services/#project-pastebins">click
+				here</a> for more information)
 			</li>
 		</ul>
 
@@ -230,7 +232,7 @@
 
 			<li>
 				<code>err_data_required</code>:
-				Paste body was not specified
+				Paste body was not sent
 			</li>
 
 			<li>
