@@ -143,7 +143,7 @@
 			it only creates and modifies tables. Once you have created the database manually,
 			go to the <code>app/config</code> folder and rename <code>database.sample.php</code>
 			to <code>database.php</code>. Now open the <code>database.php</code> file and fill
-			in your database server details. There are two main things to do here:
+			in your database server details. There are three main things to do here:
 		</p>
 
 		<ol>
@@ -156,6 +156,12 @@
 			<li>
 				Fill in all the details against the database server you are going to use in
 				the <code>connections</code> section.
+			</li>
+
+			<li>
+				If you are using the <code>sqlite</code> driver, please make sure that not only
+				your database file (typically located under <code>app/database</code>) but the
+				<code>database</code> folder itself if writable by apache.
 			</li>
 		</ol>
 
