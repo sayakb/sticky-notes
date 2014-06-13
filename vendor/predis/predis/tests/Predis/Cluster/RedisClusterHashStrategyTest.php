@@ -342,6 +342,9 @@ class RedisClusterHashStrategyTest extends PredisTestCase
             'ZREVRANK'              => 'keys-first',
             'ZSCORE'                => 'keys-first',
             'ZSCAN'                 => 'keys-first',
+            'ZLEXCOUNT'             => 'keys-first',
+            'ZRANGEBYLEX'           => 'keys-first',
+            'ZREMRANGEBYLEX'        => 'keys-first',
 
             /* commands operating on hashes */
             'HDEL'                  => 'keys-first',
