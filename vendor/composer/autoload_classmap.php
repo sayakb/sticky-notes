@@ -41,6 +41,7 @@ return array(
     'StickyNotes\\Hashing\\HashServiceProvider' => $baseDir . '/app/lib/hashing/HashServiceProvider.php',
     'StickyNotes\\Hashing\\PHPassHasher' => $baseDir . '/app/lib/hashing/PHPassHasher.php',
     'StickyNotes\\Highlighter' => $baseDir . '/app/lib/Highlighter.php',
+    'StickyNotes\\Mail' => $baseDir . '/app/lib/Mail.php',
     'StickyNotes\\PHPDiff' => $baseDir . '/app/lib/PHPDiff.php',
     'StickyNotes\\PHPass' => $baseDir . '/app/lib/PHPass.php',
     'StickyNotes\\Redirect' => $baseDir . '/app/lib/Redirect.php',

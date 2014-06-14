@@ -62,6 +62,9 @@ return array(
 	"sendmail"              => "Sendmail",
 	"ssl"                   => "SSL",
 	"tls"                   => "TLS",
+	"test_mail_settings"    => "Test mail settings",
+	"test_mail_success"     => "Mail server connectivity validated successfully",
+	"test_mail_error"       => "Mail test failed: %s",
 	"none"                  => "None",
 	"fqdn"                  => "FQDN",
 	"fqdn_exp"              => "The fully qualified domain name for the server. This is ".

@@ -389,18 +389,23 @@ class AdminController extends BaseController {
 		// Run the validator
 		if ($validator->passes())
 		{
-			Site::config('mail', Input::all());
+			if (Input::has('_save'))
+			{
+				Site::config('mail', Input::all());
 
-			Session::flash('messages.success', Lang::get('admin.mail_updated'));
-
-			return Redirect::to('admin/mail');
+				Session::flash('messages.success', Lang::get('admin.mail_updated'));
+			}
+			else if (Input::has('_test'))
+			{
+				Mail::test(Input::all());
+			}
 		}
 		else
 		{
 			Session::flash('messages.error', $validator->messages()->all('<p>:message</p>'));
-
-			return Redirect::to('admin/mail')->withInput();
 		}
+
+		return Redirect::to('admin/mail')->withInput();
 	}
 
 	/**

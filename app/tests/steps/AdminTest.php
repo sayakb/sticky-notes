@@ -303,6 +303,7 @@ class AdminTest extends StickyNotesTestCase {
 			'host'    => 'localhost',
 			'port'    => '25',
 			'address' => 'unit@test.com',
+			'_save'   => 1,
 		));
 
 		$this->assertSessionHas('messages.success');
