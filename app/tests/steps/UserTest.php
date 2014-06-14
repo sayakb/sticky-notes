@@ -131,6 +131,8 @@ class UserTest extends StickyNotesTestCase {
 		));
 
 		$this->assertRedirectedTo('user/login');
+
+		$this->assertSessionHas('messages.success');
 	}
 
 	/**

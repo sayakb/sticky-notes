@@ -2,7 +2,7 @@
 	<p>{{ sprintf(Lang::get('mail.dear_user'), $dispname) }}</p>
 	<br />
 
-	<p>{{ sprintf(Lang::get('mail.password_reset'), $site->general->fqdn) }}</p>
+	<p>{{ sprintf(Lang::get('mail.password_reset'), $site['general']['fqdn']) }}</p>
 	<p>{{ sprintf(Lang::get('mail.new_password'), $password) }}</p>
 	<br />
 
