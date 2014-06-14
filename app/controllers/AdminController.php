@@ -280,6 +280,8 @@ class AdminController extends BaseController {
 					));
 				}
 
+				Cache::flush();
+
 				Session::flash('messages.success', Lang::get('admin.user_saved'));
 
 				return Redirect::to('admin/user');
