@@ -91,20 +91,47 @@ class Highlighter {
 	 */
 	public function languages($csv = FALSE)
 	{
-		// get_supported_languages takes a param that tells whether or not
-		// to return full names. We don't need full names if we just want CSV
-		$langs = $this->geshi->get_supported_languages( ! $csv);
-
-		if ($csv)
+		return Cache::rememberForever("site.languages.{$csv}", function() use ($csv)
 		{
-			$langs = implode(',', $langs);
-		}
-		else
-		{
-			$langs = $this->sortLanguages($langs);
-		}
+			// get_supported_languages takes a param that tells whether or not
+			// to return full names. We don't need full names if we just want CSV
+			$langs = $this->geshi->get_supported_languages( ! $csv);
 
-		return $langs;
+			// Now, sort the languages for non-CSV scenario
+			if ( ! $csv)
+			{
+				// First, we do a natural case-insensitive sort
+				natcasesort($langs);
+
+				// Now, get the language list from the cookie and push the most
+				// used languages to the beginning of the list to allow easy access
+				$historyLangs = Cookie::get('languages');
+
+				if ( ! is_null($historyLangs))
+				{
+					foreach ($historyLangs as $lang)
+					{
+						if (isset($langs[$lang]))
+						{
+							// Get the language description
+							$langText = $langs[$lang];
+
+							// Remove the language from the array
+							unset($langs[$lang]);
+
+							// Add the language to the top of the array
+							$langs = array_merge(array($lang => $langText), $langs);
+						}
+					}
+				}
+			}
+			else
+			{
+				$langs = implode(',', $langs);
+			}
+
+			return $langs;
+		});
 	}
 
 	/**
@@ -129,42 +156,6 @@ class Highlighter {
 		});
 
 		return $parsed ?: $code;
-	}
-
-	/**
-	 * Sorts the language list based on their name and history
-	 *
-	 * @param  array  $langs
-	 * @return array
-	 */
-	private function sortLanguages($langs)
-	{
-		// First, we do a natural case-insensitive sort
-		natcasesort($langs);
-
-		// Now, get the language list from the cookie
-		$historyLangs = Cookie::get('languages');
-
-		if ( ! is_null($historyLangs))
-		{
-			foreach ($historyLangs as $lang)
-			{
-				if (isset($langs[$lang]))
-				{
-					// Get the language description
-					$langText = $langs[$lang];
-
-					// Remove the language from the array
-					unset($langs[$lang]);
-
-					// Add the language to the top of the array
-					$langs = array_merge(array($lang => $langText), $langs);
-				}
-			}
-		}
-
-		// Return the language list
-		return $langs;
 	}
 
 }
