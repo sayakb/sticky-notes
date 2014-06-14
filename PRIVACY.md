@@ -8,8 +8,7 @@ includes **only** the following data:
 * Action type: install / update
 
 You can choose to not send your site's URL by setting the fullStats option
-to FALSE in `app/config/app.php`. However, it is strongly recommended that
-you leave this value as TRUE.
+to FALSE in `app/config/app.php`.
 
 Please note that your site's URL will never be published and is purely used
 for statistical purposes. It is stored securely and is encrypted with a
