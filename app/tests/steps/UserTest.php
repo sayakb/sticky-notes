@@ -73,7 +73,8 @@ class UserTest extends StickyNotesTestCase {
 
 		// Disable the captcha
 		Site::config('auth', array(
-			'db_show_captcha' => 0
+			'db_show_captcha' => 0,
+			'db_allow_reg'    => 1,
 		));
 
 		// Generate a random user key
@@ -87,7 +88,7 @@ class UserTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('user/login');
 
-		$this->assertTrue(User::where('username', $key)->count() == 1);
+		$this->assertEquals(User::where('username', $key)->count(), 1);
 	}
 
 	/**
@@ -162,7 +163,7 @@ class UserTest extends StickyNotesTestCase {
 
 		$this->assertSessionHas('messages.success');
 
-		$this->assertTrue(User::where('dispname', $key)->count() == 1);
+		$this->assertEquals(User::where('dispname', $key)->count(), 1);
 	}
 
 }

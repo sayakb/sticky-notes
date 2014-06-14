@@ -79,7 +79,7 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('/');
 
-		$this->assertTrue(empty(Paste::find($paste->id)->password));
+		$this->assertEquals(Paste::find($paste->id)->password, '');
 	}
 
 	/**
@@ -100,7 +100,7 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('/');
 
-		$this->assertTrue(Paste::find($paste->id)->private == 0);
+		$this->assertEquals(Paste::find($paste->id)->private, 0);
 	}
 
 	/**
@@ -120,7 +120,7 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('admin/paste');
 
-		$this->assertTrue(Paste::where($paste->id)->count() == 0);
+		$this->assertEquals(Paste::where($paste->id)->count(), 0);
 	}
 
 	/**
@@ -187,13 +187,14 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('admin/user');
 
-		$this->assertTrue(User::where('username', 'unitdel')->count() == 0);
+		$this->assertEquals(User::where('username', 'unitdel')->count(), 0);
 	}
 
 	/**
-	 * Tests the postUser method's 'save' action
+	 * Tests the postUser method's 'save' action for inserting
+	 * new user
 	 */
-	public function testPostUser()
+	public function testPostUserInsert()
 	{
 		$this->initTestStep();
 
@@ -210,7 +211,32 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('admin/user');
 
-		$this->assertTrue(User::where('username', $key)->count() == 1);
+		$this->assertEquals(User::where('username', $key)->count(), 1);
+	}
+
+	/**
+	 * Tests the postUser method's 'save' action for updating
+	 * existing user
+	 */
+	public function testPostUserUpdate()
+	{
+		$this->initTestStep();
+
+		$email = 'email'.time().'@test.com';
+
+		$this->call('POST', 'admin/user', array(
+			'id'       => 1,
+			'username' => 'unittest',
+			'password' => 'unittest',
+			'email'    => $email,
+			'_save'    => 1,
+		));
+
+		$this->assertSessionHas('messages.success');
+
+		$this->assertRedirectedTo('admin/user');
+
+		$this->assertEquals(User::where('email', $email)->count(), 1);
 	}
 
 	/**
@@ -256,7 +282,7 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('admin/ban');
 
-		$this->assertTrue(IPBan::where('ip', '0.0.0.0')->count() == 0);
+		$this->assertEquals(IPBan::where('ip', '0.0.0.0')->count(), 0);
 	}
 
 	/**
@@ -276,7 +302,7 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('admin/ban');
 
-		$this->assertTrue(IPBan::where('ip', '0.0.0.0')->count() == 1);
+		$this->assertEquals(IPBan::where('ip', '0.0.0.0')->count(), 1);
 	}
 
 	/**
@@ -292,15 +318,17 @@ class AdminTest extends StickyNotesTestCase {
 	}
 
 	/**
-	 * Tests the postMail method of the controller
+	 * Tests the postMail method's 'save' action
 	 */
-	public function testPostMail()
+	public function testPostMailSave()
 	{
 		$this->initTestStep();
 
+		$key = 'host'.time();
+
 		$this->call('POST', 'admin/mail', array(
 			'driver'  => 'smtp',
-			'host'    => 'localhost',
+			'host'    => $key,
 			'port'    => '25',
 			'address' => 'unit@test.com',
 			'_save'   => 1,
@@ -309,12 +337,34 @@ class AdminTest extends StickyNotesTestCase {
 		$this->assertSessionHas('messages.success');
 
 		$this->assertRedirectedTo('admin/mail');
+
+		$this->assertEquals(Site::config('mail')->host, $key);
+	}
+
+	/**
+	 * Tests the postMail method's 'test' action
+	 */
+	public function testPostMailTest()
+	{
+		$this->initTestStep();
+
+		$this->call('POST', 'admin/mail', array(
+			'driver'  => 'smtp',
+			'host'    => '/dev/null',
+			'port'    => '25',
+			'address' => 'unit@test.com',
+			'_test'   => 1,
+		));
+
+		$this->assertSessionHas('messages.error');
+
+		$this->assertRedirectedTo('admin/mail');
 	}
 
 	/**
 	 * Tests the getAntispam method of the controller
 	 */
-	public function testGetAntispan()
+	public function testGetAntispam()
 	{
 		$this->initTestStep();
 
@@ -330,9 +380,11 @@ class AdminTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
+		$key = 'key'.time();
+
 		$this->call('POST', 'admin/antispam', array(
 			'flag_php'  => 1,
-			'php_key'   => 'phpkey',
+			'php_key'   => $key,
 			'php_days'  => 25,
 			'php_score' => 25,
 			'php_type'  => 25,
@@ -341,6 +393,8 @@ class AdminTest extends StickyNotesTestCase {
 		$this->assertSessionHas('messages.success');
 
 		$this->assertRedirectedTo('admin/antispam');
+
+		$this->assertEquals(Site::config('antispam')->phpKey, $key);
 	}
 
 	/**
@@ -362,14 +416,18 @@ class AdminTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
+		$allowReg = Site::config('auth')->dbAllowReg == 1 ? 0 : 1;
+
 		$this->call('POST', 'admin/auth', array(
 			'method'       => 'db',
-			'db_allow_reg' => 1,
+			'db_allow_reg' => $allowReg,
 		));
 
 		$this->assertSessionHas('messages.success');
 
 		$this->assertRedirectedTo('admin/auth');
+
+		$this->assertEquals(Site::config('auth')->dbAllowReg, $allowReg);
 	}
 
 	/**
@@ -391,9 +449,11 @@ class AdminTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
+		$key = 'title'.time();
+
 		$this->call('POST', 'admin/site', array(
 			'fqdn'     => 'localhost',
-			'title'    => 'Sticky Notes',
+			'title'    => $key,
 			'per_page' => 15,
 			'lang'     => 'en',
 		));
@@ -401,6 +461,8 @@ class AdminTest extends StickyNotesTestCase {
 		$this->assertSessionHas('messages.success');
 
 		$this->assertRedirectedTo('admin/site');
+
+		$this->assertEquals(Site::config('general')->title, $key);
 	}
 
 	/**
@@ -420,7 +482,7 @@ class AdminTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('admin/skin');
 
-		$this->assertTrue(Site::config('general')->skin == $skin);
+		$this->assertEquals(Site::config('general')->skin, $skin);
 	}
 
 	/**
@@ -468,14 +530,18 @@ class AdminTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
+		$key = 'google'.time();
+
 		$this->call('POST', 'admin/services', array(
-			'googleApiKey'      => '1234',
-			'googleAnalyticsId' => '',
+			'google_api_key'      => $key,
+			'google_analytics_id' => '',
 		));
 
 		$this->assertSessionHas('messages.success');
 
 		$this->assertRedirectedTo('admin/services');
+
+		$this->assertEquals(Site::config('services')->googleApiKey, $key);
 	}
 
 }

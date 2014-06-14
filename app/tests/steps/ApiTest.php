@@ -292,7 +292,7 @@ class ApiTest extends StickyNotesTestCase {
 
 		$this->assertTrue(str_contains($response->headers->get('Content-Type'), 'application/json'));
 
-		$this->assertTrue(Paste::where('data', $key)->count() == 1);
+		$this->assertEquals(Paste::where('data', $key)->count(), 1);
 	}
 
 	/**
@@ -314,7 +314,7 @@ class ApiTest extends StickyNotesTestCase {
 
 		$this->assertTrue(str_contains($response->headers->get('Content-Type'), 'text/xml'));
 
-		$this->assertTrue(Paste::where('data', $key)->count() == 1);
+		$this->assertEquals(Paste::where('data', $key)->count(), 1);
 	}
 
 }

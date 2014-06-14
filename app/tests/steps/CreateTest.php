@@ -55,7 +55,7 @@ class CreateTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo($response->getTargetUrl());
 
-		$this->assertTrue(Paste::where('data', $key)->count() == 1);
+		$this->assertEquals(Paste::where('data', $key)->count(), 1);
 	}
 
 	/**
@@ -79,7 +79,7 @@ class CreateTest extends StickyNotesTestCase {
 
 		$this->assertSessionHas('messages.success');
 
-		$this->assertTrue(Paste::where('data', $key)->count() == 1);
+		$this->assertEquals(Paste::where('data', $key)->count(), 1);
 	}
 
 	/**
@@ -124,7 +124,7 @@ class CreateTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo($response->getTargetUrl());
 
-		$this->assertTrue(Revision::where('urlkey', $paste->urlkey)->count() == 1);
+		$this->assertEquals(Revision::where('urlkey', $paste->urlkey)->count(), 1);
 	}
 
 }

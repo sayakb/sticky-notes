@@ -62,7 +62,7 @@ class ShowTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('/');
 
-		$this->assertTrue(Paste::where('id', $paste->id)->count() == 0);
+		$this->assertEquals(Paste::where('id', $paste->id)->count(), 0);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class ShowTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('/');
 
-		$this->assertTrue(Comment::where('id', $comment->id)->count() == 0);
+		$this->assertEquals(Comment::where('id', $comment->id)->count(), 0);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class ShowTest extends StickyNotesTestCase {
 
 		$this->assertRedirectedTo('/');
 
-		$this->assertTrue(Paste::find($paste->id)->private == 0);
+		$this->assertEquals(Paste::find($paste->id)->private, 0);
 	}
 
 	/**
@@ -151,7 +151,7 @@ class ShowTest extends StickyNotesTestCase {
 
 		$this->assertSessionHas('messages.success');
 
-		$this->assertTrue(Paste::find($paste->id)->flagged == 1);
+		$this->assertEquals(Paste::find($paste->id)->flagged, 1);
 	}
 
 	/**
@@ -176,7 +176,7 @@ class ShowTest extends StickyNotesTestCase {
 
 		$this->assertSessionHas('messages.success');
 
-		$this->assertTrue(Paste::find($paste->id)->flagged == 0);
+		$this->assertEquals(Paste::find($paste->id)->flagged, 0);
 	}
 
 	/**
@@ -274,7 +274,7 @@ class ShowTest extends StickyNotesTestCase {
 
 		$this->assertFalse($this->app['session.store']->has('messages.error'));
 
-		$this->assertTrue(Comment::where('paste_id', $paste->id)->count() == 1);
+		$this->assertEquals(Comment::where('paste_id', $paste->id)->count(), 1);
 	}
 
 }
