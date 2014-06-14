@@ -391,15 +391,37 @@ class AdminController extends BaseController {
 		// Run the validator
 		if ($validator->passes())
 		{
+			// Save button click
 			if (Input::has('_save'))
 			{
 				Site::config('mail', Input::all());
 
 				Session::flash('messages.success', Lang::get('admin.mail_updated'));
 			}
+
+			// Test settings button click
 			else if (Input::has('_test'))
 			{
-				Mail::test(Input::all());
+				// Backup the existing mail settings
+				$original = (array) Site::config('mail');
+
+				// Temporarily apply the new mail settings
+				Site::config('mail', Input::all());
+
+				// Test the mail settings
+				$result = Mail::test();
+
+				if ($result === TRUE)
+				{
+					Session::flash('messages.success', Lang::get('admin.test_mail_success'));
+				}
+				else
+				{
+					Session::flash('messages.error', $result);
+				}
+
+				// Revert back to original mail settings
+				Site::config('mail', $original);
 			}
 		}
 		else

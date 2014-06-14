@@ -34,17 +34,10 @@ class Mail extends \Illuminate\Support\Facades\Mail {
 	 * Tests a specific email configuration
 	 *
 	 * @static
-	 * @param  array  $settings
-	 * @return void
+	 * @return bool|string
 	 */
-	public static function test($settings)
+	public static function test()
 	{
-		// Backup the existing mail settings
-		$original = (array) Site::config('mail');
-
-		// Apply the new mail settings
-		Site::config('mail', $settings);
-
 		try
 		{
 			// Send a dummy e-mail
@@ -53,17 +46,12 @@ class Mail extends \Illuminate\Support\Facades\Mail {
 				$message->to('test@example.com');
 			});
 
-			Session::flash('messages.success', Lang::get('admin.test_mail_success'));
+			return TRUE;
 		}
 		catch (Swift_TransportException $e)
 		{
-			$message = sprintf(Lang::get('admin.test_mail_error'), $e->getMessage());
-
-			Session::flash('messages.error', $message);
+			return sprintf(Lang::get('admin.test_mail_error'), $e->getMessage());
 		}
-
-		// Revert back to original mail settings
-		Site::config('mail', $original);
 	}
 
 }
