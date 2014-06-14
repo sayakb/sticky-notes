@@ -169,12 +169,21 @@
 
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-lg-offset-2 col-sm-9 col-lg-10">
-							{{
-								Form::submit(Lang::get('global.submit'), array(
-									'name'    => '_save',
-									'class'   => 'btn btn-primary'
-								))
-							}}
+							<div class="inline">
+								{{
+									Form::submit(Lang::get('global.submit'), array(
+										'name'    => '_save',
+										'class'   => 'btn btn-primary'
+									))
+								}}
+
+								{{
+									Form::submit(Lang::get('admin.test_mail_settings'), array(
+										'name'    => '_test',
+										'class'   => 'btn btn-primary'
+									))
+								}}
+							</div>
 						</div>
 					</div>
 				</fieldset>
