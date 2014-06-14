@@ -174,6 +174,13 @@
 								'class'   => 'btn btn-primary'
 							))
 						}}
+
+						{{
+							Form::submit(Lang::get('admin.test_mail_settings'), array(
+								'name'    => '_test',
+								'class'   => 'btn btn-primary'
+							))
+						}}
 					</div>
 				</fieldset>
 			</div>
