@@ -207,8 +207,8 @@ class UserController extends BaseController {
 
 			// Build the email template
 			$data = array_merge(View::defaults(), array(
-				'dispname'   => $user->dispname,
-				'password'   => $password,
+				'name'     => $user->dispname ?: $user->username,
+				'password' => $password,
 			));
 
 			// Send the notification mail
