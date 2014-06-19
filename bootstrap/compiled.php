@@ -425,7 +425,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.2.3';
+    const VERSION = '4.2.4';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -1518,11 +1518,11 @@ class Request
     }
     public function getUser()
     {
-        return $this->server->get('PHP_AUTH_USER');
+        return $this->headers->get('PHP_AUTH_USER');
     }
     public function getPassword()
     {
-        return $this->server->get('PHP_AUTH_PW');
+        return $this->headers->get('PHP_AUTH_PW');
     }
     public function getUserInfo()
     {
@@ -1574,7 +1574,8 @@ class Request
         if (self::$trustedProxies && self::$trustedHeaders[self::HEADER_CLIENT_PROTO] && ($proto = $this->headers->get(self::$trustedHeaders[self::HEADER_CLIENT_PROTO]))) {
             return in_array(strtolower(current(explode(',', $proto))), array('https', 'on', 'ssl', '1'));
         }
-        return 'on' == strtolower($this->server->get('HTTPS')) || 1 == $this->server->get('HTTPS');
+        $https = $this->server->get('HTTPS');
+        return !empty($https) && 'off' !== strtolower($https);
     }
     public function getHost()
     {
@@ -2680,7 +2681,8 @@ class ExceptionHandler
     private $debug;
     private $charset;
     private $handler;
-    private $caughtOutput = 0;
+    private $caughtBuffer;
+    private $caughtLength;
     public function __construct($debug = true, $charset = 'UTF-8')
     {
         $this->debug = $debug;
@@ -2707,26 +2709,23 @@ class ExceptionHandler
             $this->failSafeHandle($exception);
             return;
         }
-        $caughtOutput = 0;
-        $this->caughtOutput = false;
+        $caughtLength = $this->caughtLength = 0;
         ob_start(array($this, 'catchOutput'));
         $this->failSafeHandle($exception);
-        if (false === $this->caughtOutput) {
-            ob_end_clean();
+        while (null === $this->caughtBuffer && ob_end_flush()) {
+            
         }
-        if (isset($this->caughtOutput[0])) {
+        if (isset($this->caughtBuffer[0])) {
             ob_start(array($this, 'cleanOutput'));
-            echo $this->caughtOutput;
-            $caughtOutput = ob_get_length();
+            echo $this->caughtBuffer;
+            $caughtLength = ob_get_length();
         }
-        $this->caughtOutput = 0;
+        $this->caughtBuffer = null;
         try {
             call_user_func($this->handler, $exception);
-            if ($caughtOutput) {
-                $this->caughtOutput = $caughtOutput;
-            }
+            $this->caughtLength = $caughtLength;
         } catch (\Exception $e) {
-            if (!$caughtOutput) {
+            if (!$caughtLength) {
                 throw $exception;
             }
         }
@@ -2902,13 +2901,13 @@ class ExceptionHandler
     }
     public function catchOutput($buffer)
     {
-        $this->caughtOutput = $buffer;
+        $this->caughtBuffer = $buffer;
         return '';
     }
     public function cleanOutput($buffer)
     {
-        if ($this->caughtOutput) {
-            $cleanBuffer = substr_replace($buffer, '', 0, $this->caughtOutput);
+        if ($this->caughtLength) {
+            $cleanBuffer = substr_replace($buffer, '', 0, $this->caughtLength);
             if (isset($cleanBuffer[0])) {
                 $buffer = $cleanBuffer;
             }
@@ -3883,7 +3882,7 @@ class FileEnvironmentVariablesLoader implements EnvironmentVariablesLoaderInterf
         if (!$this->files->exists($path = $this->getFile($environment))) {
             return array();
         } else {
-            return $this->files->getRequire($path);
+            return array_dot($this->files->getRequire($path));
         }
     }
     protected function getFile($environment)
@@ -6546,8 +6545,9 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
                 $this->setKeysForSaveQuery($query)->update($dirty);
                 $this->fireModelEvent('updated', false);
             }
+            return true;
         }
-        return true;
+        return false;
     }
     protected function performInsert(Builder $query)
     {
@@ -7854,6 +7854,7 @@ abstract class Manager
     {
         $this->app = $app;
     }
+    public abstract function getDefaultDriver();
     public function driver($driver = null)
     {
         $driver = $driver ?: $this->getDefaultDriver();
@@ -9006,10 +9007,13 @@ class EngineResolver
     }
     public function resolve($engine)
     {
-        if (!isset($this->resolved[$engine])) {
-            $this->resolved[$engine] = call_user_func($this->resolvers[$engine]);
+        if (isset($this->resolved[$engine])) {
+            return $this->resolved[$engine];
         }
-        return $this->resolved[$engine];
+        if (isset($this->resolvers[$engine])) {
+            return $this->resolved[$engine] = call_user_func($this->resolvers[$engine]);
+        }
+        throw new \InvalidArgumentException("Engine {$engine} not found.");
     }
 }
 namespace Illuminate\View;

@@ -109,7 +109,7 @@ define('CRYPT_AES_MODE_OFB', CRYPT_MODE_OFB);
 
 /**#@+
  * @access private
- * @see Crypt_AES::Crypt_AES()
+ * @see Crypt_Base::Crypt_Base()
  */
 /**
  * Toggles the internal implementation
@@ -138,35 +138,6 @@ class Crypt_AES extends Crypt_Rijndael
      * @access private
      */
     var $const_namespace = 'AES';
-
-    /**
-     * Default Constructor.
-     *
-     * Determines whether or not the mcrypt extension should be used.
-     *
-     * $mode could be:
-     *
-     * - CRYPT_AES_MODE_ECB
-     *
-     * - CRYPT_AES_MODE_CBC
-     *
-     * - CRYPT_AES_MODE_CTR
-     *
-     * - CRYPT_AES_MODE_CFB
-     *
-     * - CRYPT_AES_MODE_OFB
-     *
-     * If not explicitly set, CRYPT_AES_MODE_CBC will be used.
-     *
-     * @see Crypt_Rijndael::Crypt_Rijndael()
-     * @see Crypt_Base::Crypt_Base()
-     * @param optional Integer $mode
-     * @access public
-     */
-    function Crypt_AES($mode = CRYPT_AES_MODE_CBC)
-    {
-        parent::Crypt_Rijndael($mode);
-    }
 
     /**
      * Dummy function

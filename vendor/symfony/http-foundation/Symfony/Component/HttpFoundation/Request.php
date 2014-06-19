@@ -972,7 +972,7 @@ class Request
      */
     public function getUser()
     {
-        return $this->server->get('PHP_AUTH_USER');
+        return $this->headers->get('PHP_AUTH_USER');
     }
 
     /**
@@ -982,7 +982,7 @@ class Request
      */
     public function getPassword()
     {
-        return $this->server->get('PHP_AUTH_PW');
+        return $this->headers->get('PHP_AUTH_PW');
     }
 
     /**
@@ -1123,7 +1123,9 @@ class Request
             return in_array(strtolower(current(explode(',', $proto))), array('https', 'on', 'ssl', '1'));
         }
 
-        return 'on' == strtolower($this->server->get('HTTPS')) || 1 == $this->server->get('HTTPS');
+        $https = $this->server->get('HTTPS');
+
+        return !empty($https) && 'off' !== strtolower($https);
     }
 
     /**

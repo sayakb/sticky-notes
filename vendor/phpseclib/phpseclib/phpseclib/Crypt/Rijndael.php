@@ -120,7 +120,7 @@ define('CRYPT_RIJNDAEL_MODE_OFB', CRYPT_MODE_OFB);
 
 /**#@+
  * @access private
- * @see Crypt_Rijndael::Crypt_Rijndael()
+ * @see Crypt_Base::Crypt_Base()
  */
 /**
  * Toggles the internal implementation
@@ -674,34 +674,6 @@ class Crypt_Rijndael extends Crypt_Base
         0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61,
         0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D
     );
-
-    /**
-     * Default Constructor.
-     *
-     * Determines whether or not the mcrypt extension should be used.
-     *
-     * $mode could be:
-     *
-     * - CRYPT_RIJNDAEL_MODE_ECB
-     *
-     * - CRYPT_RIJNDAEL_MODE_CBC
-     *
-     * - CRYPT_RIJNDAEL_MODE_CTR
-     *
-     * - CRYPT_RIJNDAEL_MODE_CFB
-     *
-     * - CRYPT_RIJNDAEL_MODE_OFB
-     *
-     * If not explicitly set, CRYPT_RIJNDAEL_MODE_CBC will be used.
-     *
-     * @see Crypt_Base::Crypt_Base()
-     * @param optional Integer $mode
-     * @access public
-     */
-    function Crypt_Rijndael($mode = CRYPT_RIJNDAEL_MODE_CBC)
-    {
-        parent::Crypt_Base($mode);
-    }
 
     /**
      * Sets the key.

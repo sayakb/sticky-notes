@@ -148,6 +148,16 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	}
 
 	/**
+	 * Flip the items in the collection.
+	 *
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function flip()
+	{
+		return new static(array_flip($this->items));
+	}
+
+	/**
 	 * Remove an item from the collection by key.
 	 *
 	 * @param  mixed  $key
@@ -239,6 +249,16 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	public function isEmpty()
 	{
 		return empty($this->items);
+	}
+
+	/**
+	 * Get the keys of the collection items.
+	 *
+	 * @return array
+	 */
+	public function keys()
+	{
+		return array_keys($this->items);
 	}
 
 	/**
