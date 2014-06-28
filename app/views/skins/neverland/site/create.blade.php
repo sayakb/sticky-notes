@@ -59,34 +59,36 @@
 
 		<div class="row-fluid form-inline">
 			<div class="span6">
-				<div class="control-group">
-					<div class="input-prepend">
-						<span class="add-on">
-							<i class="icon-lock"></i>
-						</span>
+				@if ($site->general->pasteVisibility != 'public')
+					<div class="control-group">
+						<div class="input-prepend">
+							<span class="add-on">
+								<i class="icon-lock"></i>
+							</span>
 
-						{{
-							Form::password('password', array(
-								'class'         => 'input-xlarge',
-								'placeholder'   => Lang::get('global.password'),
-								'disabled'      => $disabled
-							))
-						}}
-					</div>
-
-					@if ( ! $site->general->privateSite)
-						<label class="checkbox">
 							{{
-								Form::checkbox('private', NULL, NULL, array(
-									'id'       => 'private',
-									'disabled' => $disabled
+								Form::password('password', array(
+									'class'         => 'input-xlarge',
+									'placeholder'   => Lang::get('global.password'),
+									'disabled'      => $disabled
 								))
 							}}
+						</div>
 
-							{{ Lang::get('create.mark_private') }}
-						</label>
-					@endif
-				</div>
+						@if ($site->general->pasteVisibility == 'default')
+							<label class="checkbox">
+								{{
+									Form::checkbox('private', NULL, NULL, array(
+										'id'       => 'private',
+										'disabled' => $disabled
+									))
+								}}
+
+								{{ Lang::get('create.mark_private') }}
+							</label>
+						@endif
+					</div>
+				@endif
 			</div>
 
 			<div class="span6 align-right">

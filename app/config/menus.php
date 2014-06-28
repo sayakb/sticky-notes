@@ -38,13 +38,13 @@ return array(
 		'all'               => array(
 			'label'         => 'global.archives',
 			'icon'          => 'list',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 		'trending'          => array(
 			'label'         => 'global.trending',
 			'icon'          => 'fire',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 		'docs'              => array(
@@ -74,27 +74,27 @@ return array(
 
 		'trending'          => array(
 			'label'         => 'list.filter_now',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 		'trending/week'     => array(
 			'label'         => 'list.filter_week',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 		'trending/month'    => array(
 			'label'         => 'list.filter_month',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 		'trending/year'     => array(
 			'label'         => 'list.filter_year',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 		'trending/all'      => array(
 			'label'         => 'list.filter_all',
-			'visible'       => '!config.privateSite|role.admin'
+			'visible'       => '!config.pasteVisibility=private|role.admin'
 		),
 
 	),

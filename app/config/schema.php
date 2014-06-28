@@ -648,9 +648,9 @@ return array(
 				// Modify config values
 				if (isset($config->googleApi))
 				{
-					Site::config('services', array_map('html_entity_decode', array(
+					Site::config('services', array(
 						'googleApiKey' => $config->googleApi,
-					)));
+					));
 				}
 
 			},
@@ -767,6 +767,25 @@ return array(
 				),
 
 			),
+
+		),
+
+		'1.7' => array(
+
+			'closure' => function()
+			{
+
+				$config = Site::config('general');
+
+				// Modify config values
+				if (isset($config->privateSite) AND $config->privateSite)
+				{
+					Site::config('general', array(
+						'pasteVisibility' => 'private',
+					));
+				}
+
+			},
 
 		),
 

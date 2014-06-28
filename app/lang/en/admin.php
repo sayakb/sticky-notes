@@ -96,15 +96,17 @@ return array(
 	                           "intermediary (such as a load balancer) to get the actual client IP address.",
 	"trust_proxy"           => "Trust proxy headers",
 	"ignore_proxy"          => "Ignore proxy headers",
-	"private_site"          => "Private site",
-	"private_site_exp"      => "If set to enforce private pastes, all pastes will be created as private and ".
-	                           "the archives section will be disabled.",
+	"visibility"            => "Visibility",
+	"visibility_exp"        => "Public-only sites do not allow creating private or password protected pastes. ".
+	                           "Private sites will create all pastes as 'private' and will disable the archives ".
+	                           "sections.",
 	"csrf_token"            => "CSRF token",
 	"csrf_token_exp"        => "Validate form tokens across the site to prevent cross-site request forgery.",
 	"guest_posts"           => "Guest posts",
 	"guest_posts_exp"       => "If set to enabled, unregistered users will be able to create pastes and add ".
 	                           "comments to pastes.",
-	"allow_public"          => "Allow public pastes",
+	"allow_all"             => "Allow public and private pastes",
+	"enforce_public"        => "Enforce public pastes",
 	"enforce_private"       => "Enforce private pastes",
 	"paste_search"          => "Paste search",
 	"paste_search_exp"      => "Enable or disable paste search functionality on archives.",

@@ -236,6 +236,20 @@ class View extends \Illuminate\Support\Facades\View {
 								$invert = FALSE;
 							}
 
+							// Check for a value
+							if (str_contains($components[1], '='))
+							{
+								$expression = explode('=', $components[1]);
+
+								$components[1] = $expression[0];
+
+								$value = $expression[1];
+							}
+							else
+							{
+								$value = TRUE;
+							}
+
 							// Get the binding flags
 							switch ($components[0])
 							{
@@ -262,7 +276,7 @@ class View extends \Illuminate\Support\Facades\View {
 							// evaluate to true
 							if ( ! is_null($flags))
 							{
-								$visible = ($visible OR ($flags->$components[1] XOR $invert));
+								$visible = ($visible OR ($flags->$components[1] == $value XOR $invert));
 							}
 						}
 

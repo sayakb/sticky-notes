@@ -147,7 +147,7 @@ Route::filter('admin', function()
 
 Route::filter('private', function()
 {
-	if (Site::config('general')->privateSite AND ! Auth::roles()->admin)
+	if (Site::config('general')->pasteVisibility == 'private' AND ! Auth::roles()->admin)
 	{
 		App::abort(403); // Forbidden
 	}

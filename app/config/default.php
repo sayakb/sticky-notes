@@ -26,7 +26,7 @@ return array(
 		'pasteAge'            => '1800',
 		'skin'                => 'bootstrap',
 		'proxy'               => '0',
-		'privateSite'         => '0',
+		'pasteVisibility'     => 'default',
 		'guestPosts'          => '1',
 		'pasteSearch'         => '1',
 		'comments'            => '1',

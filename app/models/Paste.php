@@ -118,10 +118,32 @@ class Paste extends Eloquent {
 		// for private pastes
 		$hash = static::getHash();
 
-		// If the site is set as a private site, default $private to true
-		if ($site->privateSite)
+		// Encrypt the password with a salt
+		$password = '';
+
+		$salt = str_random(5);
+
+		if ( ! empty($data['password']))
 		{
-			$private = TRUE;
+			$password = PHPass::make()->create($data['password'], $salt);
+		}
+
+		// Set the paste visibility based on the site's config
+		switch ($site->pasteVisibility)
+		{
+			case 'public':
+
+				$protected = $private = FALSE;
+
+				$password = '';
+
+				break;
+
+			case 'private':
+
+				$private = TRUE;
+
+				break;
 		}
 
 		// Set the paste author
@@ -138,16 +160,6 @@ class Paste extends Eloquent {
 			$authorId = 0;
 
 			$author = NULL;
-		}
-
-		// Encrypt the password with a salt
-		$password = '';
-
-		$salt = str_random(5);
-
-		if ( ! empty($data['password']))
-		{
-			$password = PHPass::make()->create($data['password'], $salt);
 		}
 
 		// Set the paste expiration time default
