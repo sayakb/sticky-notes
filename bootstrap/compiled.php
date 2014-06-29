@@ -273,7 +273,7 @@ class Container implements ArrayAccess
         if ($parameter->isDefaultValueAvailable()) {
             return $parameter->getDefaultValue();
         } else {
-            $message = "Unresolvable dependency resolving [{$parameter}].";
+            $message = "Unresolvable dependency resolving [{$parameter}] in class {$parameter->getDeclaringClass()->getName()}";
             throw new BindingResolutionException($message);
         }
     }
@@ -425,7 +425,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.2.4';
+    const VERSION = '4.2.6';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -999,15 +999,18 @@ class Request extends SymfonyRequest
     public function only($keys)
     {
         $keys = is_array($keys) ? $keys : func_get_args();
-        return array_only($this->input(), $keys) + array_fill_keys($keys, null);
+        $results = array();
+        $input = $this->all();
+        foreach ($keys as $key) {
+            array_set($results, $key, array_get($input, $key, null));
+        }
+        return $results;
     }
     public function except($keys)
     {
         $keys = is_array($keys) ? $keys : func_get_args();
-        $results = $this->input();
-        foreach ($keys as $key) {
-            array_forget($results, $key);
-        }
+        $results = $this->all();
+        array_forget($results, $keys);
         return $results;
     }
     public function query($key = null, $default = null)
@@ -1509,7 +1512,12 @@ class Request
             }
         }
         if ($host = $this->headers->get('HOST')) {
-            if (false !== ($pos = strrpos($host, ':'))) {
+            if ($host[0] === '[') {
+                $pos = strpos($host, ':', strrpos($host, ']'));
+            } else {
+                $pos = strrpos($host, ':');
+            }
+            if (false !== $pos) {
                 return intval(substr($host, $pos + 1));
             }
             return 'https' === $this->getScheme() ? 443 : 80;
@@ -4864,6 +4872,12 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     {
         $this->patterns[$key] = $pattern;
     }
+    public function patterns($patterns)
+    {
+        foreach ($patterns as $key => $pattern) {
+            $this->pattern($key, $pattern);
+        }
+    }
     protected function callFilter($filter, $request, $response = null)
     {
         if (!$this->filtering) {
@@ -4981,6 +4995,10 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     {
         return $this->current;
     }
+    public function has($name)
+    {
+        return $this->routes->hasNamedRoute($name);
+    }
     public function currentRouteName()
     {
         return $this->current() ? $this->current()->getName() : null;
@@ -5000,6 +5018,9 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     public function currentRouteAction()
     {
+        if (!$this->current()) {
+            return;
+        }
         $action = $this->current()->getAction();
         return isset($action['controller']) ? $action['controller'] : null;
     }
@@ -5038,6 +5059,10 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     public function getInspector()
     {
         return $this->inspector ?: ($this->inspector = new ControllerInspector());
+    }
+    public function getPatterns()
+    {
+        return $this->patterns;
     }
     public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
     {
@@ -5326,6 +5351,9 @@ class Route
     }
     public function methods()
     {
+        if (in_array('GET', $this->methods) && !in_array('HEAD', $this->methods)) {
+            $this->methods[] = 'HEAD';
+        }
         return $this->methods;
     }
     public function httpOnly()
@@ -6073,8 +6101,9 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     protected function bootIfNotBooted()
     {
-        if (!isset(static::$booted[get_class($this)])) {
-            static::$booted[get_class($this)] = true;
+        $class = get_class($this);
+        if (!isset(static::$booted[$class])) {
+            static::$booted[$class] = true;
             $this->fireModelEvent('booting', false);
             static::boot();
             $this->fireModelEvent('booted', false);
@@ -6096,7 +6125,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     protected static function bootTraits()
     {
-        foreach (class_uses(get_called_class()) as $trait) {
+        foreach (class_uses_recursive(get_called_class()) as $trait) {
             if (method_exists(get_called_class(), $method = 'boot' . class_basename($trait))) {
                 forward_static_call(array(get_called_class(), $method));
             }
@@ -6191,14 +6220,14 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public static function firstOrCreate(array $attributes)
     {
-        if (!is_null($instance = static::firstByAttributes($attributes))) {
+        if (!is_null($instance = static::where($attributes)->first())) {
             return $instance;
         }
         return static::create($attributes);
     }
     public static function firstOrNew(array $attributes)
     {
-        if (!is_null($instance = static::firstByAttributes($attributes))) {
+        if (!is_null($instance = static::where($attributes)->first())) {
             return $instance;
         }
         return new static($attributes);
@@ -6211,11 +6240,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     protected static function firstByAttributes($attributes)
     {
-        $query = static::query();
-        foreach ($attributes as $key => $value) {
-            $query->where($key, $value);
-        }
-        return $query->first() ?: null;
+        return static::where($attributes)->first();
     }
     public static function query()
     {
@@ -6545,9 +6570,8 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
                 $this->setKeysForSaveQuery($query)->update($dirty);
                 $this->fireModelEvent('updated', false);
             }
-            return true;
         }
-        return false;
+        return true;
     }
     protected function performInsert(Builder $query)
     {
@@ -7114,7 +7138,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         $class = get_class($this);
         if (isset(static::$mutatorCache[$class])) {
-            return static::$mutatorCache[get_class($this)];
+            return static::$mutatorCache[$class];
         }
         return array();
     }

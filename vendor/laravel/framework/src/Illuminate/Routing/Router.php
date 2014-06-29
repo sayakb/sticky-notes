@@ -142,7 +142,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 */
 	public function get($uri, $action)
 	{
-		return $this->addRoute(array('GET', 'HEAD'), $uri, $action);
+		return $this->addRoute(['GET', 'HEAD'], $uri, $action);
 	}
 
 	/**
@@ -1216,6 +1216,20 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	}
 
 	/**
+	 * Set a group of global where patterns on all routes
+	 *
+	 * @param  array  $patterns
+	 * @return void
+	 */
+	public function patterns($patterns)
+	{
+		foreach ($patterns as $key => $pattern)
+		{
+			$this->pattern($key, $pattern);
+		}
+	}
+
+	/**
 	 * Call the given filter with the request and response.
 	 *
 	 * @param  string  $filter
@@ -1494,6 +1508,17 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	}
 
 	/**
+	 * Check if a route with the given name exists.
+	 *
+	 * @param  string  $name
+	 * @return bool
+	 */
+	public function has($name)
+	{
+		return $this->routes->hasNamedRoute($name);
+	}
+
+	/**
 	 * Get the current route name.
 	 *
 	 * @return string|null
@@ -1540,6 +1565,8 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 */
 	public function currentRouteAction()
 	{
+		if ( ! $this->current()) return;
+
 		$action = $this->current()->getAction();
 
 		return isset($action['controller']) ? $action['controller'] : null;
@@ -1629,6 +1656,16 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	public function getInspector()
 	{
 		return $this->inspector ?: $this->inspector = new ControllerInspector;
+	}
+
+	/**
+	 * Get the global "where" patterns.
+	 *
+	 * @return array
+	 */
+	public function getPatterns()
+	{
+		return $this->patterns;
 	}
 
 	/**

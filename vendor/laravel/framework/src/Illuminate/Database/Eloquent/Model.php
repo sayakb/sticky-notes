@@ -256,9 +256,11 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	protected function bootIfNotBooted()
 	{
-		if ( ! isset(static::$booted[get_class($this)]))
+		$class = get_class($this);
+
+		if ( ! isset(static::$booted[$class]))
 		{
-			static::$booted[get_class($this)] = true;
+			static::$booted[$class] = true;
 
 			$this->fireModelEvent('booting', false);
 
@@ -302,7 +304,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	protected static function bootTraits()
 	{
-		foreach (class_uses(get_called_class()) as $trait)
+		foreach (class_uses_recursive(get_called_class()) as $trait)
 		{
 			if (method_exists(get_called_class(), $method = 'boot'.class_basename($trait)))
 			{
@@ -534,7 +536,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	public static function firstOrCreate(array $attributes)
 	{
-		if ( ! is_null($instance = static::firstByAttributes($attributes)))
+		if ( ! is_null($instance = static::where($attributes)->first()))
 		{
 			return $instance;
 		}
@@ -550,7 +552,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	public static function firstOrNew(array $attributes)
 	{
-		if ( ! is_null($instance = static::firstByAttributes($attributes)))
+		if ( ! is_null($instance = static::where($attributes)->first()))
 		{
 			return $instance;
 		}
@@ -582,14 +584,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	protected static function firstByAttributes($attributes)
 	{
-		$query = static::query();
-
-		foreach ($attributes as $key => $value)
-		{
-			$query->where($key, $value);
-		}
-
-		return $query->first() ?: null;
+		return static::where($attributes)->first();
 	}
 
 	/**
@@ -1406,7 +1401,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 * Perform a model update operation.
 	 *
 	 * @param  \Illuminate\Database\Eloquent\Builder  $query
-	 * @return bool
+	 * @return bool|null
 	 */
 	protected function performUpdate(Builder $query)
 	{
@@ -1441,11 +1436,9 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 
 				$this->fireModelEvent('updated', false);
 			}
-			
-			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -2862,7 +2855,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 
 		if (isset(static::$mutatorCache[$class]))
 		{
-			return static::$mutatorCache[get_class($this)];
+			return static::$mutatorCache[$class];
 		}
 
 		return array();

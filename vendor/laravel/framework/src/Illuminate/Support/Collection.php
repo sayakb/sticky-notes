@@ -140,7 +140,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	/**
 	 * Get a flattened array of the items in the collection.
 	 *
-	 * @return array
+	 * @return \Illuminate\Support\Collection
 	 */
 	public function flatten()
 	{
@@ -200,6 +200,26 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 			$key = is_callable($groupBy) ? $groupBy($value, $key) : data_get($value, $groupBy);
 
 			$results[$key][] = $value;
+		}
+
+		return new static($results);
+	}
+
+	/**
+	 * Key an associative array by a field.
+	 *
+	 * @param  string  $keyBy
+	 * @return \Illuminate\Support\Collection
+	 */
+	public function keyBy($keyBy)
+	{
+		$results = [];
+
+		foreach ($this->items as $item)
+		{
+			$key = data_get($item, $keyBy);
+
+			$results[$key] = $item;
 		}
 
 		return new static($results);

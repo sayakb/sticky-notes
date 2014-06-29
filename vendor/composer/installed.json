@@ -298,12 +298,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "709c7c4d4818b2ee42df9bfaaf2aa0c4434d9e3c"
+            "reference": "af8f350050d4d49f06aebdd34a5530dfcdb1ca29"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/709c7c4d4818b2ee42df9bfaaf2aa0c4434d9e3c",
-            "reference": "709c7c4d4818b2ee42df9bfaaf2aa0c4434d9e3c",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/af8f350050d4d49f06aebdd34a5530dfcdb1ca29",
+            "reference": "af8f350050d4d49f06aebdd34a5530dfcdb1ca29",
             "shasum": ""
         },
         "require": {
@@ -319,7 +319,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 4.3.3."
         },
-        "time": "2014-06-19 14:08:59",
+        "time": "2014-06-27 12:14:15",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -577,12 +577,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/swiftmailer/swiftmailer.git",
-            "reference": "7b048deea4ee9c49c70c40a15f4045f8dff765bc"
+            "reference": "0ad7a82115989ae6274b583d7d1beec04cb69b51"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/7b048deea4ee9c49c70c40a15f4045f8dff765bc",
-            "reference": "7b048deea4ee9c49c70c40a15f4045f8dff765bc",
+            "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/0ad7a82115989ae6274b583d7d1beec04cb69b51",
+            "reference": "0ad7a82115989ae6274b583d7d1beec04cb69b51",
             "shasum": ""
         },
         "require": {
@@ -591,7 +591,7 @@
         "require-dev": {
             "mockery/mockery": "~0.9.1"
         },
-        "time": "2014-06-13 11:45:24",
+        "time": "2014-06-20 15:48:17",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -634,18 +634,18 @@
         "source": {
             "type": "git",
             "url": "https://github.com/symfony/Filesystem.git",
-            "reference": "8ec53ca0a09cf07b58a62590b67166f4a39af81b"
+            "reference": "c5535943b0d48e5cc54f5bc8088bfc0aefda7f39"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Filesystem/zipball/8ec53ca0a09cf07b58a62590b67166f4a39af81b",
-            "reference": "8ec53ca0a09cf07b58a62590b67166f4a39af81b",
+            "url": "https://api.github.com/repos/symfony/Filesystem/zipball/c5535943b0d48e5cc54f5bc8088bfc0aefda7f39",
+            "reference": "c5535943b0d48e5cc54f5bc8088bfc0aefda7f39",
             "shasum": ""
         },
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2014-05-23 14:36:49",
+        "time": "2014-06-20 17:41:51",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -797,12 +797,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "25b16e801979098cb2f120e697bfce454b18bf23"
+            "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/25b16e801979098cb2f120e697bfce454b18bf23",
-            "reference": "25b16e801979098cb2f120e697bfce454b18bf23",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
+            "reference": "0951050a1e9bc3a031c780e8e5a8c94bdeb9d9c4",
             "shasum": ""
         },
         "require": {
@@ -827,7 +827,7 @@
             "rollbar/rollbar": "Allow sending log messages to Rollbar",
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
         },
-        "time": "2014-06-04 16:30:04",
+        "time": "2014-06-20 14:09:34",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -980,72 +980,6 @@
         "homepage": "http://symfony.com"
     },
     {
-        "name": "symfony/security-core",
-        "version": "2.5.x-dev",
-        "version_normalized": "2.5.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/Security/Core",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/security-core.git",
-            "reference": "de6e3aa1362d77f6bf91f17039cd403807ee5c27"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/security-core/zipball/de6e3aa1362d77f6bf91f17039cd403807ee5c27",
-            "reference": "de6e3aa1362d77f6bf91f17039cd403807ee5c27",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "ircmaxell/password-compat": "1.0.*",
-            "psr/log": "~1.0",
-            "symfony/event-dispatcher": "~2.1",
-            "symfony/expression-language": "~2.4",
-            "symfony/http-foundation": "~2.4",
-            "symfony/validator": "~2.2"
-        },
-        "suggest": {
-            "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
-            "symfony/event-dispatcher": "",
-            "symfony/expression-language": "For using the expression voter",
-            "symfony/http-foundation": "",
-            "symfony/validator": "For using the user password constraint"
-        },
-        "time": "2014-04-23 14:08:54",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.5-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Security\\Core\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Security Component - Core Library",
-        "homepage": "http://symfony.com"
-    },
-    {
         "name": "symfony/routing",
         "version": "2.5.x-dev",
         "version_normalized": "2.5.9999999.9999999-dev",
@@ -1116,57 +1050,6 @@
         ]
     },
     {
-        "name": "symfony/finder",
-        "version": "2.5.x-dev",
-        "version_normalized": "2.5.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/Finder",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Finder.git",
-            "reference": "307aad2c541bbdf43183043645e186ef2cd6b973"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Finder/zipball/307aad2c541bbdf43183043645e186ef2cd6b973",
-            "reference": "307aad2c541bbdf43183043645e186ef2cd6b973",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2014-05-22 13:47:45",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.5-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Finder\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Finder Component",
-        "homepage": "http://symfony.com"
-    },
-    {
         "name": "symfony/css-selector",
         "version": "2.5.x-dev",
         "version_normalized": "2.5.9999999.9999999-dev",
@@ -1219,65 +1102,6 @@
             }
         ],
         "description": "Symfony CssSelector Component",
-        "homepage": "http://symfony.com"
-    },
-    {
-        "name": "symfony/console",
-        "version": "2.5.x-dev",
-        "version_normalized": "2.5.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/Console",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Console.git",
-            "reference": "5e8b3e4e17102eeb807ccd65750302a5402863cb"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Console/zipball/5e8b3e4e17102eeb807ccd65750302a5402863cb",
-            "reference": "5e8b3e4e17102eeb807ccd65750302a5402863cb",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/event-dispatcher": "~2.1"
-        },
-        "suggest": {
-            "psr/log": "For using the console logger",
-            "symfony/event-dispatcher": ""
-        },
-        "time": "2014-06-03 20:33:46",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.5-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Console\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony Console Component",
         "homepage": "http://symfony.com"
     },
     {
@@ -1338,58 +1162,6 @@
         ],
         "description": "Symfony BrowserKit Component",
         "homepage": "http://symfony.com"
-    },
-    {
-        "name": "predis/predis",
-        "version": "0.8.x-dev",
-        "version_normalized": "0.8.9999999.9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/nrk/predis.git",
-            "reference": "18853d1dbb7d35f7c60bcb161447b16c0753e2a3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/nrk/predis/zipball/18853d1dbb7d35f7c60bcb161447b16c0753e2a3",
-            "reference": "18853d1dbb7d35f7c60bcb161447b16c0753e2a3",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.0"
-        },
-        "suggest": {
-            "ext-curl": "Allows access to Webdis when paired with phpiredis",
-            "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
-        },
-        "time": "2014-06-10 08:58:02",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Predis": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Daniele Alessandri",
-                "email": "suppakilla@gmail.com",
-                "homepage": "http://clorophilla.net"
-            }
-        ],
-        "description": "Flexible and feature-complete PHP client library for Redis",
-        "homepage": "http://github.com/nrk/predis",
-        "keywords": [
-            "nosql",
-            "predis",
-            "redis"
-        ]
     },
     {
         "name": "symfony/dom-crawler",
@@ -1500,63 +1272,6 @@
             "utf-8",
             "utf8"
         ]
-    },
-    {
-        "name": "symfony/http-foundation",
-        "version": "2.5.x-dev",
-        "version_normalized": "2.5.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/HttpFoundation",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/HttpFoundation.git",
-            "reference": "bc23b721ae465a6bb73478e3b13a9eef5d06ef01"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/bc23b721ae465a6bb73478e3b13a9eef5d06ef01",
-            "reference": "bc23b721ae465a6bb73478e3b13a9eef5d06ef01",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "symfony/expression-language": "~2.4"
-        },
-        "time": "2014-06-16 09:30:12",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.5-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\HttpFoundation\\": ""
-            },
-            "classmap": [
-                "Symfony/Component/HttpFoundation/Resources/stubs"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com",
-                "homepage": "http://fabien.potencier.org",
-                "role": "Lead Developer"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony HttpFoundation Component",
-        "homepage": "http://symfony.com"
     },
     {
         "name": "symfony/http-kernel",
@@ -1744,18 +1459,303 @@
         "homepage": "http://symfony.com"
     },
     {
+        "name": "symfony/security-core",
+        "version": "2.5.x-dev",
+        "version_normalized": "2.5.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/Security/Core",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/security-core.git",
+            "reference": "dfc7d40b0a4d2f5ccc743eba08f840743f4ea984"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/security-core/zipball/dfc7d40b0a4d2f5ccc743eba08f840743f4ea984",
+            "reference": "dfc7d40b0a4d2f5ccc743eba08f840743f4ea984",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "ircmaxell/password-compat": "1.0.*",
+            "psr/log": "~1.0",
+            "symfony/event-dispatcher": "~2.1",
+            "symfony/expression-language": "~2.4",
+            "symfony/http-foundation": "~2.4",
+            "symfony/validator": "~2.2"
+        },
+        "suggest": {
+            "ircmaxell/password-compat": "For using the BCrypt password encoder in PHP <5.5",
+            "symfony/event-dispatcher": "",
+            "symfony/expression-language": "For using the expression voter",
+            "symfony/http-foundation": "",
+            "symfony/validator": "For using the user password constraint"
+        },
+        "time": "2014-06-23 07:34:27",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Security\\Core\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Security Component - Core Library",
+        "homepage": "http://symfony.com"
+    },
+    {
+        "name": "symfony/finder",
+        "version": "2.5.x-dev",
+        "version_normalized": "2.5.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/Finder",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/Finder.git",
+            "reference": "ef06f87eae6efe74a3a7c2c7806e9baf7bea9870"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/Finder/zipball/ef06f87eae6efe74a3a7c2c7806e9baf7bea9870",
+            "reference": "ef06f87eae6efe74a3a7c2c7806e9baf7bea9870",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2014-06-20 17:38:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Finder\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Finder Component",
+        "homepage": "http://symfony.com"
+    },
+    {
+        "name": "symfony/console",
+        "version": "2.5.x-dev",
+        "version_normalized": "2.5.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/Console",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/Console.git",
+            "reference": "5643ea04872456a975ca2101337a45ba7187d00a"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/Console/zipball/5643ea04872456a975ca2101337a45ba7187d00a",
+            "reference": "5643ea04872456a975ca2101337a45ba7187d00a",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/event-dispatcher": "~2.1"
+        },
+        "suggest": {
+            "psr/log": "For using the console logger",
+            "symfony/event-dispatcher": ""
+        },
+        "time": "2014-06-20 17:38:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Console\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony Console Component",
+        "homepage": "http://symfony.com"
+    },
+    {
+        "name": "predis/predis",
+        "version": "0.8.x-dev",
+        "version_normalized": "0.8.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nrk/predis.git",
+            "reference": "8373663486b836813987ab7f0ef03d388e8fc146"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nrk/predis/zipball/8373663486b836813987ab7f0ef03d388e8fc146",
+            "reference": "8373663486b836813987ab7f0ef03d388e8fc146",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "~4.0"
+        },
+        "suggest": {
+            "ext-curl": "Allows access to Webdis when paired with phpiredis",
+            "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+        },
+        "time": "2014-06-23 12:25:30",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Predis": "lib/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Daniele Alessandri",
+                "email": "suppakilla@gmail.com",
+                "homepage": "http://clorophilla.net"
+            }
+        ],
+        "description": "Flexible and feature-complete PHP client library for Redis",
+        "homepage": "http://github.com/nrk/predis",
+        "keywords": [
+            "nosql",
+            "predis",
+            "redis"
+        ]
+    },
+    {
+        "name": "symfony/http-foundation",
+        "version": "2.5.x-dev",
+        "version_normalized": "2.5.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/HttpFoundation",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/HttpFoundation.git",
+            "reference": "69f0f702c36d030c132d90991357bc2b84da50de"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/69f0f702c36d030c132d90991357bc2b84da50de",
+            "reference": "69f0f702c36d030c132d90991357bc2b84da50de",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "symfony/expression-language": "~2.4"
+        },
+        "time": "2014-06-20 17:38:20",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\HttpFoundation\\": ""
+            },
+            "classmap": [
+                "Symfony/Component/HttpFoundation/Resources/stubs"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com",
+                "homepage": "http://fabien.potencier.org",
+                "role": "Lead Developer"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony HttpFoundation Component",
+        "homepage": "http://symfony.com"
+    },
+    {
         "name": "laravel/framework",
         "version": "4.2.x-dev",
         "version_normalized": "4.2.9999999.9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "4812cb6dfe407926d5d0d67363bedf0a2dfaa890"
+            "reference": "2e73cd58ee42919166a51897b965e1135b85048c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/4812cb6dfe407926d5d0d67363bedf0a2dfaa890",
-            "reference": "4812cb6dfe407926d5d0d67363bedf0a2dfaa890",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/2e73cd58ee42919166a51897b965e1135b85048c",
+            "reference": "2e73cd58ee42919166a51897b965e1135b85048c",
             "shasum": ""
         },
         "require": {
@@ -1825,7 +1825,7 @@
         "suggest": {
             "doctrine/dbal": "Allow renaming columns and dropping SQLite columns."
         },
-        "time": "2014-06-19 22:01:30",
+        "time": "2014-06-29 00:16:51",
         "type": "library",
         "extra": {
             "branch-alias": {
