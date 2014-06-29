@@ -68,25 +68,27 @@
 
 		<div class="row">
 			<div class="col-sm-4">
-				<div class="form-group">
-					<div class="input-group">
-						<div class="input-group-addon">
-							<span class="glyphicon glyphicon-lock"></span>
-						</div>
+				@if ($site->general->pasteVisibility != 'public')
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">
+								<span class="glyphicon glyphicon-lock"></span>
+							</div>
 
-						{{
-							Form::password('password', array(
-								'class'         => 'form-control',
-								'placeholder'   => Lang::get('global.password'),
-								'disabled'      => $disabled
-							))
-						}}
+							{{
+								Form::password('password', array(
+									'class'         => 'form-control',
+									'placeholder'   => Lang::get('global.password'),
+									'disabled'      => $disabled
+								))
+							}}
+						</div>
 					</div>
-				</div>
+				@endif
 			</div>
 
 			<div class="col-sm-4">
-				@if ( ! $site->general->privateSite)
+				@if ($site->general->pasteVisibility == 'default')
 					<div class="form-group">
 						<div class="checkbox">
 							<label>

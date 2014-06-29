@@ -221,23 +221,24 @@
 
 							<div class="form-group">
 								{{
-									Form::label('private_site', Lang::get('admin.private_site'), array(
+									Form::label('paste_visibility', Lang::get('admin.visibility'), array(
 										'class' => 'control-label col-sm-3 col-lg-2'
 									))
 								}}
 
 								<div class="col-sm-9 col-lg-10">
 									{{
-										Form::select('private_site', array(
-											'0' => Lang::get('admin.allow_public'),
-											'1' => Lang::get('admin.enforce_private'),
-										), $site->general->privateSite, array(
+										Form::select('paste_visibility', array(
+											'default' => Lang::get('admin.allow_all'),
+											'public'  => Lang::get('admin.enforce_public'),
+											'private' => Lang::get('admin.enforce_private'),
+										), $site->general->pasteVisibility, array(
 											'class' => 'form-control'
 										))
 									}}
 
 									<div class="help-block">
-										{{ Lang::get('admin.private_site_exp') }}
+										{{ Lang::get('admin.visibility_exp') }}
 									</div>
 								</div>
 							</div>
