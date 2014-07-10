@@ -3225,6 +3225,31 @@ abstract class Facade
         }
     }
 }
+namespace Illuminate\Support\Traits;
+
+trait MacroableTrait
+{
+    protected static $macros = array();
+    public static function macro($name, $macro)
+    {
+        static::$macros[$name] = $macro;
+    }
+    public static function hasMacro($name)
+    {
+        return isset(static::$macros[$name]);
+    }
+    public static function __callStatic($method, $parameters)
+    {
+        if (static::hasMacro($method)) {
+            return call_user_func_array(static::$macros[$method], $parameters);
+        }
+        throw new \BadMethodCallException("Method {$method} does not exist.");
+    }
+    public function __call($method, $parameters)
+    {
+        return static::__callStatic($method, $parameters);
+    }
+}
 namespace Illuminate\Support;
 
 use Illuminate\Support\Traits\MacroableTrait;
@@ -4611,28 +4636,33 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     protected function addResourceIndex($name, $base, $controller, $options)
     {
+        $uri = $this->getResourceUri($name);
         $action = $this->getResourceAction($name, $controller, 'index', $options);
-        return $this->get($this->getResourceUri($name), $action);
+        return $this->get($uri, $action);
     }
     protected function addResourceCreate($name, $base, $controller, $options)
     {
+        $uri = $this->getResourceUri($name) . '/create';
         $action = $this->getResourceAction($name, $controller, 'create', $options);
-        return $this->get($this->getResourceUri($name) . '/create', $action);
+        return $this->get($uri, $action);
     }
     protected function addResourceStore($name, $base, $controller, $options)
     {
+        $uri = $this->getResourceUri($name);
         $action = $this->getResourceAction($name, $controller, 'store', $options);
-        return $this->post($this->getResourceUri($name), $action);
+        return $this->post($uri, $action);
     }
     protected function addResourceShow($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name) . '/{' . $base . '}';
-        return $this->get($uri, $this->getResourceAction($name, $controller, 'show', $options));
+        $action = $this->getResourceAction($name, $controller, 'show', $options);
+        return $this->get($uri, $action);
     }
     protected function addResourceEdit($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name) . '/{' . $base . '}/edit';
-        return $this->get($uri, $this->getResourceAction($name, $controller, 'edit', $options));
+        $action = $this->getResourceAction($name, $controller, 'edit', $options);
+        return $this->get($uri, $action);
     }
     protected function addResourceUpdate($name, $base, $controller, $options)
     {
@@ -4642,7 +4672,8 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     protected function addPutResourceUpdate($name, $base, $controller, $options)
     {
         $uri = $this->getResourceUri($name) . '/{' . $base . '}';
-        return $this->put($uri, $this->getResourceAction($name, $controller, 'update', $options));
+        $action = $this->getResourceAction($name, $controller, 'update', $options);
+        return $this->put($uri, $action);
     }
     protected function addPatchResourceUpdate($name, $base, $controller)
     {
@@ -4651,8 +4682,9 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     protected function addResourceDestroy($name, $base, $controller, $options)
     {
+        $uri = $this->getResourceUri($name) . '/{' . $base . '}';
         $action = $this->getResourceAction($name, $controller, 'destroy', $options);
-        return $this->delete($this->getResourceUri($name) . '/{' . $base . '}', $action);
+        return $this->delete($uri, $action);
     }
     public function group(array $attributes, Closure $callback)
     {
@@ -5071,7 +5103,6 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
 }
 namespace Illuminate\Routing;
 
-use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Matching\UriValidator;
 use Illuminate\Routing\Matching\HostValidator;
@@ -6270,7 +6301,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         if (!is_null($model = static::find($id, $columns))) {
             return $model;
         }
-        return new static($columns);
+        return new static();
     }
     public static function findOrFail($id, $columns = array('*'))
     {
@@ -6336,7 +6367,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             return new MorphTo($this->newQuery(), $this, $id, null, $type, $name);
         } else {
             $instance = new $class();
-            return new MorphTo(with($instance)->newQuery(), $this, $id, $instance->getKeyName(), $type, $name);
+            return new MorphTo($instance->newQuery(), $this, $id, $instance->getKeyName(), $type, $name);
         }
     }
     public function hasMany($related, $foreignKey = null, $localKey = null)
@@ -6351,7 +6382,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         $through = new $through();
         $firstKey = $firstKey ?: $this->getForeignKey();
         $secondKey = $secondKey ?: $through->getForeignKey();
-        return new HasManyThrough(with(new $related())->newQuery(), $this, $through, $firstKey, $secondKey);
+        return new HasManyThrough((new $related())->newQuery(), $this, $through, $firstKey, $secondKey);
     }
     public function morphMany($related, $name, $type = null, $id = null, $localKey = null)
     {
@@ -7413,6 +7444,16 @@ class ConnectionFactory
 }
 namespace Illuminate\Session;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface as BaseSessionInterface;
+interface SessionInterface extends BaseSessionInterface
+{
+    public function getHandler();
+    public function handlerNeedsRequest();
+    public function setRequestOnHandler(Request $request);
+}
+namespace Illuminate\Session;
+
 use Closure;
 use Carbon\Carbon;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -7785,7 +7826,6 @@ class Store implements SessionInterface
 namespace Illuminate\Session;
 
 use Illuminate\Support\Manager;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler;
 class SessionManager extends Manager
 {
@@ -9585,27 +9625,30 @@ class Response
         $headers = $this->headers;
         if ($this->isInformational() || in_array($this->statusCode, array(204, 304))) {
             $this->setContent(null);
-        }
-        if (!$headers->has('Content-Type')) {
-            $format = $request->getRequestFormat();
-            if (null !== $format && ($mimeType = $request->getMimeType($format))) {
-                $headers->set('Content-Type', $mimeType);
-            }
-        }
-        $charset = $this->charset ?: 'UTF-8';
-        if (!$headers->has('Content-Type')) {
-            $headers->set('Content-Type', 'text/html; charset=' . $charset);
-        } elseif (0 === stripos($headers->get('Content-Type'), 'text/') && false === stripos($headers->get('Content-Type'), 'charset')) {
-            $headers->set('Content-Type', $headers->get('Content-Type') . '; charset=' . $charset);
-        }
-        if ($headers->has('Transfer-Encoding')) {
+            $headers->remove('Content-Type');
             $headers->remove('Content-Length');
-        }
-        if ($request->isMethod('HEAD')) {
-            $length = $headers->get('Content-Length');
-            $this->setContent(null);
-            if ($length) {
-                $headers->set('Content-Length', $length);
+        } else {
+            if (!$headers->has('Content-Type')) {
+                $format = $request->getRequestFormat();
+                if (null !== $format && ($mimeType = $request->getMimeType($format))) {
+                    $headers->set('Content-Type', $mimeType);
+                }
+            }
+            $charset = $this->charset ?: 'UTF-8';
+            if (!$headers->has('Content-Type')) {
+                $headers->set('Content-Type', 'text/html; charset=' . $charset);
+            } elseif (0 === stripos($headers->get('Content-Type'), 'text/') && false === stripos($headers->get('Content-Type'), 'charset')) {
+                $headers->set('Content-Type', $headers->get('Content-Type') . '; charset=' . $charset);
+            }
+            if ($headers->has('Transfer-Encoding')) {
+                $headers->remove('Content-Length');
+            }
+            if ($request->isMethod('HEAD')) {
+                $length = $headers->get('Content-Length');
+                $this->setContent(null);
+                if ($length) {
+                    $headers->set('Content-Length', $length);
+                }
             }
         }
         if ('HTTP/1.0' != $request->server->get('SERVER_PROTOCOL')) {
@@ -9991,6 +10034,22 @@ class Response
                 $this->headers->remove('Cache-Control');
             }
         }
+    }
+}
+namespace Illuminate\Http;
+
+use Symfony\Component\HttpFoundation\Cookie;
+trait ResponseTrait
+{
+    public function header($key, $value, $replace = true)
+    {
+        $this->headers->set($key, $value, $replace);
+        return $this;
+    }
+    public function withCookie(Cookie $cookie)
+    {
+        $this->headers->setCookie($cookie);
+        return $this;
     }
 }
 namespace Illuminate\Http;

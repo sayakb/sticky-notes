@@ -73,6 +73,22 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	}
 
 	/**
+	 * Determine if an item exists in the collection.
+	 *
+	 * @param  mixed  $value
+	 * @return bool
+	 */
+	public function contains($value)
+	{
+		if ($value instanceof Closure)
+		{
+			return ! is_null($this->first($value));
+		}
+
+		return in_array($value, $this->items);
+	}
+
+	/**
 	 * Diff the collection with the given items.
 	 *
 	 * @param  \Illuminate\Support\Collection|\Illuminate\Support\Contracts\ArrayableInterface|array  $items
@@ -384,7 +400,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	/**
 	 * Get one or more items randomly from the collection.
 	 *
-	 * @param  int $amount
+	 * @param  int  $amount
 	 * @return mixed
 	 */
 	public function random($amount = 1)
@@ -398,7 +414,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	 * Reduce the collection to a single value.
 	 *
 	 * @param  callable  $callback
-	 * @param  mixed  $initial
+	 * @param  mixed     $initial
 	 * @return mixed
 	 */
 	public function reduce($callback, $initial = null)
@@ -482,7 +498,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	/**
 	 * Chunk the underlying collection array.
 	 *
-	 * @param  int $size
+	 * @param  int   $size
 	 * @param  bool  $preserveKeys
 	 * @return \Illuminate\Support\Collection
 	 */
@@ -515,8 +531,8 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	 * Sort the collection using the given Closure.
 	 *
 	 * @param  \Closure|string  $callback
-	 * @param  int              $options
-	 * @param  bool             $descending
+	 * @param  int   $options
+	 * @param  bool  $descending
 	 * @return \Illuminate\Support\Collection
 	 */
 	public function sortBy($callback, $options = SORT_REGULAR, $descending = false)
@@ -554,7 +570,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	 * Sort the collection in descending order using the given Closure.
 	 *
 	 * @param  \Closure|string  $callback
-	 * @param  int              $options
+	 * @param  int  $options
 	 * @return \Illuminate\Support\Collection
 	 */
 	public function sortByDesc($callback, $options = SORT_REGULAR)
@@ -579,7 +595,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	 * Get the sum of the given values.
 	 *
 	 * @param  \Closure  $callback
-	 * @param  string  $callback
+	 * @param  string    $callback
 	 * @return mixed
 	 */
 	public function sum($callback)
@@ -706,6 +722,7 @@ class Collection implements ArrayAccess, ArrayableInterface, Countable, Iterator
 	/**
 	 * Get a CachingIterator instance.
 	 *
+	 * @param  int  $flags
 	 * @return \CachingIterator
 	 */
 	public function getCachingIterator($flags = CachingIterator::CALL_TOSTRING)

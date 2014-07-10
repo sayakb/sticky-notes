@@ -62,8 +62,6 @@ class Swift_Mime_Headers_DateHeaderTest extends \PHPUnit_Framework_TestCase
             );
     }
 
-    // -- Private methods
-
     private function _getHeader($name)
     {
         return new Swift_Mime_Headers_DateHeader($name, new Swift_Mime_Grammar());

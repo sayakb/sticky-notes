@@ -182,8 +182,6 @@ class Swift_Mime_Headers_IdentificationHeaderTest extends \PHPUnit_Framework_Tes
         $this->assertEquals('References: <a@b> <x@y>' . "\r\n", $header->toString());
     }
 
-    // -- Private methods
-
     private function _getHeader($name)
     {
         return new Swift_Mime_Headers_IdentificationHeader($name, new Swift_Mime_Grammar());

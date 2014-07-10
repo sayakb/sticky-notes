@@ -11,8 +11,6 @@
 /**
  * Creates MIME headers.
  *
- * @package    Swift
- * @subpackage Mime
  * @author     Chris Corbyn
  */
 class Swift_Mime_SimpleHeaderFactory implements Swift_Mime_HeaderFactory
@@ -179,8 +177,6 @@ class Swift_Mime_SimpleHeaderFactory implements Swift_Mime_HeaderFactory
         $this->_encoder->charsetChanged($charset);
         $this->_paramEncoder->charsetChanged($charset);
     }
-
-    // -- Private methods
 
     /** Apply the charset to the Header */
     private function _setHeaderCharset(Swift_Mime_Header $header)

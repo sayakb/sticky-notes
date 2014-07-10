@@ -11,8 +11,6 @@
 /**
  * Redirects all email to a single recipient.
  *
- * @package    Swift
- * @subpackage Plugins
  * @author     Fabien Potencier
  */
 class Swift_Plugins_RedirectingPlugin implements Swift_Events_SendListener
@@ -183,8 +181,6 @@ class Swift_Plugins_RedirectingPlugin implements Swift_Events_SendListener
     {
         $this->_restoreMessage($evt->getMessage());
     }
-
-    // -- Private methods
 
     private function _restoreMessage(Swift_Mime_Message $message)
     {

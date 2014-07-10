@@ -1,6 +1,5 @@
 <?php
 
-
 class Swift_Mime_Headers_UnstructuredHeaderTest extends \SwiftMailerTestCase
 {
     private $_charset = 'utf-8';
@@ -336,7 +335,6 @@ class Swift_Mime_Headers_UnstructuredHeaderTest extends \SwiftMailerTestCase
         $this->assertEquals('test', $header->getFieldBodyModel());
     }
 
-    // -- Private methods
 
     private function _getHeader($name, $encoder)
     {

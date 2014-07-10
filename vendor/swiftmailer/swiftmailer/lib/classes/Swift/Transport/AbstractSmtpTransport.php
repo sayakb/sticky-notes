@@ -11,8 +11,6 @@
 /**
  * Sends Messages over SMTP.
  *
- * @package    Swift
- * @subpackage Transport
  * @author     Chris Corbyn
  */
 abstract class Swift_Transport_AbstractSmtpTransport implements Swift_Transport
@@ -283,8 +281,6 @@ abstract class Swift_Transport_AbstractSmtpTransport implements Swift_Transport
         return $response;
     }
 
-    // -- Protected methods
-
     /** Read the opening SMTP greeting */
     protected function _readGreeting()
     {
@@ -412,7 +408,6 @@ abstract class Swift_Transport_AbstractSmtpTransport implements Swift_Transport
         return $response;
     }
 
-    // -- Private methods
 
     /** Send an email to the given recipients from the given reverse path */
     private function _doMailTransaction($message, $reversePath, array $recipients, array &$failedRecipients)

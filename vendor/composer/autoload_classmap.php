@@ -51,6 +51,7 @@ return array(
     'StickyNotes\\Setup' => $baseDir . '/app/lib/Setup.php',
     'StickyNotes\\System' => $baseDir . '/app/lib/System.php',
     'StickyNotes\\View' => $baseDir . '/app/lib/View.php',
+    'Symfony\\Component\\HttpFoundation\\Resources\\stubs\\FakeFile' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/FakeFile.php',
     'UnitedPrototype\\GoogleAnalytics\\Campaign' => $vendorDir . '/googleanalytics/GoogleAnalytics/Campaign.php',
     'UnitedPrototype\\GoogleAnalytics\\Config' => $vendorDir . '/googleanalytics/GoogleAnalytics/Config.php',
     'UnitedPrototype\\GoogleAnalytics\\CustomVariable' => $vendorDir . '/googleanalytics/GoogleAnalytics/CustomVariable.php',
