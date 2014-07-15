@@ -500,7 +500,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     public function detectEnvironment($envs)
     {
         $args = isset($_SERVER['argv']) ? $_SERVER['argv'] : null;
-        return $this['env'] = with(new EnvironmentDetector())->detect($envs, $args);
+        return $this['env'] = (new EnvironmentDetector())->detect($envs, $args);
     }
     public function runningInConsole()
     {
@@ -597,7 +597,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     {
         $this->finishCallbacks[] = $callback;
     }
-    public function shutdown($callback = null)
+    public function shutdown(callable $callback = null)
     {
         if (is_null($callback)) {
             $this->fireAppCallbacks($this->shutdownCallbacks);
@@ -652,7 +652,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
     protected function getStackedClient()
     {
         $sessionReject = $this->bound('session.reject') ? $this['session.reject'] : null;
-        $client = with(new \Stack\Builder())->push('Illuminate\\Cookie\\Guard', $this['encrypter'])->push('Illuminate\\Cookie\\Queue', $this['cookie'])->push('Illuminate\\Session\\Middleware', $this['session'], $sessionReject);
+        $client = (new \Stack\Builder())->push('Illuminate\\Cookie\\Guard', $this['encrypter'])->push('Illuminate\\Cookie\\Queue', $this['cookie'])->push('Illuminate\\Session\\Middleware', $this['session'], $sessionReject);
         $this->mergeCustomMiddlewares($client);
         return $client->resolve($this);
     }
@@ -1123,7 +1123,7 @@ class Request extends SymfonyRequest
         if ($request instanceof static) {
             return $request;
         }
-        return with(new static())->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
+        return (new static())->duplicate($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all());
     }
     public function session()
     {
@@ -2962,7 +2962,7 @@ abstract class ServiceProvider
     }
     public function guessPackagePath()
     {
-        $path = with(new ReflectionClass($this))->getFileName();
+        $path = (new ReflectionClass($this))->getFileName();
         return realpath(dirname($path) . '/../../');
     }
     protected function getPackageNamespace($package, $namespace)
@@ -3230,7 +3230,7 @@ namespace Illuminate\Support\Traits;
 trait MacroableTrait
 {
     protected static $macros = array();
-    public static function macro($name, $macro)
+    public static function macro($name, callable $macro)
     {
         static::$macros[$name] = $macro;
     }
@@ -4280,7 +4280,7 @@ class CookieServiceProvider extends ServiceProvider
     {
         $this->app->bindShared('cookie', function ($app) {
             $config = $app['config']['session'];
-            return with(new CookieJar())->setDefaultPathAndDomain($config['path'], $config['domain']);
+            return (new CookieJar())->setDefaultPathAndDomain($config['path'], $config['domain']);
         });
     }
 }
@@ -4887,7 +4887,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
             if (is_null($value)) {
                 return null;
             }
-            if ($model = with(new $class())->find($value)) {
+            if ($model = (new $class())->find($value)) {
                 return $model;
             }
             if ($callback instanceof Closure) {
@@ -4898,7 +4898,19 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     public function bind($key, $binder)
     {
+        if (is_string($binder)) {
+            $binder = $this->createClassBinding($binder);
+        }
         $this->binders[str_replace('-', '_', $key)] = $binder;
+    }
+    public function createClassBinding($binding)
+    {
+        return function ($value, $route) use($binding) {
+            $segments = explode('@', $binding);
+            $method = count($segments) == 2 ? $segments[1] : 'bind';
+            $callable = array($this->container->make($segments[0]), $method);
+            return call_user_func($callable, $value, $route);
+        };
     }
     public function pattern($key, $pattern)
     {
@@ -5001,7 +5013,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         }
         return $response->prepare($request);
     }
-    public function withoutFilters($callback)
+    public function withoutFilters(callable $callback)
     {
         $this->disableFilters();
         call_user_func($callback);
@@ -5509,7 +5521,7 @@ class RouteCollection implements Countable, IteratorAggregate
     protected function getOtherMethodsRoute($request, array $others)
     {
         if ($request->method() == 'OPTIONS') {
-            return with(new Route('OPTIONS', $request->path(), function () use($others) {
+            return (new Route('OPTIONS', $request->path(), function () use($others) {
                 return new Response('', 200, array('Allow' => implode(',', $others)));
             }))->bind($request);
         } else {
@@ -6275,7 +6287,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     }
     public static function query()
     {
-        return with(new static())->newQuery();
+        return (new static())->newQuery();
     }
     public static function on($connection = null)
     {
@@ -6308,7 +6320,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         if (!is_null($model = static::find($id, $columns))) {
             return $model;
         }
-        throw with(new ModelNotFoundException())->setModel(get_called_class());
+        throw (new ModelNotFoundException())->setModel(get_called_class());
     }
     public function load($relations)
     {
@@ -6908,7 +6920,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             }
             $attributes[$key] = $this->mutateAttributeForArray($key, $attributes[$key]);
         }
-        foreach ($this->appends as $key) {
+        foreach ($this->getArrayableAppends() as $key) {
             $attributes[$key] = $this->mutateAttributeForArray($key, null);
         }
         return $attributes;
@@ -6916,6 +6928,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     protected function getArrayableAttributes()
     {
         return $this->getArrayableItems($this->attributes);
+    }
+    protected function getArrayableAppends()
+    {
+        if (!count($this->appends)) {
+            return array();
+        }
+        return $this->getArrayableItems(array_combine($this->appends, $this->appends));
     }
     public function relationsToArray()
     {
@@ -7053,9 +7072,10 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     {
         return $this->getConnection()->getQueryGrammar()->getDateFormat();
     }
-    public function replicate()
+    public function replicate(array $except = null)
     {
-        $attributes = array_except($this->attributes, array($this->getKeyName()));
+        $except = $except ?: array($this->getKeyName(), $this->getCreatedAtColumn(), $this->getUpdatedAtColumn());
+        $attributes = array_except($this->attributes, $except);
         with($instance = new static())->setRawAttributes($attributes);
         return $instance->setRelations($this->relations);
     }
@@ -7318,7 +7338,7 @@ class DatabaseManager implements ConnectionResolverInterface
     {
         $this->app['config']['database.default'] = $name;
     }
-    public function extend($name, $resolver)
+    public function extend($name, callable $resolver)
     {
         $this->extensions[$name] = $resolver;
     }
@@ -8149,7 +8169,7 @@ class Encrypter
     }
     protected function validMac(array $payload)
     {
-        $bytes = with(new SecureRandom())->nextBytes(16);
+        $bytes = (new SecureRandom())->nextBytes(16);
         $calcMac = hash_hmac('sha256', $this->hash($payload['iv'], $payload['value']), $bytes, true);
         return StringUtils::equals(hash_hmac('sha256', $payload['mac'], $bytes, true), $calcMac);
     }
@@ -9501,7 +9521,6 @@ interface EngineInterface
 }
 namespace Illuminate\View\Engines;
 
-use Illuminate\View\Exception;
 class PhpEngine implements EngineInterface
 {
     public function get($path, array $data = array())

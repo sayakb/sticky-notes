@@ -677,8 +677,8 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Create a route group with shared attributes.
 	 *
-	 * @param  array    $attributes
-	 * @param  Closure  $callback
+	 * @param  array     $attributes
+	 * @param  \Closure  $callback
 	 * @return void
 	 */
 	public function group(array $attributes, Closure $callback)
@@ -1068,7 +1068,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Register a route matched event listener.
 	 *
-	 * @param  callable  $callback
+	 * @param  string|callable  $callback
 	 * @return void
 	 */
 	public function matched($callback)
@@ -1079,7 +1079,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Register a new "before" filter with the router.
 	 *
-	 * @param  mixed  $callback
+	 * @param  string|callable  $callback
 	 * @return void
 	 */
 	public function before($callback)
@@ -1090,7 +1090,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Register a new "after" filter with the router.
 	 *
-	 * @param  mixed  $callback
+	 * @param  string|callable  $callback
 	 * @return void
 	 */
 	public function after($callback)
@@ -1102,7 +1102,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * Register a new global filter with the router.
 	 *
 	 * @param  string  $filter
-	 * @param  mixed   $callback
+	 * @param  string|callable   $callback
 	 * @return void
 	 */
 	protected function addGlobalFilter($filter, $callback)
@@ -1114,7 +1114,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * Register a new filter with the router.
 	 *
 	 * @param  string  $name
-	 * @param  mixed  $callback
+	 * @param  string|callable  $callback
 	 * @return void
 	 */
 	public function filter($name, $callback)
@@ -1125,7 +1125,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Parse the registered filter.
 	 *
-	 * @param  \Closure|string  $callback
+	 * @param  callable|string  $callback
 	 * @return mixed
 	 */
 	protected function parseFilter($callback)
@@ -1188,7 +1188,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 			// For model binders, we will attempt to retrieve the models using the find
 			// method on the model instance. If we cannot retrieve the models we'll
 			// throw a not found exception otherwise we will return the instance.
-			if ($model = with(new $class)->find($value))
+			if ($model = (new $class)->find($value))
 			{
 				return $model;
 			}
@@ -1209,12 +1209,40 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * Add a new route parameter binder.
 	 *
 	 * @param  string  $key
-	 * @param  callable  $binder
+	 * @param  string|callable  $binder
 	 * @return void
 	 */
 	public function bind($key, $binder)
 	{
+		if (is_string($binder))
+		{
+			$binder = $this->createClassBinding($binder);
+		}
+
 		$this->binders[str_replace('-', '_', $key)] = $binder;
+	}
+
+	/**
+	 * Create a class based binding using the IoC container.
+	 *
+	 * @param  string    $binding
+	 * @return \Closure
+	 */
+	public function createClassBinding($binding)
+	{
+		return function($value, $route) use ($binding)
+		{
+			// If the binding has an @ sign, we will assume it's being used to delimit
+			// the class name from the bind method name. This allows for bindings
+			// to run multiple bind methods in a single class for convenience.
+			$segments = explode('@', $binding);
+
+			$method = count($segments) == 2 ? $segments[1] : 'bind';
+
+			$callable = [$this->container->make($segments[0]), $method];
+
+			return call_user_func($callable, $value, $route);
+		};
 	}
 
 	/**
@@ -1460,7 +1488,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  callable  $callback
 	 * @return void
 	 */
-	public function withoutFilters($callback)
+	public function withoutFilters(callable $callback)
 	{
 		$this->disableFilters();
 

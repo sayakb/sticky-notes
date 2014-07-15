@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "e54204bce28ece4e14217e6732438e2488c0880d"
+                "reference": "d46a280485005b03fd069c289d0264f922b09297"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/e54204bce28ece4e14217e6732438e2488c0880d",
-                "reference": "e54204bce28ece4e14217e6732438e2488c0880d",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/d46a280485005b03fd069c289d0264f922b09297",
+                "reference": "d46a280485005b03fd069c289d0264f922b09297",
                 "shasum": ""
             },
             "require": {
@@ -347,7 +347,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-07-09 03:03:17"
+            "time": "2014-07-15 02:59:43"
         },
         {
             "name": "monolog/monolog",
@@ -568,12 +568,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "8b8c62f278e363b75ddcacaf5803710232fbd3e4"
+                "reference": "5a5d0fcf569f28e05a5a795fef9af101ece2c502"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/8b8c62f278e363b75ddcacaf5803710232fbd3e4",
-                "reference": "8b8c62f278e363b75ddcacaf5803710232fbd3e4",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/5a5d0fcf569f28e05a5a795fef9af101ece2c502",
+                "reference": "5a5d0fcf569f28e05a5a795fef9af101ece2c502",
                 "shasum": ""
             },
             "require": {
@@ -657,7 +657,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2014-07-05 16:36:21"
+            "time": "2014-07-12 10:08:34"
         },
         {
             "name": "predis/predis",
@@ -665,12 +665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "f967ecd66b37f5fe879b6bf35fbf677465294402"
+                "reference": "79539c3bcf16aaebf4fa5f6728fceb2f48474b27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/f967ecd66b37f5fe879b6bf35fbf677465294402",
-                "reference": "f967ecd66b37f5fe879b6bf35fbf677465294402",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/79539c3bcf16aaebf4fa5f6728fceb2f48474b27",
+                "reference": "79539c3bcf16aaebf4fa5f6728fceb2f48474b27",
                 "shasum": ""
             },
             "require": {
@@ -707,7 +707,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-07-07 09:48:01"
+            "time": "2014-07-14 14:26:06"
         },
         {
             "name": "psr/log",
@@ -1504,12 +1504,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/HttpKernel.git",
-                "reference": "c7d582cf30374775581f2574aaac5aeae5316411"
+                "reference": "edf9fe2c69ae3e17d95d930172f9cecf07b80589"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/c7d582cf30374775581f2574aaac5aeae5316411",
-                "reference": "c7d582cf30374775581f2574aaac5aeae5316411",
+                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/edf9fe2c69ae3e17d95d930172f9cecf07b80589",
+                "reference": "edf9fe2c69ae3e17d95d930172f9cecf07b80589",
                 "shasum": ""
             },
             "require": {
@@ -1568,7 +1568,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-08 18:56:57"
+            "time": "2014-07-09 09:05:48"
         },
         {
             "name": "symfony/process",

@@ -144,8 +144,8 @@ class Factory {
 	/**
 	 * Get the evaluated view contents for a named view.
 	 *
-	 * @param string $view
-	 * @param mixed $data
+	 * @param  string  $view
+	 * @param  mixed   $data
 	 * @return \Illuminate\View\View
 	 */
 	public function of($view, $data = array())
@@ -156,8 +156,8 @@ class Factory {
 	/**
 	 * Register a named view.
 	 *
-	 * @param string $view
-	 * @param string $name
+	 * @param  string  $view
+	 * @param  string  $name
 	 * @return void
 	 */
 	public function name($view, $name)
@@ -295,7 +295,7 @@ class Factory {
 	/**
 	 * Register a view creator event.
 	 *
-	 * @param  array|string  $views
+	 * @param  array|string     $views
 	 * @param  \Closure|string  $callback
 	 * @return array
 	 */
@@ -314,7 +314,7 @@ class Factory {
 	/**
 	 * Register multiple view composers via an array.
 	 *
-	 * @param array  $composers
+	 * @param  array  $composers
 	 * @return array
 	 */
 	public function composers(array $composers)
@@ -332,7 +332,7 @@ class Factory {
 	/**
 	 * Register a view composer event.
 	 *
-	 * @param  array|string  $views
+	 * @param  array|string     $views
 	 * @param  \Closure|string  $callback
 	 * @return array
 	 */
@@ -352,7 +352,7 @@ class Factory {
 	 * Add an event for a given view.
 	 *
 	 * @param  string  $view
-	 * @param  Closure|string  $callback
+	 * @param  \Closure|string  $callback
 	 * @param  string  $prefix
 	 * @return Closure
 	 */
@@ -395,9 +395,10 @@ class Factory {
 	/**
 	 * Add a listener to the event dispatcher.
 	 *
-	 * @param string   $name
-	 * @param \Closure $callback
-	 * @param integer  $priority
+	 * @param  string   $name
+	 * @param  \Closure $callback
+	 * @param  integer  $priority
+	 * @return void
 	 */
 	protected function addEventListener($name, $callback, $priority = null)
 	{
@@ -574,13 +575,9 @@ class Factory {
 		if (isset($this->sections[$section]))
 		{
 			$content = str_replace('@parent', $content, $this->sections[$section]);
+		}
 
-			$this->sections[$section] = $content;
-		}
-		else
-		{
-			$this->sections[$section] = $content;
-		}
+		$this->sections[$section] = $content;
 	}
 
 	/**
@@ -592,7 +589,14 @@ class Factory {
 	 */
 	public function yieldContent($section, $default = '')
 	{
-		return isset($this->sections[$section]) ? $this->sections[$section] : $default;
+		$sectionContent = $default;
+
+		if (isset($this->sections[$section]))
+		{
+			$sectionContent = $this->sections[$section];
+		}
+
+		return str_replace('@parent', '', $sectionContent);
 	}
 
 	/**
@@ -685,9 +689,9 @@ class Factory {
 	/**
 	 * Register a valid view extension and its engine.
 	 *
-	 * @param  string   $extension
-	 * @param  string   $engine
-	 * @param  Closure  $resolver
+	 * @param  string    $extension
+	 * @param  string    $engine
+	 * @param  \Closure  $resolver
 	 * @return void
 	 */
 	public function addExtension($extension, $engine, $resolver = null)

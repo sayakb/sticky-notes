@@ -103,8 +103,8 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 		if (is_null($perPage))
 		{
 			$this->perPage = (int) $total;
-			$this->items = array_slice($items, 0, $perPage);
-			$this->hasMore = count(array_slice($items, $this->perPage, 1)) > 0;
+			$this->hasMore = count($items) > $this->perPage;
+			$this->items = array_slice($items, 0, $this->perPage);
 		}
 		else
 		{
@@ -207,7 +207,7 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 	/**
 	 * Get a URL for a given page number.
 	 *
-	 * @param  int     $page
+	 * @param  int  $page
 	 * @return string
 	 */
 	public function getUrl($page)
@@ -532,8 +532,8 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 	/**
 	 * Call a method on the underlying Collection
 	 *
-	 * @param string $method
-	 * @param array  $arguments
+	 * @param  string  $method
+	 * @param  array   $arguments
 	 * @return mixed
 	 */
 	public function __call($method, $arguments)

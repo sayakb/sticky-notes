@@ -563,8 +563,8 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	/**
 	 * Create or update a record matching the attributes, and fill it with values.
 	 *
-	 * @param array $attributes
-	 * @param array $values
+	 * @param  array  $attributes
+	 * @param  array  $values
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
 	public static function updateOrCreate(array $attributes, array $values = array())
@@ -594,7 +594,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	 */
 	public static function query()
 	{
-		return with(new static)->newQuery();
+		return (new static)->newQuery();
 	}
 
 	/**
@@ -671,7 +671,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	{
 		if ( ! is_null($model = static::find($id, $columns))) return $model;
 
-		throw with(new ModelNotFoundException)->setModel(get_called_class());
+		throw (new ModelNotFoundException)->setModel(get_called_class());
 	}
 
 	/**
@@ -2189,7 +2189,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 		// Here we will grab all of the appended, calculated attributes to this model
 		// as these attributes are not really in the attributes array, but are run
 		// when we need to array or JSON the model for convenience to the coder.
-		foreach ($this->appends as $key)
+		foreach ($this->getArrayableAppends() as $key)
 		{
 			$attributes[$key] = $this->mutateAttributeForArray($key, null);
 		}
@@ -2205,6 +2205,20 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	protected function getArrayableAttributes()
 	{
 		return $this->getArrayableItems($this->attributes);
+	}
+
+	/**
+	 * Get all of the appendable values that are arrayable.
+	 *
+	 * @return array
+	 */
+	protected function getArrayableAppends()
+	{
+		if ( ! count($this->appends)) return [];
+
+		return $this->getArrayableItems(
+			array_combine($this->appends, $this->appends)
+		);
 	}
 
 	/**
@@ -2572,11 +2586,18 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
 	/**
 	 * Clone the model into a new, non-existing instance.
 	 *
+	 * @param  array  $except
 	 * @return \Illuminate\Database\Eloquent\Model
 	 */
-	public function replicate()
+	public function replicate(array $except = null)
 	{
-		$attributes = array_except($this->attributes, array($this->getKeyName()));
+		$except = $except ?: [
+			$this->getKeyName(),
+			$this->getCreatedAtColumn(),
+			$this->getUpdatedAtColumn(),
+		];
+
+		$attributes = array_except($this->attributes, $except);
 
 		with($instance = new static)->setRawAttributes($attributes);
 
