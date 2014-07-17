@@ -7714,7 +7714,7 @@ class Store implements SessionInterface
     {
         array_set($this->attributes, $name, $value);
     }
-    public function put($key, $value)
+    public function put($key, $value = null)
     {
         if (!is_array($key)) {
             $key = array($key => $value);

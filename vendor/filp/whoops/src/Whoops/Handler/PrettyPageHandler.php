@@ -6,7 +6,9 @@
 
 namespace Whoops\Handler;
 use Whoops\Handler\Handler;
+use Whoops\Util\Misc;
 use Whoops\Util\TemplateHelper;
+use Whoops\Exception\Formatter;
 use InvalidArgumentException;
 use RuntimeException;
 
@@ -126,6 +128,12 @@ class PrettyPageHandler extends Handler
         $inspector = $this->getInspector();
         $frames    = $inspector->getFrames();
 
+        $code = $inspector->getException()->getCode();
+
+        if ($inspector->getException() instanceof \ErrorException) {
+            $code = Misc::translateErrorCode($code);
+        }
+
         // List of variables that will be passed to the layout template.
         $vars = array(
             "page_title" => $this->getPageTitle(),
@@ -141,13 +149,15 @@ class PrettyPageHandler extends Handler
             "frame_code"  => $this->getResource("views/frame_code.html.php"),
             "env_details" => $this->getResource("views/env_details.html.php"),
 
-            "title"        => $this->getPageTitle(),
-            "name"         => explode("\\", $inspector->getExceptionName()),
-            "message"      => $inspector->getException()->getMessage(),
-            "frames"       => $frames,
-            "has_frames"   => !!count($frames),
-            "handler"      => $this,
-            "handlers"     => $this->getRun()->getHandlers(),
+            "title"          => $this->getPageTitle(),
+            "name"           => explode("\\", $inspector->getExceptionName()),
+            "message"        => $inspector->getException()->getMessage(),
+            "code"           => $code,
+            "plain_exception" => Formatter::formatExceptionPlain($inspector),
+            "frames"         => $frames,
+            "has_frames"     => !!count($frames),
+            "handler"        => $this,
+            "handlers"       => $this->getRun()->getHandlers(),
 
             "tables"      => array(
                 "Server/Request Data"   => $_SERVER,

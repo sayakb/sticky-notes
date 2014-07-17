@@ -102,7 +102,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	/**
 	 * Create a new Illuminate application instance.
 	 *
-	 * @param  \Illuminate\Http\Request
+	 * @param  \Illuminate\Http\Request  $request
 	 * @return void
 	 */
 	public function __construct(Request $request = null)
@@ -696,6 +696,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	 * @param  int   $type
 	 * @param  bool  $catch
 	 * @return \Symfony\Component\HttpFoundation\Response
+	 *
+	 * @throws \Exception
 	 */
 	public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
 	{
@@ -783,6 +785,7 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	/**
 	 * Call the booting callbacks for the application.
 	 *
+	 * @param  array  $callbacks
 	 * @return void
 	 */
 	protected function fireAppCallbacks(array $callbacks)

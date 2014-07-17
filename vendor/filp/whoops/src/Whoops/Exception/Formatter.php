@@ -5,6 +5,7 @@
  */
 
 namespace Whoops\Exception;
+use Whoops\Util\TemplateHelper;
 
 class Formatter
 {
@@ -45,4 +46,28 @@ class Formatter
 
         return $response;
     }
+
+    public static function formatExceptionPlain(Inspector $inspector) {
+        $message = $inspector->getException()->getMessage();
+        $frames = $inspector->getFrames();
+
+        $plain = $inspector->getExceptionName();
+        $plain .= ' thrown with message "';
+        $plain .= $message;
+        $plain .= '"'."\n\n";
+
+        $plain .= "Stacktrace:\n";
+        foreach($frames as $i => $frame) {
+            $plain .= "#". (count($frames) - $i - 1). " ";
+            $plain .= $frame->getClass() ?: '';
+            $plain .= $frame->getClass() && $frame->getFunction() ? ":" : "";
+            $plain .= $frame->getFunction() ?: '';
+            $plain .= ' in ';
+            $plain .= ($frame->getFile() ?: '<#unknown>');
+            $plain .= ':';
+            $plain .= (int) $frame->getLine(). "\n";
+        }
+        
+        return $plain;
+    }    
 }
