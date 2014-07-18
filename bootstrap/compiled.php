@@ -7592,10 +7592,10 @@ class Store implements SessionInterface
     protected $started = false;
     public function __construct($name, SessionHandlerInterface $handler, $id = null)
     {
+        $this->setId($id);
         $this->name = $name;
         $this->handler = $handler;
         $this->metaBag = new MetadataBag();
-        $this->setId($id ?: $this->generateSessionId());
     }
     public function start()
     {

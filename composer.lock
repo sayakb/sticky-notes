@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "82539fb50711e8aabb7aa01d8020706ef7bc93d7"
+                "reference": "f43506498d4d436bff25992ac23c10c1fd401f41"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/82539fb50711e8aabb7aa01d8020706ef7bc93d7",
-                "reference": "82539fb50711e8aabb7aa01d8020706ef7bc93d7",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/f43506498d4d436bff25992ac23c10c1fd401f41",
+                "reference": "f43506498d4d436bff25992ac23c10c1fd401f41",
                 "shasum": ""
             },
             "require": {
@@ -347,7 +347,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-07-17 04:01:51"
+            "time": "2014-07-18 03:28:36"
         },
         {
             "name": "monolog/monolog",
@@ -422,23 +422,23 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.9.0",
+            "version": "1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "b94de7192b01d0e80794eae984dcc773220ab0dc"
+                "reference": "9b42a1aec56011c2ac4d75c0ddad0794762344fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/b94de7192b01d0e80794eae984dcc773220ab0dc",
-                "reference": "b94de7192b01d0e80794eae984dcc773220ab0dc",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/9b42a1aec56011c2ac4d75c0ddad0794762344fc",
+                "reference": "9b42a1aec56011c2ac4d75c0ddad0794762344fc",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "~4.0"
             },
             "type": "library",
             "autoload": {
@@ -464,7 +464,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2014-05-13 02:29:30"
+            "time": "2014-07-18 03:44:47"
         },
         {
             "name": "nikic/php-parser",
@@ -665,12 +665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "18f5cea8e683bfe551693c7157de65d293f7da9c"
+                "reference": "adb4d82ea8d0d84b90a301aaaf646b9b118cbc2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/18f5cea8e683bfe551693c7157de65d293f7da9c",
-                "reference": "18f5cea8e683bfe551693c7157de65d293f7da9c",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/adb4d82ea8d0d84b90a301aaaf646b9b118cbc2c",
+                "reference": "adb4d82ea8d0d84b90a301aaaf646b9b118cbc2c",
                 "shasum": ""
             },
             "require": {
@@ -707,7 +707,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-07-16 17:12:35"
+            "time": "2014-07-17 14:21:29"
         },
         {
             "name": "psr/log",
