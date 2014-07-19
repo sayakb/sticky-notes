@@ -121,7 +121,8 @@
 							@if ($paste->attachment)
 								{{
 									link_to("admin/paste/{$paste->urlkey}/remattach", Lang::get('admin.remove_attachment'), array(
-										'class' => 'btn btn-primary'
+										'class' => 'btn btn-primary',
+										'onclick'   => "return confirm('".Lang::get('global.action_confirm')."')",
 									))
 								}}
 							@endif
