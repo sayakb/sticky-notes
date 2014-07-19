@@ -108,7 +108,17 @@
 		<ul>
 			<li>Installing apache: <a href="http://httpd.apache.org/docs/current/install.html">http://httpd.apache.org/docs/current/install.html</a></li>
 			<li>Installing MySQL: <a href="http://dev.mysql.com/doc/refman/5.5/en/installing.html">http://dev.mysql.com/doc/refman/5.5/en/installing.html</a></li>
-			<li>Installing PHP: <a href="http://php.net/manual/en/install.php">http://php.net/manual/en/install.php</a></li>
+			<li>Installing PHP (5.4+): <a href="http://php.net/manual/en/install.php">http://php.net/manual/en/install.php</a></li>
+		</ul>
+
+		<p>
+			Additionally, you'll need to install the following PHP extensions:
+		</p>
+
+		<ul>
+			<li>php_mcrypt: Required by Laravel, which is the underlying PHP framework</li>
+			<li>php_gd: Required if you use the captcha module</li>
+			<li>php_mysql: Required if you use the MySQL database driver</li>
 		</ul>
 
 		<p>
