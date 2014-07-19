@@ -87,6 +87,17 @@ class ShowController extends BaseController {
 					// Delete the paste if the user has access
 					if ($site->allowPasteDel AND $owner)
 					{
+						Revision::where('urlkey', $paste->urlkey)->delete();
+
+						$paste->comments()->delete();
+
+						$attachment = storage_path()."/uploads/{$paste->urlkey}";
+
+						if ($paste->attachment AND File::exists($attachment))
+						{
+							File::delete($attachment);
+						}
+
 						$paste->delete();
 
 						Session::flash('messages.success', Lang::get('global.paste_deleted'));

@@ -53,6 +53,8 @@ class Cron {
 		{
 			$expired = array();
 
+			$storage = storage_path();
+
 			// Retrieve expired pastes
 			$pastes = Paste::where('expire', '>', 0)->where('expire', '<', time())->get();
 
@@ -62,12 +64,19 @@ class Cron {
 				$hasComments = Schema::hasTable('comments');
 
 				// Build the expired pastes array
-				// Also delete associated comments
+				// Also delete associated comments and attachments
 				foreach($pastes as $paste)
 				{
 					$expired[] = $paste->urlkey;
 
 					$paste->comments()->delete();
+
+					$attachment = "{$storage}/uploads/{$paste->urlkey}";
+
+					if ($paste->attachment AND File::exists($attachment))
+					{
+						File::delete($attachment);
+					}
 				}
 
 				// Remove expired pastes

@@ -114,6 +114,13 @@ class AdminController extends BaseController {
 
 					$paste->comments()->delete();
 
+					$attachment = storage_path()."/uploads/{$paste->urlkey}";
+
+					if ($paste->attachment AND File::exists($attachment))
+					{
+						File::delete($attachment);
+					}
+
 					$paste->delete();
 
 					Session::flash('messages.success', Lang::get('global.paste_deleted'));
