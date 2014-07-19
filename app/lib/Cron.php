@@ -14,6 +14,7 @@
  * @filesource
  */
 
+use File;
 use Paste;
 use Revision;
 use Schema;
