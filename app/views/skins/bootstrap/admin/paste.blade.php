@@ -118,6 +118,14 @@
 								)
 							}}
 
+							@if ($paste->attachment)
+								{{
+									link_to("admin/paste/{$paste->urlkey}/remattach", Lang::get('admin.remove_attachment'), array(
+										'class' => 'btn btn-primary'
+									))
+								}}
+							@endif
+
 							{{
 								link_to("admin/paste/{$paste->urlkey}/delete", Lang::get('global.delete'), array(
 									'class'     => 'btn btn-primary',
