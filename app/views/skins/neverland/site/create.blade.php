@@ -9,6 +9,7 @@
 				'action'         => $action,
 				'autocomplete'   => 'off',
 				'role'           => 'form',
+				'files'          => TRUE
 			))
 		}}
 
