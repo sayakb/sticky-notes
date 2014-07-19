@@ -31,6 +31,8 @@ return array(
 	"has_password"          => "Has password",
 	"poster_ip"             => "Poster's IP",
 	"remove_password"       => "Remove password",
+	"remove_attachment"     => "Remove attachment",
+	"attachment_deleted"    => "The attachment has been removed successfully",
 	"paste_exp"             => "Enter the paste ID above and click search",
 	"paste_404"             => "No paste found with the given ID",
 	"user_404"              => "No user found with the given username",

@@ -108,6 +108,23 @@ class AdminController extends BaseController {
 
 					return Redirect::to(URL::previous());
 
+				case 'remattach':
+
+					$attachment = storage_path()."/uploads/{$paste->urlkey}";
+
+					if ($paste->attachment AND File::exists($attachment))
+					{
+						File::delete($attachment);
+
+						$paste->attachment = 0;
+
+						$paste->save();
+					}
+
+					Session::flash('messages.success', Lang::get('admin.attachment_deleted'));
+
+					return Redirect::to(URL::previous());
+
 				case 'delete':
 
 					Revision::where('urlkey', $paste->urlkey)->delete();
