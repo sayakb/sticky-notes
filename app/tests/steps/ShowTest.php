@@ -51,10 +51,13 @@ class ShowTest extends StickyNotesTestCase {
 		$this->initTestStep();
 
 		$paste = Paste::createNew('web', array(
-			'title'     => 'UnitTest::Title',
-			'data'      => 'UnitTest::Data',
-			'language'  => 'text',
+			'title'      => 'UnitTest::Title',
+			'data'       => 'UnitTest::Data',
+			'language'   => 'text',
+			'attachment' => array(true),
 		));
+
+		File::put(storage_path()."/uploads/{$paste->urlkey}", 'attachment');
 
 		$this->call('GET', "{$paste->urlkey}/{$paste->hash}/delete");
 
@@ -63,6 +66,8 @@ class ShowTest extends StickyNotesTestCase {
 		$this->assertRedirectedTo('/');
 
 		$this->assertEquals(Paste::where('id', $paste->id)->count(), 0);
+
+		$this->assertFalse(File::exists(storage_path()."/uploads/{$paste->urlkey}"));
 	}
 
 	/**

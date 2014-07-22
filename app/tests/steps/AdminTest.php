@@ -64,7 +64,7 @@ class AdminTest extends StickyNotesTestCase {
 	/**
 	 * Tests the getPaste method's 'rempass' action
 	 */
-	public function testGetPasteRempass()
+	public function testGetPasteRemPass()
 	{
 		$this->initTestStep();
 
@@ -101,6 +101,32 @@ class AdminTest extends StickyNotesTestCase {
 		$this->assertRedirectedTo('/');
 
 		$this->assertEquals(Paste::find($paste->id)->private, 0);
+	}
+
+	/**
+	 * Tests the getPaste method's 'remattach' action
+	 */
+	public function testGetPasteRemAttach()
+	{
+		$this->initTestStep();
+
+		$paste = Paste::createNew('web', array(
+			'title'      => 'UnitTest::Title',
+			'data'       => 'UnitTest::Data',
+			'password'   => 'UnitTest::Password',
+			'language'   => 'text',
+			'attachment' => array(true),
+		));
+
+		File::put(storage_path()."/uploads/{$paste->urlkey}", 'attachment');
+
+		$this->call('GET', "admin/paste/{$paste->urlkey}/remattach");
+
+		$this->assertRedirectedTo('/');
+
+		$this->assertEquals(Paste::find($paste->id)->attachment, 0);
+
+		$this->assertFalse(File::exists(storage_path()."/uploads/{$paste->urlkey}"));
 	}
 
 	/**

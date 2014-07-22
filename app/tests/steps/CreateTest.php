@@ -45,7 +45,7 @@ class CreateTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
-		$key = 'UnitTest::Public'.time();
+		$key = 'UnitTest::Public'.str_random(64);
 
 		$response = $this->call('POST', 'create', array(
 			'title'     => 'UnitTest::Title',
@@ -66,7 +66,7 @@ class CreateTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
-		$key = 'UnitTest::Protected'.time();
+		$key = 'UnitTest::Protected'.str_random(64);
 
 		$this->call('POST', 'create', array(
 			'title'    => 'UnitTest::Title',
@@ -80,6 +80,55 @@ class CreateTest extends StickyNotesTestCase {
 		$this->assertSessionHas('messages.success');
 
 		$this->assertEquals(Paste::where('data', $key)->count(), 1);
+	}
+
+	/**
+	 * Verifies 'enforce public' setting when creating pastes
+	 */
+	public function testPostCreatePublicSite()
+	{
+		$this->initTestStep();
+
+		Site::config('general', array('paste_visibility' => 'public'));
+
+		$key = 'UnitTest::Protected'.str_random(64);
+
+		$response = $this->call('POST', 'create', array(
+			'title'    => 'UnitTest::Title',
+			'data'     => $key,
+			'password' => 'UnitTest::Password',
+			'language' => 'text',
+		));
+
+		Site::config('general', array('paste_visibility' => 'default'));
+
+		$this->assertRedirectedTo($response->getTargetUrl());
+
+		$this->assertEquals(Paste::where('data', $key)->first()->private, 0);
+	}
+
+	/**
+	 * Verifies 'enforce private' setting when creating pastes
+	 */
+	public function testPostCreatePrivateSite()
+	{
+		$this->initTestStep();
+
+		Site::config('general', array('paste_visibility' => 'private'));
+
+		$key = 'UnitTest::Protected'.str_random(64);
+
+		$response = $this->call('POST', 'create', array(
+			'title'    => 'UnitTest::Title',
+			'data'     => $key,
+			'language' => 'text',
+		));
+
+		Site::config('general', array('paste_visibility' => 'default'));
+
+		$this->assertRedirectedTo($response->getTargetUrl());
+
+		$this->assertEquals(Paste::where('data', $key)->first()->private, 1);
 	}
 
 	/**
