@@ -75,7 +75,11 @@ class Container implements ArrayAccess
     }
     public function bound($abstract)
     {
-        return isset($this[$abstract]) || isset($this->instances[$abstract]);
+        return isset($this->bindings[$abstract]) || isset($this->instances[$abstract]);
+    }
+    public function resolved($abstract)
+    {
+        return isset($this->resolved[$abstract]) || isset($this->instances[$abstract]);
     }
     public function isAlias($name)
     {
@@ -94,9 +98,8 @@ class Container implements ArrayAccess
         if (!$concrete instanceof Closure) {
             $concrete = $this->getClosure($abstract, $concrete);
         }
-        $bound = $this->bound($abstract);
         $this->bindings[$abstract] = compact('concrete', 'shared');
-        if ($bound) {
+        if ($this->resolved($abstract)) {
             $this->rebound($abstract);
         }
     }
@@ -115,7 +118,7 @@ class Container implements ArrayAccess
     }
     public function singleton($abstract, $concrete = null)
     {
-        return $this->bind($abstract, $concrete, true);
+        $this->bind($abstract, $concrete, true);
     }
     public function share(Closure $closure)
     {
@@ -129,7 +132,7 @@ class Container implements ArrayAccess
     }
     public function bindShared($abstract, Closure $closure)
     {
-        return $this->bind($abstract, $this->share($closure), true);
+        $this->bind($abstract, $this->share($closure), true);
     }
     public function extend($abstract, Closure $closure)
     {
@@ -203,7 +206,6 @@ class Container implements ArrayAccess
     public function make($abstract, $parameters = array())
     {
         $abstract = $this->getAlias($abstract);
-        $this->resolved[$abstract] = true;
         if (isset($this->instances[$abstract])) {
             return $this->instances[$abstract];
         }
@@ -217,6 +219,7 @@ class Container implements ArrayAccess
             $this->instances[$abstract] = $object;
         }
         $this->fireResolvingCallbacks($abstract, $object);
+        $this->resolved[$abstract] = true;
         return $object;
     }
     protected function getConcrete($abstract)
@@ -584,6 +587,18 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
             $this->loadDeferredProvider($abstract);
         }
         return parent::make($abstract, $parameters);
+    }
+    public function bound($abstract)
+    {
+        return isset($this->deferredServices[$abstract]) || parent::bound($abstract);
+    }
+    public function extend($abstract, Closure $closure)
+    {
+        $abstract = $this->getAlias($abstract);
+        if (isset($this->deferredServices[$abstract])) {
+            $this->loadDeferredProvider($abstract);
+        }
+        return parent::extend($abstract, $closure);
     }
     public function before($callback)
     {
@@ -4537,7 +4552,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     public function controller($uri, $controller, $names = array())
     {
         $prepended = $controller;
-        if (count($this->groupStack) > 0) {
+        if (!empty($this->groupStack)) {
             $prepended = $this->prependGroupUses($controller);
         }
         $routable = $this->getInspector()->getRoutable($prepended, $uri);
@@ -4583,7 +4598,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     {
         $segments = explode('/', $name);
         $prefix = implode('/', array_slice($segments, 0, -1));
-        return array($segments[count($segments) - 1], $prefix);
+        return array(end($segments), $prefix);
     }
     protected function getResourceMethods($defaults, $options)
     {
@@ -4620,7 +4635,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
             return $options['names'][$method];
         }
         $prefix = isset($options['as']) ? $options['as'] . '.' : '';
-        if (count($this->groupStack) == 0) {
+        if (empty($this->groupStack)) {
             return $prefix . $resource . '.' . $method;
         }
         return $this->getGroupResourceName($prefix, $resource, $method);
@@ -4694,7 +4709,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     protected function updateGroupStack(array $attributes)
     {
-        if (count($this->groupStack) > 0) {
+        if (!empty($this->groupStack)) {
             $attributes = $this->mergeGroup($attributes, last($this->groupStack));
         }
         $this->groupStack[] = $attributes;
@@ -4710,28 +4725,30 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         if (isset($new['domain'])) {
             unset($old['domain']);
         }
-        return array_merge_recursive(array_except($old, array('namespace', 'prefix')), $new);
+        $new['where'] = array_merge(array_get($old, 'where', array()), array_get($new, 'where', array()));
+        return array_merge_recursive(array_except($old, array('namespace', 'prefix', 'where')), $new);
     }
     protected static function formatUsesPrefix($new, $old)
     {
-        if (isset($new['namespace'])) {
+        if (isset($new['namespace']) && isset($old['namespace'])) {
             return trim(array_get($old, 'namespace'), '\\') . '\\' . trim($new['namespace'], '\\');
-        } else {
-            return array_get($old, 'namespace');
+        } elseif (isset($new['namespace'])) {
+            return trim($new['namespace'], '\\');
         }
+        return array_get($old, 'namespace');
     }
     protected static function formatGroupPrefix($new, $old)
     {
         if (isset($new['prefix'])) {
             return trim(array_get($old, 'prefix'), '/') . '/' . trim($new['prefix'], '/');
-        } else {
-            return array_get($old, 'prefix');
         }
+        return array_get($old, 'prefix');
     }
     protected function getLastGroupPrefix()
     {
-        if (count($this->groupStack) > 0) {
-            return array_get(last($this->groupStack), 'prefix', '');
+        if (!empty($this->groupStack)) {
+            $last = end($this->groupStack);
+            return isset($last['prefix']) ? $last['prefix'] : '';
         }
         return '';
     }
@@ -4745,10 +4762,10 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
             $action = $this->getControllerAction($action);
         }
         $route = $this->newRoute($methods, $uri = $this->prefix($uri), $action);
-        $route->where($this->patterns);
-        if (count($this->groupStack) > 0) {
+        if (!empty($this->groupStack)) {
             $this->mergeController($route);
         }
+        $this->addWhereClausesToRoute($route);
         return $route;
     }
     protected function newRoute($methods, $uri, $action)
@@ -4758,6 +4775,11 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     protected function prefix($uri)
     {
         return trim(trim($this->getLastGroupPrefix(), '/') . '/' . trim($uri, '/'), '/') ?: '/';
+    }
+    protected function addWhereClausesToRoute($route)
+    {
+        $route->where(array_merge($this->patterns, array_get($route->getAction(), 'where', array())));
+        return $route;
     }
     protected function mergeController($route)
     {
@@ -4776,7 +4798,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
         if (is_string($action)) {
             $action = array('uses' => $action);
         }
-        if (count($this->groupStack) > 0) {
+        if (!empty($this->groupStack)) {
             $action['uses'] = $this->prependGroupUses($action['uses']);
         }
         $action['controller'] = $action['uses'];
@@ -4883,7 +4905,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     public function model($key, $class, Closure $callback = null)
     {
-        return $this->bind($key, function ($value) use($class, $callback) {
+        $this->bind($key, function ($value) use($class, $callback) {
             if (is_null($value)) {
                 return null;
             }
@@ -5137,6 +5159,9 @@ class Route
         $this->uri = $uri;
         $this->methods = (array) $methods;
         $this->action = $this->parseAction($action);
+        if (in_array('GET', $this->methods) && !in_array('HEAD', $this->methods)) {
+            $this->methods[] = 'HEAD';
+        }
         if (isset($this->action['prefix'])) {
             $this->prefix($this->action['prefix']);
         }
@@ -5203,13 +5228,13 @@ class Route
         if (is_array($filters)) {
             return static::explodeArrayFilters($filters);
         }
-        return explode('|', $filters);
+        return array_map('trim', explode('|', $filters));
     }
     protected static function explodeArrayFilters(array $filters)
     {
         $results = array();
         foreach ($filters as $filter) {
-            $results = array_merge($results, explode('|', $filter));
+            $results = array_merge($results, array_map('trim', explode('|', $filter)));
         }
         return $results;
     }
@@ -5231,7 +5256,7 @@ class Route
     }
     public function parameter($name, $default = null)
     {
-        return array_get($this->parameters(), $name) ?: $default;
+        return array_get($this->parameters(), $name, $default);
     }
     public function setParameter($name, $value)
     {
@@ -5394,9 +5419,6 @@ class Route
     }
     public function methods()
     {
-        if (in_array('GET', $this->methods) && !in_array('HEAD', $this->methods)) {
-            $this->methods[] = 'HEAD';
-        }
         return $this->methods;
     }
     public function httpOnly()
@@ -5413,7 +5435,7 @@ class Route
     }
     public function domain()
     {
-        return array_get($this->action, 'domain');
+        return isset($this->action['domain']) ? $this->action['domain'] : null;
     }
     public function getUri()
     {
@@ -5426,15 +5448,15 @@ class Route
     }
     public function getPrefix()
     {
-        return array_get($this->action, 'prefix');
+        return isset($this->action['prefix']) ? $this->action['prefix'] : null;
     }
     public function getName()
     {
-        return array_get($this->action, 'as');
+        return isset($this->action['as']) ? $this->action['as'] : null;
     }
     public function getActionName()
     {
-        return array_get($this->action, 'controller', 'Closure');
+        return isset($this->action['controller']) ? $this->action['controller'] : 'Closure';
     }
     public function getAction()
     {
@@ -5474,9 +5496,10 @@ class RouteCollection implements Countable, IteratorAggregate
     protected function addToCollections($route)
     {
         foreach ($route->methods() as $method) {
-            $this->routes[$method][$route->domain() . $route->getUri()] = $route;
+            $domainAndUri = $route->domain() . $route->getUri();
+            $this->routes[$method][$domainAndUri] = $route;
         }
-        $this->allRoutes[$method . $route->domain() . $route->getUri()] = $route;
+        $this->allRoutes[$method . $domainAndUri] = $route;
     }
     protected function addLookups($route)
     {
@@ -6551,7 +6574,13 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         if (!$this->exists) {
             return $query->{$method}($column, $amount);
         }
+        $this->incrementOrDecrementAttributeValue($column, $amount, $method);
         return $query->where($this->getKeyName(), $this->getKey())->{$method}($column, $amount);
+    }
+    protected function incrementOrDecrementAttributeValue($column, $amount, $method)
+    {
+        $this->{$column} = $this->{$column} + ($method == 'increment' ? $amount : $amount * -1);
+        $this->syncOriginalAttribute($column);
     }
     public function update(array $attributes = array())
     {
@@ -7026,10 +7055,8 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
         if ($this->hasSetMutator($key)) {
             $method = 'set' . studly_case($key) . 'Attribute';
             return $this->{$method}($value);
-        } elseif (in_array($key, $this->getDates())) {
-            if ($value) {
-                $value = $this->fromDateTime($value);
-            }
+        } elseif (in_array($key, $this->getDates()) && $value) {
+            $value = $this->fromDateTime($value);
         }
         $this->attributes[$key] = $value;
     }
@@ -7097,6 +7124,11 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
     public function syncOriginal()
     {
         $this->original = $this->attributes;
+        return $this;
+    }
+    public function syncOriginalAttribute($attribute)
+    {
+        $this->original[$attribute] = $this->attributes[$attribute];
         return $this;
     }
     public function isDirty($attribute = null)
@@ -7620,8 +7652,7 @@ class Store implements SessionInterface
     }
     protected function initializeLocalBag($bag)
     {
-        $this->bagData[$bag->getStorageKey()] = $this->get($bag->getStorageKey(), array());
-        $this->forget($bag->getStorageKey());
+        $this->bagData[$bag->getStorageKey()] = $this->pull($bag->getStorageKey(), array());
     }
     public function getId()
     {
@@ -7693,9 +7724,7 @@ class Store implements SessionInterface
     }
     public function pull($key, $default = null)
     {
-        $value = $this->get($key, $default);
-        $this->forget($key);
-        return $value;
+        return array_pull($this->attributes, $key, $default);
     }
     public function hasOldInput($key = null)
     {
@@ -8366,8 +8395,8 @@ class Writer
     }
     public function __call($method, $parameters)
     {
-        $this->formatParameters($parameters);
         if (in_array($method, $this->levels)) {
+            $this->formatParameters($parameters);
             call_user_func_array(array($this, 'fireLogEvent'), array_merge(array($method), $parameters));
             $method = 'add' . ucfirst($method);
             return $this->callMonolog($method, $parameters);

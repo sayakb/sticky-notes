@@ -26,7 +26,7 @@ use Predis\Command\RawCommand;
  * Abstraction for a Redis-backed cluster of nodes (Redis >= 3.0.0).
  *
  * This connection backend offers smart support for redis-cluster by handling
- * automatic slots map (re)generation upon -MOVE or -ASK responses returned by
+ * automatic slots map (re)generation upon -MOVED or -ASK responses returned by
  * Redis when redirecting a client to a different node.
  *
  * The cluster can be pre-initialized using only a subset of the actual nodes in
@@ -40,13 +40,13 @@ use Predis\Command\RawCommand;
  * It is also possible to ask for the full and updated slots map directly to one
  * of the nodes and optionally enable such a behaviour upon -MOVED redirections.
  * Asking for the cluster configuration to Redis is actually done by issuing a
- * CLUSTER NODES command to a random node in the pool.
+ * CLUSTER SLOTS command to a random node in the pool.
  *
  * @author Daniele Alessandri <suppakilla@gmail.com>
  */
 class RedisCluster implements ClusterConnectionInterface, IteratorAggregate, Countable
 {
-    private $askClusterNodes = false;
+    private $askClusterNodes = true;
     private $defaultParameters = array();
     private $pool = array();
     private $slots = array();
@@ -169,14 +169,16 @@ class RedisCluster implements ClusterConnectionInterface, IteratorAggregate, Cou
     }
 
     /**
-     * Generates the current slots map by fetching the cluster configuration to
-     * one of the nodes by leveraging the CLUSTER SLOTS command.
+     * Generates an updated slots map fetching the cluster configuration using
+     * the CLUSTER SLOTS command against the specified node or a random one from
+     * the pool.
      *
+     * @param  SingleConnectionInterface $connection Optional connection instance.
      * @return array
      */
-    public function askClusterNodes()
+    public function askClusterNodes(SingleConnectionInterface $connection = null)
     {
-        if (!$connection = $this->getRandomConnection()) {
+        if (!$connection && !$connection = $this->getRandomConnection()) {
             return array();
         }
 
@@ -402,7 +404,7 @@ class RedisCluster implements ClusterConnectionInterface, IteratorAggregate, Cou
         }
 
         if ($this->askClusterNodes) {
-            $this->askClusterNodes();
+            $this->askClusterNodes($connection);
         }
 
         $this->move($connection, $slot);
@@ -492,8 +494,8 @@ class RedisCluster implements ClusterConnectionInterface, IteratorAggregate, Cou
 
     /**
      * Enables automatic fetching of the current slots map from one of the nodes
-     * using the CLUSTER NODES command. This option is disabled by default but
-     * asking the current slots map to Redis upon -MOVE responses may reduce
+     * using the CLUSTER SLOTS command. This option is disabled by default but
+     * asking the current slots map to Redis upon -MOVED responses may reduce
      * overhead by eliminating the trial-and-error nature of the node guessing
      * procedure, mostly when targeting many keys that would end up in a lot of
      * redirections.
@@ -501,7 +503,7 @@ class RedisCluster implements ClusterConnectionInterface, IteratorAggregate, Cou
      * The slots map can still be manually fetched using the askClusterNodes()
      * method whether or not this option is enabled.
      *
-     * @param bool $value Enable or disable the use of CLUSTER NODES.
+     * @param bool $value Enable or disable the use of CLUSTER SLOTS.
      */
     public function enableClusterNodes($value)
     {

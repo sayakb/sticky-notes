@@ -9,28 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Predis\Profile;
+namespace Predis\Command;
 
 /**
- * Server profile for the current unstable version of Redis.
- *
+ * @link http://redis.io/commands/command
  * @author Daniele Alessandri <suppakilla@gmail.com>
  */
-class ServerVersionNext extends ServerVersion30
+class ServerCommand extends AbstractCommand
 {
     /**
      * {@inheritdoc}
      */
-    public function getVersion()
+    public function getId()
     {
-        return '3.0';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSupportedCommands()
-    {
-        return array_merge(parent::getSupportedCommands(), array());
+        return 'COMMAND';
     }
 }

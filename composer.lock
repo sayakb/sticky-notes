@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "f43506498d4d436bff25992ac23c10c1fd401f41"
+                "reference": "cdb5e9d99da0c54b7bdc94bb7cb3fad8ddb50e07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/f43506498d4d436bff25992ac23c10c1fd401f41",
-                "reference": "f43506498d4d436bff25992ac23c10c1fd401f41",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/cdb5e9d99da0c54b7bdc94bb7cb3fad8ddb50e07",
+                "reference": "cdb5e9d99da0c54b7bdc94bb7cb3fad8ddb50e07",
                 "shasum": ""
             },
             "require": {
@@ -337,9 +337,7 @@
             "authors": [
                 {
                     "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com",
-                    "homepage": "https://github.com/taylorotwell",
-                    "role": "Creator of Laravel"
+                    "email": "taylorotwell@gmail.com"
                 }
             ],
             "description": "The Laravel Framework.",
@@ -347,7 +345,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-07-18 03:28:36"
+            "time": "2014-07-21 21:21:01"
         },
         {
             "name": "monolog/monolog",
@@ -355,12 +353,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "8228d1ee833dbec710161ac179d1fb9ff6cd6f28"
+                "reference": "61145103b6521d04c0386d1ea6899437df9d45e2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/8228d1ee833dbec710161ac179d1fb9ff6cd6f28",
-                "reference": "8228d1ee833dbec710161ac179d1fb9ff6cd6f28",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/61145103b6521d04c0386d1ea6899437df9d45e2",
+                "reference": "61145103b6521d04c0386d1ea6899437df9d45e2",
                 "shasum": ""
             },
             "require": {
@@ -407,8 +405,7 @@
                 {
                     "name": "Jordi Boggiano",
                     "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be",
-                    "role": "Developer"
+                    "homepage": "http://seld.be"
                 }
             ],
             "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
@@ -418,7 +415,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-06-30 13:24:53"
+            "time": "2014-07-19 19:11:34"
         },
         {
             "name": "nesbot/carbon",
@@ -568,12 +565,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "13317c1004dbc7eb844477dc9e742952ec77937a"
+                "reference": "36baab1db410601b9376e5964c44158f288b27c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/13317c1004dbc7eb844477dc9e742952ec77937a",
-                "reference": "13317c1004dbc7eb844477dc9e742952ec77937a",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/36baab1db410601b9376e5964c44158f288b27c5",
+                "reference": "36baab1db410601b9376e5964c44158f288b27c5",
                 "shasum": ""
             },
             "require": {
@@ -582,6 +579,7 @@
             "require-dev": {
                 "phing/phing": "2.7.*",
                 "phpunit/phpunit": "4.0.*",
+                "sami/sami": "1.*",
                 "squizlabs/php_codesniffer": "1.*"
             },
             "suggest": {
@@ -657,7 +655,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2014-07-17 00:46:18"
+            "time": "2014-07-21 21:53:33"
         },
         {
             "name": "predis/predis",
@@ -665,12 +663,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "adb4d82ea8d0d84b90a301aaaf646b9b118cbc2c"
+                "reference": "d5c650d51aa99f7d0c992c8a01c015b824d8ce46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/adb4d82ea8d0d84b90a301aaaf646b9b118cbc2c",
-                "reference": "adb4d82ea8d0d84b90a301aaaf646b9b118cbc2c",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/d5c650d51aa99f7d0c992c8a01c015b824d8ce46",
+                "reference": "d5c650d51aa99f7d0c992c8a01c015b824d8ce46",
                 "shasum": ""
             },
             "require": {
@@ -707,7 +705,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-07-17 14:21:29"
+            "time": "2014-07-21 16:23:00"
         },
         {
             "name": "psr/log",
@@ -1820,6 +1818,7 @@
         "sayakb/akismet": 20,
         "sayakb/captcha": 20
     },
+    "prefer-stable": false,
     "platform": [
 
     ],
