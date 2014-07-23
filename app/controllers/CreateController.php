@@ -41,6 +41,7 @@ class CreateController extends BaseController {
 			'paste'      => new Paste,
 			'action'     => 'CreateController@postCreate',
 			'disabled'   => NULL,
+			'attach'     => TRUE,
 		);
 
 		// Get the default language from cookie
@@ -198,6 +199,7 @@ class CreateController extends BaseController {
 			'paste'      => $paste,
 			'action'     => 'CreateController@postRevision',
 			'disabled'   => 'disabled',
+			'attach'     => FALSE,
 		);
 
 		return View::make('site/create', $data);
