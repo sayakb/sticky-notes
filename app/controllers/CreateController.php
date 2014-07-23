@@ -256,6 +256,7 @@ class CreateController extends BaseController {
 				'language'     => $oldPaste->language,
 				'private'      => NULL,
 				'password'     => NULL,
+				'attachment'   => NULL,
 			);
 
 			// Merge it with the input to override the values the user submitted
