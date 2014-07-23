@@ -55,7 +55,7 @@
 			</div>
 		</div>
 
-		@if ($site->general->allowAttachment)
+		@if ($site->general->allowAttachment AND $attach)
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="well well-sm well-white">
