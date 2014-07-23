@@ -47,7 +47,7 @@
 			</div>
 		</div>
 
-		@if ($site->general->allowAttachment)
+		@if ($site->general->allowAttachment AND $attach)
 			<div class="row-fluid">
 				<div class="span12">
 					<div class="well well-small well-white">
