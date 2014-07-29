@@ -1,10 +1,10 @@
-v0.8.7 (2014-xx-xx)
+v0.8.7 (2014-08-xx)
 ================================================================================
 
 - Added `3.0` in the server profiles aliases list for Redis 3.0. `2.8` is still
   the default server profile and `dev` still targets Redis 3.0.
 
-- Added `COMMAND` to the server profile for Redis 3.0.
+- Added `COMMAND` to the server profile for Redis 2.8.
 
 - Switched internally to the `CLUSTER SLOTS` command instead of `CLUSTER NODES`
   to fetch the updated slots map from redis-cluster. This change requires users
@@ -21,6 +21,11 @@ v0.8.7 (2014-xx-xx)
   share the same implementations as they follow the same rules. One difference,
   aside from the different hashing function used to calculate distribution, is
   in how empty hash tags like {} are treated by redis-cluster.
+
+- __FIX__: the patch applied to fix #180 introduced a regression affecting read/
+  write timeouts in `Predis\Connection\PhpiredisStreamConnection`. Unfortunately
+  the only possible solution requires PHP 5.4+. On PHP 5.3, read/write timeouts
+  will be ignored from now on.
 
 
 v0.8.6 (2014-07-15)

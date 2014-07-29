@@ -31,18 +31,14 @@ class ClassLoader
     }
     public static function addDirectories($directories)
     {
-        static::$directories = array_merge(static::$directories, (array) $directories);
-        static::$directories = array_unique(static::$directories);
+        static::$directories = array_unique(array_merge(static::$directories, (array) $directories));
     }
     public static function removeDirectories($directories = null)
     {
         if (is_null($directories)) {
             static::$directories = array();
         } else {
-            $directories = (array) $directories;
-            static::$directories = array_filter(static::$directories, function ($directory) use($directories) {
-                return !in_array($directory, $directories);
-            });
+            static::$directories = array_diff(static::$directories, (array) $directories);
         }
     }
     public static function getDirectories()
@@ -428,7 +424,7 @@ use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Application extends Container implements HttpKernelInterface, TerminableInterface, ResponsePreparerInterface
 {
-    const VERSION = '4.2.6';
+    const VERSION = '4.2.7';
     protected $booted = false;
     protected $bootingCallbacks = array();
     protected $bootedCallbacks = array();
@@ -1004,7 +1000,7 @@ class Request extends SymfonyRequest
     }
     public function all()
     {
-        return array_merge_recursive($this->input(), $this->files->all());
+        return array_replace_recursive($this->input(), $this->files->all());
     }
     public function input($key = null, $default = null)
     {
@@ -3263,6 +3259,166 @@ trait MacroableTrait
     public function __call($method, $parameters)
     {
         return static::__callStatic($method, $parameters);
+    }
+}
+namespace Illuminate\Support;
+
+use Closure;
+use Illuminate\Support\Traits\MacroableTrait;
+class Arr
+{
+    use MacroableTrait;
+    public static function add($array, $key, $value)
+    {
+        if (is_null(static::get($array, $key))) {
+            static::set($array, $key, $value);
+        }
+        return $array;
+    }
+    public static function build($array, Closure $callback)
+    {
+        $results = array();
+        foreach ($array as $key => $value) {
+            list($innerKey, $innerValue) = call_user_func($callback, $key, $value);
+            $results[$innerKey] = $innerValue;
+        }
+        return $results;
+    }
+    public static function divide($array)
+    {
+        return array(array_keys($array), array_values($array));
+    }
+    public static function dot($array, $prepend = '')
+    {
+        $results = array();
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                $results = array_merge($results, static::dot($value, $prepend . $key . '.'));
+            } else {
+                $results[$prepend . $key] = $value;
+            }
+        }
+        return $results;
+    }
+    public static function except($array, $keys)
+    {
+        return array_diff_key($array, array_flip((array) $keys));
+    }
+    public static function fetch($array, $key)
+    {
+        foreach (explode('.', $key) as $segment) {
+            $results = array();
+            foreach ($array as $value) {
+                $value = (array) $value;
+                $results[] = $value[$segment];
+            }
+            $array = array_values($results);
+        }
+        return array_values($results);
+    }
+    public static function first($array, $callback, $default = null)
+    {
+        foreach ($array as $key => $value) {
+            if (call_user_func($callback, $key, $value)) {
+                return $value;
+            }
+        }
+        return value($default);
+    }
+    public static function last($array, $callback, $default = null)
+    {
+        return static::first(array_reverse($array), $callback, $default);
+    }
+    public static function flatten($array)
+    {
+        $return = array();
+        array_walk_recursive($array, function ($x) use(&$return) {
+            $return[] = $x;
+        });
+        return $return;
+    }
+    public static function forget(&$array, $keys)
+    {
+        foreach ((array) $keys as $key) {
+            $parts = explode('.', $key);
+            while (count($parts) > 1) {
+                $part = array_shift($parts);
+                if (isset($array[$part]) && is_array($array[$part])) {
+                    $array =& $array[$part];
+                }
+            }
+            unset($array[array_shift($parts)]);
+        }
+    }
+    public static function get($array, $key, $default = null)
+    {
+        if (is_null($key)) {
+            return $array;
+        }
+        if (isset($array[$key])) {
+            return $array[$key];
+        }
+        foreach (explode('.', $key) as $segment) {
+            if (!is_array($array) || !array_key_exists($segment, $array)) {
+                return value($default);
+            }
+            $array = $array[$segment];
+        }
+        return $array;
+    }
+    public static function only($array, $keys)
+    {
+        return array_intersect_key($array, array_flip((array) $keys));
+    }
+    public static function pluck($array, $value, $key = null)
+    {
+        $results = array();
+        foreach ($array as $item) {
+            $itemValue = is_object($item) ? $item->{$value} : $item[$value];
+            if (is_null($key)) {
+                $results[] = $itemValue;
+            } else {
+                $itemKey = is_object($item) ? $item->{$key} : $item[$key];
+                $results[$itemKey] = $itemValue;
+            }
+        }
+        return $results;
+    }
+    public static function pull(&$array, $key, $default = null)
+    {
+        $value = static::get($array, $key, $default);
+        static::forget($array, $key);
+        return $value;
+    }
+    public static function set(&$array, $key, $value)
+    {
+        if (is_null($key)) {
+            return $array = $value;
+        }
+        $keys = explode('.', $key);
+        while (count($keys) > 1) {
+            $key = array_shift($keys);
+            if (!isset($array[$key]) || !is_array($array[$key])) {
+                $array[$key] = array();
+            }
+            $array =& $array[$key];
+        }
+        $array[array_shift($keys)] = $value;
+        return $array;
+    }
+    public static function sort($array, Closure $callback)
+    {
+        return Collection::make($array)->sortBy($callback)->all();
+    }
+    public static function where($array, Closure $callback)
+    {
+        $filtered = array();
+        foreach ($array as $key => $value) {
+            if (call_user_func($callback, $key, $value)) {
+                $filtered[$key] = $value;
+            }
+        }
+        return $filtered;
     }
 }
 namespace Illuminate\Support;
@@ -8198,6 +8354,9 @@ class Encrypter
     }
     protected function validMac(array $payload)
     {
+        if (!function_exists('openssl_random_pseudo_bytes')) {
+            throw new \RuntimeException('OpenSSL extension is required.');
+        }
         $bytes = (new SecureRandom())->nextBytes(16);
         $calcMac = hash_hmac('sha256', $this->hash($payload['iv'], $payload['value']), $bytes, true);
         return StringUtils::equals(hash_hmac('sha256', $payload['mac'], $bytes, true), $calcMac);
@@ -8753,7 +8912,8 @@ class StreamHandler extends AbstractProcessingHandler
     protected $url;
     private $errorMessage;
     protected $filePermission;
-    public function __construct($stream, $level = Logger::DEBUG, $bubble = true, $filePermission = null)
+    protected $useLocking;
+    public function __construct($stream, $level = Logger::DEBUG, $bubble = true, $filePermission = null, $useLocking = false)
     {
         parent::__construct($level, $bubble);
         if (is_resource($stream)) {
@@ -8762,6 +8922,7 @@ class StreamHandler extends AbstractProcessingHandler
             $this->url = $stream;
         }
         $this->filePermission = $filePermission;
+        $this->useLocking = $useLocking;
     }
     public function close()
     {
@@ -8788,7 +8949,13 @@ class StreamHandler extends AbstractProcessingHandler
                 throw new \UnexpectedValueException(sprintf('The stream or file "%s" could not be opened: ' . $this->errorMessage, $this->url));
             }
         }
+        if ($this->useLocking) {
+            flock($this->stream, LOCK_EX);
+        }
         fwrite($this->stream, (string) $record['formatted']);
+        if ($this->useLocking) {
+            flock($this->stream, LOCK_UN);
+        }
     }
     private function customErrorHandler($code, $msg)
     {
@@ -8806,14 +8973,14 @@ class RotatingFileHandler extends StreamHandler
     protected $nextRotation;
     protected $filenameFormat;
     protected $dateFormat;
-    public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = true, $filePermission = null)
+    public function __construct($filename, $maxFiles = 0, $level = Logger::DEBUG, $bubble = true, $filePermission = null, $useLocking = false)
     {
         $this->filename = $filename;
         $this->maxFiles = (int) $maxFiles;
         $this->nextRotation = new \DateTime('tomorrow');
         $this->filenameFormat = '{filename}-{date}';
         $this->dateFormat = 'Y-m-d';
-        parent::__construct($this->getTimedFilename(), $level, $bubble, $filePermission);
+        parent::__construct($this->getTimedFilename(), $level, $bubble, $filePermission, $useLocking);
     }
     public function close()
     {
