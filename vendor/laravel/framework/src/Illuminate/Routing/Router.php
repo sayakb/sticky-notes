@@ -229,7 +229,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 */
 	public function match($methods, $uri, $action)
 	{
-		return $this->addRoute($methods, $uri, $action);
+		return $this->addRoute(array_map('strtoupper', (array) $methods), $uri, $action);
 	}
 
 	/**
@@ -524,7 +524,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addResourceIndex($name, $base, $controller, $options)
 	{
@@ -542,7 +542,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addResourceCreate($name, $base, $controller, $options)
 	{
@@ -560,7 +560,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addResourceStore($name, $base, $controller, $options)
 	{
@@ -578,7 +578,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addResourceShow($name, $base, $controller, $options)
 	{
@@ -596,7 +596,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addResourceEdit($name, $base, $controller, $options)
 	{
@@ -630,7 +630,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addPutResourceUpdate($name, $base, $controller, $options)
 	{
@@ -663,7 +663,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $base
 	 * @param  string  $controller
 	 * @param  array   $options
-	 * @return Route
+	 * @return \Illuminate\Routing\Route
 	 */
 	protected function addResourceDestroy($name, $base, $controller, $options)
 	{
@@ -1164,6 +1164,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  string  $pattern
 	 * @param  string  $name
 	 * @param  array|null  $methods
+	 * @return void
 	 */
 	public function when($pattern, $name, $methods = null)
 	{
@@ -1734,7 +1735,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	 * @param  \Symfony\Component\HttpFoundation\Request  $request
 	 * @param  int   $type
 	 * @param  bool  $catch
-	 * @return \Symfony\Component\HttpFoundation\Response
+	 * @return \Illuminate\Http\Response
 	 */
 	public function handle(SymfonyRequest $request, $type = HttpKernelInterface::MASTER_REQUEST, $catch = true)
 	{

@@ -238,12 +238,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "bd683e899a698fdc7c9ffe93fbb119f951b5efa1"
+                "reference": "60ff646d50fef973c8f9a49f047334e551ca8a94"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/bd683e899a698fdc7c9ffe93fbb119f951b5efa1",
-                "reference": "bd683e899a698fdc7c9ffe93fbb119f951b5efa1",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/60ff646d50fef973c8f9a49f047334e551ca8a94",
+                "reference": "60ff646d50fef973c8f9a49f047334e551ca8a94",
                 "shasum": ""
             },
             "require": {
@@ -345,7 +345,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2014-07-27 18:08:59"
+            "time": "2014-08-04 01:09:30"
         },
         {
             "name": "monolog/monolog",
@@ -353,12 +353,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "997222d25ec7eb53b7e0d864cee424c01fe27c32"
+                "reference": "12545cda2f7a0bd82a110f742ef455fe735e60cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/997222d25ec7eb53b7e0d864cee424c01fe27c32",
-                "reference": "997222d25ec7eb53b7e0d864cee424c01fe27c32",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/12545cda2f7a0bd82a110f742ef455fe735e60cf",
+                "reference": "12545cda2f7a0bd82a110f742ef455fe735e60cf",
                 "shasum": ""
             },
             "require": {
@@ -417,7 +417,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2014-07-28 20:11:00"
+            "time": "2014-07-31 22:12:22"
         },
         {
             "name": "nesbot/carbon",
@@ -567,12 +567,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "11c4a62af68bdc681c52dd77acc0558907078881"
+                "reference": "833a5950472d8df917837bd66ffd70da06b6040d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/11c4a62af68bdc681c52dd77acc0558907078881",
-                "reference": "11c4a62af68bdc681c52dd77acc0558907078881",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/833a5950472d8df917837bd66ffd70da06b6040d",
+                "reference": "833a5950472d8df917837bd66ffd70da06b6040d",
                 "shasum": ""
             },
             "require": {
@@ -657,7 +657,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2014-07-26 15:20:06"
+            "time": "2014-08-01 16:09:14"
         },
         {
             "name": "predis/predis",
@@ -665,12 +665,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nrk/predis.git",
-                "reference": "647cd4c502bb04748e00f9f5fe592809cdc09e85"
+                "reference": "4123fcd85d61354c6c9900db76c9597dbd129bf6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nrk/predis/zipball/647cd4c502bb04748e00f9f5fe592809cdc09e85",
-                "reference": "647cd4c502bb04748e00f9f5fe592809cdc09e85",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/4123fcd85d61354c6c9900db76c9597dbd129bf6",
+                "reference": "4123fcd85d61354c6c9900db76c9597dbd129bf6",
                 "shasum": ""
             },
             "require": {
@@ -707,7 +707,7 @@
                 "predis",
                 "redis"
             ],
-            "time": "2014-07-28 18:58:26"
+            "time": "2014-08-01 09:43:10"
         },
         {
             "name": "psr/log",

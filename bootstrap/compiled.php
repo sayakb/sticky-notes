@@ -3447,7 +3447,7 @@ class Str
     public static function endsWith($haystack, $needles)
     {
         foreach ((array) $needles as $needle) {
-            if ($needle == substr($haystack, -strlen($needle))) {
+            if ((string) $needle === substr($haystack, -strlen($needle))) {
                 return true;
             }
         }
@@ -4697,7 +4697,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface
     }
     public function match($methods, $uri, $action)
     {
-        return $this->addRoute($methods, $uri, $action);
+        return $this->addRoute(array_map('strtoupper', (array) $methods), $uri, $action);
     }
     public function controllers(array $controllers)
     {
@@ -5651,8 +5651,8 @@ class RouteCollection implements Countable, IteratorAggregate
     }
     protected function addToCollections($route)
     {
+        $domainAndUri = $route->domain() . $route->getUri();
         foreach ($route->methods() as $method) {
-            $domainAndUri = $route->domain() . $route->getUri();
             $this->routes[$method][$domainAndUri] = $route;
         }
         $this->allRoutes[$method . $domainAndUri] = $route;
@@ -7471,16 +7471,25 @@ class DatabaseManager implements ConnectionResolverInterface
         }
         return $this->connections[$name];
     }
-    public function reconnect($name = null)
-    {
-        $name = $name ?: $this->getDefaultConnection();
-        $this->disconnect($name);
-        return $this->connection($name);
-    }
     public function disconnect($name = null)
     {
-        $name = $name ?: $this->getDefaultConnection();
-        unset($this->connections[$name]);
+        if (isset($this->connections[$name = $name ?: $this->getDefaultConnection()])) {
+            $this->connections[$name]->disconnect();
+        }
+    }
+    public function reconnect($name = null)
+    {
+        $this->disconnect($name = $name ?: $this->getDefaultConnection());
+        if (!isset($this->connections[$name])) {
+            return $this->connection($name);
+        } else {
+            return $this->refreshPdoConnections($name);
+        }
+    }
+    protected function refreshPdoConnections($name)
+    {
+        $fresh = $this->makeConnection($name);
+        return $this->connections[$name]->setPdo($fresh->getPdo())->setReadPdo($fresh->getReadPdo());
     }
     protected function makeConnection($name)
     {
@@ -7506,6 +7515,9 @@ class DatabaseManager implements ConnectionResolverInterface
         });
         $connection->setPaginator(function () use($app) {
             return $app['paginator'];
+        });
+        $connection->setReconnector(function ($connection) {
+            $this->reconnect($connection->getName());
         });
         return $connection;
     }

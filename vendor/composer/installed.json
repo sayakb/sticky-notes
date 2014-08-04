@@ -298,12 +298,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/phpseclib/phpseclib.git",
-            "reference": "11c4a62af68bdc681c52dd77acc0558907078881"
+            "reference": "833a5950472d8df917837bd66ffd70da06b6040d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/11c4a62af68bdc681c52dd77acc0558907078881",
-            "reference": "11c4a62af68bdc681c52dd77acc0558907078881",
+            "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/833a5950472d8df917837bd66ffd70da06b6040d",
+            "reference": "833a5950472d8df917837bd66ffd70da06b6040d",
             "shasum": ""
         },
         "require": {
@@ -320,7 +320,7 @@
             "ext-mcrypt": "Install the Mcrypt extension in order to speed up a wide variety of cryptographic operations.",
             "pear-pear/PHP_Compat": "Install PHP_Compat to get phpseclib working on PHP < 4.3.3."
         },
-        "time": "2014-07-26 15:20:06",
+        "time": "2014-08-01 16:09:14",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1097,12 +1097,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/Seldaek/monolog.git",
-            "reference": "997222d25ec7eb53b7e0d864cee424c01fe27c32"
+            "reference": "12545cda2f7a0bd82a110f742ef455fe735e60cf"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/997222d25ec7eb53b7e0d864cee424c01fe27c32",
-            "reference": "997222d25ec7eb53b7e0d864cee424c01fe27c32",
+            "url": "https://api.github.com/repos/Seldaek/monolog/zipball/12545cda2f7a0bd82a110f742ef455fe735e60cf",
+            "reference": "12545cda2f7a0bd82a110f742ef455fe735e60cf",
             "shasum": ""
         },
         "require": {
@@ -1132,7 +1132,7 @@
             "ruflin/elastica": "Allow sending log messages to an Elastic Search server",
             "videlalvaro/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib"
         },
-        "time": "2014-07-28 20:11:00",
+        "time": "2014-07-31 22:12:22",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1620,18 +1620,75 @@
         "homepage": "http://symfony.com"
     },
     {
+        "name": "symfony/console",
+        "version": "2.5.x-dev",
+        "version_normalized": "2.5.9999999.9999999-dev",
+        "target-dir": "Symfony/Component/Console",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/Console.git",
+            "reference": "fae03eba0b01d2a45f35080de50096ebb1901475"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/Console/zipball/fae03eba0b01d2a45f35080de50096ebb1901475",
+            "reference": "fae03eba0b01d2a45f35080de50096ebb1901475",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "require-dev": {
+            "psr/log": "~1.0",
+            "symfony/event-dispatcher": "~2.1"
+        },
+        "suggest": {
+            "psr/log": "For using the console logger",
+            "symfony/event-dispatcher": ""
+        },
+        "time": "2014-07-29 11:56:02",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "2.5-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Symfony\\Component\\Console\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Symfony Community",
+                "homepage": "http://symfony.com/contributors"
+            },
+            {
+                "name": "Fabien Potencier",
+                "email": "fabien@symfony.com"
+            }
+        ],
+        "description": "Symfony Console Component",
+        "homepage": "http://symfony.com"
+    },
+    {
         "name": "predis/predis",
         "version": "0.8.x-dev",
         "version_normalized": "0.8.9999999.9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/nrk/predis.git",
-            "reference": "647cd4c502bb04748e00f9f5fe592809cdc09e85"
+            "reference": "4123fcd85d61354c6c9900db76c9597dbd129bf6"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/nrk/predis/zipball/647cd4c502bb04748e00f9f5fe592809cdc09e85",
-            "reference": "647cd4c502bb04748e00f9f5fe592809cdc09e85",
+            "url": "https://api.github.com/repos/nrk/predis/zipball/4123fcd85d61354c6c9900db76c9597dbd129bf6",
+            "reference": "4123fcd85d61354c6c9900db76c9597dbd129bf6",
             "shasum": ""
         },
         "require": {
@@ -1644,7 +1701,7 @@
             "ext-curl": "Allows access to Webdis when paired with phpiredis",
             "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
         },
-        "time": "2014-07-28 18:58:26",
+        "time": "2014-08-01 09:43:10",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1678,12 +1735,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/laravel/framework.git",
-            "reference": "bd683e899a698fdc7c9ffe93fbb119f951b5efa1"
+            "reference": "60ff646d50fef973c8f9a49f047334e551ca8a94"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/laravel/framework/zipball/bd683e899a698fdc7c9ffe93fbb119f951b5efa1",
-            "reference": "bd683e899a698fdc7c9ffe93fbb119f951b5efa1",
+            "url": "https://api.github.com/repos/laravel/framework/zipball/60ff646d50fef973c8f9a49f047334e551ca8a94",
+            "reference": "60ff646d50fef973c8f9a49f047334e551ca8a94",
             "shasum": ""
         },
         "require": {
@@ -1753,7 +1810,7 @@
         "suggest": {
             "doctrine/dbal": "Allow renaming columns and dropping SQLite columns."
         },
-        "time": "2014-07-27 18:08:59",
+        "time": "2014-08-04 01:09:30",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1787,62 +1844,5 @@
             "framework",
             "laravel"
         ]
-    },
-    {
-        "name": "symfony/console",
-        "version": "2.5.x-dev",
-        "version_normalized": "2.5.9999999.9999999-dev",
-        "target-dir": "Symfony/Component/Console",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/Console.git",
-            "reference": "fae03eba0b01d2a45f35080de50096ebb1901475"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/Console/zipball/fae03eba0b01d2a45f35080de50096ebb1901475",
-            "reference": "fae03eba0b01d2a45f35080de50096ebb1901475",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "psr/log": "~1.0",
-            "symfony/event-dispatcher": "~2.1"
-        },
-        "suggest": {
-            "psr/log": "For using the console logger",
-            "symfony/event-dispatcher": ""
-        },
-        "time": "2014-07-29 11:56:02",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "2.5-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Symfony\\Component\\Console\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Symfony Community",
-                "homepage": "http://symfony.com/contributors"
-            },
-            {
-                "name": "Fabien Potencier",
-                "email": "fabien@symfony.com"
-            }
-        ],
-        "description": "Symfony Console Component",
-        "homepage": "http://symfony.com"
     }
 ]
