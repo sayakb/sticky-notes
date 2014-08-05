@@ -260,7 +260,7 @@ class ApiController extends BaseController {
 		// All done! Now we need to output the urlkey and hash
 		$data = array(
 			'urlkey'  => $paste->urlkey,
-			'hash'    => ($paste->password OR $paste->private) ? $paste->hash : '',
+			'hash'    => $paste->hash,
 		);
 
 		// Return the output
