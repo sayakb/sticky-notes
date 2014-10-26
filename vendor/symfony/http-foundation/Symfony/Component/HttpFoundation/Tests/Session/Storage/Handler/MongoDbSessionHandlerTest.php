@@ -37,11 +37,11 @@ class MongoDbSessionHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->options = array(
-            'id_field'   => '_id',
+            'id_field' => '_id',
             'data_field' => 'data',
             'time_field' => 'time',
             'database' => 'sf2-test',
-            'collection' => 'session-test'
+            'collection' => 'session-test',
         );
 
         $this->storage = new MongoDbSessionHandler($this->mongo, $this->options);
@@ -172,7 +172,6 @@ class MongoDbSessionHandlerTest extends \PHPUnit_Framework_TestCase
 
     private function createMongoCollectionMock()
     {
-
         $mongoClient = $this->getMockBuilder('MongoClient')
             ->getMock();
         $mongoDb = $this->getMockBuilder('MongoDB')

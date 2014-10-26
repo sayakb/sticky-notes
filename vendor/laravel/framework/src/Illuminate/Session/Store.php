@@ -144,7 +144,23 @@ class Store implements SessionInterface {
 	 */
 	public function setId($id)
 	{
-		$this->id = $id ?: $this->generateSessionId();
+		if ( ! $this->isValidId($id))
+		{
+			$id = $this->generateSessionId();
+		}
+
+		$this->id = $id;
+	}
+
+	/**
+	 * Determine if this is a valid session ID.
+	 *
+	 * @param  string  $id
+	 * @return bool
+	 */
+	public function isValidId($id)
+	{
+		return is_string($id) && preg_match('/^[a-f0-9]{40}$/', $id);
 	}
 
 	/**
@@ -304,8 +320,6 @@ class Store implements SessionInterface {
 		// Input that is flashed to the session can be easily retrieved by the
 		// developer, making repopulating old forms and the like much more
 		// convenient, since the request's previous input is available.
-		if (is_null($key)) return $input;
-
 		return array_get($input, $key, $default);
 	}
 
@@ -392,7 +406,7 @@ class Store implements SessionInterface {
 	/**
 	 * Reflash a subset of the current flash data.
 	 *
-	 * @param  array|dynamic  $keys
+	 * @param  array|mixed  $keys
 	 * @return void
 	 */
 	public function keep($keys = null)

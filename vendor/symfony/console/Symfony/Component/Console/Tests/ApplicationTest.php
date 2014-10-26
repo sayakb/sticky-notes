@@ -270,7 +270,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         return array(
             array('f', 'Command "f" is not defined.'),
             array('a', 'Command "a" is ambiguous (afoobar, afoobar1 and 1 more).'),
-            array('foo:b', 'Command "foo:b" is ambiguous (foo:bar, foo:bar1 and 1 more).')
+            array('foo:b', 'Command "foo:b" is ambiguous (foo:bar, foo:bar1 and 1 more).'),
         );
     }
 
@@ -317,7 +317,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('foo3:baR'),
-            array('foO3:bar')
+            array('foO3:bar'),
         );
     }
 
@@ -443,6 +443,18 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('foo:sublong', 'bar:sub')));
 
         $this->assertEquals('foo:sublong', $application->findNamespace('f:sub'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Command "foo::bar" is not defined.
+     */
+    public function testFindWithDoubleColonInNameThrowsException()
+    {
+        $application = new Application();
+        $application->add(new \FooCommand());
+        $application->add(new \Foo4Command());
+        $application->find('foo::bar');
     }
 
     public function testSetCatchExceptions()

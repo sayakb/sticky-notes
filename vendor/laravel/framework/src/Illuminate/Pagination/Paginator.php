@@ -239,7 +239,9 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 	{
 		if (is_null($fragment)) return $this->fragment;
 
-		$this->fragment = $fragment; return $this;
+		$this->fragment = $fragment;
+
+		return $this;
 	}
 
 	/**
@@ -321,10 +323,8 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 		{
 			return $this->currentPage;
 		}
-		else
-		{
-			return min($this->currentPage, (int) ceil($total / $this->perPage));
-		}
+
+		return min($this->currentPage, (int) ceil($total / $this->perPage));
 	}
 
 	/**
@@ -432,7 +432,7 @@ class Paginator implements ArrayableInterface, ArrayAccess, Countable, IteratorA
 	/**
 	 * Get an iterator for the items.
 	 *
-	 * @return ArrayIterator
+	 * @return \ArrayIterator
 	 */
 	public function getIterator()
 	{

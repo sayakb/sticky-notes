@@ -41,7 +41,7 @@ class WebProcessor
     public function __construct($serverData = null, array $extraFields = null)
     {
         if (null === $serverData) {
-            $this->serverData =& $_SERVER;
+            $this->serverData = &$_SERVER;
         } elseif (is_array($serverData) || $serverData instanceof \ArrayAccess) {
             $this->serverData = $serverData;
         } else {
@@ -72,6 +72,18 @@ class WebProcessor
         $record['extra'] = $this->appendExtraFields($record['extra']);
 
         return $record;
+    }
+
+    /**
+     * @param  string $extraName
+     * @param  string $serverName
+     * @return $this
+     */
+    public function addExtraField($extraName, $serverName)
+    {
+        $this->extraFields[$extraName] = $serverName;
+
+        return $this;
     }
 
     /**

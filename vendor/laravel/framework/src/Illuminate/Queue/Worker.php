@@ -123,6 +123,11 @@ class Worker {
 	 */
 	protected function daemonShouldRun()
 	{
+		if ($this->manager->isDownForMaintenance())
+		{
+			return false;
+		}
+
 		return $this->events->until('illuminate.queue.looping') !== false;
 	}
 
@@ -151,12 +156,10 @@ class Worker {
 				$this->manager->getName($connectionName), $job, $maxTries, $delay
 			);
 		}
-		else
-		{
-			$this->sleep($sleep);
 
-			return ['job' => null, 'failed' => false];
-		}
+		$this->sleep($sleep);
+
+		return ['job' => null, 'failed' => false];
 	}
 
 	/**

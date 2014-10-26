@@ -166,7 +166,7 @@ class Guard {
 	{
 		if ($this->loggedOut) return;
 
-		return $this->session->get($this->getName()) ?: $this->getRecallerId();
+		return $this->session->get($this->getName(), $this->getRecallerId());
 	}
 
 	/**
@@ -568,7 +568,9 @@ class Guard {
 	 */
 	protected function createRememberTokenIfDoesntExist(UserInterface $user)
 	{
-		if (is_null($user->getRememberToken()))
+		$rememberToken = $user->getRememberToken();
+
+		if (empty($rememberToken))
 		{
 			$this->refreshRememberToken($user);
 		}
@@ -616,6 +618,7 @@ class Guard {
 	 * Set the event dispatcher instance.
 	 *
 	 * @param  \Illuminate\Events\Dispatcher
+	 * @return void
 	 */
 	public function setDispatcher(Dispatcher $events)
 	{

@@ -298,7 +298,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 		// If a given controller method has been named, we will assign the name to the
 		// controller action array, which provides for a short-cut to method naming
 		// so you don't have to define an individual route for these controllers.
-		$action['as'] = array_pull($names, $method);
+		$action['as'] = array_get($names, $method);
 
 		$this->{$route['verb']}($route['uri'], $action);
 	}
@@ -1152,10 +1152,8 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 		{
 			return $callback.'@filter';
 		}
-		else
-		{
-			return $callback;
-		}
+
+		return $callback;
 	}
 
 	/**
@@ -1592,7 +1590,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Alias for the "currentRouteNamed" method.
 	 *
-	 * @param  dynamic  string
+	 * @param  mixed  string
 	 * @return bool
 	 */
 	public function is()
@@ -1636,7 +1634,7 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 	/**
 	 * Alias for the "currentRouteUses" method.
 	 *
-	 * @param  dynamic  string
+	 * @param  mixed  string
 	 * @return bool
 	 */
 	public function uses()

@@ -40,20 +40,27 @@ class SlackHandler extends SocketHandler
     private $username;
 
     /**
+     * Emoji icon name
+     * @var string
+     */
+    private $iconEmoji;
+
+    /**
      * Whether the message should be added to Slack as attachment (plain text otherwise)
      * @var bool
      */
     private $useAttachment;
 
     /**
-     * @param string $token         Slack API token
-     * @param string $channel       Slack channel (encoded ID or name)
-     * @param string $username      Name of a bot
-     * @param bool   $useAttachment Whether the message should be added to Slack as attachment (plain text otherwise)
-     * @param int    $level         The minimum logging level at which this handler will be triggered
-     * @param bool   $bubble        Whether the messages that are handled can bubble up the stack or not
+     * @param string      $token         Slack API token
+     * @param string      $channel       Slack channel (encoded ID or name)
+     * @param string      $username      Name of a bot
+     * @param bool        $useAttachment Whether the message should be added to Slack as attachment (plain text otherwise)
+     * @param string|null $iconEmoji     The emoji name to use (or null)
+     * @param int         $level         The minimum logging level at which this handler will be triggered
+     * @param bool        $bubble        Whether the messages that are handled can bubble up the stack or not
      */
-    public function __construct($token, $channel, $username = 'Monolog', $useAttachment = true, $level = Logger::CRITICAL, $bubble = true)
+    public function __construct($token, $channel, $username = 'Monolog', $useAttachment = true, $iconEmoji = null, $level = Logger::CRITICAL, $bubble = true)
     {
         if (!extension_loaded('openssl')) {
             throw new MissingExtensionException('The OpenSSL PHP extension is required to use the SlackHandler');
@@ -64,6 +71,7 @@ class SlackHandler extends SocketHandler
         $this->token = $token;
         $this->channel = $channel;
         $this->username = $username;
+        $this->iconEmoji = trim($iconEmoji, ':');
         $this->useAttachment = $useAttachment;
     }
 
@@ -121,6 +129,10 @@ class SlackHandler extends SocketHandler
             $dataArray['text'] = $record['message'];
         }
 
+        if ($this->iconEmoji) {
+            $dataArray['icon_emoji'] = ":{$this->iconEmoji}:";
+        }
+
         return http_build_query($dataArray);
     }
 
@@ -146,7 +158,7 @@ class SlackHandler extends SocketHandler
      *
      * @param array $record
      */
-    public function write(array $record)
+    protected function write(array $record)
     {
         parent::write($record);
         $this->closeSocket();

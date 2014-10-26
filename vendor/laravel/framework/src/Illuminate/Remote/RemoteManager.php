@@ -26,7 +26,7 @@ class RemoteManager {
 	/**
 	 * Get a remote connection instance.
 	 *
-	 * @param  string|array|dynamic  $name
+	 * @param  string|array|mixed  $name
 	 * @return \Illuminate\Remote\ConnectionInterface
 	 */
 	public function into($name)
@@ -35,10 +35,8 @@ class RemoteManager {
 		{
 			return $this->connection($name);
 		}
-		else
-		{
-			return $this->connection(func_get_args());
-		}
+
+		return $this->connection(func_get_args());
 	}
 
 	/**

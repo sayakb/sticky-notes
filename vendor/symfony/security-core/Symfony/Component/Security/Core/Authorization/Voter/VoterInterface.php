@@ -22,7 +22,7 @@ interface VoterInterface
 {
     const ACCESS_GRANTED = 1;
     const ACCESS_ABSTAIN = 0;
-    const ACCESS_DENIED  = -1;
+    const ACCESS_DENIED = -1;
 
     /**
      * Checks if the voter supports the given attribute.
@@ -49,7 +49,7 @@ interface VoterInterface
      * ACCESS_GRANTED, ACCESS_DENIED, or ACCESS_ABSTAIN.
      *
      * @param TokenInterface $token      A TokenInterface instance
-     * @param object         $object     The object to secure
+     * @param object|null    $object     The object to secure
      * @param array          $attributes An array of attributes associated with the method being invoked
      *
      * @return int     either ACCESS_GRANTED, ACCESS_ABSTAIN, or ACCESS_DENIED

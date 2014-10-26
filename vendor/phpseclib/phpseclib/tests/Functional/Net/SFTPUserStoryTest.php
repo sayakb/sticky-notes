@@ -319,6 +319,26 @@ class Functional_Net_SFTPUserStoryTest extends PhpseclibFunctionalTestCase
     /**
     * @depends testSortOrder
     */
+    public function testResourceXfer($sftp)
+    {
+        $fp = fopen('res.txt', 'w+');
+        $sftp->get('file1.txt', $fp);
+        rewind($fp);
+        $sftp->put('file4.txt', $fp);
+        fclose($fp);
+
+        $this->assertSame(
+            self::$exampleData,
+            $sftp->get('file4.txt'),
+            'Failed asserting that a file downloaded into a resource and reuploaded from a resource has the correct data'
+        );
+
+        return $sftp;
+    }
+
+    /**
+    * @depends testResourceXfer
+    */
     public function testSymlink($sftp)
     {
         $this->assertTrue(
@@ -410,6 +430,20 @@ class Functional_Net_SFTPUserStoryTest extends PhpseclibFunctionalTestCase
 
     /**
     * @depends testFileExistsIsFileIsDirDir
+    */
+    public function testTruncateLargeFile($sftp)
+    {
+        $filesize = (4 * 1024 + 16) * 1024 * 1024;
+        $filename = 'file-large-from-truncate-4112MiB.txt';
+        $this->assertTrue($sftp->touch($filename));
+        $this->assertTrue($sftp->truncate($filename, $filesize));
+        $this->assertSame($filesize, $sftp->size($filename));
+
+        return $sftp;
+    }
+
+    /**
+    * @depends testTruncateLargeFile
     */
     public function testRmDirScratch($sftp)
     {

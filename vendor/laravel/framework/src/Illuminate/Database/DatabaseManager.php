@@ -1,5 +1,6 @@
 <?php namespace Illuminate\Database;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Connectors\ConnectionFactory;
 
 class DatabaseManager implements ConnectionResolverInterface {
@@ -53,7 +54,7 @@ class DatabaseManager implements ConnectionResolverInterface {
 	 */
 	public function connection($name = null)
 	{
-		$name = $name ?: $this->getDefaultConnection();
+		list($name, $type) = $this->parseConnectionName($name);
 
 		// If we haven't created this connection, we'll create it based on the config
 		// provided in the application. Once we've created the connections we will
@@ -62,10 +63,39 @@ class DatabaseManager implements ConnectionResolverInterface {
 		{
 			$connection = $this->makeConnection($name);
 
+			$this->setPdoForType($connection, $type);
+
 			$this->connections[$name] = $this->prepare($connection);
 		}
 
 		return $this->connections[$name];
+	}
+
+	/**
+	 * Parse the connection into an array of the name and read / write type.
+	 *
+	 * @param  string  $name
+	 * @return array
+	 */
+	protected function parseConnectionName($name)
+	{
+		$name = $name ?: $this->getDefaultConnection();
+
+		return Str::endsWith($name, ['::read', '::write'])
+                            ? explode('::', $name, 2) : [$name, null];
+	}
+
+	/**
+	 * Disconnect from the given database and remove from local cache.
+	 *
+	 * @param  string  $name
+	 * @return void
+	 */
+	public function purge($name = null)
+	{
+		$this->disconnect($name);
+
+		unset($this->connections[$name]);
 	}
 
 	/**
@@ -96,10 +126,8 @@ class DatabaseManager implements ConnectionResolverInterface {
 		{
 			return $this->connection($name);
 		}
-		else
-		{
-			return $this->refreshPdoConnections($name);
-		}
+
+		return $this->refreshPdoConnections($name);
 	}
 
 	/**
@@ -188,6 +216,27 @@ class DatabaseManager implements ConnectionResolverInterface {
 		{
 			$this->reconnect($connection->getName());
 		});
+
+		return $connection;
+	}
+
+	/**
+	 * Prepare the read write mode for database connection instance.
+	 *
+	 * @param  \Illuminate\Database\Connection  $connection
+	 * @param  string  $type
+	 * @return \Illuminate\Database\Connection
+	 */
+	protected function setPdoForType(Connection $connection, $type = null)
+	{
+		if ($type == 'read')
+		{
+			$connection->setPdo($connection->getReadPdo());
+		}
+		elseif ($type == 'write')
+		{
+			$connection->setReadPdo($connection->getPdo());
+		}
 
 		return $connection;
 	}

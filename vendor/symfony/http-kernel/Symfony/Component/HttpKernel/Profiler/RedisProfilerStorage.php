@@ -88,11 +88,11 @@ class RedisProfilerStorage implements ProfilerStorageInterface
             }
 
             $result[] = array(
-                'token'  => $itemToken,
-                'ip'     => $itemIp,
+                'token' => $itemToken,
+                'ip' => $itemIp,
                 'method' => $itemMethod,
-                'url'    => $itemUrl,
-                'time'   => $itemTime,
+                'url' => $itemUrl,
+                'time' => $itemTime,
                 'parent' => $itemParent,
             );
             --$limit;
@@ -158,20 +158,19 @@ class RedisProfilerStorage implements ProfilerStorageInterface
     public function write(Profile $profile)
     {
         $data = array(
-            'token'    => $profile->getToken(),
-            'parent'   => $profile->getParentToken(),
+            'token' => $profile->getToken(),
+            'parent' => $profile->getParentToken(),
             'children' => array_map(function ($p) { return $p->getToken(); }, $profile->getChildren()),
-            'data'     => $profile->getCollectors(),
-            'ip'       => $profile->getIp(),
-            'method'   => $profile->getMethod(),
-            'url'      => $profile->getUrl(),
-            'time'     => $profile->getTime(),
+            'data' => $profile->getCollectors(),
+            'ip' => $profile->getIp(),
+            'method' => $profile->getMethod(),
+            'url' => $profile->getUrl(),
+            'time' => $profile->getTime(),
         );
 
         $profileIndexed = false !== $this->getValue($this->getItemName($profile->getToken()));
 
         if ($this->setValue($this->getItemName($profile->getToken()), $data, $this->lifetime, self::REDIS_SERIALIZER_PHP)) {
-
             if (!$profileIndexed) {
                 // Add to index
                 $indexName = $this->getIndexName();

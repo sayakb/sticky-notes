@@ -67,7 +67,7 @@ class MorphTo extends BelongsTo {
 	/**
 	 * Build a dictionary with the models.
 	 *
-	 * @param  \Illuminate\Database\Eloquent\Models  $models
+	 * @param  \Illuminate\Database\Eloquent\Collection  $models
 	 * @return void
 	 */
 	protected function buildDictionary(Collection $models)
@@ -104,7 +104,7 @@ class MorphTo extends BelongsTo {
 	{
 		$this->parent->setAttribute($this->foreignKey, $model->getKey());
 
-		$this->parent->setAttribute($this->morphType, get_class($model));
+		$this->parent->setAttribute($this->morphType, $model->getMorphClass());
 
 		return $this->parent->setRelation($this->relation, $model);
 	}

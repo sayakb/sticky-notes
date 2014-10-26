@@ -179,7 +179,6 @@ class Swift_Message extends Swift_Mime_SimpleMessage
         parent::toByteStream($is);
 
         $this->restoreMessage();
-
     }
 
     public function __wakeup()
@@ -218,7 +217,7 @@ class Swift_Message extends Swift_Mime_SimpleMessage
      */
     protected function saveMessage()
     {
-        $this->savedMessage = array('headers'=> array());
+        $this->savedMessage = array('headers' => array());
         $this->savedMessage['body'] = $this->getBody();
         $this->savedMessage['children'] = $this->getChildren();
         if (count($this->savedMessage['children']) > 0 && $this->getBody() != '') {
@@ -268,5 +267,21 @@ class Swift_Message extends Swift_Mime_SimpleMessage
 
         $this->restoreHeaders();
         $this->savedMessage = array();
+    }
+
+    /**
+     * Clone Message Signers
+     * @see Swift_Mime_SimpleMimeEntity::__clone()
+     */
+    public function __clone()
+    {
+        parent::__clone();
+        foreach ($this->bodySigners as $key => $bodySigner) {
+            $this->bodySigners[$key] = clone($bodySigner);
+        }
+
+        foreach ($this->headerSigners as $key => $headerSigner) {
+            $this->headerSigners[$key] = clone($headerSigner);
+        }
     }
 }

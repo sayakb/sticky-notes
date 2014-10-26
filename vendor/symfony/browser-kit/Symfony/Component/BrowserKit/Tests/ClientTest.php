@@ -367,6 +367,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    public function testFollowRelativeRedirect()
+    {
+        $client = new TestClient();
+        $client->setNextResponse(new Response('', 302, array('Location' => '/redirected')));
+        $client->request('GET', 'http://www.example.com/foo/foobar');
+        $this->assertEquals('http://www.example.com/redirected', $client->getRequest()->getUri(), '->followRedirect() follows a redirect if any');
+
+        $client = new TestClient();
+        $client->setNextResponse(new Response('', 302, array('Location' => '/redirected:1234')));
+        $client->request('GET', 'http://www.example.com/foo/foobar');
+        $this->assertEquals('http://www.example.com/redirected:1234', $client->getRequest()->getUri(), '->followRedirect() follows relative urls');
+    }
+
     public function testFollowRedirectWithMaxRedirects()
     {
         $client = new TestClient();
@@ -411,7 +424,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new TestClient();
         $client->followRedirects(false);
         $client->setNextResponse(new Response('', 302, array(
-            'Location'   => 'http://www.example.com/redirected',
+            'Location' => 'http://www.example.com/redirected',
             'Set-Cookie' => 'foo=bar',
         )));
         $client->request('GET', 'http://www.example.com/');
@@ -423,16 +436,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testFollowRedirectWithHeaders()
     {
         $headers = array(
-            'HTTP_HOST'       => 'www.example.com',
+            'HTTP_HOST' => 'www.example.com',
             'HTTP_USER_AGENT' => 'Symfony2 BrowserKit',
-            'CONTENT_TYPE'    => 'application/vnd.custom+xml',
-            'HTTPS'           => false,
+            'CONTENT_TYPE' => 'application/vnd.custom+xml',
+            'HTTPS' => false,
         );
 
         $client = new TestClient();
         $client->followRedirects(false);
         $client->setNextResponse(new Response('', 302, array(
-            'Location'    => 'http://www.example.com/redirected',
+            'Location' => 'http://www.example.com/redirected',
         )));
         $client->request('GET', 'http://www.example.com/', array(), array(), array(
             'CONTENT_TYPE' => 'application/vnd.custom+xml',
@@ -450,15 +463,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testFollowRedirectWithPort()
     {
         $headers = array(
-            'HTTP_HOST'       => 'www.example.com:8080',
+            'HTTP_HOST' => 'www.example.com:8080',
             'HTTP_USER_AGENT' => 'Symfony2 BrowserKit',
-            'HTTPS'           => false
+            'HTTPS' => false,
+            'HTTP_REFERER' => 'http://www.example.com:8080/',
         );
 
         $client = new TestClient();
-        $client->followRedirects(false);
         $client->setNextResponse(new Response('', 302, array(
-            'Location'    => 'http://www.example.com:8080/redirected',
+            'Location' => 'http://www.example.com:8080/redirected',
         )));
         $client->request('GET', 'http://www.example.com:8080/');
 
@@ -584,10 +597,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Symfony2 BrowserKit', $client->getServerParameter('HTTP_USER_AGENT'));
 
         $client->request('GET', 'https://www.example.com/https/www.example.com', array(), array(), array(
-            'HTTP_HOST'       => 'testhost',
+            'HTTP_HOST' => 'testhost',
             'HTTP_USER_AGENT' => 'testua',
-            'HTTPS'           => false,
-            'NEW_SERVER_KEY'  => 'new-server-key-value'
+            'HTTPS' => false,
+            'NEW_SERVER_KEY' => 'new-server-key-value',
         ));
 
         $this->assertEquals('localhost', $client->getServerParameter('HTTP_HOST'));

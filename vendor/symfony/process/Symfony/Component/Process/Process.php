@@ -215,9 +215,16 @@ class Process
      * @param callable|null $callback
      *
      * @return self
+     *
+     * @throws RuntimeException       if PHP was compiled with --enable-sigchild and the enhanced sigchild compatibility mode is not enabled
+     * @throws ProcessFailedException if the process didn't terminate successfully
      */
     public function mustRun($callback = null)
     {
+        if ($this->isSigchildEnabled() && !$this->enhanceSigchildCompatibility) {
+            throw new RuntimeException('This PHP has been compiled with --enable-sigchild. You must use setEnhanceSigchildCompatibility() to use this method.');
+        }
+
         if (0 !== $this->run($callback)) {
             throw new ProcessFailedException($this);
         }
@@ -349,7 +356,7 @@ class Process
         do {
             $this->checkTimeout();
             $running = defined('PHP_WINDOWS_VERSION_BUILD') ? $this->isRunning() : $this->processPipes->hasOpenHandles();
-            $close = !defined('PHP_WINDOWS_VERSION_BUILD') || !$running;;
+            $close = !defined('PHP_WINDOWS_VERSION_BUILD') || !$running;
             $this->readPipes(true, $close);
         } while ($running);
 
@@ -406,6 +413,7 @@ class Process
      * @return Process
      *
      * @throws RuntimeException In case the process is already running
+     * @throws LogicException   if an idle timeout is set
      */
     public function disableOutput()
     {
@@ -902,6 +910,7 @@ class Process
      *
      * @return self The current Process instance.
      *
+     * @throws LogicException           if the output is disabled
      * @throws InvalidArgumentException if the timeout is negative
      */
     public function setIdleTimeout($timeout)
@@ -1332,6 +1341,8 @@ class Process
      * @param int|float|null     $timeout
      *
      * @return float|null
+     *
+     * @throws InvalidArgumentException if the given timeout is a negative number
      */
     private function validateTimeout($timeout)
     {

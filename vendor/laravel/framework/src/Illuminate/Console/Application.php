@@ -60,7 +60,12 @@ class Application extends \Symfony\Component\Console\Application {
 	 */
 	public function boot()
 	{
-		require $this->laravel['path'].'/start/artisan.php';
+		$path = $this->laravel['path'].'/start/artisan.php';
+
+		if (file_exists($path))
+		{
+			require $path;
+		}
 
 		// If the event dispatcher is set on the application, we will fire an event
 		// with the Artisan instance to provide each listener the opportunity to
@@ -137,7 +142,7 @@ class Application extends \Symfony\Component\Console\Application {
 	/**
 	 * Resolve an array of commands through the application.
 	 *
-	 * @param  array|dynamic  $commands
+	 * @param  array|mixed  $commands
 	 * @return void
 	 */
 	public function resolveCommands($commands)

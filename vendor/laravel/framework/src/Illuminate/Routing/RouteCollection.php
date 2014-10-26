@@ -193,10 +193,8 @@ class RouteCollection implements Countable, IteratorAggregate {
 
 			}))->bind($request);
 		}
-		else
-		{
-			$this->methodNotAllowed($others);
-		}
+
+		$this->methodNotAllowed($others);
 	}
 
 	/**
@@ -287,7 +285,7 @@ class RouteCollection implements Countable, IteratorAggregate {
 	/**
 	 * Get an iterator for the items.
 	 *
-	 * @return ArrayIterator
+	 * @return \ArrayIterator
 	 */
 	public function getIterator()
 	{

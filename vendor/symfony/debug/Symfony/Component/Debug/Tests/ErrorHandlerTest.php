@@ -206,6 +206,7 @@ class ErrorHandlerTest extends \PHPUnit_Framework_TestCase
         $m->setAccessible(true);
         $m->invoke($handler, array($exceptionHandler, 'handle'), $error);
 
+        restore_error_handler();
         $this->assertInstanceof($class, $exceptionHandler->e);
         // class names are case insensitive and PHP/HHVM do not return the same
         $this->assertSame(strtolower($translatedMessage), strtolower($exceptionHandler->e->getMessage()));

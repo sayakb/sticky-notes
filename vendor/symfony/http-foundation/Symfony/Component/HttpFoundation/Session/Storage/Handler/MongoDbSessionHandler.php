@@ -62,7 +62,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
         $this->mongo = $mongo;
 
         $this->options = array_merge(array(
-            'id_field'   => '_id',
+            'id_field' => '_id',
             'data_field' => 'data',
             'time_field' => 'time',
         ), $options);
@@ -90,7 +90,7 @@ class MongoDbSessionHandler implements \SessionHandlerInterface
     public function destroy($sessionId)
     {
         $this->getCollection()->remove(array(
-            $this->options['id_field'] => $sessionId
+            $this->options['id_field'] => $sessionId,
         ));
 
         return true;

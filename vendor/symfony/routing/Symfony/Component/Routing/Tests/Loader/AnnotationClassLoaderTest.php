@@ -74,22 +74,22 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
             array(
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
                 array('name' => 'route1'),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3')
+                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
             ),
             array(
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
                 array('name' => 'route1', 'defaults' => array('arg2' => 'foo')),
-                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3')
+                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
             ),
             array(
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
                 array('name' => 'route1', 'defaults' => array('arg2' => 'foobar')),
-                array('arg2' => 'defaultValue2', 'arg3' =>'defaultValue3')
+                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
             ),
             array(
                 'Symfony\Component\Routing\Tests\Fixtures\AnnotatedClasses\BarClass',
                 array('name' => 'route1', 'defaults' => array('arg2' => 'foo'), 'condition' => 'context.getMethod() == "GET"'),
-                array('arg2' => 'defaultValue2', 'arg3' =>'defaultValue3')
+                array('arg2' => 'defaultValue2', 'arg3' => 'defaultValue3'),
             ),
         );
     }
@@ -100,14 +100,14 @@ class AnnotationClassLoaderTest extends AbstractAnnotationLoaderTest
     public function testLoad($className, $routeDatas = array(), $methodArgs = array())
     {
         $routeDatas = array_replace(array(
-            'name'         => 'route',
-            'path'         => '/',
+            'name' => 'route',
+            'path' => '/',
             'requirements' => array(),
-            'options'      => array(),
-            'defaults'     => array(),
-            'schemes'      => array(),
-            'methods'      => array(),
-            'condition'    => null,
+            'options' => array(),
+            'defaults' => array(),
+            'schemes' => array(),
+            'methods' => array(),
+            'condition' => null,
         ), $routeDatas);
 
         $this->reader

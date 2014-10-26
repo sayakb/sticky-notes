@@ -358,7 +358,7 @@ class Factory {
 	 * @param  \Closure|string  $callback
 	 * @param  string  $prefix
 	 * @param  int|null  $priority
-	 * @return Closure
+	 * @return \Closure
 	 */
 	protected function addViewEvent($view, $callback, $prefix = 'composing: ', $priority = null)
 	{
@@ -454,12 +454,10 @@ class Factory {
 		{
 			return explode('@', $class);
 		}
-		else
-		{
-			$method = str_contains($prefix, 'composing') ? 'compose' : 'create';
 
-			return array($class, $method);
-		}
+		$method = str_contains($prefix, 'composing') ? 'compose' : 'create';
+
+		return array($class, $method);
 	}
 
 	/**
@@ -495,7 +493,10 @@ class Factory {
 	{
 		if ($content === '')
 		{
-			ob_start() && $this->sectionStack[] = $section;
+			if (ob_start())
+			{
+				$this->sectionStack[] = $section;
+			}
 		}
 		else
 		{
