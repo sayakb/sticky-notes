@@ -1,0 +1,77 @@
+<?php
+
+return array(
+
+	/*
+	|--------------------------------------------------------------------------
+	| Setup language lines
+	|--------------------------------------------------------------------------
+	|
+	| This file defines language lines used by the setup pages
+	|
+	*/
+
+	"installer"         => "Installer Sticky Notes",
+	"welcome"           => "Merci d'avoir choisi Sticky Notes. Le programme d'installation vous guidera tout au long ".
+	                       "du processus d'installation. Suivez les étapes simples pour une installation sans tracas!",
+	"develop_warn"      => "<b>Important:</b> Vous essayez de mettre en place une pré-version. Il est ".
+	                       "fortement recommandé de ne pas installer les versions de développement en serveur de ".
+	                       "production. Pour télécharger la dernière version stable à la place, <a href='%s'>cliquer ici</a>.",
+	"i_stage1_title"    => "Étape 1: Configuration de la base de données ",
+	"i_stage1_exp"      => "Ouvrez votre fichier de configuration de base de données situé à <code>app/config/database.php</code> ".
+	                       "et remplir vos détails de BDD. Sticky Notes utilise une connexion active uniquement, alors assurez-vous ".
+	                       "que vous modifiez le pilote de base de données «par défaut» en conséquence. voir <a href='http://codebright".
+	                       ".daylerees.com/database'>le guide</a> pour plus d'informations sur la configuration BDD.",
+	"i_stage2_title"    => "Étape 2: Prêt à installer",
+	"i_stage2_exp"      => "Vos paramètres de base de données semblent bonnes. Lorsque vous êtes prêt, cliquez sur le <code>Démarrer ".
+	                       "l'installation</code> bouton pour commencer le processus automatisé d'installation.",
+	"i_stage3_title"    => "Étape 3: Installation en cours",
+	"i_stage3_exp"      => "Sticky Notes est installé sur votre serveur. Cela peut prendre plusieurs minutes...",
+	"i_stage4_title"    => "Étape 4: Installation complète",
+	"i_stage4_exp"      => "Sticky Notes a été installation avec succès! Se il vous plaît prendre note les ".
+	                       "informations d'identification pour se connecter au panneau d'administration.",
+	"u_stage1_title"    => "Stage 1: Sélectionnez la version de mise à jour",
+	"u_stage1_exp"      => "L'utilitaire de mise à niveau de vos tables de base de données avec les données les plus récentes. Vous devez être ".
+	                       "exécutant l'un des versions suivantes de Post-it billets déjà pour pouvoir utiliser cette ".
+	                       "outil. S'il vous plaît faire en sorte que vous sélectionnez la bonne version ci-dessous.",
+	"u_stage2_title"    => "Étape 2: Mise à jour en cours",
+	"u_stage2_exp"      => "Sticky Notes se met mis à jour. Cela peut prendre plusieurs minutes...",
+	"u_stage3_title"    => "Étape 3: Mise à jour complète",
+	"u_stage3_exp"      => "Sticky Notes a été mis à jour avec succès! Vous pouvez maintenant commencer à utiliser votre nouvelle version.",
+	"proceed_login"     => "Procéder à la connexion &rarr;",
+	"click_check"       => "Une fois que vous avez rempli les informations correctes BDD, cliquez sur le bouton de ".
+	                       "<code>Test de connexion</code>",
+	"update_config"     => "If you wish to have your old site configuration (settings) migrated into the new Sticky Notes, ".
+	                       "please place your old <code>config.php</code> inside <code>app/config</code> folder.",
+	"test_connection"   => "Test connection",
+	"test_fail"         => "Database connection failed with the following error: %s",
+	"install_warn"      => "<b>Important</b>: The installer will drop all Sticky Notes tables. If you are upgrading from ".
+	                       "an older version, use the %s instead.",
+	"update_util"       => "update utility",
+	"start_install"     => "Start installation",
+	"initializing"      => "Initializing...",
+	"create_table"      => "Creating table: %s",
+	"create_index"      => "Creating indexes...",
+	"almost_done"       => "Almost done...",
+	"install_complete"  => "Installation complete.",
+	"update_complete"   => "Update complete.",
+	"complete"          => "complete",
+	"error_occurred"    => "An error occurred",
+	"error_title"       => "Setup failed",
+	"error_exp"         => "An error occurred and setup has been aborted. The error message has been displayed below:",
+	"process_version"   => "Installing new changes after version %s...",
+	"update_from"       => "Update from",
+	"start_update"      => "Start update",
+	"return_sn"         => "Return to Sticky Notes &rarr;",
+	"ldap_update_warn"  => "It appears that you have been using LDAP authentication before. Newer versions of Sticky Notes ".
+	                       "support logins for both users and admins in contrast to admin-only logins in older versions. ".
+	                       "In view of that, a new parameter <code>admin filters</code> has been added to your LDAP ".
+	                       "configuration options which you will need to set in the admin panel. Without that option, all ".
+	                       "users that log in will get admin privileges.",
+	"update_notifs"     => "Notifications",
+	"update_notifs_exp" => "These are the notification messages generated by individual updaters that you have run as a part ".
+	                       "of the update process. These messages can contain important security warning, so it is strongly ".
+	                       "recommended that you read them and take the suggested measures.",
+	"notify_version"    => "Version %s updater",
+
+);

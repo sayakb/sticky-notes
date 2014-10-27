@@ -1,0 +1,67 @@
+<?php
+
+return array(
+
+	/*
+	|--------------------------------------------------------------------------
+	| Global Site Language Lines
+	|--------------------------------------------------------------------------
+	|
+	| The following are localized texts that are used across Sticky Notes
+	|
+	*/
+
+	"sticky_notes"      => "Sticky Notes",
+	"new_paste"         => "Nouveau paste",
+	"archives"          => "Archives",
+	"trending"          => "Tendances",
+	"feed"              => "Flux",
+	"docs"              => "Docs",
+	"siteadmin"         => "Administration",
+	"my_profile"        => "Mon profile",
+	"author"            => "Auteur",
+	"username"          => "Utilisateur",
+	"password"          => "Mot de passe",
+	"email"             => "E-mail",
+	"full_name"         => "Nom complet",
+	"admin"             => "Administrateur",
+	"paste"             => "Paste",
+	"yes"               => "Oui",
+	"no"                => "Non",
+	"edit"              => "Edite",
+	"delete"            => "Supprime",
+	"loading"           => "Chargement",
+	"edit_paste"        => "Edite paste",
+	"make_private"      => "Rendre privé",
+	"make_public"       => "Rendre publique",
+	"login_to"          => "Connectez-vous à %s",
+	"remember"          => "Se souvenir de moi",
+	"login"             => "Connexion",
+	"logout"            => "Déconnexion",
+	"language"          => "Language: %s",
+	"posted_by"         => "Publié par %s à %s",
+	"views"             => "Vues: %s",
+	"anonymous"         => "Anonyme",
+	"submit"            => "Soumettre",
+	"search"            => "Rechercher",
+	"save"              => "Sauver",
+	"share"             => "Partager",
+	"flag_paste"        => "Marquer comme inapproprié",
+	"remove_flag"       => "Supprimer la marque",
+	"paste_pwd"         => "Ce paste est protégé par mot de passe",
+	"paste_pvt"         => "Ce paste est privé",
+	"paste_id"          => "Paste ID",
+	"paste_title"       => "Paste title",
+	"paste_data"        => "Paste data",
+	"paste_lang"        => "Language",
+	"alert_flags"       => "There are one or more flagged pastes. <a href='%s'>Click here</a> to view them.",
+	"paste_deleted"     => "The paste has been deleted successfully",
+	"paste_flagged"     => "The paste has been flagged for administrator review",
+	"paste_unflagged"   => "The paste has been unflagged",
+	"action_confirm"    => "Are you sure you want to perform this action?",
+	"not_available"     => "N/A",
+	"feed"              => "Feed",
+	"comments"          => "Comments",
+	"statistics"        => "Rendered in: %.5f seconds &bull; No. of queries: %d",
+
+);
