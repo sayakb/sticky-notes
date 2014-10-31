@@ -1,0 +1,8 @@
+{
+	"name"           : "Bootstrap",
+	"themeVersion"   : "2.0",
+	"minCoreVersion" : "1.0",
+	"description"    : "Bootstrap is a mobile-first responsive theme for Sticky Notes v1.0. This is the base theme distributed with Sticky Notes and supports all features offered by the application.",
+	"author"         : "Sayak Banerjee",
+	"authorWebsite"  : "http://sayakbanerjee.com"
+}
