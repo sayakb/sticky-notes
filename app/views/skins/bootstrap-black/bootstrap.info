@@ -1,0 +1,8 @@
+{
+	"name"           : "Bootstrap-black",
+	"themeVersion"   : "2.0",
+	"minCoreVersion" : "1.0",
+	"description"    : "Bootstrap is a mobile-first responsive theme for Sticky Notes v1.0. This is the base theme Cyborg (Bootswatch).",
+	"author"         : "Thomas Park",
+	"authorWebsite"  : "http://thomaspark.me"
+}
