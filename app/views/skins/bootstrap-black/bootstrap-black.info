@@ -1,0 +1,8 @@
+{
+	"name"           : "Bootstrap Black",
+	"themeVersion"   : "2.0",
+	"minCoreVersion" : "1.0",
+	"description"    : "Bootstrap Black is a responsive theme based on the Cyborg theme (Bootswatch).",
+	"author"         : "Thomas Park",
+	"authorWebsite"  : "http://thomaspark.me"
+}
