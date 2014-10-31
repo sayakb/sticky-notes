@@ -1,0 +1,205 @@
+/**
+ * Sticky Notes
+ *
+ * An open source lightweight pastebin application
+ *
+ * @package     StickyNotes
+ * @author      Sayak Banerjee
+ * @copyright   (c) 2014 Sayak Banerjee <mail@sayakbanerjee.com>. All rights reserved.
+ * @license     http://www.opensource.org/licenses/bsd-license.php
+ * @link        http://sayakbanerjee.com/sticky-notes
+ * @since       Version 1.0
+ * @filesource
+ */
+
+body {
+  background: #fafafa;
+}
+footer {
+  margin: 30px;
+  text-align: center;
+}
+input[type="file"] {
+  display: inline;
+  margin-left: 5px;
+}
+section div.row:first-child h3 {
+  margin-top: 0;
+}
+section#list .pre {
+  min-height: 110px;
+}
+section#show .pre {
+  min-height: 350px;
+}
+section#show .pre li:hover,
+section#show .pre li.highlight {
+  background-color: #fbf7d3;
+}
+section#create textarea {
+  font-family: monospace, serif;
+}
+section#create .form-control:-moz-placeholder {
+  font-family: sans-serif;
+}
+section#create .form-control::-moz-placeholder {
+  font-family: sans-serif;
+}
+section#create .form-control:-ms-input-placeholder {
+  font-family: sans-serif;
+}
+section#create .form-control::-webkit-input-placeholder {
+  font-family: sans-serif;
+}
+section#update .form-group {
+  margin-top: 20px;
+}
+section#update .form-control {
+  width: 150px;
+}
+section#admin-skin h3 {
+  margin-top: 0;
+}
+section#admin-dashboard #dashboard-stats {
+  height: 280px;
+  text-align: center;
+}
+section#admin-dashboard #dashboard-stats .well {
+  margin-top: 110px;
+  display: inline-block;
+}
+.navbar {
+  background: #f2f2f2;
+}
+.jumbotron .glyphicon {
+  font-size: 1.7em;
+}
+.jumbotron .form-control {
+  margin-top: 15px;
+}
+.jumbotron .btn {
+  margin-top: 15px;
+}
+.form-inline .form-control {
+  width: 250px;
+  display: inline;
+}
+.pre {
+  background: #fdfdfd;
+  border: 1px solid #e7e7e7;
+  padding: 9px;
+  border-radius: 4px 4px 0 0;
+  margin: 0 0 -1px 0;
+  border-color: #e7e7e7;
+  font-size: 13px;
+  overflow-x: auto;
+  word-wrap: break-word;
+}
+.pre ol {
+  margin-left: 15px;
+}
+.pre-info {
+  padding: 10px;
+  word-break: break-all;
+}
+.pre-info.pre-header {
+  border-radius: 4px 4px 0 0;
+  padding-bottom: 0;
+}
+.pre-info.pre-header h4 {
+  margin: 0;
+  margin-bottom: 5px;
+}
+.pre-info.pre-header span.btn:hover {
+  cursor: default;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.pre-info.pre-header .btn {
+  border-radius: 4px 4px 0 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+  padding-top: 3px;
+  font-weight: normal;
+  font-size: 0.95em;
+  height: 25px;
+}
+.pre-info.pre-header a.btn .glyphicon {
+  top: 3px;
+}
+.pre-info.pre-footer {
+  border-radius: 0 0 4px 4px;
+  margin-bottom: 20px;
+  color: #777;
+  font-size: 0.95em;
+  background: #f5f5f5;
+  border: 1px solid #e7e7e7;
+}
+.well-white {
+  border: 1px solid #e7e7e7;
+  background: #fdfdfd;
+  box-shadow: none;
+}
+.well-diff {
+}
+.well-history h4 {
+  margin-top: 0;
+}
+.well-history .table {
+  margin-bottom: 0;
+}
+.table-striped-dark > tbody > tr:nth-child(odd) > td {
+  background: #f3f3f3;
+}
+.table-user > tbody > tr > td {
+  vertical-align: middle;
+}
+.form-horizontal .help-block {
+  margin-bottom: 0;
+}
+.form-captcha .input-group-addon {
+  padding: 0;
+}
+.form-captcha .input-group-addon img {
+  height: 30px;
+  width: 120px;
+}
+.nav-tabs {
+  margin-bottom: 20px;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover {
+  background: #fafafa;
+}
+.nav-stacked {
+  margin-bottom: 15px;
+}
+.viewport {
+  max-height: 440px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.progress {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+.img-thumbnail.pull-left {
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+.loader {
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+  text-align: center;
+  position: fixed;
+  top: 15px;
+  z-index: 10000;
+  display: none;
+}
+@media (max-width: 767px) {
+  .form-horizontal .control-label {
+    padding-top: 0;
+    margin-bottom: 5px;
+  }
+}
