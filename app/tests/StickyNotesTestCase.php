@@ -42,18 +42,28 @@ class StickyNotesTestCase extends TestCase {
 	}
 
 	/**
-	 * Initializes the test step by enabling filters
+	 * Initializes the test step
 	 *
+	 * @param  bool  $authenticate
 	 * @param  bool  $enableFilters
+	 * @param  bool  $flushSession
 	 * @return void
 	 */
-	protected function initTestStep($enableFilters = TRUE)
+	protected function initTestStep($authenticate = TRUE, $enableFilters = TRUE, $flushSession = TRUE)
 	{
-		$this->be(User::first());
+		if ($authenticate)
+		{
+			$this->be(User::first());
+		}
 
 		if ($enableFilters)
 		{
 			Route::enableFilters();
+		}
+
+		if ($flushSession)
+		{
+			Session::flush();
 		}
 	}
 

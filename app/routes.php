@@ -9,13 +9,15 @@
 |
 */
 
-// Create paste route
-Route::get('/', 'CreateController@getCreate');
+// Create and revise paste routes
+Route::group(array('before' => 'auth.enforce'), function()
+{
+	Route::get('/', 'CreateController@getCreate');
+
+	Route::get('rev/{urlkey}', 'CreateController@getRevision')->where('urlkey', 'p[a-zA-Z0-9]+');
+});
 
 Route::post('create', 'CreateController@postCreate');
-
-// Revise paste route
-Route::get('rev/{urlkey}', 'CreateController@getRevision')->where('urlkey', 'p[a-zA-Z0-9]+');
 
 Route::post('revise', 'CreateController@postRevision');
 
@@ -87,7 +89,7 @@ Route::get('user/register', 'UserController@getRegister');
 Route::get('user/forgot', 'UserController@getForgot');
 
 // DB-only user operations
-Route::group(array('before' => 'auth.config'), function()
+Route::group(array('before' => 'auth.db'), function()
 {
 	// Submit user registration
 	Route::post('user/register', 'UserController@postRegister');

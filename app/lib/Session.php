@@ -33,7 +33,7 @@ class Session extends \Illuminate\Support\Facades\Session {
 	private static $cache = array();
 
 	/**
-	 * Returns configuration data
+	 * Returns session data
 	 *
 	 * @static
 	 * @param  string  $key
@@ -47,6 +47,19 @@ class Session extends \Illuminate\Support\Facades\Session {
 		}
 
 		return static::$cache[$key];
+	}
+
+	/**
+	 * Flushes session data
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function flush()
+	{
+		static::$cache = array();
+
+		parent::flush();
 	}
 
 }

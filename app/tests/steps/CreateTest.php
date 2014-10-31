@@ -38,6 +38,21 @@ class CreateTest extends StickyNotesTestCase {
 	}
 
 	/**
+	 * Tests the getCreate method of the controller without
+	 * guest posts enabled
+	 */
+	public function testGetCreateNoGuest()
+	{
+		$this->initTestStep(FALSE);
+
+		Site::config('general', array('guest_posts' => '0'));
+
+		$this->call('GET', '/');
+
+		$this->assertRedirectedTo('user/login');
+	}
+
+	/**
 	 * Tests the postCreate method of the controller and
 	 * creates a public paste
 	 */
@@ -132,6 +147,29 @@ class CreateTest extends StickyNotesTestCase {
 	}
 
 	/**
+	 * Tests the postCreate method of the controller without
+	 * guest posts enabled
+	 */
+	public function testPostCreateNoGuest()
+	{
+		$this->initTestStep(FALSE);
+
+		Site::config('general', array('guest_posts' => '0'));
+
+		$key = 'UnitTest::Protected'.str_random(64);
+
+		$response = $this->call('POST', 'create', array(
+			'title'    => 'UnitTest::Title',
+			'data'     => $key,
+			'language' => 'text',
+		));
+
+		$this->assertSessionHas('messages.error');
+
+		$this->assertEquals(Paste::where('data', $key)->count(), 0);
+	}
+
+	/**
 	 * Tests the getRevision method of the controller
 	 */
 	public function testGetRevision()
@@ -147,6 +185,25 @@ class CreateTest extends StickyNotesTestCase {
 		$this->call('GET', "rev/{$paste->urlkey}");
 
 		$this->assertResponseOk();
+	}
+
+	/**
+	 * Tests the getRevision method of the controller without
+	 * guest posts enabled
+	 */
+	public function testGetRevisionNoGuest()
+	{
+		$this->initTestStep(FALSE);
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->call('GET', "rev/{$paste->urlkey}");
+
+		$this->assertRedirectedTo('user/login');
 	}
 
 	/**
@@ -174,6 +231,34 @@ class CreateTest extends StickyNotesTestCase {
 		$this->assertRedirectedTo($response->getTargetUrl());
 
 		$this->assertEquals(Revision::where('urlkey', $paste->urlkey)->count(), 1);
+	}
+
+	/**
+	 * Tests the postRevision method of the controller without
+	 * guest posts enabled
+	 */
+	public function testPostRevisionNoGuest()
+	{
+		$this->initTestStep(FALSE);
+
+		$paste = Paste::createNew('web', array(
+			'title'     => 'UnitTest::Title',
+			'data'      => 'UnitTest::Data',
+			'language'  => 'text',
+		));
+
+		$this->session(array('paste.revision' => $paste->id));
+
+		$response = $this->call('POST', 'revise', array(
+			'id'       => $paste->id,
+			'title'    => 'UnitTest::Title',
+			'data'     => 'UnitTest::Revision',
+			'language' => 'text',
+		));
+
+		$this->assertSessionHas('messages.error');
+
+		$this->assertEquals(Revision::where('urlkey', $paste->urlkey)->count(), 0);
 	}
 
 }

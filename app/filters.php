@@ -28,8 +28,7 @@ App::after(function($request, $response)
 |--------------------------------------------------------------------------
 |
 | The following filters are used to verify that the user of the current
-| session is logged into this application. The "basic" filter easily
-| integrates HTTP Basic authentication for quick, simple checking.
+| session is logged into this application.
 |
 */
 
@@ -41,15 +40,27 @@ Route::filter('auth', function()
 	}
 });
 
+/*
+|--------------------------------------------------------------------------
+| Enforce Authentication Filter
+|--------------------------------------------------------------------------
+|
+| The "enforce" filter redirects the user to log in if the site is
+| configured to disallow guest posts.
+|
+*/
 
-Route::filter('auth.basic', function()
+Route::filter('auth.enforce', function()
 {
-	return Auth::basic();
+	if (Auth::roles()->guest AND ! Site::config('general')->guestPosts)
+	{
+		return Redirect::guest('user/login');
+	}
 });
 
 /*
 |--------------------------------------------------------------------------
-| Authentication Config Filters
+| Authentication Database Filters
 |--------------------------------------------------------------------------
 |
 | The following filters are used to verify that DB based auth is enabled.
@@ -57,7 +68,7 @@ Route::filter('auth.basic', function()
 |
 */
 
-Route::filter('auth.config', function()
+Route::filter('auth.db', function()
 {
 	$auth = Site::config('auth');
 

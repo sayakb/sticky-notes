@@ -30,7 +30,7 @@ class SetupTest extends StickyNotesTestCase {
 	 */
 	public function testGetInstall()
 	{
-		$this->initTestStep(FALSE);
+		$this->initTestStep(TRUE, FALSE);
 
 		$response = $this->call('GET', 'setup/install');
 
@@ -44,7 +44,7 @@ class SetupTest extends StickyNotesTestCase {
 	 */
 	public function testPostInstall()
 	{
-		$this->initTestStep(FALSE);
+		$this->initTestStep(TRUE, FALSE);
 
 		$response = $this->call('POST', 'setup/install', array(
 			'_test' => 1,
@@ -60,7 +60,7 @@ class SetupTest extends StickyNotesTestCase {
 	 */
 	public function testGetUpdate()
 	{
-		$this->initTestStep(FALSE);
+		$this->initTestStep(TRUE, FALSE);
 
 		$response = $this->call('GET', 'setup/update');
 
@@ -74,7 +74,7 @@ class SetupTest extends StickyNotesTestCase {
 	 */
 	public function testPostUpdate()
 	{
-		$this->initTestStep(FALSE);
+		$this->initTestStep(TRUE, FALSE);
 
 		$response = $this->call('POST', 'setup/update', array(
 			'version' => 1,
