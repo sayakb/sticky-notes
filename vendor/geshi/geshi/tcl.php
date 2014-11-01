@@ -50,14 +50,14 @@
 
 $language_data = array (
     'LANG_NAME' => 'TCL',
-    'COMMENT_SINGLE' => array(1 => '#'),
+    'COMMENT_SINGLE' => array(),
     'COMMENT_MULTI' => array(),
     'COMMENT_REGEXP' => array(
-        1 => '/(?<!\\\\)#(?:\\\\\\\\|\\\\\\n|.)*$/m',
+        1 => '/(?:^|(?<=\{|;))\s*#(?:\\\\\\\\|\\\\\\n|.)*$/m',
         //2 => '/{[^}\n]+}/'
         ),
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
-    'QUOTEMARKS' => array('"', "'"),
+    'QUOTEMARKS' => array('"'),
     'ESCAPE_CHAR' => '\\',
     'KEYWORDS' => array(
         /*
@@ -187,8 +187,6 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'COMMENTS' => array(
             'DISALLOWED_BEFORE' => '\\'
+            )
         )
-    )
 );
-
-?>

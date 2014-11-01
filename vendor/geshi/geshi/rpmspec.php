@@ -129,5 +129,3 @@ $language_data = array (
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
     'SCRIPT_DELIMITERS' => array(),
 );
-
-?>

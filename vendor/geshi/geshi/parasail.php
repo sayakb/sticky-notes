@@ -58,10 +58,10 @@ $language_data = array (
             ),
         3 => array(
             'abstract', 'class',
-            'concurrent', 'const', 
-            'end', 'extends', 'exports', 
+            'concurrent', 'const',
+            'end', 'extends', 'exports',
             'func', 'global', 'implements', 'import',
-            'interface', 'is', 'lambda', 'locked', 
+            'interface', 'is', 'lambda', 'locked',
             'new', 'of', 'op', 'optional',
             'private', 'queued', 'ref',
             'separate', 'type', 'var',
@@ -91,9 +91,6 @@ $language_data = array (
             ),
         'ESCAPE_CHAR' => array(
             0 => 'color: #000099; font-weight: bold;'
-            ),
-        'BRACKETS' => array(
-            0 => 'color: #66cc66;'
             ),
         'STRINGS' => array(
             0 => 'color: #7f007f;'
@@ -129,5 +126,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         )
 );
-
-?>

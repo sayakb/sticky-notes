@@ -111,7 +111,6 @@ $language_data = array (
             1 => 'color: #666666; font-style: italic;',
             2 => 'color: #006699;',
             3 => 'color: #008000; font-style: italic; font-weight: bold;',
-            3 => 'color: #008000; font-style: italic; font-weight: bold;',
             'MULTI' => 'color: #666666; font-style: italic;',
             ),
         'ESCAPE_CHAR' => array(
@@ -157,5 +156,3 @@ $language_data = array (
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
 );
-
-?>

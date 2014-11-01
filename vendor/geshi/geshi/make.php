@@ -146,6 +146,4 @@ $language_data = array (
     'SCRIPT_DELIMITERS' => array(),
     'HIGHLIGHT_STRICT_BLOCK' => array(),
     'TAB_WIDTH' => 8
-// vim: set sw=4 sts=4 :
 );
-?>

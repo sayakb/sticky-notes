@@ -77,8 +77,6 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
             'ALL' => GESHI_NEVER
-        ),
-    )
+            )
+        )
 );
-
-?>

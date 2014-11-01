@@ -181,5 +181,3 @@ $language_data = array (
         1 => false
         )
 );
-
-?>

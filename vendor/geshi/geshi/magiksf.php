@@ -51,7 +51,7 @@ $language_data = array (
     //Multiline-continued single-line comments
     'CASE_KEYWORDS' => GESHI_CAPS_NO_CHANGE,
     'QUOTEMARKS' => array("'", '"'),
-    'ESCAPE_CHAR' => '',
+    'ESCAPE_CHAR' => '', // FIXME: Duplicate array key. null or ''?
     'KEYWORDS' => array(
         1 => array(
             '_block', '_endblock', '_proc', '_endproc', '_loop', '_endloop',
@@ -189,5 +189,3 @@ $language_data = array (
         ),
     'TAB_WIDTH' => 4
 );
-
-?>

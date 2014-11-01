@@ -189,10 +189,6 @@ $language_data = array (
     'PARSER_CONTROL' => array(
         'ENABLE_FLAGS' => array(
             'NUMBERS' => false
-            ),
+            )
         )
 );
-
-// kate: replace-tabs on; indent-width 4;
-
-?>

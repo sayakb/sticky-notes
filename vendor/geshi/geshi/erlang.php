@@ -425,17 +425,15 @@ $language_data = array(
             3 => array(
                 'DISALLOWED_BEFORE' => '(?<![\w])',
                 'DISALLOWED_AFTER' => ''//'(?=\s*\()'
-            ),
+                ),
             5 => array(
                 'DISALLOWED_BEFORE' => '(?<=\'|)',
                 'DISALLOWED_AFTER' => '(?=(\'|):)'
-            ),
+                ),
             6 => array(
                 'DISALLOWED_BEFORE' => '(?<=\/|-)',
                 'DISALLOWED_AFTER' => ''
+                )
             )
         )
-    ),
 );
-
-?>

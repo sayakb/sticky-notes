@@ -91,7 +91,5 @@ $language_data = array (
         ),
     'HIGHLIGHT_STRICT_BLOCK' => array(
         ),
-    'TAB_WIDTH' => 4,
+    'TAB_WIDTH' => 4
 );
-
-?>

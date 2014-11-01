@@ -319,5 +319,3 @@ $language_data = array (
     // Note that if you are using <pre> tags for your code, then the browser chooses how many spaces your tabs will translate to.
     'TAB_WIDTH' => 4
 );
-
-?>

@@ -140,11 +140,9 @@ $language_data = array (
         ),
     'URLS' => array(1 => ''),
     'OOLANG' => false,
-    'OBJECT_SPLITTERS' => array( ),
-    'REGEXPS' => array( ),
+    'OBJECT_SPLITTERS' => array(),
+    'REGEXPS' => array(),
     'STRICT_MODE_APPLIES' => GESHI_NEVER,
-    'SCRIPT_DELIMITERS' => array( ),
-    'HIGHLIGHT_STRICT_BLOCK' => array( )
+    'SCRIPT_DELIMITERS' => array(),
+    'HIGHLIGHT_STRICT_BLOCK' => array()
 );
-
-?>

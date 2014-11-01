@@ -381,5 +381,3 @@ $language_data = array(
     'SCRIPT_DELIMITERS' => array(),
     'TAB_WIDTH' => 4
 );
-
-?>
