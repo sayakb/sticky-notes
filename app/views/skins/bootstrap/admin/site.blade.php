@@ -369,8 +369,9 @@
 								<div class="col-sm-9 col-lg-10">
 									{{
 										Form::select('no_expire', array(
-											'0' => Lang::get('admin.pastes_expire'),
-											'1' => Lang::get('admin.pastes_donot_expire'),
+											'none' => Lang::get('admin.noexpire_none'),
+											'user' => Lang::get('admin.noexpire_user'),
+											'all'  => Lang::get('admin.noexpire_all'),
 										), $site->general->noExpire, array(
 											'class' => 'form-control'
 										))
