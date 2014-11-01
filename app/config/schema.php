@@ -796,15 +796,11 @@ return array(
 
 				$config = Site::config('general');
 
-				$noExpire = 'all';
+				$noExpire = isset($config->noExpire) AND ! $config->noExpire ? 'none' : 'all';
 
-				// Modify config values
-				if (isset($config->noExpire) AND ! $config->noExpire)
-				{
-					Site::config('general', array(
-						'noExpire' => 'none',
-					));
-				}
+				Site::config('general', array(
+					'noExpire' => $noExpire,
+				));
 
 			},
 
