@@ -50,6 +50,42 @@ class CreateTest extends StickyNotesTestCase {
 		$this->call('GET', '/');
 
 		$this->assertRedirectedTo('user/login');
+
+		Site::config('general', array('guest_posts' => '1'));
+	}
+
+	/**
+	 * Tests the getCreate method of the controller with noExpire
+	 * set to 'none' and logged in as admin
+	 */
+	public function testExpirationAdmin()
+	{
+		$this->initTestStep();
+
+		Site::config('general', array('no_expire' => 'none'));
+
+		$response = $this->client->request('GET', '/');
+
+		$this->assertResponseOk();
+
+		$this->assertCount(1, $response->filter('option:contains("forever")'));
+	}
+
+	/**
+	 * Tests the getCreate method of the controller with noExpire
+	 * set to 'user' and not logged in
+	 */
+	public function testExpirationGuest()
+	{
+		$this->initTestStep(FALSE);
+
+		Site::config('general', array('no_expire' => 'user'));
+
+		$response = $this->client->request('GET', '/');
+
+		$this->assertResponseOk();
+
+		$this->assertCount(0, $response->filter('option:contains("forever")'));
 	}
 
 	/**

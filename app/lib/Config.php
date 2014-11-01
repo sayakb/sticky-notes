@@ -49,4 +49,15 @@ class Config extends \Illuminate\Support\Facades\Config {
 		return static::$cache[$key];
 	}
 
+	/**
+	 * Flushes the config cache
+	 *
+	 * @static
+	 * @return void
+	 */
+	public static function flush()
+	{
+		static::$cache = array();
+	}
+
 }
