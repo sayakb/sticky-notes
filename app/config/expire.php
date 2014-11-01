@@ -26,6 +26,6 @@ return array(
 
 	'31536000'  => array('expire_1year', TRUE),
 
-	'0'         => array('expire_forever', Site::config('general')->noExpire OR Auth::roles()->admin),
+	'0'         => array('expire_forever', Paste::noExpire()),
 
 );

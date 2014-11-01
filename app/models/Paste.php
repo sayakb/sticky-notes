@@ -293,6 +293,37 @@ class Paste extends Eloquent {
 	}
 
 	/**
+	 * Check if the paste cannot expire
+	 *
+	 * @static
+	 * @return bool
+	 */
+	public static function noExpire()
+	{
+		$noExpire = FALSE;
+
+		// Admins can always create permanent pastes
+		if (Auth::roles()->admin)
+		{
+			$noExpire = TRUE;
+		}
+
+		// Check if only registered users can create permanent pastes
+		if (Site::config('general')->noExpire == 'user' AND Auth::roles()->user)
+		{
+			$noExpire = TRUE;
+		}
+
+		// Check if everyone can create permanent pastes
+		if (Site::config('general')->noExpire == 'all')
+		{
+			$noExpire = TRUE;
+		}
+
+		return $noExpire;
+	}
+
+	/**
 	 * Fetches available expiration times for a paste
 	 *
 	 * @static

@@ -30,7 +30,7 @@ return array(
 		'guestPosts'          => '1',
 		'pasteSearch'         => '1',
 		'comments'            => '1',
-		'noExpire'            => '1',
+		'noExpire'            => 'all',
 		'csrf'                => '1',
 		'statsTTL'            => '-6 months',
 		'statsDisplay'        => '-1 month',

@@ -91,8 +91,9 @@ return array(
 	"expire_forever"        => "Keep forever",
 	"expiration"            => "Expiration",
 	"expiration_exp"        => "This setting determines the maximum age for pastes created on this site.",
-	"pastes_expire"         => "Users must set a finite expiration time",
-	"pastes_donot_expire"   => "Users can create pastes that do not expire",
+	"noexpire_none"         => "Everyone must set a finite expiration time",
+	"noexpire_user"         => "Registered users can create pastes that do not expire",
+	"noexpire_all"          => "Every one can create pastes that do not expire",
 	"ip_tracking"           => "IP tracking",
 	"ip_tracking_exp"       => "Set this option to trust proxy headers if your site is behind a proxy ".
 	                           "intermediary (such as a load balancer) to get the actual client IP address.",
