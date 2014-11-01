@@ -789,6 +789,27 @@ return array(
 
 		),
 
+		'1.8' => array(
+
+			'closure' => function()
+			{
+
+				$config = Site::config('general');
+
+				$noExpire = 'all';
+
+				// Modify config values
+				if (isset($config->noExpire) AND ! $config->noExpire)
+				{
+					Site::config('general', array(
+						'noExpire' => 'none',
+					));
+				}
+
+			},
+
+		),
+
 	),
 
 );

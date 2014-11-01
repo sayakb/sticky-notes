@@ -45,13 +45,13 @@ class CreateTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep(FALSE);
 
-		Site::config('general', array('guest_posts' => '0'));
+		Site::config('general', array('guestPosts' => '0'));
 
 		$this->call('GET', '/');
 
 		$this->assertRedirectedTo('user/login');
 
-		Site::config('general', array('guest_posts' => '1'));
+		Site::config('general', array('guestPosts' => '1'));
 	}
 
 	/**
@@ -62,7 +62,7 @@ class CreateTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep();
 
-		Site::config('general', array('no_expire' => 'none'));
+		Site::config('general', array('noExpire' => 'none'));
 
 		$response = $this->client->request('GET', '/');
 
@@ -79,7 +79,7 @@ class CreateTest extends StickyNotesTestCase {
 	{
 		$this->initTestStep(FALSE);
 
-		Site::config('general', array('no_expire' => 'user'));
+		Site::config('general', array('noExpire' => 'user'));
 
 		$response = $this->client->request('GET', '/');
 
