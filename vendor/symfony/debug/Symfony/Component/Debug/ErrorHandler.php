@@ -88,7 +88,7 @@ class ErrorHandler
     /**
      * Sets the level at which the conversion to Exception is done.
      *
-     * @param int|null     $level The level (null to use the error_reporting() value and 0 to disable)
+     * @param int|null $level The level (null to use the error_reporting() value and 0 to disable)
      */
     public function setLevel($level)
     {
@@ -98,7 +98,7 @@ class ErrorHandler
     /**
      * Sets the display_errors flag value.
      *
-     * @param int     $displayErrors The display_errors flag value
+     * @param int $displayErrors The display_errors flag value
      */
     public function setDisplayErrors($displayErrors)
     {
@@ -126,7 +126,7 @@ class ErrorHandler
                 if (self::$stackedErrorLevels) {
                     self::$stackedErrors[] = func_get_args();
                 } else {
-                    if (version_compare(PHP_VERSION, '5.4', '<')) {
+                    if (PHP_VERSION_ID < 50400) {
                         $stack = array_map(
                             function ($row) {
                                 unset($row['args']);

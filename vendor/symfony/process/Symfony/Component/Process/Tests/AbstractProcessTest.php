@@ -80,7 +80,7 @@ abstract class AbstractProcessTest extends \PHPUnit_Framework_TestCase
         }
         $duration = microtime(true) - $start;
 
-        $this->assertLessThan(1.8, $duration);
+        $this->assertLessThan(4, $duration);
     }
 
     public function testAllOutputIsActuallyReadOnTermination()
@@ -1079,12 +1079,12 @@ abstract class AbstractProcessTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string         $commandline
-     * @param null|string    $cwd
-     * @param null|array     $env
-     * @param null|string    $input
-     * @param int            $timeout
-     * @param array          $options
+     * @param string      $commandline
+     * @param null|string $cwd
+     * @param null|array  $env
+     * @param null|string $input
+     * @param int         $timeout
+     * @param array       $options
      *
      * @return Process
      */

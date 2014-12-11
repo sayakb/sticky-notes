@@ -1387,6 +1387,7 @@ return array(
     'Symfony\\Component\\HttpKernel\\EventListener\\ProfilerListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/ProfilerListener.php',
     'Symfony\\Component\\HttpKernel\\EventListener\\ResponseListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/ResponseListener.php',
     'Symfony\\Component\\HttpKernel\\EventListener\\RouterListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/RouterListener.php',
+    'Symfony\\Component\\HttpKernel\\EventListener\\SaveSessionListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/SaveSessionListener.php',
     'Symfony\\Component\\HttpKernel\\EventListener\\SessionListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/SessionListener.php',
     'Symfony\\Component\\HttpKernel\\EventListener\\StreamedResponseListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/StreamedResponseListener.php',
     'Symfony\\Component\\HttpKernel\\EventListener\\TestSessionListener' => $vendorDir . '/symfony/http-kernel/Symfony/Component/HttpKernel/EventListener/TestSessionListener.php',

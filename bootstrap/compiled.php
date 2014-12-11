@@ -1446,7 +1446,16 @@ class Request
     }
     public function get($key, $default = null, $deep = false)
     {
-        return $this->query->get($key, $this->attributes->get($key, $this->request->get($key, $default, $deep), $deep), $deep);
+        if ($this !== ($result = $this->query->get($key, $this, $deep))) {
+            return $result;
+        }
+        if ($this !== ($result = $this->attributes->get($key, $this, $deep))) {
+            return $result;
+        }
+        if ($this !== ($result = $this->request->get($key, $this, $deep))) {
+            return $result;
+        }
+        return $default;
     }
     public function getSession()
     {
@@ -2701,9 +2710,6 @@ namespace Symfony\Component\Debug;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Debug\Exception\FlattenException;
 use Symfony\Component\Debug\Exception\OutOfMemoryException;
-if (!defined('ENT_SUBSTITUTE')) {
-    define('ENT_SUBSTITUTE', 8);
-}
 class ExceptionHandler
 {
     private $debug;
@@ -2833,7 +2839,7 @@ class ExceptionHandler
                 }
             } catch (\Exception $e) {
                 if ($this->debug) {
-                    $title = sprintf('Exception thrown when handling an exception (%s: %s)', get_class($exception), $exception->getMessage());
+                    $title = sprintf('Exception thrown when handling an exception (%s: %s)', get_class($e), $e->getMessage());
                 } else {
                     $title = 'Whoops, looks like something went wrong.';
                 }
@@ -2905,6 +2911,11 @@ class ExceptionHandler
     }
     private function formatArgs(array $args)
     {
+        if (PHP_VERSION_ID >= 50400) {
+            $flags = ENT_QUOTES | ENT_SUBSTITUTE;
+        } else {
+            $flags = ENT_QUOTES;
+        }
         $result = array();
         foreach ($args as $key => $item) {
             if ('object' === $item[0]) {
@@ -2912,7 +2923,7 @@ class ExceptionHandler
             } elseif ('array' === $item[0]) {
                 $formattedValue = sprintf('<em>array</em>(%s)', is_array($item[1]) ? $this->formatArgs($item[1]) : $item[1]);
             } elseif ('string' === $item[0]) {
-                $formattedValue = sprintf('\'%s\'', htmlspecialchars($item[1], ENT_QUOTES | ENT_SUBSTITUTE, $this->charset));
+                $formattedValue = sprintf('\'%s\'', htmlspecialchars($item[1], $flags, $this->charset));
             } elseif ('null' === $item[0]) {
                 $formattedValue = '<em>null</em>';
             } elseif ('boolean' === $item[0]) {
@@ -2921,7 +2932,7 @@ class ExceptionHandler
                 $formattedValue = '<em>resource</em>';
             } else {
                 $formattedValue = str_replace('
-', '', var_export(htmlspecialchars((string) $item[1], ENT_QUOTES | ENT_SUBSTITUTE, $this->charset), true));
+', '', var_export(htmlspecialchars((string) $item[1], $flags, $this->charset), true));
             }
             $result[] = is_int($key) ? $formattedValue : sprintf('\'%s\' => %s', $key, $formattedValue);
         }
@@ -3621,7 +3632,7 @@ class ErrorHandler
                 if (self::$stackedErrorLevels) {
                     self::$stackedErrors[] = func_get_args();
                 } else {
-                    if (version_compare(PHP_VERSION, '5.4', '<')) {
+                    if (PHP_VERSION_ID < 50400) {
                         $stack = array_map(function ($row) {
                             unset($row['args']);
                             return $row;
@@ -3994,7 +4005,7 @@ class FileLoader implements LoaderInterface
         }
         $file = "{$path}/{$group}.php";
         if ($this->files->exists($file)) {
-            $items = $this->files->getRequire($file);
+            $items = $this->getRequire($file);
         }
         $file = "{$path}/{$environment}/{$group}.php";
         if ($this->files->exists($file)) {
@@ -4004,7 +4015,7 @@ class FileLoader implements LoaderInterface
     }
     protected function mergeEnvironment(array $items, $file)
     {
-        return array_replace_recursive($items, $this->files->getRequire($file));
+        return array_replace_recursive($items, $this->getRequire($file));
     }
     public function exists($group, $namespace = null)
     {
@@ -5519,8 +5530,10 @@ class Route
     }
     protected function addFilters($type, $filters)
     {
+        $filters = static::explodeFilters($filters);
         if (isset($this->action[$type])) {
-            $this->action[$type] .= '|' . $filters;
+            $existing = static::explodeFilters($this->action[$type]);
+            $this->action[$type] = array_merge($existing, $filters);
         } else {
             $this->action[$type] = $filters;
         }
@@ -7158,6 +7171,7 @@ abstract class Model implements ArrayAccess, ArrayableInterface, JsonableInterfa
             if (isset($relation) || is_null($value)) {
                 $attributes[$key] = $relation;
             }
+            unset($relation);
         }
         return $attributes;
     }
@@ -8703,13 +8717,10 @@ class Logger implements LoggerInterface
         if (!$this->handlers) {
             $this->pushHandler(new StreamHandler('php://stderr', static::DEBUG));
         }
-        if (!static::$timezone) {
-            static::$timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
-        }
-        $record = array('message' => (string) $message, 'context' => $context, 'level' => $level, 'level_name' => static::getLevelName($level), 'channel' => $this->name, 'datetime' => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), static::$timezone)->setTimezone(static::$timezone), 'extra' => array());
+        $levelName = static::getLevelName($level);
         $handlerKey = null;
         foreach ($this->handlers as $key => $handler) {
-            if ($handler->isHandling($record)) {
+            if ($handler->isHandling(array('level' => $level))) {
                 $handlerKey = $key;
                 break;
             }
@@ -8717,6 +8728,10 @@ class Logger implements LoggerInterface
         if (null === $handlerKey) {
             return false;
         }
+        if (!static::$timezone) {
+            static::$timezone = new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
+        }
+        $record = array('message' => (string) $message, 'context' => $context, 'level' => $level, 'level_name' => $levelName, 'channel' => $this->name, 'datetime' => \DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true)), static::$timezone)->setTimezone(static::$timezone), 'extra' => array());
         foreach ($this->processors as $processor) {
             $record = call_user_func($processor, $record);
         }
@@ -9974,7 +9989,6 @@ class Response
             fastcgi_finish_request();
         } elseif ('cli' !== PHP_SAPI) {
             static::closeOutputBuffers(0, true);
-            flush();
         }
         return $this;
     }
@@ -10962,10 +10976,12 @@ class StackedHttpKernel implements HttpKernelInterface, TerminableInterface
     }
     public function terminate(Request $request, Response $response)
     {
+        $prevKernel = null;
         foreach ($this->middlewares as $kernel) {
-            if ($kernel instanceof TerminableInterface) {
+            if (!$prevKernel instanceof TerminableInterface && $kernel instanceof TerminableInterface) {
                 $kernel->terminate($request, $response);
             }
+            $prevKernel = $kernel;
         }
     }
 }

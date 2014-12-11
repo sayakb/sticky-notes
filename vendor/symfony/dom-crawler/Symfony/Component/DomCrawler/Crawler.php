@@ -298,7 +298,7 @@ class Crawler extends \SplObjectStorage
     /**
      * Returns a node given its position in the node list.
      *
-     * @param int     $position The position
+     * @param int $position The position
      *
      * @return Crawler A new instance of the Crawler with the selected node, or an empty Crawler if it does not exist.
      *
@@ -546,7 +546,7 @@ class Crawler extends \SplObjectStorage
 
         $html = '';
         foreach ($this->getNode(0)->childNodes as $child) {
-            if (version_compare(PHP_VERSION, '5.3.6', '>=')) {
+            if (PHP_VERSION_ID >= 50306) {
                 // node parameter was added to the saveHTML() method in PHP 5.3.6
                 // @see http://php.net/manual/en/domdocument.savehtml.php
                 $html .= $child->ownerDocument->saveHTML($child);
@@ -908,7 +908,7 @@ class Crawler extends \SplObjectStorage
     }
 
     /**
-     * @param int     $position
+     * @param int $position
      *
      * @return \DOMElement|null
      */
