@@ -1,4 +1,4 @@
-# [Sticky Notes v1.9](http://sayakbanerjee.com/sticky-notes) [![Build Status](http://goo.gl/om3X8j)](http://goo.gl/DRaaX0) ![](http://goo.gl/JWhnei)
+# [Sticky Notes v1.9](http://sayakbanerjee.com/sticky-notes) [![Build Status](http://goo.gl/om3X8j)](http://goo.gl/DRaaX0) ![](http://goo.gl/5EXdK5)
 
 Sticky notes is a powerful open-source pastebin application. [See it in action](http://paste.kde.org).
 
