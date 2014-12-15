@@ -45,7 +45,7 @@
 			<div class="col-sm-12">
 				<div class="form-group">
 					{{
-						Form::textarea('data', $paste->data, array(
+						Form::textarea('data', htmlspecialchars($paste->data), array(
 							'class'         => 'form-control',
 							'rows'          => 18,
 							'placeholder'   => Lang::get('global.paste_data')
