@@ -38,7 +38,7 @@
 		<div class="row-fluid">
 			<div class="span12">
 				{{
-					Form::textarea('data', $paste->data, array(
+					Form::textarea('data', htmlspecialchars($paste->data), array(
 						'class'         => 'input-stretch',
 						'rows'          => 18,
 						'placeholder'   => Lang::get('global.paste_data')
